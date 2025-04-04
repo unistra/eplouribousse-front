@@ -13,7 +13,9 @@
     "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
     "lint:eslint": "eslint . --fix",
     "lint": "run-s lint:*",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "format:silent": "prettier --log-level error --write src/",
+    "prepare": "husky"
   },
   "dependencies": {
     "pinia": "^3.0.1",
@@ -33,6 +35,7 @@
     "eslint": "^9.22.0",
     "eslint-plugin-oxlint": "^0.16.0",
     "eslint-plugin-vue": "~10.0.0",
+    "husky": "^9.1.7",
     "jiti": "^2.4.2",
     "jsdom": "^26.0.0",
     "npm-run-all2": "^7.0.2",
