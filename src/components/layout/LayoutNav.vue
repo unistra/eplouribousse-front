@@ -44,5 +44,6 @@ const navLinks: NavLink[] = [
         :label="t(`navigation.${navLink.label}`)"
         flat
         dense
+        @click="console.log(index)"
     ></BaseButton>
 </template>
