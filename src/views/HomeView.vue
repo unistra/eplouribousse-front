@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import type { SelectOption } from '#/utils'
 import BaseButton from '@/components/base/BaseButton.vue'
-import BaseSelect from '@/components/base/BaseSelect.vue'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
-const opts: SelectOption[] = [
+const _opts: SelectOption[] = [
     {
         value: 'Test1',
         label: 'Test1',
@@ -17,14 +16,14 @@ const opts: SelectOption[] = [
         label: 'Test2',
     },
 ]
-const test = ref<string>()
+const _test = ref<string>()
 </script>
 
 <template>
     {{ t('test') }}
     <br />
     <BaseButton
-        label="TEST"
+        :label="t('homePage')"
         outline
         @click="console.log('test')"
     />

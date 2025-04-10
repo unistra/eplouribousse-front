@@ -7,6 +7,7 @@ defineProps<{
     round?: boolean
     dense?: boolean
     outline?: boolean
+    noCaps?: boolean
 }>()
 </script>
 
@@ -19,6 +20,7 @@ defineProps<{
         :round
         :dense
         :outline
+        :no-caps
     >
         <slot />
     </QBtn>

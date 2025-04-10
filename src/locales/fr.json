@@ -1,4 +1,16 @@
 {
     "homePage": "Accueil",
-    "test": "Ceci est un test"
+    "navigation": {
+        "search": "Recherche",
+        "supervision": "Supervision",
+        "userGuide": "Manuel de l'utilisateur",
+        "projectContacts": "Contact du projet",
+        "diffusionList": "Liste de diffusion",
+        "projectAdministration": "Administration du projet",
+        "generalAdministration": "Administration générale"
+    },
+    "settings": {
+        "core": "Paramètres",
+        "darkMode": "Thème sombre"
+    }
 }
