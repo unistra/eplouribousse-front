@@ -3,6 +3,9 @@ import BaseButton from '@/components/base/BaseButton.vue'
 import { useI18n } from 'vue-i18n'
 import router from '@/router'
 import routes from '@/router/routes'
+import BaseItem from '../base/BaseItem.vue'
+
+defineProps<{ buttons?: boolean }>()
 
 const { t } = useI18n()
 
@@ -25,6 +28,7 @@ function getRoutePath(routeName: string): string {
 
 <template>
     <BaseButton
+        v-if="buttons"
         v-for="(navLink, index) in navLinks"
         :key="index"
         :label="t(`navigation.${navLink}`)"
@@ -32,4 +36,13 @@ function getRoutePath(routeName: string): string {
         dense
         @click="router.push(getRoutePath(navLink))"
     ></BaseButton>
+    <BaseItem
+        v-else-if="!buttons"
+        v-for="(navLink, index_bis) in navLinks"
+        :key="index_bis"
+        clickable
+        @click="router.push(getRoutePath(navLink))"
+    >
+        <QItemSection>{{ t(`navigation.${navLink}`) }}</QItemSection>
+    </BaseItem>
 </template>

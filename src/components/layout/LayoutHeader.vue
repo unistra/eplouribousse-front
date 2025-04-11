@@ -6,11 +6,13 @@ import { useI18n } from 'vue-i18n'
 import { useComposableQuasar } from '@/composables/useComposableQuasar'
 import router from '@/router'
 import BaseItem from '../base/BaseItem.vue'
+import { ref } from 'vue'
 
 const { t } = useI18n()
 const userStore = useUsererStore()
-
 const { dark } = useComposableQuasar()
+
+const leftDrawerOpen = ref<boolean>(false)
 </script>
 
 <template>
@@ -19,6 +21,13 @@ const { dark } = useComposableQuasar()
         :class="userStore.tenantConfiguration.color + ' text-white'"
     >
         <QToolbar>
+            <BaseButton
+                class="lt-md"
+                icon="mdi-menu"
+                flat
+                dense
+                @click="leftDrawerOpen = !leftDrawerOpen"
+            />
             <QToolbarTitle
                 ><BaseItem
                     clickable
@@ -26,7 +35,9 @@ const { dark } = useComposableQuasar()
                     >Eplouribousse - {{ userStore.tenantConfiguration.tenantName }}
                 </BaseItem>
             </QToolbarTitle>
-            <LayoutNav />
+            <div class="gt-md">
+                <LayoutNav buttons />
+            </div>
             <QSpace />
             <BaseButton
                 flat
@@ -61,4 +72,13 @@ const { dark } = useComposableQuasar()
             </BaseButton>
         </QToolbar>
     </QHeader>
+    <QDrawer
+        v-model="leftDrawerOpen"
+        bordered
+        side="left"
+    >
+        <QList>
+            <LayoutNav />
+        </QList>
+    </QDrawer>
 </template>
