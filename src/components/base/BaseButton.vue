@@ -8,6 +8,7 @@ defineProps<{
     dense?: boolean
     outline?: boolean
     noCaps?: boolean
+    type?: string
 }>()
 </script>
 
@@ -21,6 +22,7 @@ defineProps<{
         :dense
         :outline
         :no-caps
+        :type
     >
         <slot />
     </QBtn>

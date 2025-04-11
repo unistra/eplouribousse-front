@@ -7,7 +7,7 @@ const links: Link[] = []
 <template>
     <QFooter
         elevated
-        class="bg-grey-8 text-white container footer"
+        class="bg-grey-8 text-white container-center footer"
     >
         Footer en construction
         <a

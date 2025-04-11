@@ -28,7 +28,7 @@ onMounted(() => {
         <LayoutHeader />
         <QPageContainer>
             <QPage padding>
-                <main class="container">
+                <main>
                     <RouterView />
                 </main>
             </QPage>

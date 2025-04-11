@@ -20,11 +20,15 @@ const _test = ref<string>()
 </script>
 
 <template>
-    {{ t('test') }}
-    <br />
-    <BaseButton
-        :label="t('homePage')"
-        outline
-        @click="console.log('test')"
-    />
+    <div class="row">
+        <div class="col-3">
+            {{ t('test') }}
+            <br />
+            <BaseButton
+                :label="t('homePage')"
+                outline
+                @click="console.log('test')"
+            />
+        </div>
+    </div>
 </template>

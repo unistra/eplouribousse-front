@@ -11,6 +11,16 @@ const routes: RouteRecordRaw[] = [
             unistraCasAuthentication: true,
         },
     },
+    {
+        path: '/contact-admin',
+        name: 'contactAdmin',
+        component: () => import('@/views/ContactAdminView.vue'),
+        meta: {
+            title: 'Contact',
+            hiddenInNav: true,
+            unistraCasAuthentication: true,
+        },
+    },
 ]
 
 export default routes

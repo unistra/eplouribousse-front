@@ -6,7 +6,14 @@
     font-weight: normal;
 }
 
-.container {
+.container-left {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    flex-direction: row;
+}
+
+.container-center {
     display: flex;
     align-items: center;
     justify-content: center;
