@@ -58,6 +58,7 @@ function submitEmailForm() {
                 <BaseButton
                     type="submit"
                     outline
+                    no-caps
                     :label="t('contactAdmin.send')"
                 />
             </QForm>

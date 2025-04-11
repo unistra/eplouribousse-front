@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { NavLink } from '#/utils'
 import BaseButton from '@/components/base/BaseButton.vue'
 import { useI18n } from 'vue-i18n'
 import router from '@/router'

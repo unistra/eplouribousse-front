@@ -5,6 +5,7 @@ import LayoutNav from './LayoutNav.vue'
 import { useI18n } from 'vue-i18n'
 import { useComposableQuasar } from '@/composables/useComposableQuasar'
 import router from '@/router'
+import BaseItem from '../base/BaseItem.vue'
 
 const { t } = useI18n()
 const userStore = useUsererStore()
@@ -19,12 +20,12 @@ const { dark } = useComposableQuasar()
     >
         <QToolbar>
             <QToolbarTitle
-                ><QItem
+                ><BaseItem
                     clickable
                     @click="router.push({ name: 'Home' })"
-                    >Eplouribousse - {{ userStore.tenantConfiguration.tenantName }}</QItem
-                ></QToolbarTitle
-            >
+                    >Eplouribousse - {{ userStore.tenantConfiguration.tenantName }}
+                </BaseItem>
+            </QToolbarTitle>
             <LayoutNav />
             <QSpace />
             <BaseButton
@@ -35,12 +36,12 @@ const { dark } = useComposableQuasar()
             >
                 <QMenu
                     ><QList>
-                        <QItem
+                        <BaseItem
                             clickable
                             v-close-popup
                         >
                             <QItemSection>{{ t('settings.core') }}</QItemSection>
-                        </QItem>
+                        </BaseItem>
                         <QSeparator />
                         <QToggle
                             :model-value="userStore.userPreferences.darkMode"
