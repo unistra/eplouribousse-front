@@ -29,6 +29,11 @@ const { dark } = useComposableQuasar()
             <LayoutNav />
             <QSpace />
             <BaseButton
+                flat
+                dense
+                :label="t('navigation.login')"
+            ></BaseButton>
+            <BaseButton
                 icon="mdi-cog-outline"
                 flat
                 round

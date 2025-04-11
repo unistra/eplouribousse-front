@@ -7,7 +7,7 @@ defineProps<{
     round?: boolean
     dense?: boolean
     outline?: boolean
-    noCaps?: boolean
+    withCaps?: boolean
     type?: string
 }>()
 </script>
@@ -21,7 +21,7 @@ defineProps<{
         :round
         :dense
         :outline
-        :no-caps
+        :no-caps="withCaps ? false : true"
         :type
     >
         <slot />

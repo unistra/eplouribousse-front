@@ -2,6 +2,7 @@
     "homePage": "Accueil",
     "navigation": {
         "search": "Recherche",
+        "login": "Connexion",
         "supervision": "Supervision",
         "userGuide": "Manuel de l'utilisateur",
         "contactAdmin": "Contact du projet",

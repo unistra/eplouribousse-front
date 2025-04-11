@@ -25,7 +25,6 @@ function getRoutePath(routeName: string): string {
 
 <template>
     <BaseButton
-        noCaps
         v-for="(navLink, index) in navLinks"
         :key="index"
         :label="t(`navigation.${navLink}`)"
