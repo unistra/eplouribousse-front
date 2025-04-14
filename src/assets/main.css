@@ -1,10 +1,22 @@
 @import './base.css';
 
 #app {
-    max-width: 1280px;
     margin: 0 auto;
-    padding: 2rem;
     font-weight: normal;
+}
+
+.container-left {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    flex-direction: row;
+}
+
+.container-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 a,
@@ -21,7 +33,7 @@ a,
     }
 }
 
-@media (min-width: 1024px) {
+/* @media (max-width: 1024px) {
     body {
         display: flex;
         place-items: center;
@@ -32,4 +44,4 @@ a,
         grid-template-columns: 1fr 1fr;
         padding: 0 2rem;
     }
-}
+} */

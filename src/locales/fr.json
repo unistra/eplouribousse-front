@@ -1,0 +1,27 @@
+{
+    "homePage": "Accueil",
+    "navigation": {
+        "search": "Recherche",
+        "login": "Connexion",
+        "supervision": "Supervision",
+        "userGuide": "Manuel de l'utilisateur",
+        "contactAdmin": "Contact du projet",
+        "diffusionList": "Liste de diffusion",
+        "projectAdministration": "Administration du projet",
+        "generalAdministration": "Administration générale"
+    },
+    "settings": {
+        "core": "Paramètres",
+        "darkMode": "Thème sombre"
+    },
+    "contactAdmin": {
+        "title": "Contacter l'administrateur du site",
+        "object": "Objet",
+        "message": "Message",
+        "placeholder": "Donnez ici toutes le informations utiles",
+        "send": "Envoyer"
+    },
+    "forms": {
+        "fieldIsRequired": "Veuillez indiquer une valeur pour ce champ"
+    }
+}
