@@ -1,13 +1,16 @@
 export function useAuthentication() {
-    // penser à enlever les _ quand ces fonctions seront utilisées
-    async function _onLogin() {}
+    async function onLogin() {}
 
-    function _logout() {}
+    function logout() {}
 
-    const _tokenIsValid = (token: string | null) => {
-        if (!token) {
-            return false
-        }
-        return JSON.parse(window.atob(token.split('.')[1])).exp < Math.trunc(Date.now() / 1000)
+    const isTokenValid = (token: string | null): boolean => {
+        if (!token) return false
+        return !(JSON.parse(window.atob(token.split('.')[1])).exp < Math.trunc(Date.now() / 1000))
+    }
+
+    return {
+        onLogin,
+        logout,
+        isTokenValid,
     }
 }
