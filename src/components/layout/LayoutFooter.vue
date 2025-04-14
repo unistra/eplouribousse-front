@@ -6,16 +6,16 @@ const links: Link[] = []
 
 <template>
     <QFooter
-        elevated
         class="bg-grey-8 text-white container-center footer"
+        elevated
     >
         Footer en construction
         <a
             v-for="(link, index) in links"
             :key="index"
             :href="link.value"
-            >{{ link.label }}</a
-        >
+            >{{ link.label }}
+        </a>
     </QFooter>
 </template>
 

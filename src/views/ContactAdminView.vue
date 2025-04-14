@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import BaseButton from '@/components/base/BaseButton.vue'
 import BaseSelect from '@/components/base/BaseSelect.vue'
 import type { SelectOption } from '#/utils'
@@ -22,16 +22,16 @@ function submitEmailForm() {
 
 <template>
     <div class="container-center vertical_space">
-        <h4>{{ t('contactAdmin.title') }}</h4>
+        <h1>{{ t('contactAdmin.title') }}</h1>
     </div>
     <div class="row">
         <div class="col-4">
             <QForm @submit.prevent="submitEmailForm">
                 <BaseSelect
-                    outlined
                     :label="t('contactAdmin.object')"
-                    :options="objects_available"
                     :model="object"
+                    :options="objects_available"
+                    outlined
                     required
                     style="padding-bottom: 2rem"
                     @update:model="
@@ -41,14 +41,14 @@ function submitEmailForm() {
                     "
                 />
                 <BaseInput
-                    type="textarea"
+                    :hint="t('contactAdmin.message')"
+                    :label="t('contactAdmin.placeholder')"
+                    :model="subject"
                     counter
                     outlined
                     required
                     style="padding-bottom: 2rem"
-                    :hint="t('contactAdmin.message')"
-                    :model="subject"
-                    :label="t('contactAdmin.placeholder')"
+                    type="textarea"
                     @update:model="
                         (newSubject) => {
                             subject = newSubject as string
@@ -56,9 +56,9 @@ function submitEmailForm() {
                     "
                 />
                 <BaseButton
-                    type="submit"
-                    outline
                     :label="t('contactAdmin.send')"
+                    outline
+                    type="submit"
                 />
             </QForm>
         </div>

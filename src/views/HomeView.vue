@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { SelectOption } from '#/utils'
 import BaseButton from '@/components/base/BaseButton.vue'
 import { ref } from 'vue'
@@ -23,7 +23,6 @@ const _test = ref<string>()
     <div class="row">
         <div class="col-3">
             {{ t('test') }}
-            <br />
             <BaseButton
                 :label="t('homePage')"
                 outline

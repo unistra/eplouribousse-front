@@ -1,9 +1,9 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import BaseButton from '@/components/base/BaseButton.vue'
 import { useI18n } from 'vue-i18n'
 import router from '@/router'
 import routes from '@/router/routes'
-import BaseItem from '../base/BaseItem.vue'
+import BaseItem from '@/components/base/BaseItem.vue'
 
 defineProps<{ buttons?: boolean }>()
 
@@ -27,18 +27,19 @@ function getRoutePath(routeName: string): string {
 </script>
 
 <template>
-    <BaseButton
-        v-if="buttons"
-        v-for="(navLink, index) in navLinks"
-        :key="index"
-        :label="t(`navigation.${navLink}`)"
-        flat
-        dense
-        @click="router.push(getRoutePath(navLink))"
-    ></BaseButton>
+    <template v-if="buttons">
+        <BaseButton
+            v-for="(navLink, index) in navLinks"
+            :key="index"
+            :label="t(`navigation.${navLink}`)"
+            dense
+            flat
+            @click="router.push(getRoutePath(navLink))"
+        />
+    </template>
     <BaseItem
-        v-else-if="!buttons"
         v-for="(navLink, index_bis) in navLinks"
+        v-else-if="!buttons"
         :key="index_bis"
         clickable
         @click="router.push(getRoutePath(navLink))"

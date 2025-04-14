@@ -21,7 +21,7 @@ defineProps<{
         :round
         :dense
         :outline
-        :no-caps="withCaps ? false : true"
+        :no-caps="!withCaps"
         :type
     >
         <slot />

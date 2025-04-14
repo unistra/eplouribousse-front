@@ -17,22 +17,23 @@ const leftDrawerOpen = ref<boolean>(false)
 
 <template>
     <QHeader
-        elevated
         :class="userStore.tenantConfiguration.color + ' text-white'"
+        elevated
     >
         <QToolbar>
             <BaseButton
                 class="lt-md"
-                icon="mdi-menu"
-                flat
                 dense
+                flat
+                icon="mdi-menu"
                 @click="leftDrawerOpen = !leftDrawerOpen"
             />
-            <QToolbarTitle
-                ><BaseItem
+            <QToolbarTitle>
+                <BaseItem
                     clickable
                     @click="router.push({ name: 'Home' })"
-                    >Eplouribousse - {{ userStore.tenantConfiguration.tenantName }}
+                >
+                    Eplouribousse - {{ userStore.tenantConfiguration.tenantName }}
                 </BaseItem>
             </QToolbarTitle>
             <div class="gt-md">
@@ -40,35 +41,38 @@ const leftDrawerOpen = ref<boolean>(false)
             </div>
             <QSpace />
             <BaseButton
-                flat
-                dense
                 :label="t('navigation.login')"
-            ></BaseButton>
-            <BaseButton
-                icon="mdi-cog-outline"
-                flat
-                round
                 dense
+                flat
+            />
+            <BaseButton
+                dense
+                flat
+                icon="mdi-cog-outline"
+                round
             >
-                <QMenu
-                    ><QList>
+                <QMenu>
+                    <QList>
                         <BaseItem
-                            clickable
                             v-close-popup
+                            clickable
                         >
-                            <QItemSection>{{ t('settings.core') }}</QItemSection>
+                            <QItemSection>
+                                {{ t('settings.core') }}
+                            </QItemSection>
                         </BaseItem>
                         <QSeparator />
                         <QToggle
-                            :model-value="userStore.userPreferences.darkMode"
                             :label="t('settings.darkMode')"
+                            :model-value="userStore.userPreferences.darkMode"
                             @update:model-value="
                                 (newDarkMode) => {
                                     ;(userStore.userPreferences.darkMode = newDarkMode), dark.set(newDarkMode)
                                 }
                             "
-                        ></QToggle> </QList
-                ></QMenu>
+                        />
+                    </QList>
+                </QMenu>
             </BaseButton>
         </QToolbar>
     </QHeader>

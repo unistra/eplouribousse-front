@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
+import type { QInput } from 'quasar'
 
 const { t } = useI18n()
 
@@ -8,7 +9,7 @@ defineProps<{
     model: string | number | undefined
     required?: boolean
     hint?: string
-    type?: 'text' | 'textarea' | 'number' | 'date'
+    type?: QInput['type']
     readonly?: boolean
     disable?: boolean
     clearable?: boolean
@@ -26,19 +27,20 @@ const emit = defineEmits<{
 
 <template>
     <QInput
+        :clearable
+        :counter
+        :disable
+        :hint="hint ?? ''"
         :label
         :model-value="model"
-        :readonly
-        :disable
-        :clearable
         :outlined
-        :counter
-        :hint="hint ?? ''"
-        :style="`width: ${width ? width : '100%'}`"
+        :readonly
         :rules="required ? [(val) => !!val || t('forms.fieldIsRequired')] : []"
+        :style="width ?? '100%'"
         :type="type ?? 'text'"
         @update:model-value="emit('update:model', $event)"
-        ><template
+    >
+        <template
             v-if="icon"
             #before
         >

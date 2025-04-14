@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import router from '@/router'
 
 defineProps<{
@@ -13,10 +13,11 @@ defineProps<{
 <template>
     <QItem
         :clickable
-        :inset-level
-        :disable
         :dense
-        @click="clickable ?? router.push({ name: to ? to : '' })"
-        ><slot
-    /></QItem>
+        :disable
+        :inset-level
+        @click="clickable ?? router.push({ name: to ?? 'Home' })"
+    >
+        <slot />
+    </QItem>
 </template>
