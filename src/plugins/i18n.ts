@@ -1,11 +1,16 @@
 import { createI18n } from 'vue-i18n'
 import fr from '@/locales/fr.json'
 
-const appLocale = import.meta.env.VITE_I18N_LOCALE
+const appLocale = import.meta.env.VITE_APP_I18N_LOCALE
+
+const locale =
+    import.meta.env.NODE_ENV === 'test'
+        ? appLocale
+        : (localStorage.getItem('eplLocale') ?? navigator.language.split('-')[0] ?? appLocale)
 
 export default createI18n({
     legacy: false,
-    locale: appLocale,
+    locale,
     fallbackLocale: appLocale,
     messages: {
         fr,
