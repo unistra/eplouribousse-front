@@ -21,6 +21,16 @@ const routes: RouteRecordRaw[] = [
             unistraCasAuthentication: true,
         },
     },
+    {
+        path: '/login',
+        name: 'login',
+        component: () => import('@/views/LoginView.vue'),
+        meta: {
+            title: 'Login',
+            hiddenInNav: true,
+            unistraCasAuthentication: true,
+        },
+    },
 ]
 
 export default routes
