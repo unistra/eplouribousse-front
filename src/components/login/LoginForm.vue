@@ -30,24 +30,19 @@ const login = async () => {
 
         await router.push({ path: '/' })
     } catch (e) {
-        await new Promise<void>((resolve) => {
-            setTimeout(() => {
-                password.value = ''
+        password.value = ''
 
-                if (e instanceof AxiosError && e.response?.status === 401) {
-                    notify({
-                        type: 'negative',
-                        message: t('forms.login.credentialsError'),
-                    })
-                } else {
-                    notify({
-                        type: 'negative',
-                        message: t('errors.unknown'),
-                    })
-                }
-                resolve()
-            }, 2000)
-        })
+        if (e instanceof AxiosError && e.response?.status === 401) {
+            notify({
+                type: 'negative',
+                message: t('forms.login.credentialsError'),
+            })
+        } else {
+            notify({
+                type: 'negative',
+                message: t('errors.unknown'),
+            })
+        }
     } finally {
         isLoading.value = false
     }
