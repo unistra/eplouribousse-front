@@ -15,7 +15,7 @@ defineProps<{
 
 <template>
     <QBtn
-        :loading="loading"
+        :loading
         :label
         :icon
         :disable
