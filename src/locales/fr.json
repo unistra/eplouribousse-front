@@ -22,6 +22,16 @@
         "send": "Envoyer"
     },
     "forms": {
-        "fieldIsRequired": "Veuillez indiquer une valeur pour ce champ"
+        "fieldIsRequired": "Ce champ est requis",
+        "login": {
+            "email": "Adresse email",
+            "password": "Mot de passe",
+            "submit": "Se connecter",
+            "forgotPassword": "Mot de passe oublié ?",
+            "credentialsError": "Identifiants incorrects"
+        }
+    },
+    "errors": {
+        "unknown": "Une erreur est survenue"
     }
 }
