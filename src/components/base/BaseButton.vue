@@ -9,11 +9,13 @@ defineProps<{
     outline?: boolean
     withCaps?: boolean
     type?: string
+    loading?: boolean
 }>()
 </script>
 
 <template>
     <QBtn
+        :loading="loading"
         :label
         :icon
         :disable

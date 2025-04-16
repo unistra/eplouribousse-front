@@ -6,7 +6,7 @@ const { t } = useI18n()
 
 defineProps<{
     label: string
-    model: string | number | undefined
+    modelValue: string | number | undefined
     required?: boolean
     hint?: string
     type?: QInput['type']
@@ -21,7 +21,7 @@ defineProps<{
 }>()
 
 const emit = defineEmits<{
-    (e: 'update:model', value: string | number | null): void
+    (e: 'update:model-value', value: string | number | null): void
 }>()
 </script>
 
@@ -32,13 +32,13 @@ const emit = defineEmits<{
         :disable
         :hint="hint ?? ''"
         :label
-        :model-value="model"
+        :model-value="modelValue"
         :outlined
         :readonly
         :rules="required ? [(val) => !!val || t('forms.fieldIsRequired')] : []"
         :style="width ?? '100%'"
         :type="type ?? 'text'"
-        @update:model-value="emit('update:model', $event)"
+        @update:model-value="emit('update:model-value', $event)"
     >
         <template
             v-if="icon"

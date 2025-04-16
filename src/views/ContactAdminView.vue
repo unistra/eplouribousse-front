@@ -29,31 +29,21 @@ function submitEmailForm() {
             <QForm @submit.prevent="submitEmailForm">
                 <BaseSelect
                     :label="t('contactAdmin.object')"
-                    :model="object"
+                    v-model="object"
                     :options="objects_available"
                     outlined
                     required
                     style="padding-bottom: 2rem"
-                    @update:model="
-                        (newObject) => {
-                            object = newObject as string
-                        }
-                    "
                 />
                 <BaseInput
                     :hint="t('contactAdmin.message')"
                     :label="t('contactAdmin.placeholder')"
-                    :model="subject"
+                    v-model="subject"
                     counter
                     outlined
                     required
                     style="padding-bottom: 2rem"
                     type="textarea"
-                    @update:model="
-                        (newSubject) => {
-                            subject = newSubject as string
-                        }
-                    "
                 />
                 <BaseButton
                     :label="t('contactAdmin.send')"
