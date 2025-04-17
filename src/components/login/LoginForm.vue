@@ -20,13 +20,13 @@ const login = async () => {
     isLoading.value = true
 
     try {
-        const response = await axiosI.post<{ refresh: string; access: string }>('/api/token/', {
+        const response = await axiosI.post<{ refresh: string; access: string }>('/token/', {
             username: email.value,
             password: password.value,
         })
 
-        localStorage.setItem('JWT__access__token', JSON.stringify(response.data.access))
-        localStorage.setItem('JWT__refresh__token', JSON.stringify(response.data.refresh))
+        localStorage.setItem('JWT__access__token', response.data.access)
+        localStorage.setItem('JWT__refresh__token', response.data.refresh)
 
         await router.push({ path: '/' })
     } catch (e) {

@@ -49,11 +49,19 @@ const changePassword = async () => {
     isLoading.value = true
 
     try {
-        await axiosI.patch('/api/change-password/', {
-            oldPassword: oldPassword.value,
-            newPassword: newPassword.value,
-            confirmPassword: confirmPassword.value,
-        })
+        await axiosI.patch(
+            '/user/change-password/',
+            {
+                oldPassword: oldPassword.value,
+                newPassword: newPassword.value,
+                confirmPassword: confirmPassword.value,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('JWT__access__token')}`,
+                },
+            },
+        )
 
         notify({
             type: 'positive',
@@ -62,18 +70,16 @@ const changePassword = async () => {
 
         await router.push({ path: '/' })
     } catch (e) {
-        if (e instanceof AxiosError) {
-            if (e.response?.status === 400) {
-                notify({
-                    type: 'negative',
-                    message: t('forms.changePassword.oldPasswordIncorrect'),
-                })
-            } else {
-                notify({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
+        if (e instanceof AxiosError && e.response?.status === 400) {
+            notify({
+                type: 'negative',
+                message: t('forms.changePassword.oldPasswordIncorrect'),
+            })
+        } else {
+            notify({
+                type: 'negative',
+                message: t('errors.unknown'),
+            })
         }
     } finally {
         oldPassword.value = ''
