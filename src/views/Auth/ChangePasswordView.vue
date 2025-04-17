@@ -49,9 +49,10 @@ const changePassword = async () => {
     isLoading.value = true
 
     try {
-        await axiosI.post('/api/change-password/', {
-            old_password: oldPassword.value,
-            new_password: newPassword.value,
+        await axiosI.patch('/api/change-password/', {
+            oldPassword: oldPassword.value,
+            newPassword: newPassword.value,
+            confirmPassword: confirmPassword.value,
         })
 
         notify({
