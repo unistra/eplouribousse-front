@@ -27,6 +27,8 @@
         "login": {
             "email": "Adresse email",
             "password": "Mot de passe",
+            "showPassword": "Afficher le mot de passe",
+            "hidePassword": "Masquer le mot de passe",
             "submit": "Se connecter",
             "forgotPassword": "Mot de passe oublié ?",
             "credentialsError": "Identifiants incorrects"

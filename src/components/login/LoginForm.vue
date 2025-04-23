@@ -1,44 +1,18 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { ref } from 'vue'
-import axiosI from '@/plugins/axios.ts'
-import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
-import { useRouter } from 'vue-router'
-import { AxiosError } from 'axios'
-import { useAuthentication } from '@/composables/useAuthentication'
+import { useLoginForm } from './useLoginForm'
 
 const { t } = useI18n()
-const { notify } = useComposableQuasar()
-const { login } = useAuthentication()
-const router = useRouter()
-
-const email = ref<string>('')
-const password = ref<string>('')
-const isLoading = ref<boolean>(false)
-
-async function onLogin() {
-    isLoading.value = true
-    try {
-        await login(email.value, password.value)
-        await router.push({ path: '/' })
-    } catch (e) {
-        password.value = ''
-
-        if (e instanceof AxiosError && e.response?.status === 401) {
-            notify({
-                type: 'negative',
-                message: t('forms.login.credentialsError'),
-            })
-        } else {
-            notify({
-                type: 'negative',
-                message: t('errors.unknown'),
-            })
-        }
-    } finally {
-        isLoading.value = false
-    }
-}
+const {
+    email,
+    password,
+    isLoading,
+    icon,
+    passwordVisibility,
+    passwordVisibilityLabel,
+    updatePasswordVisibility,
+    onLogin,
+} = useLoginForm()
 </script>
 
 <template>
@@ -46,17 +20,31 @@ async function onLogin() {
         <QInput
             :label="t('forms.login.email')"
             :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
-            v-model="email"
             reactive-rules
+            v-model="email"
             type="email"
             autofocus
         />
         <QInput
             :label="t('forms.login.password')"
+            :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
+            :type="passwordVisibility"
+            reactive-rules
             v-model="password"
-            type="password"
-            required
-        />
+            ><template #append>
+                <QBtn
+                    flat
+                    dense
+                    rounded
+                    :icon="icon"
+                    @click="updatePasswordVisibility"
+                >
+                    <QTooltip>
+                        {{ t('forms.login.' + passwordVisibilityLabel) }}
+                    </QTooltip>
+                </QBtn>
+            </template>
+        </QInput>
         <QBtn
             :loading="isLoading"
             no-caps
