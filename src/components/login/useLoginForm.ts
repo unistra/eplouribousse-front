@@ -1,12 +1,12 @@
-import i18n from '@/plugins/i18n'
 import { ref } from 'vue'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useRouter } from 'vue-router'
 import { AxiosError } from 'axios'
 import { useAuthentication } from '@/composables/useAuthentication'
+import { useI18n } from 'vue-i18n'
 
 export function useLoginForm() {
-    const { t } = i18n.global
+    const { t } = useI18n()
     const { notify } = useComposableQuasar()
     const { login } = useAuthentication()
     const router = useRouter()

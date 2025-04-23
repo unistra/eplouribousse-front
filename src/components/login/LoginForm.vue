@@ -16,19 +16,21 @@ const {
 </script>
 
 <template>
-    <QForm @submit.prevent="onLogin">
+    <QForm @submit.prevent="console.log('test')">
         <QInput
             :label="t('forms.login.email')"
             :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
             reactive-rules
             v-model="email"
             type="email"
+            data-testid="email-input"
             autofocus
         />
         <QInput
             :label="t('forms.login.password')"
             :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
             :type="passwordVisibility"
+            data-testid="password-input"
             reactive-rules
             v-model="password"
             ><template #append>
@@ -36,6 +38,7 @@ const {
                     flat
                     dense
                     rounded
+                    data-testid="visibility-button"
                     :icon="icon"
                     @click="updatePasswordVisibility"
                 >
@@ -48,6 +51,7 @@ const {
         <QBtn
             :loading="isLoading"
             no-caps
+            data-testid="submit-button"
             type="submit"
             class="submit-btn"
         >
