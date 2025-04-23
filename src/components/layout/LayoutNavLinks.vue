@@ -1,9 +1,20 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import { useHeaderLinks } from '@/composables/useNavLinks'
+import { useUserStore } from '@/stores/userStore'
+import { useAuthentication } from '@/composables/useAuthentication'
+import { useRouter } from 'vue-router'
 
 const { t } = useI18n()
+const { logout } = useAuthentication()
+const userStore = useUserStore()
 const navLinks = useHeaderLinks()
+const router = useRouter()
+
+async function onLogout() {
+    logout()
+    await router.push({ path: '/' })
+}
 </script>
 
 <template>
@@ -16,5 +27,23 @@ const navLinks = useHeaderLinks()
         class="text-white"
     >
         <QItemSection>{{ t(`navigation.${navLink.label}`) }}</QItemSection>
+    </QItem>
+    <QItem
+        v-if="userStore.isAuth"
+        dense
+        class="text-white"
+        clickable
+        @click="onLogout"
+    >
+        <QItemSection>{{ t('navigation.logout') }}</QItemSection>
+    </QItem>
+    <QItem
+        v-else
+        dense
+        class="text-white"
+        clickable
+        to="/login"
+    >
+        <QItemSection>{{ t('navigation.login') }}</QItemSection>
     </QItem>
 </template>

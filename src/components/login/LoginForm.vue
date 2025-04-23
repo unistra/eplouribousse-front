@@ -5,27 +5,21 @@ import axiosI from '@/plugins/axios.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useRouter } from 'vue-router'
 import { AxiosError } from 'axios'
+import { useAuthentication } from '@/composables/useAuthentication'
 
 const { t } = useI18n()
-const router = useRouter()
 const { notify } = useComposableQuasar()
+const { login } = useAuthentication()
+const router = useRouter()
 
 const email = ref<string>('')
 const password = ref<string>('')
 const isLoading = ref<boolean>(false)
 
-const onLogin = async () => {
+async function onLogin() {
     isLoading.value = true
-
     try {
-        const response = await axiosI.post<{ refresh: string; access: string }>('/api/token/', {
-            username: email.value,
-            password: password.value,
-        })
-
-        localStorage.setItem('JWT__access__token', JSON.stringify(response.data.access))
-        localStorage.setItem('JWT__refresh__token', JSON.stringify(response.data.refresh))
-
+        await login(email.value, password.value)
         await router.push({ path: '/' })
     } catch (e) {
         password.value = ''

@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { useUsererStore } from '@/stores/userStore'
+import { useUserStore } from '@/stores/userStore'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 import LayoutMenu from './LayoutMenu.vue'
 import LayoutNavLinks from './LayoutNavLinks.vue'
 
 const { t } = useI18n()
-const userStore = useUsererStore()
+const userStore = useUserStore()
 const rightDrawerOpen = ref<boolean>(false)
 </script>
 

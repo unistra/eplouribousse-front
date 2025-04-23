@@ -26,7 +26,7 @@ const routes: RouteRecordRaw[] = [
         name: 'login',
         component: () => import('@/views/LoginView.vue'),
         meta: {
-            title: 'Login',
+            title: 'Connexion',
             hiddenInNav: true,
             unistraCasAuthentication: true,
         },

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
-import { useUsererStore } from '@/stores/userStore.ts'
+import { useUserStore } from '@/stores/userStore.ts'
 
 const { t } = useI18n()
 const { dark } = useComposableQuasar()
-const userStore = useUsererStore()
+const userStore = useUserStore()
 </script>
 
 <template>

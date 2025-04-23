@@ -3,6 +3,7 @@
     "navigation": {
         "search": "Recherche",
         "login": "Connexion",
+        "lougout": "Déconnexion",
         "supervision": "Supervision",
         "userGuide": "Manuel de l'utilisateur",
         "contactAdmin": "Contact du projet",
