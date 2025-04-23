@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import BaseInput from '@/components/base/BaseInput.vue'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
-import BaseButton from '@/components/base/BaseButton.vue'
 import axiosI from '@/plugins/axios.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useRouter } from 'vue-router'
@@ -12,11 +10,11 @@ const { t } = useI18n()
 const router = useRouter()
 const { notify } = useComposableQuasar()
 
-const email = ref('')
-const password = ref('')
-const isLoading = ref(false)
+const email = ref<string>('')
+const password = ref<string>('')
+const isLoading = ref<boolean>(false)
 
-const login = async () => {
+const onLogin = async () => {
     isLoading.value = true
 
     try {
@@ -50,27 +48,29 @@ const login = async () => {
 </script>
 
 <template>
-    <QForm @submit.prevent="login">
-        <BaseInput
-            v-model="email"
+    <QForm @submit.prevent="onLogin">
+        <QInput
             :label="t('forms.login.email')"
+            :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
+            v-model="email"
+            reactive-rules
             type="email"
-            required
             autofocus
         />
-        <BaseInput
-            v-model="password"
+        <QInput
             :label="t('forms.login.password')"
+            v-model="password"
             type="password"
             required
         />
-        <BaseButton
-            type="submit"
+        <QBtn
             :loading="isLoading"
+            no-caps
+            type="submit"
             class="submit-btn"
         >
             {{ t('forms.login.submit') }}
-        </BaseButton>
+        </QBtn>
     </QForm>
 </template>
 

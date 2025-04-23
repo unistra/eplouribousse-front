@@ -1,5 +1,5 @@
 export function useAuthentication() {
-    async function onLogin() {}
+    async function login() {}
 
     function logout() {}
 
@@ -9,7 +9,7 @@ export function useAuthentication() {
     }
 
     return {
-        onLogin,
+        login,
         logout,
         isTokenValid,
     }
