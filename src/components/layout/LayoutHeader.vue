@@ -33,7 +33,7 @@ const rightDrawerOpen = ref<boolean>(false)
                 flat
                 icon="mdi-menu"
                 @click="rightDrawerOpen = !rightDrawerOpen"
-                class="lt-md"
+                class="lt-lg"
             />
             <LayoutMenu />
         </QToolbar>

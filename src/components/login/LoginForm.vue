@@ -16,7 +16,7 @@ const {
 </script>
 
 <template>
-    <QForm @submit.prevent="console.log('test')">
+    <QForm @submit.prevent="onLogin">
         <QInput
             :label="t('forms.login.email')"
             :rules="[(val) => !!val || t('forms.fieldIsRequired')]"

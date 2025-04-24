@@ -9,7 +9,7 @@ const userStore = useUserStore()
 
 onMounted(() => {
     // for simulation purposes
-    if (window.location.href.includes('tenant1')) {
+    if (window.location.href.includes('t1-eplouribousse')) {
         userStore.tenantConfiguration = {
             color: 'bg-green-8',
             tenantName: 'Strasbourg',

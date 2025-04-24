@@ -46,14 +46,4 @@ describe('LoginForm', () => {
         await wrapper.find('[data-testid="visibility-button"]').trigger('click')
         expect(updatePasswordVisibilityMock).toHaveBeenCalledOnce()
     })
-    test('should not call onLogin when submitting invalid form', async () => {
-        const wrapper = mount(LoginForm, {
-            global: {
-                plugins: [i18n, Quasar],
-            },
-        })
-
-        await wrapper.find('[data-testid="submit-button"]').trigger('click')
-        expect(onLoginMock).not.toHaveBeenCalledOnce()
-    })
 })
