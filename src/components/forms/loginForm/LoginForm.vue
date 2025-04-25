@@ -1,18 +1,11 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useLoginForm } from './useLoginForm'
+import { useFormUtils } from '@/composables/useFormUtils'
 
 const { t } = useI18n()
-const {
-    email,
-    password,
-    isLoading,
-    icon,
-    passwordVisibility,
-    passwordVisibilityLabel,
-    updatePasswordVisibility,
-    onLogin,
-} = useLoginForm()
+const { icon, passwordVisibility, passwordVisibilityLabel, updatePasswordVisibility } = useFormUtils()
+const { email, password, isLoading, onLogin } = useLoginForm()
 </script>
 
 <template>

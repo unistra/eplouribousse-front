@@ -3,7 +3,7 @@ import { Quasar } from 'quasar'
 import { mount } from '@vue/test-utils'
 import type { I18n } from 'vue-i18n'
 import useI18nMock from '~/mocks/i18n'
-import LoginForm from '@/components/login/LoginForm.vue'
+import LoginForm from '@/components/forms/loginForm/LoginForm.vue'
 
 let i18n: I18n
 

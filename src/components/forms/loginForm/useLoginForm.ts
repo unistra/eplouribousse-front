@@ -14,21 +14,6 @@ export function useLoginForm() {
     const email = ref<string>('')
     const password = ref<string>('')
     const isLoading = ref<boolean>(false)
-    const icon = ref<string>('mdi-eye-off-outline')
-    const passwordVisibility = ref<'text' | 'password'>('password')
-    const passwordVisibilityLabel = ref<'showPassword' | 'hidePassword'>('showPassword')
-
-    function updatePasswordVisibility() {
-        if (passwordVisibility.value === 'text') {
-            passwordVisibility.value = 'password'
-            passwordVisibilityLabel.value = 'showPassword'
-            icon.value = 'mdi-eye-off-outline'
-        } else {
-            passwordVisibility.value = 'text'
-            passwordVisibilityLabel.value = 'hidePassword'
-            icon.value = 'mdi-eye-outline'
-        }
-    }
 
     async function onLogin() {
         isLoading.value = true
@@ -61,10 +46,6 @@ export function useLoginForm() {
         email,
         password,
         isLoading,
-        icon,
-        passwordVisibility,
-        passwordVisibilityLabel,
-        updatePasswordVisibility,
         onLogin,
     }
 }

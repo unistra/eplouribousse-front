@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { useChangePasswordForm } from '@/components/changePassword/useChangePasswordForm.ts'
+import { useFormUtils } from '@/composables/useFormUtils.ts'
+import { useChangePasswordForm } from './useChangePasswordForm.ts'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 const { changePassword, oldPassword, newPassword, confirmPassword, isLoading, isNewPasswordValid, doPasswordsMatch } =
     useChangePasswordForm()
+const { icon, passwordVisibility, passwordVisibilityLabel, updatePasswordVisibility } = useFormUtils()
 </script>
 
 <template>
@@ -14,15 +16,42 @@ const { changePassword, oldPassword, newPassword, confirmPassword, isLoading, is
             type="password"
             required
             autofocus
-        />
-
+            ><template #append>
+                <QBtn
+                    flat
+                    dense
+                    rounded
+                    data-testid="visibility-button"
+                    :icon="icon"
+                    @click="updatePasswordVisibility"
+                >
+                    <QTooltip>
+                        {{ t('forms.login.' + passwordVisibilityLabel) }}
+                    </QTooltip>
+                </QBtn>
+            </template>
+        </QInput>
         <QInput
             v-model="newPassword"
             :label="t('forms.changePassword.newPassword')"
             type="password"
             required
             :rules="[() => isNewPasswordValid || t('forms.changePassword.passwordRequirements')]"
-        />
+            ><template #append>
+                <QBtn
+                    flat
+                    dense
+                    rounded
+                    data-testid="visibility-button"
+                    :icon="icon"
+                    @click="updatePasswordVisibility"
+                >
+                    <QTooltip>
+                        {{ t('forms.login.' + passwordVisibilityLabel) }}
+                    </QTooltip>
+                </QBtn>
+            </template></QInput
+        >
 
         <QInput
             v-model="confirmPassword"
@@ -30,7 +59,21 @@ const { changePassword, oldPassword, newPassword, confirmPassword, isLoading, is
             type="password"
             required
             :rules="[() => doPasswordsMatch || t('forms.changePassword.passwordsDoNotMatch')]"
-        />
+            ><template #append>
+                <QBtn
+                    flat
+                    dense
+                    rounded
+                    data-testid="visibility-button"
+                    :icon="icon"
+                    @click="updatePasswordVisibility"
+                >
+                    <QTooltip>
+                        {{ t('forms.login.' + passwordVisibilityLabel) }}
+                    </QTooltip>
+                </QBtn>
+            </template></QInput
+        >
 
         <div class="password-requirements">
             <p>{{ t('forms.changePassword.passwordMustContain') }}:</p>
@@ -45,6 +88,7 @@ const { changePassword, oldPassword, newPassword, confirmPassword, isLoading, is
 
         <QBtn
             type="submit"
+            no-caps
             :loading="isLoading"
             class="submit-btn"
         >
