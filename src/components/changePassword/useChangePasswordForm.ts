@@ -16,6 +16,10 @@ export function useChangePasswordForm() {
     const isLoading = ref(false)
 
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/
+    // ⚠️ WARNING ⚠️ //
+    // Backend is actually using zxcvbn as validator
+    // This is not actually the case
+    // MAKE SURE to change your password with a strong enough one
 
     const isNewPasswordValid = computed(() => {
         if (!newPassword.value) return true // Don't show error if empty
