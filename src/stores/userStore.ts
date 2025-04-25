@@ -1,9 +1,12 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { TenantConfiguration } from '#/utils'
-import type { UserPreferences } from '#/user'
+import { type User, type UserPreferences } from '#/user'
 
-export const useUsererStore = defineStore('user', () => {
+export const useUserStore = defineStore('user', () => {
+    const user = ref<User>()
+    const isAuth = computed((): boolean => !!user.value)
+
     const tenantConfiguration = ref<TenantConfiguration>({
         color: 'bg-primary',
         tenantName: 'Strasbourg',
@@ -14,6 +17,8 @@ export const useUsererStore = defineStore('user', () => {
     })
 
     return {
+        user,
+        isAuth,
         tenantConfiguration,
         userPreferences,
     }
