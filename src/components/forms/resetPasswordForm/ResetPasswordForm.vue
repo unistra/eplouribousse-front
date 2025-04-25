@@ -1,42 +1,22 @@
 <script setup lang="ts">
 import { useFormUtils } from '@/composables/useFormUtils.ts'
-import { useChangePasswordForm } from './useChangePasswordForm.ts'
 import { useI18n } from 'vue-i18n'
+import { useResetPasswordForm } from './useResetPasswordForm'
 const { t } = useI18n()
-const { changePassword, oldPassword, newPassword, confirmPassword, isLoading, isNewPasswordValid, doPasswordsMatch } =
-    useChangePasswordForm()
+
+const { newPassword, confirmPassword, isLoading, isNewPasswordValid, doPasswordsMatch, resetPassword } =
+    useResetPasswordForm()
 const { icon, passwordVisibility, passwordVisibilityLabel, updatePasswordVisibility } = useFormUtils()
 </script>
 
 <template>
-    <QForm @submit.prevent="changePassword">
-        <QInput
-            v-model="oldPassword"
-            :label="t('forms.changePassword.oldPassword')"
-            :type="passwordVisibility"
-            required
-            autofocus
-            ><template #append>
-                <QBtn
-                    flat
-                    dense
-                    rounded
-                    data-testid="visibility-button"
-                    :icon="icon"
-                    @click="updatePasswordVisibility"
-                >
-                    <QTooltip>
-                        {{ t('forms.login.' + passwordVisibilityLabel) }}
-                    </QTooltip>
-                </QBtn>
-            </template>
-        </QInput>
+    <QForm @submit.prevent="resetPassword">
         <QInput
             v-model="newPassword"
-            :label="t('forms.changePassword.newPassword')"
+            :label="t('forms.resetPassword.newPassword')"
             :type="passwordVisibility"
             required
-            :rules="[() => isNewPasswordValid || t('forms.changePassword.passwordRequirements')]"
+            :rules="[() => isNewPasswordValid || t('forms.resetPassword.passwordRequirements')]"
             ><template #append>
                 <QBtn
                     flat
@@ -55,10 +35,10 @@ const { icon, passwordVisibility, passwordVisibilityLabel, updatePasswordVisibil
 
         <QInput
             v-model="confirmPassword"
-            :label="t('forms.changePassword.confirmPassword')"
+            :label="t('forms.resetPassword.confirmPassword')"
             :type="passwordVisibility"
             required
-            :rules="[() => doPasswordsMatch || t('forms.changePassword.passwordsDoNotMatch')]"
+            :rules="[() => doPasswordsMatch || t('forms.resetPassword.passwordsDoNotMatch')]"
             ><template #append>
                 <QBtn
                     flat
@@ -76,13 +56,13 @@ const { icon, passwordVisibility, passwordVisibilityLabel, updatePasswordVisibil
         >
 
         <div class="password-requirements">
-            <p>{{ t('forms.changePassword.passwordMustContain') }}:</p>
+            <p>{{ t('forms.resetPassword.passwordMustContain') }}:</p>
             <ul>
-                <li>{{ t('forms.changePassword.minLength') }}</li>
-                <li>{{ t('forms.changePassword.upperCase') }}</li>
-                <li>{{ t('forms.changePassword.lowerCase') }}</li>
-                <li>{{ t('forms.changePassword.digit') }}</li>
-                <li>{{ t('forms.changePassword.specialChar') }}</li>
+                <li>{{ t('forms.resetPassword.minLength') }}</li>
+                <li>{{ t('forms.resetPassword.upperCase') }}</li>
+                <li>{{ t('forms.resetPassword.lowerCase') }}</li>
+                <li>{{ t('forms.resetPassword.digit') }}</li>
+                <li>{{ t('forms.resetPassword.specialChar') }}</li>
             </ul>
         </div>
 
@@ -92,7 +72,7 @@ const { icon, passwordVisibility, passwordVisibilityLabel, updatePasswordVisibil
             :loading="isLoading"
             class="submit-btn"
         >
-            {{ t('forms.changePassword.submit') }}
+            {{ t('forms.resetPassword.submit') }}
         </QBtn>
     </QForm>
 </template>

@@ -36,7 +36,17 @@ const routes: RouteRecordRaw[] = [
         name: 'changePassword',
         component: () => import('@/views/Auth/ChangePasswordView.vue'),
         meta: {
-            title: 'Change Password',
+            title: 'Changer le mot de passe',
+            hiddenInNav: true,
+            unistraCasAuthentication: true,
+        },
+    },
+    {
+        path: '/reset-password',
+        name: 'ResetPassword',
+        component: () => import('@/views/Auth/ResetPasswordView.vue'),
+        meta: {
+            title: 'Réinitialiser le mot de passe',
             hiddenInNav: true,
             unistraCasAuthentication: true,
         },

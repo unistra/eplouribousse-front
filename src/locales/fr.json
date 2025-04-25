@@ -33,6 +33,21 @@
             "forgotPassword": "Mot de passe oublié ?",
             "credentialsError": "Identifiants incorrects"
         },
+        "resetPassword": {
+            "title": "Réinitialiser le mot de passe",
+            "newPassword": "Nouveau mot de passe",
+            "confirmPassword": "Confirmer le nouveau mot de passe",
+            "submit": "Changer mon mot de passe",
+            "success": "Votre mot de passe a été réinitialisé avec succès",
+            "passwordRequirements": "Le mot de passe ne respecte pas les critères de sécurité",
+            "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+            "passwordMustContain": "Le mot de passe doit contenir",
+            "minLength": "Au moins 8 caractères",
+            "upperCase": "Une lettre majuscule",
+            "lowerCase": "Une lettre minuscule",
+            "digit": "Un chiffre",
+            "specialChar": "Un caractère spécial"
+        },
         "changePassword": {
             "title": "Changer de mot de passe",
             "oldPassword": "Ancien mot de passe",
