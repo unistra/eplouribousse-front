@@ -24,10 +24,20 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/login',
         name: 'Login',
-        component: () => import('@/views/LoginView.vue'),
+        component: () => import('@/views/Auth/LoginView.vue'),
         meta: {
             title: 'Connexion',
             hiddenInNav: false,
+            unistraCasAuthentication: true,
+        },
+    },
+    {
+        path: '/change-password',
+        name: 'changePassword',
+        component: () => import('@/views/Auth/ChangePasswordView.vue'),
+        meta: {
+            title: 'Change Password',
+            hiddenInNav: true,
             unistraCasAuthentication: true,
         },
     },
