@@ -13,21 +13,21 @@ const routes: RouteRecordRaw[] = [
     },
     {
         path: '/contact-admin',
-        name: 'contactAdmin',
+        name: 'ContactAdmin',
         component: () => import('@/views/ContactAdminView.vue'),
         meta: {
             title: 'Contact',
-            hiddenInNav: true,
+            hiddenInNav: false,
             unistraCasAuthentication: true,
         },
     },
     {
         path: '/login',
-        name: 'login',
+        name: 'Login',
         component: () => import('@/views/Auth/LoginView.vue'),
         meta: {
-            title: 'Login',
-            hiddenInNav: true,
+            title: 'Connexion',
+            hiddenInNav: false,
             unistraCasAuthentication: true,
         },
     },

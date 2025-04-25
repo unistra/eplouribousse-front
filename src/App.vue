@@ -3,13 +3,13 @@ import { onMounted } from 'vue'
 import { RouterView } from 'vue-router'
 import LayoutFooter from './components/layout/LayoutFooter.vue'
 import LayoutHeader from './components/layout/LayoutHeader.vue'
-import { useUsererStore } from './stores/userStore'
+import { useUserStore } from './stores/userStore'
 
-const userStore = useUsererStore()
+const userStore = useUserStore()
 
 onMounted(() => {
     // for simulation purposes
-    if (window.location.href.includes('tenant1')) {
+    if (window.location.href.includes('t1-eplouribousse')) {
         userStore.tenantConfiguration = {
             color: 'bg-green-8',
             tenantName: 'Strasbourg',

@@ -1,10 +1,7 @@
 <script lang="ts" setup>
-import BaseButton from '@/components/base/BaseButton.vue'
-import BaseSelect from '@/components/base/BaseSelect.vue'
 import type { SelectOption } from '#/utils'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import BaseInput from '@/components/base/BaseInput.vue'
 
 const { t } = useI18n()
 
@@ -27,25 +24,28 @@ function submitEmailForm() {
     <div class="row">
         <div class="col-4">
             <QForm @submit.prevent="submitEmailForm">
-                <BaseSelect
+                <QSelect
                     :label="t('contactAdmin.object')"
-                    v-model="object"
                     :options="objects_available"
+                    emit-value
+                    map-options
+                    v-model="object"
                     outlined
                     required
                     style="padding-bottom: 2rem"
                 />
-                <BaseInput
+                <QInput
                     :hint="t('contactAdmin.message')"
                     :label="t('contactAdmin.placeholder')"
+                    :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
                     v-model="subject"
+                    reactive-rules
                     counter
                     outlined
-                    required
                     style="padding-bottom: 2rem"
                     type="textarea"
                 />
-                <BaseButton
+                <QBtn
                     :label="t('contactAdmin.send')"
                     outline
                     type="submit"
