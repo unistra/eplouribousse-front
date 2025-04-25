@@ -1,16 +1,9 @@
 <script setup lang="ts">
 import { useChangePasswordForm } from '@/components/changePassword/useChangePasswordForm.ts'
-
-const {
-    changePassword,
-    oldPassword,
-    newPassword,
-    confirmPassword,
-    isLoading,
-    isNewPasswordValid,
-    doPasswordsMatch,
-    t,
-} = useChangePasswordForm()
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
+const { changePassword, oldPassword, newPassword, confirmPassword, isLoading, isNewPasswordValid, doPasswordsMatch } =
+    useChangePasswordForm()
 </script>
 
 <template>

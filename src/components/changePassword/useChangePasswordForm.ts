@@ -94,7 +94,6 @@ export function useChangePasswordForm() {
     }
 
     return {
-        t,
         oldPassword,
         newPassword,
         confirmPassword,
