@@ -4,9 +4,10 @@ import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 import LayoutMenu from './LayoutMenu.vue'
 import LayoutNavLinks from './LayoutNavLinks.vue'
+import { storeToRefs } from 'pinia'
 
-const { t } = useI18n()
 const userStore = useUserStore()
+const { tenantConfiguration } = storeToRefs(userStore)
 const rightDrawerOpen = ref<boolean>(false)
 </script>
 
@@ -22,7 +23,7 @@ const rightDrawerOpen = ref<boolean>(false)
                     to="/"
                     class="text-white"
                 >
-                    Eplouribousse - {{ userStore.tenantConfiguration.tenantName }}
+                    Eplouribousse - {{ tenantConfiguration.tenantName }}
                 </QItem>
             </QToolbarTitle>
             <div class="navbar-links gt-md">
@@ -39,7 +40,7 @@ const rightDrawerOpen = ref<boolean>(false)
         </QToolbar>
     </QHeader>
     <QDrawer
-        :class="userStore.tenantConfiguration.color"
+        :class="tenantConfiguration.color"
         v-model="rightDrawerOpen"
         bordered
         side="right"

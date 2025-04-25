@@ -2,19 +2,19 @@ import type { NavLink } from '#/utils.ts'
 
 export const useHeaderLinks: () => NavLink[] = () => {
     return [
-        { label: 'search', to: '/' },
-        { label: 'supervision', to: '/' },
-        { label: 'contactAdmin', to: '/contact-admin' },
-        { label: 'diffusionList', to: '/' },
-        { label: 'projectAdministration', to: '/' },
-        { label: 'generalAdministration', to: '/' },
-        { label: 'userGuide', to: '/' },
+        { label: 'search', to: { name: 'Home' } },
+        { label: 'supervision', to: { name: 'Home' } },
+        { label: 'contactAdmin', to: { name: 'ContactAdmin' } },
+        { label: 'diffusionList', to: { name: 'Home' } },
+        { label: 'projectAdministration', to: { name: 'Home' } },
+        { label: 'generalAdministration', to: { name: 'Home' } },
+        { label: 'userGuide', to: { name: 'Home' } },
     ]
 }
 
 export const useAuthLinks: () => NavLink[] = () => {
     return [
-        { label: 'login', to: '/login' },
-        { label: 'logout', to: '/logout' },
+        { label: 'login', to: { name: 'Login' } },
+        { label: 'logout', to: { name: 'Logout' } },
     ]
 }

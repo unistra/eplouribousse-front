@@ -10,7 +10,7 @@ export interface TenantConfiguration {
 
 export interface NavLink {
     label: string
-    to: string
+    to: { name: string }
     permissions?: unknown[]
 }
 

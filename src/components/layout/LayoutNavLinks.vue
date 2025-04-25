@@ -13,7 +13,7 @@ const router = useRouter()
 
 async function onLogout() {
     logout()
-    await router.push({ path: '/' })
+    await router.push({ name: 'Home' })
 }
 </script>
 

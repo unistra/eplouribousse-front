@@ -34,7 +34,7 @@ export function useLoginForm() {
         isLoading.value = true
         try {
             await login(email.value, password.value)
-            await router.push({ path: '/' })
+            await router.push({ name: 'Home' })
         } catch (e) {
             password.value = ''
 

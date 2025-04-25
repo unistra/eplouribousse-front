@@ -2,10 +2,12 @@
 import { useI18n } from 'vue-i18n'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useUserStore } from '@/stores/userStore.ts'
+import { storeToRefs } from 'pinia'
 
 const { t } = useI18n()
 const { dark } = useComposableQuasar()
 const userStore = useUserStore()
+const { tenantConfiguration, userPreferences } = storeToRefs(userStore)
 </script>
 
 <template>
@@ -15,7 +17,7 @@ const userStore = useUserStore()
         icon="mdi-account-circle-outline"
         round
     >
-        <QMenu :class="userStore.tenantConfiguration.color">
+        <QMenu :class="tenantConfiguration.color">
             <QList>
                 <QItem
                     v-close-popup
@@ -31,10 +33,10 @@ const userStore = useUserStore()
                 <QToggle
                     class="text-white"
                     :label="t('settings.darkMode')"
-                    :model-value="userStore.userPreferences.darkMode"
+                    :model-value="userPreferences.darkMode"
                     @update:model-value="
                         (newDarkMode) => {
-                            ;(userStore.userPreferences.darkMode = newDarkMode), dark.set(newDarkMode)
+                            ;(userPreferences.darkMode = newDarkMode), dark.set(newDarkMode)
                         }
                     "
                 />
