@@ -46,7 +46,11 @@
             "upperCase": "Une lettre majuscule",
             "lowerCase": "Une lettre minuscule",
             "digit": "Un chiffre",
-            "specialChar": "Un caractère spécial"
+            "specialChar": "Un caractère spécial",
+            "sendEmail": "Envoyer l'email",
+            "emailSent": "Email envoyé avec succès",
+            "emailNotSent": "Problème lors de l'envoi de l'email",
+            "incorrectEmail": "Adresse email invalide"
         },
         "changePassword": {
             "title": "Changer de mot de passe",

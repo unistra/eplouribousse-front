@@ -11,45 +11,45 @@ import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
 // More info at https://github.com/vuejs/eslint-config-typescript/#advanced-setup
 
 export default defineConfigWithVueTs(
-  {
-    name: 'app/files-to-lint',
-    files: ['**/*.{ts,mts,tsx,vue}'],
-  },
-
-  globalIgnores(['**/dist/**', '**/dist-ssr/**', '**/coverage/**']),
-
-  pluginVue.configs['flat/essential'],
-  vueTsConfigs.recommended,
-
-  {
-    ...pluginVitest.configs.recommended,
-    files: ['src/**/__tests__/*'],
-  },
-  ...pluginOxlint.configs['flat/recommended'],
-  skipFormatting,
-
-  {
-    rules: {
-      'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-      'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-      '@typescript-eslint/no-unused-expressions': [
-        'error',
-        {
-          allowShortCircuit: true,
-          allowTernary: true,
-          allowTaggedTemplates: true,
-        },
-      ],
-      '@typescript-eslint/ban-ts-comment': ['error', { 'ts-ignore': 'allow-with-description' }],
-      '@typescript-eslint/no-unused-vars': [
-        'warn',
-        {
-          ignoreRestSiblings: true,
-          varsIgnorePattern: '^_',
-          argsIgnorePattern: '^_',
-          caughtErrors: 'none',
-        },
-      ],
+    {
+        name: 'app/files-to-lint',
+        files: ['**/*.{ts,mts,tsx,vue}'],
     },
-  },
+
+    globalIgnores(['**/dist/**', '**/dist-ssr/**', '**/coverage/**']),
+
+    pluginVue.configs['flat/essential'],
+    vueTsConfigs.recommended,
+
+    {
+        ...pluginVitest.configs.recommended,
+        files: ['src/**/__tests__/*'],
+    },
+    ...pluginOxlint.configs['flat/recommended'],
+    skipFormatting,
+
+    {
+        rules: {
+            'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+            'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+            '@typescript-eslint/no-unused-expressions': [
+                'error',
+                {
+                    allowShortCircuit: true,
+                    allowTernary: true,
+                    allowTaggedTemplates: true,
+                },
+            ],
+            '@typescript-eslint/ban-ts-comment': ['error', { 'ts-ignore': 'allow-with-description' }],
+            '@typescript-eslint/no-unused-vars': [
+                'warn',
+                {
+                    ignoreRestSiblings: true,
+                    varsIgnorePattern: '^_',
+                    argsIgnorePattern: '^_',
+                    caughtErrors: 'none',
+                },
+            ],
+        },
+    },
 )

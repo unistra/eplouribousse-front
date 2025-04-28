@@ -51,6 +51,16 @@ const routes: RouteRecordRaw[] = [
             unistraCasAuthentication: true,
         },
     },
+    {
+        path: '/send-email',
+        name: 'SendEmail',
+        component: () => import('@/views/Auth/SendEmailView.vue'),
+        meta: {
+            title: 'Réinitialiser le mot de passe',
+            hiddenInNav: true,
+            unistraCasAuthentication: true,
+        },
+    },
 ]
 
 export default routes

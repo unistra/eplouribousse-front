@@ -3,7 +3,6 @@ import { ref, computed } from 'vue'
 import axiosI from '@/plugins/axios.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useRouter } from 'vue-router'
-import { AxiosError } from 'axios'
 
 export function useResetPasswordForm() {
     const { t } = useI18n()
@@ -15,18 +14,14 @@ export function useResetPasswordForm() {
     const isLoading = ref(false)
 
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/
-    // ⚠️ WARNING ⚠️ //
-    // Backend is actually using zxcvbn as validator
-    // This is not actually the case
-    // MAKE SURE to change your password with a strong enough one
 
     const isNewPasswordValid = computed(() => {
-        if (!newPassword.value) return true // Don't show error if empty
+        if (!newPassword.value) return true
         return passwordRegex.test(newPassword.value)
     })
 
     const doPasswordsMatch = computed(() => {
-        if (!confirmPassword.value) return true // Don't show error if empty
+        if (!confirmPassword.value) return true
         return newPassword.value === confirmPassword.value
     })
 
@@ -34,7 +29,7 @@ export function useResetPasswordForm() {
         if (!isNewPasswordValid.value) {
             notify({
                 type: 'negative',
-                message: t('forms.changePassword.passwordRequirements'),
+                message: t('forms.resetPassword.passwordRequirements'),
             })
             return
         }
@@ -42,7 +37,7 @@ export function useResetPasswordForm() {
         if (!doPasswordsMatch.value) {
             notify({
                 type: 'negative',
-                message: t('forms.changePassword.passwordsDoNotMatch'),
+                message: t('forms.resetPassword.passwordsDoNotMatch'),
             })
             return
         }
@@ -65,22 +60,16 @@ export function useResetPasswordForm() {
 
             notify({
                 type: 'positive',
-                message: t('forms.changePassword.success'),
+                message: t('forms.resetPassword.success'),
             })
 
             await router.push({ path: '/' })
-        } catch (e) {
-            if (e instanceof AxiosError && e.response?.status === 400) {
-                notify({
-                    type: 'negative',
-                    message: t('forms.changePassword.oldPasswordIncorrect'),
-                })
-            } else {
-                notify({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
+        } catch (_e) {
+            console.error(_e)
+            notify({
+                type: 'negative',
+                message: t('errors.unknown'),
+            })
         } finally {
             newPassword.value = ''
             confirmPassword.value = ''
