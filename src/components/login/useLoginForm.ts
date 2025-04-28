@@ -34,7 +34,10 @@ export function useLoginForm() {
         isLoading.value = true
         try {
             await login(email.value, password.value)
-            await router.push({ name: 'Home' })
+
+            const route = router.currentRoute.value
+            const redirectPath = route.query.redirect ? (route.query.redirect as string) : { name: 'Home' }
+            await router.push(redirectPath)
         } catch (e) {
             password.value = ''
 

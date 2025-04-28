@@ -51,7 +51,6 @@ export function useChangePasswordForm() {
         isLoading.value = true
 
         try {
-            console.log(oldPassword.value, newPassword.value, confirmPassword.value)
             await axiosI.patch(
                 '/user/change-password/',
                 {
