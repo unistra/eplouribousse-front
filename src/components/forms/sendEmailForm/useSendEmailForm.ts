@@ -13,14 +13,16 @@ export function useSendEmailForm() {
     async function sendEmail() {
         isLoading.value = true
         try {
-            await axiosI.patch('/user/send-reset-email/', {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('JWT__access__token')}`,
-                },
+            await axiosI.post('/user/send-reset-email/', {
+                email: email.value,
+            })
+            notify({
+                type: 'positive',
+                message: t('forms.resetPassword.emailSent'),
             })
         } catch (e) {
-            email.value = ''
-            if (e instanceof AxiosError && e.response?.status === 400) {
+            // email.value = ''
+            if (e instanceof AxiosError && e.response?.status === 404) {
                 notify({
                     type: 'negative',
                     message: t('forms.resetPassword.incorrectEmail'),
@@ -33,10 +35,6 @@ export function useSendEmailForm() {
             }
         } finally {
             isLoading.value = false
-            notify({
-                type: 'positive',
-                message: t('forms.resetPassword.emailSent'),
-            })
         }
     }
 

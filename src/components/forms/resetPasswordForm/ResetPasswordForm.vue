@@ -2,11 +2,17 @@
 import { useFormUtils } from '@/composables/useFormUtils.ts'
 import { useI18n } from 'vue-i18n'
 import { useResetPasswordForm } from './useResetPasswordForm'
+import { onMounted } from 'vue'
 const { t } = useI18n()
 
-const { newPassword, confirmPassword, isLoading, isNewPasswordValid, doPasswordsMatch, resetPassword } =
+const { newPassword, confirmPassword, token, isLoading, isNewPasswordValid, doPasswordsMatch, resetPassword } =
     useResetPasswordForm()
 const { icon, passwordVisibility, passwordVisibilityLabel, updatePasswordVisibility } = useFormUtils()
+
+onMounted(() => {
+    const url = new URLSearchParams(window.location.search)
+    url.has('token') ? (token.value = url.get('token')) : (token.value = '')
+})
 </script>
 
 <template>
@@ -54,6 +60,15 @@ const { icon, passwordVisibility, passwordVisibilityLabel, updatePasswordVisibil
                 </QBtn>
             </template></QInput
         >
+        <QInput
+            :label="t('forms.resetPassword.token')"
+            :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
+            reactive-rules
+            v-model="token"
+            type="text"
+            data-testid="token-input"
+            autofocus
+        />
 
         <div class="password-requirements">
             <p>{{ t('forms.resetPassword.passwordMustContain') }}:</p>

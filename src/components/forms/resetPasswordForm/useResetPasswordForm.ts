@@ -3,14 +3,16 @@ import { ref, computed } from 'vue'
 import axiosI from '@/plugins/axios.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useRouter } from 'vue-router'
+import { AxiosError } from 'axios'
 
 export function useResetPasswordForm() {
     const { t } = useI18n()
     const router = useRouter()
     const { notify } = useComposableQuasar()
 
-    const newPassword = ref('')
-    const confirmPassword = ref('')
+    const newPassword = ref<string>('')
+    const confirmPassword = ref<string>('')
+    const token = ref<string | null>('')
     const isLoading = ref(false)
 
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/
@@ -45,34 +47,33 @@ export function useResetPasswordForm() {
         isLoading.value = true
 
         try {
-            await axiosI.patch(
-                '/user/reset-password/',
-                {
-                    newPassword: newPassword.value,
-                    confirmPassword: confirmPassword.value,
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('JWT__access__token')}`,
-                    },
-                },
-            )
+            await axiosI.patch('/user/reset-password/', {
+                token: token.value,
+                newPassword: newPassword.value,
+                confirmPassword: confirmPassword.value,
+            })
 
             notify({
                 type: 'positive',
                 message: t('forms.resetPassword.success'),
             })
 
-            await router.push({ path: '/' })
-        } catch (_e) {
-            console.error(_e)
-            notify({
-                type: 'negative',
-                message: t('errors.unknown'),
-            })
+            await router.push({ name: 'Login' })
+        } catch (e) {
+            if (e instanceof AxiosError && e.response?.status === 400 && e.response.data.token.length > 0) {
+                notify({
+                    type: 'negative',
+                    message: t(`forms.resetPassword.${e.response.data.token[0]}`),
+                })
+            } else {
+                notify({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
         } finally {
-            newPassword.value = ''
-            confirmPassword.value = ''
+            // newPassword.value = ''
+            // confirmPassword.value = ''
 
             isLoading.value = false
         }
@@ -81,6 +82,7 @@ export function useResetPasswordForm() {
     return {
         newPassword,
         confirmPassword,
+        token,
         isLoading,
         isNewPasswordValid,
         doPasswordsMatch,

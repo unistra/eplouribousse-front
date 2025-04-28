@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { AxiosError } from 'axios'
 import { useAuthentication } from '@/composables/useAuthentication'
 import { useI18n } from 'vue-i18n'
@@ -19,10 +19,14 @@ export function useLoginForm() {
         isLoading.value = true
         try {
             await login(email.value, password.value)
-
-            const route = router.currentRoute.value
-            const redirectPath = route.query.redirect ? (route.query.redirect as string) : { name: 'Home' }
-            await router.push(redirectPath)
+            notify({
+                type: 'positive',
+                message: t('forms.login.success'),
+            })
+            const route = useRoute()
+            await router.push(
+                (route.query.redirect as string | undefined) ?? { name: 'Home' }
+            )
         } catch (e) {
             password.value = ''
 

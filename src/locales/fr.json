@@ -31,7 +31,10 @@
             "hidePassword": "Masquer le mot de passe",
             "submit": "Se connecter",
             "forgotPassword": "Mot de passe oublié ?",
-            "credentialsError": "Identifiants incorrects"
+            "credentialsError": "Identifiants incorrects",
+            "forgottenPassword": "Mot de passe oublié ?",
+            "clickHere": "Cliquez ici",
+            "success": "Vous êtes désormais connecté"
         },
         "resetPassword": {
             "title": "Réinitialiser le mot de passe",
@@ -50,7 +53,10 @@
             "sendEmail": "Envoyer l'email",
             "emailSent": "Email envoyé avec succès",
             "emailNotSent": "Problème lors de l'envoi de l'email",
-            "incorrectEmail": "Adresse email invalide"
+            "incorrectEmail": "L'adresse mail n'est associée à aucun compte existant",
+            "token": "Jeton de validation",
+            "signatureHasExpired": "Le jeton a expiré",
+            "signatureDoesNotMatch": "Le jeton est invalide"
         },
         "changePassword": {
             "title": "Changer de mot de passe",

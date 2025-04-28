@@ -41,6 +41,9 @@ const { email, password, isLoading, onLogin } = useLoginForm()
                 </QBtn>
             </template>
         </QInput>
+        <p>
+            {{ t('forms.login.forgottenPassword') }} <a href="/send-email"> {{ t('forms.login.clickHere') }}</a>
+        </p>
         <QBtn
             :loading="isLoading"
             no-caps
