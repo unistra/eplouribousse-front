@@ -21,11 +21,9 @@ vi.mock('@/composables/useComposableQuasar.ts', () => ({
 }))
 
 const updatePasswordVisibilityMock = vi.fn()
-const onLoginMock = vi.fn()
-vi.mock('@/components/login/useLoginForm.ts', () => ({
-    useLoginForm: () => ({
+vi.mock('@/composables/useFormUtils.ts', () => ({
+    useFormUtils: () => ({
         updatePasswordVisibility: updatePasswordVisibilityMock,
-        onLogin: onLoginMock,
     }),
 }))
 

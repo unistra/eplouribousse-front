@@ -21,7 +21,7 @@ export function useSendEmailForm() {
                 message: t('forms.resetPassword.emailSent'),
             })
         } catch (e) {
-            // email.value = ''
+            email.value = ''
             if (e instanceof AxiosError && e.response?.status === 404) {
                 notify({
                     type: 'negative',

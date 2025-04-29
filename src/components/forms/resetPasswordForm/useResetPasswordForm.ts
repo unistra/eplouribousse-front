@@ -7,8 +7,8 @@ import { AxiosError } from 'axios'
 
 export function useResetPasswordForm() {
     const { t } = useI18n()
-    const router = useRouter()
     const { notify } = useComposableQuasar()
+    const router = useRouter()
 
     const newPassword = ref<string>('')
     const confirmPassword = ref<string>('')
@@ -72,9 +72,6 @@ export function useResetPasswordForm() {
                 })
             }
         } finally {
-            // newPassword.value = ''
-            // confirmPassword.value = ''
-
             isLoading.value = false
         }
     }
