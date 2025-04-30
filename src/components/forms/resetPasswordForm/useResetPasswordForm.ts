@@ -1,25 +1,30 @@
 import { useI18n } from 'vue-i18n'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import axiosI from '@/plugins/axios.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useRouter } from 'vue-router'
 import { AxiosError } from 'axios'
+import { useFormUtils } from '@/composables/useFormUtils'
 
 export function useResetPasswordForm() {
     const { t } = useI18n()
     const { notify } = useComposableQuasar()
+    const { getPasswordStrength } = useFormUtils()
     const router = useRouter()
 
+    const passwordStrength = ref<number>(0)
     const newPassword = ref<string>('')
     const confirmPassword = ref<string>('')
     const token = ref<string | null>('')
     const isLoading = ref(false)
 
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/
+    watch(newPassword, () => {
+        passwordStrength.value = getPasswordStrength(newPassword.value)
+    })
 
     const isNewPasswordValid = computed(() => {
         if (!newPassword.value) return true
-        return passwordRegex.test(newPassword.value)
+        return getPasswordStrength(newPassword.value) >= 3
     })
 
     const doPasswordsMatch = computed(() => {
@@ -79,6 +84,7 @@ export function useResetPasswordForm() {
     return {
         newPassword,
         confirmPassword,
+        passwordStrength,
         token,
         isLoading,
         isNewPasswordValid,

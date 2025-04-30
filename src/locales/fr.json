@@ -51,7 +51,7 @@
             "digit": "Un chiffre",
             "specialChar": "Un caractère spécial",
             "sendEmail": "Envoyer l'email",
-            "emailSent": "Email envoyé avec succès",
+            "emailSent": "Si un compte est trouvé à l'adresse \"{email}\", vous allez recevoir un email pour réinitialiser votre mot de passe",
             "emailNotSent": "Problème lors de l'envoi de l'email",
             "incorrectEmail": "L'adresse mail n'est associée à aucun compte existant",
             "token": "Jeton de validation",

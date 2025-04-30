@@ -3,10 +3,19 @@ import { useFormUtils } from '@/composables/useFormUtils.ts'
 import { useI18n } from 'vue-i18n'
 import { useResetPasswordForm } from './useResetPasswordForm'
 import { onMounted } from 'vue'
+import LinearProgress from '@/components/utils/linearProgress/LinearProgress.vue'
 const { t } = useI18n()
 
-const { newPassword, confirmPassword, token, isLoading, isNewPasswordValid, doPasswordsMatch, resetPassword } =
-    useResetPasswordForm()
+const {
+    newPassword,
+    confirmPassword,
+    passwordStrength,
+    token,
+    isLoading,
+    isNewPasswordValid,
+    doPasswordsMatch,
+    resetPassword,
+} = useResetPasswordForm()
 const { icon, passwordVisibility, passwordVisibilityLabel, updatePasswordVisibility } = useFormUtils()
 
 onMounted(() => {
@@ -22,6 +31,7 @@ onMounted(() => {
             :label="t('forms.resetPassword.newPassword')"
             :type="passwordVisibility"
             required
+            autofocus
             :rules="[() => isNewPasswordValid || t('forms.resetPassword.passwordRequirements')]"
             ><template #append>
                 <QBtn
@@ -67,7 +77,6 @@ onMounted(() => {
             v-model="token"
             type="text"
             data-testid="token-input"
-            autofocus
         />
 
         <div class="password-requirements">
@@ -80,6 +89,8 @@ onMounted(() => {
                 <li>{{ t('forms.resetPassword.specialChar') }}</li>
             </ul>
         </div>
+
+        <LinearProgress :password-strength="passwordStrength" />
 
         <QBtn
             type="submit"

@@ -13,7 +13,6 @@ const { email, password, isLoading, onLogin } = useLoginForm()
         <QInput
             :label="t('forms.login.email')"
             :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
-            reactive-rules
             v-model="email"
             type="email"
             data-testid="email-input"
