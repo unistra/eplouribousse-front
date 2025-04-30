@@ -3,10 +3,13 @@ import axiosI from '@/plugins/axios.ts'
 
 export function useAuthentication() {
     async function login(email: string, password: string) {
+        const userStore = useUserStore()
         const response = await axiosI.post<{ refresh: string; access: string }>('/token/', {
             username: email,
             password: password,
         })
+
+        userStore.user = { username: 'test' }
 
         localStorage.setItem('JWT__access__token', response.data.access)
         localStorage.setItem('JWT__refresh__token', response.data.refresh)
