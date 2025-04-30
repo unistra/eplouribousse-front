@@ -48,6 +48,7 @@ onMounted(() => {
                 </QBtn>
             </template></QInput
         >
+        <LinearProgress :password-strength="passwordStrength" />
 
         <QInput
             v-model="confirmPassword"
@@ -89,9 +90,6 @@ onMounted(() => {
                 <li>{{ t('forms.password.specialChar') }}</li>
             </ul>
         </div>
-
-        <LinearProgress :password-strength="passwordStrength" />
-
         <QBtn
             type="submit"
             no-caps

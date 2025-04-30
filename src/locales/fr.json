@@ -38,6 +38,7 @@
         },
         "password": {
             "passwordStrength": "Robustesse du mot de passe",
+            "weak": "Faible",
             "oldPassword": "Ancien mot de passe",
             "newPassword": "Nouveau mot de passe",
             "confirmPassword": "Confirmer le nouveau mot de passe",

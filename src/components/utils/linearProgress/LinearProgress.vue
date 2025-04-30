@@ -7,37 +7,26 @@ const props = defineProps<{
     passwordStrength: number
 }>()
 
+const color = ['red', 'red', 'red', 'orange', 'green']
 const progress = computed(() => {
     return props.passwordStrength * 0.25
 })
 </script>
 
 <template>
-    <div class="container-align">
+    <div :class="passwordStrength < 3 ? 'with-message' : ''">
         <QLinearProgress
-            size="25px"
-            color="primary"
+            size="5px"
+            :color="color[passwordStrength]"
             :value="progress"
-        >
-            <div class="absolute-full flex flex-center">
-                <QBadge
-                    color="white"
-                    text-color="black"
-                    :label="t('forms.password.passwordStrength')"
-                />
-            </div>
-        </QLinearProgress>
-        <QIcon
-            size="2rem"
-            :name="passwordStrength < 3 ? 'mdi-close' : 'mdi-check'"
-            :color="passwordStrength < 3 ? 'red' : 'green'"
         />
     </div>
 </template>
 
 <style scoped>
-.container-align {
+.with-message {
     display: flex;
     align-items: center;
+    padding-top: 1.5rem;
 }
 </style>
