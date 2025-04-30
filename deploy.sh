@@ -18,7 +18,7 @@ WORKING_DIR="$TEMP/git-clone"
 DEST_PATH="/var/www/static/eplfront/"
 
 # Shall we install ningx config files ?
-SETUP_NGINX=true
+SETUP_NGINX=false
 
 # Shall we use sentry ?
 # if so sentry-cli is required !!!!
