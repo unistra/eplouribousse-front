@@ -12,7 +12,7 @@ const globalStore = useGlobalStore()
 
 onMounted(async () => {
     try {
-        const response = await axiosI.post<{ access: string; refresh: string }>('/user/login-handshakee/', {
+        const response = await axiosI.post<{ access: string; refresh: string }>('/user/login-handshake/', {
             t: token,
         })
 
@@ -26,7 +26,7 @@ onMounted(async () => {
         globalStore.addNotify({
             type: 'negative',
             message: t('errors.unknown') + ', ' + t('errors.retry'),
-            timeout: 8000,
+            timeout: 10000,
         })
         await router.push({ name: 'Home' })
     }
