@@ -12,7 +12,7 @@ const { icon, passwordVisibility, passwordVisibilityLabel, updatePasswordVisibil
     <QForm @submit.prevent="changePassword">
         <QInput
             v-model="oldPassword"
-            :label="t('forms.changePassword.oldPassword')"
+            :label="t('forms.password.oldPassword')"
             :type="passwordVisibility"
             required
             autofocus
@@ -33,10 +33,10 @@ const { icon, passwordVisibility, passwordVisibilityLabel, updatePasswordVisibil
         </QInput>
         <QInput
             v-model="newPassword"
-            :label="t('forms.changePassword.newPassword')"
+            :label="t('forms.password.newPassword')"
             :type="passwordVisibility"
             required
-            :rules="[() => isNewPasswordValid || t('forms.changePassword.passwordRequirements')]"
+            :rules="[() => isNewPasswordValid || t('forms.password.passwordRequirements')]"
             ><template #append>
                 <QBtn
                     flat
@@ -55,10 +55,10 @@ const { icon, passwordVisibility, passwordVisibilityLabel, updatePasswordVisibil
 
         <QInput
             v-model="confirmPassword"
-            :label="t('forms.changePassword.confirmPassword')"
+            :label="t('forms.password.confirmPassword')"
             :type="passwordVisibility"
             required
-            :rules="[() => doPasswordsMatch || t('forms.changePassword.passwordsDoNotMatch')]"
+            :rules="[() => doPasswordsMatch || t('forms.password.passwordsDoNotMatch')]"
             ><template #append>
                 <QBtn
                     flat
@@ -76,13 +76,13 @@ const { icon, passwordVisibility, passwordVisibilityLabel, updatePasswordVisibil
         >
 
         <div class="password-requirements">
-            <p>{{ t('forms.changePassword.passwordMustContain') }}:</p>
+            <p>{{ t('forms.password.passwordMustContain') }}:</p>
             <ul>
-                <li>{{ t('forms.changePassword.minLength') }}</li>
-                <li>{{ t('forms.changePassword.upperCase') }}</li>
-                <li>{{ t('forms.changePassword.lowerCase') }}</li>
-                <li>{{ t('forms.changePassword.digit') }}</li>
-                <li>{{ t('forms.changePassword.specialChar') }}</li>
+                <li>{{ t('forms.password.minLength') }}</li>
+                <li>{{ t('forms.password.upperCase') }}</li>
+                <li>{{ t('forms.password.lowerCase') }}</li>
+                <li>{{ t('forms.password.digit') }}</li>
+                <li>{{ t('forms.password.specialChar') }}</li>
             </ul>
         </div>
 
@@ -92,7 +92,7 @@ const { icon, passwordVisibility, passwordVisibilityLabel, updatePasswordVisibil
             :loading="isLoading"
             class="submit-btn"
         >
-            {{ t('forms.changePassword.submit') }}
+            {{ t('forms.password.change.submit') }}
         </QBtn>
     </QForm>
 </template>

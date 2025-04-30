@@ -7,7 +7,7 @@ const { t } = useI18n()
 
 <template>
     <main class="container-center">
-        <h2>{{ t('forms.changePassword.title') }}</h2>
+        <h2>{{ t('forms.password.change.title') }}</h2>
         <ChangePasswordForm />
     </main>
 </template>

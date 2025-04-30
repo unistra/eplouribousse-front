@@ -28,11 +28,11 @@ onMounted(() => {
     <QForm @submit.prevent="resetPassword">
         <QInput
             v-model="newPassword"
-            :label="t('forms.resetPassword.newPassword')"
+            :label="t('forms.password.newPassword')"
             :type="passwordVisibility"
             required
             autofocus
-            :rules="[() => isNewPasswordValid || t('forms.resetPassword.passwordRequirements')]"
+            :rules="[() => isNewPasswordValid || t('forms.password.passwordRequirements')]"
             ><template #append>
                 <QBtn
                     flat
@@ -51,10 +51,10 @@ onMounted(() => {
 
         <QInput
             v-model="confirmPassword"
-            :label="t('forms.resetPassword.confirmPassword')"
+            :label="t('forms.password.confirmPassword')"
             :type="passwordVisibility"
             required
-            :rules="[() => doPasswordsMatch || t('forms.resetPassword.passwordsDoNotMatch')]"
+            :rules="[() => doPasswordsMatch || t('forms.password.passwordsDoNotMatch')]"
             ><template #append>
                 <QBtn
                     flat
@@ -71,7 +71,7 @@ onMounted(() => {
             </template></QInput
         >
         <QInput
-            :label="t('forms.resetPassword.token')"
+            :label="t('forms.password.reset.token')"
             :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
             reactive-rules
             v-model="token"
@@ -80,13 +80,13 @@ onMounted(() => {
         />
 
         <div class="password-requirements">
-            <p>{{ t('forms.resetPassword.passwordMustContain') }}:</p>
+            <p>{{ t('forms.password.passwordMustContain') }}:</p>
             <ul>
-                <li>{{ t('forms.resetPassword.minLength') }}</li>
-                <li>{{ t('forms.resetPassword.upperCase') }}</li>
-                <li>{{ t('forms.resetPassword.lowerCase') }}</li>
-                <li>{{ t('forms.resetPassword.digit') }}</li>
-                <li>{{ t('forms.resetPassword.specialChar') }}</li>
+                <li>{{ t('forms.password.minLength') }}</li>
+                <li>{{ t('forms.password.upperCase') }}</li>
+                <li>{{ t('forms.password.lowerCase') }}</li>
+                <li>{{ t('forms.password.digit') }}</li>
+                <li>{{ t('forms.password.specialChar') }}</li>
             </ul>
         </div>
 
@@ -98,7 +98,7 @@ onMounted(() => {
             :loading="isLoading"
             class="submit-btn"
         >
-            {{ t('forms.resetPassword.submit') }}
+            {{ t('forms.password.reset.submit') }}
         </QBtn>
     </QForm>
 </template>
