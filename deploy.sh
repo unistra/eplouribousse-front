@@ -2,6 +2,8 @@
 set -e
 
 PROJECT="eplfront"
+SENTRY_PROJECT_NAME="eplouribousse-front"
+
 
 if [ ! $# -ge 2 ]; then
   echo "👉 Usage: $0 branch/tag goal     IRL: $0 feature/introduce_bug prod"
@@ -16,7 +18,7 @@ WORKING_DIR="$TEMP/git-clone"
 DEST_PATH="/var/www/static/eplfront/"
 
 # Shall we install ningx config files ?
-SETUP_NGINX=true
+SETUP_NGINX=false
 
 # Shall we use sentry ?
 # if so sentry-cli is required !!!!
@@ -103,7 +105,7 @@ if [ "$USE_SENTRY" == true ]; then
   PROJECT_VERSION=$(git describe --always)
   # Create a release
   echo "📌 Telling about $PROJECT_VERSION to Sentry"
-  sentry-cli releases new -p "$PROJECT" "$PROJECT_VERSION"
+  sentry-cli releases new -p "$SENTRY_PROJECT_NAME" "$PROJECT_VERSION"
   # Associate commits with the release
   echo "🤖 Associating commits to version"
   sentry-cli releases set-commits --auto "$PROJECT_VERSION"
@@ -115,11 +117,10 @@ if [ "$USE_SENTRY" == true ]; then
   sentry-cli sourcemaps inject dist/assets
   # Upload sourcemaps to sentry
   echo "🔊 Uploading sourcemaps"
-  sentry-cli sourcemaps upload -p "$PROJECT" -r "$PROJECT_VERSION" dist/assets
+  sentry-cli sourcemaps upload -p "$SENTRY_PROJECT_NAME" -r "$PROJECT_VERSION" dist/assets
 
 fi
 
 # Clean working dir
 cd .. && rm -rf "$WORKING_DIR"
-echo "🎉 $PROJECT $PROJECT_VERSION successfully deployed"
-
+echo "🎉 $SENTRY_PROJECT_NAME $PROJECT_VERSION successfully deployed"

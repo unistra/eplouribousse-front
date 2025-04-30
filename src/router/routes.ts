@@ -61,6 +61,14 @@ const routes: RouteRecordRaw[] = [
             unistraCasAuthentication: true,
         },
     },
+    {
+        path: '/handshake',
+        name: 'handshake',
+        component: () => import('@/views/Auth/HandshakeView.vue'),
+        meta: {
+            title: 'Handshake',
+        },
+    },
 ]
 
 export default routes
