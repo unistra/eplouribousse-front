@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { AxiosError } from 'axios'
 import { useAuthentication } from '@/composables/useAuthentication'
 import { useI18n } from 'vue-i18n'
+import axiosI from '@/plugins/axios'
 
 export function useLoginForm() {
     const { t } = useI18n()
@@ -14,6 +15,31 @@ export function useLoginForm() {
     const email = ref<string>('')
     const password = ref<string>('')
     const isLoading = ref<boolean>(false)
+
+    async function shibb() {
+        isLoading.value = true
+        try {
+            await axiosI.get('/saml2/login/')
+            localStorage.setItem('username', 'test')
+        } catch (e) {
+            password.value = ''
+
+            if (e instanceof AxiosError && e.response?.status === 401) {
+                notify({
+                    type: 'negative',
+                    message: t('forms.login.credentialsError'),
+                })
+            } else {
+                notify({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        } finally {
+            isLoading.value = false
+            console.log('test2')
+        }
+    }
 
     const onLogin = async () => {
         isLoading.value = true
@@ -50,5 +76,6 @@ export function useLoginForm() {
         password,
         isLoading,
         onLogin,
+        shibb,
     }
 }

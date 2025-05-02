@@ -3,6 +3,7 @@ import { useI18n } from 'vue-i18n'
 import { onMounted } from 'vue'
 import { useGlobalStore } from '@/stores/globalStore.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
+import axiosI from '@/plugins/axios'
 
 const { t } = useI18n()
 const globalStore = useGlobalStore()

@@ -5,7 +5,7 @@ import { useFormUtils } from '@/composables/useFormUtils'
 
 const { t } = useI18n()
 const { icon, passwordVisibility, passwordVisibilityLabel, updatePasswordVisibility } = useFormUtils()
-const { email, password, isLoading, onLogin } = useLoginForm()
+const { email, password, isLoading, onLogin, shibb } = useLoginForm()
 </script>
 
 <template>
@@ -53,6 +53,11 @@ const { email, password, isLoading, onLogin } = useLoginForm()
             {{ t('forms.login.submit') }}
         </QBtn>
     </QForm>
+    <QBtn
+        no-caps
+        href="https://t1-eplouribousse-api-pprd.app.unistra.fr/saml2/login/"
+        class="submit-btn"
+    ></QBtn>
 </template>
 
 <style scoped>
