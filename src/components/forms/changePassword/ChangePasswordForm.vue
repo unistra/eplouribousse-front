@@ -2,9 +2,18 @@
 import { useFormUtils } from '@/composables/useFormUtils.ts'
 import { useChangePasswordForm } from './useChangePasswordForm.ts'
 import { useI18n } from 'vue-i18n'
+import LinearProgress from '@/components/utils/linearProgress/LinearProgress.vue'
 const { t } = useI18n()
-const { changePassword, oldPassword, newPassword, confirmPassword, isLoading, isNewPasswordValid, doPasswordsMatch } =
-    useChangePasswordForm()
+const {
+    changePassword,
+    oldPassword,
+    newPassword,
+    passwordStrength,
+    confirmPassword,
+    isLoading,
+    isNewPasswordValid,
+    doPasswordsMatch,
+} = useChangePasswordForm()
 const { icon, passwordVisibility, passwordVisibilityLabel, updatePasswordVisibility } = useFormUtils()
 </script>
 
@@ -35,6 +44,7 @@ const { icon, passwordVisibility, passwordVisibilityLabel, updatePasswordVisibil
             v-model="newPassword"
             :label="t('forms.password.newPassword')"
             :type="passwordVisibility"
+            data-testid="new-password"
             required
             :rules="[() => isNewPasswordValid || t('forms.password.passwordRequirements')]"
             ><template #append>
@@ -52,6 +62,11 @@ const { icon, passwordVisibility, passwordVisibilityLabel, updatePasswordVisibil
                 </QBtn>
             </template></QInput
         >
+        <LinearProgress
+            :password-strength="passwordStrength"
+            v-if="newPassword.length > 0"
+            data-testid="progress"
+        />
 
         <QInput
             v-model="confirmPassword"

@@ -27,9 +27,10 @@ onMounted(() => {
 <template>
     <QForm @submit.prevent="resetPassword">
         <QInput
-            v-model="newPassword"
             :label="t('forms.password.newPassword')"
             :type="passwordVisibility"
+            v-model="newPassword"
+            data-testid="new-password"
             required
             autofocus
             :rules="[() => isNewPasswordValid || t('forms.password.passwordRequirements')]"
@@ -48,12 +49,17 @@ onMounted(() => {
                 </QBtn>
             </template></QInput
         >
-        <LinearProgress :password-strength="passwordStrength" />
+        <LinearProgress
+            :password-strength="passwordStrength"
+            v-if="newPassword.length > 0"
+            data-testid="progress"
+        />
 
         <QInput
             v-model="confirmPassword"
             :label="t('forms.password.confirmPassword')"
             :type="passwordVisibility"
+            data-testid="confirm-password"
             required
             :rules="[() => doPasswordsMatch || t('forms.password.passwordsDoNotMatch')]"
             ><template #append>

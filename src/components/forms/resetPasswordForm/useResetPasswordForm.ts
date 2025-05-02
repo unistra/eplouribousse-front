@@ -36,7 +36,7 @@ export function useResetPasswordForm() {
         if (!isNewPasswordValid.value) {
             notify({
                 type: 'negative',
-                message: t('forms.resetPassword.passwordRequirements'),
+                message: t('forms.password.passwordRequirements'),
             })
             return
         }
@@ -44,7 +44,7 @@ export function useResetPasswordForm() {
         if (!doPasswordsMatch.value) {
             notify({
                 type: 'negative',
-                message: t('forms.resetPassword.passwordsDoNotMatch'),
+                message: t('forms.password.passwordsDoNotMatch'),
             })
             return
         }
@@ -60,15 +60,16 @@ export function useResetPasswordForm() {
 
             notify({
                 type: 'positive',
-                message: t('forms.resetPassword.success'),
+                message: t('forms.password.reset.success'),
             })
 
             await router.push({ name: 'Login' })
         } catch (e) {
             if (e instanceof AxiosError && e.response?.status === 400 && e.response.data.token.length > 0) {
+                console.log(e.response.data)
                 notify({
                     type: 'negative',
-                    message: t(`forms.resetPassword.${e.response.data.token[0]}`),
+                    message: e.response.data.token[0],
                 })
             } else {
                 notify({

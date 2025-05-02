@@ -26,7 +26,7 @@ export const refresh = async (): Promise<void> => {
 axiosI.interceptors.request.use(
     async (config: InternalAxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
         // If the URL contains "/token/" the plugin lets the request pass.
-        if (config.url?.match(/\/token\//)) {
+        if (config.url?.match(/\/token\//) || config.url?.match(/reset/)) {
             return config
         }
 

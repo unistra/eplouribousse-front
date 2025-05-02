@@ -10,6 +10,7 @@ export function useSendEmailForm() {
     const isLoading = ref<boolean>(false)
 
     async function sendEmail() {
+        console.log('test')
         isLoading.value = true
         try {
             await axiosI.post('/user/send-reset-email/', {
@@ -19,7 +20,7 @@ export function useSendEmailForm() {
             isLoading.value = false
             notify({
                 type: 'positive',
-                message: t('forms.resetPassword.emailSent', { email: email.value }),
+                message: t('forms.password.reset.emailSent', { email: email.value }),
             })
         }
     }
