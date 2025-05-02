@@ -9,6 +9,7 @@ const { email, password, isLoading, onLogin, shibb } = useLoginForm()
 </script>
 
 <template>
+    <p>Compte Eplouribousse</p>
     <QForm @submit.prevent="onLogin">
         <QInput
             :label="t('forms.login.email')"
@@ -53,10 +54,12 @@ const { email, password, isLoading, onLogin, shibb } = useLoginForm()
             {{ t('forms.login.submit') }}
         </QBtn>
     </QForm>
+    <p class="submit-btn">Via Renater</p>
     <QBtn
         no-caps
-        href="https://t1-eplouribousse-api-pprd.app.unistra.fr/saml2/login/"
+        label="Connexion Renater"
         class="submit-btn"
+        href="https://t1-eplouribousse-api-pprd.app.unistra.fr/saml2/login/"
     ></QBtn>
 </template>
 

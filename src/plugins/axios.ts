@@ -32,7 +32,6 @@ axiosI.interceptors.request.use(
 
         if (localStorage.getItem('JWT__access__token') !== null) {
             if (expired(localStorage.getItem('JWT__access__token') as string)) {
-                console.log('oopsie')
                 if (localStorage.getItem('JWT__refresh__token') !== null) {
                     if (expired(localStorage.getItem('JWT__refresh__token') as string)) {
                         await login()
