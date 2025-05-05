@@ -11,6 +11,7 @@ const { t } = useI18n()
 const globalStore = useGlobalStore()
 
 onMounted(async () => {
+    console.log('TEST')
     try {
         const response = await axiosI.post<{ access: string; refresh: string }>('/user/login-handshake/', {
             t: token,

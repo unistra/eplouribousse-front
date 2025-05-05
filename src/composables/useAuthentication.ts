@@ -9,8 +9,7 @@ export function useAuthentication() {
             password: password,
         })
 
-        userStore.user = { username: 'test' }
-
+        userStore.isAuth = true
         localStorage.setItem('JWT__access__token', response.data.access)
         localStorage.setItem('JWT__refresh__token', response.data.refresh)
     }
@@ -18,7 +17,7 @@ export function useAuthentication() {
     function logout() {
         const userStore = useUserStore()
 
-        userStore.user = undefined
+        userStore.isAuth = false
         localStorage.removeItem('JWT__access__token')
         localStorage.removeItem('JWT__refresh__token')
     }
