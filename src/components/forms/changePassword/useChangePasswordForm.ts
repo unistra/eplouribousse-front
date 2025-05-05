@@ -50,7 +50,7 @@ export function useChangePasswordForm() {
 
         try {
             await axiosI.patch(
-                '/user/change-password/',
+                '/api/user/change-password/',
                 {
                     oldPassword: oldPassword.value,
                     newPassword: newPassword.value,

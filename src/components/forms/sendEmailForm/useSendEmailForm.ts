@@ -13,7 +13,7 @@ export function useSendEmailForm() {
         console.log('test')
         isLoading.value = true
         try {
-            await axiosI.post('/user/send-reset-email/', {
+            await axiosI.post('/api/user/send-reset-email/', {
                 email: email.value,
             })
         } finally {

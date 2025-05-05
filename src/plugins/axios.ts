@@ -4,8 +4,9 @@ import type { InternalAxiosRequestConfig } from 'axios'
 const config = {
     baseURL: import.meta.env.VITE_APP_BASE_URL,
 }
+
 const axiosI = axios.create(config)
-const exclusions = ['/token/', '/handshake/', '/reset/', '/profile/']
+const exclusions = ['/token/', '/handshake/', '/reset/', '/profile/', '/saml2/']
 
 const expired = (token: string): boolean => {
     if (!token) return true
