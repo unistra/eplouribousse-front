@@ -17,14 +17,11 @@ export function useChangePasswordForm() {
     const newPassword = ref<string>('')
     const confirmPassword = ref<string>('')
     const isLoading = ref(false)
+    const isNewPasswordValid = ref<boolean>(false)
 
     watch(newPassword, () => {
         passwordStrength.value = getPasswordStrength(newPassword.value)
-    })
-
-    const isNewPasswordValid = computed(() => {
-        if (!newPassword.value) return true // Don't show error if empty
-        return getPasswordStrength(newPassword.value) >= 3
+        passwordStrength.value >= 3 ? (isNewPasswordValid.value = true) : (isNewPasswordValid.value = false)
     })
 
     const doPasswordsMatch = computed(() => {

@@ -7,6 +7,10 @@ import ResetPasswordForm from '@/components/forms/resetPasswordForm/ResetPasswor
 
 let i18n: I18n
 
+const mock = vi.hoisted(() => {
+    return { getPasswordStrengthMock: vi.fn() }
+})
+
 vi.mock('@/composables/useComposableQuasar.ts', () => ({
     useComposableQuasar: () => ({
         dark: {
@@ -20,10 +24,9 @@ vi.mock('@/composables/useComposableQuasar.ts', () => ({
     }),
 }))
 
-const getPasswordStrengthMock = vi.fn()
 vi.mock('@/composables/useFormUtils.ts', () => ({
     useFormUtils: () => ({
-        getPasswordStrength: getPasswordStrengthMock,
+        getPasswordStrength: mock.getPasswordStrengthMock,
     }),
 }))
 
@@ -42,7 +45,7 @@ describe('LoginForm', () => {
             },
         })
         await wrapper.find('[data-testid="new-password"]').setValue('aaa')
-        expect(getPasswordStrengthMock).toHaveBeenCalledOnce()
+        expect(mock.getPasswordStrengthMock).toHaveBeenCalledOnce()
     })
     test('should not print and error message if password is strong enough (score > 3)', async () => {
         const wrapper = mount(ResetPasswordForm, {
