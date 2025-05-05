@@ -18,7 +18,7 @@ const { email, password, isLoading, expanded, onLogin, shibb } = useLoginForm()
         no-caps
         class="margin-top-8"
         @click="shibb"
-        label="TEST appel axios"
+        label="Via axios"
     />
     <QExpansionItem
         class="margin-top-8"

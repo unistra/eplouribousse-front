@@ -21,7 +21,7 @@ export function useChangePasswordForm() {
 
     watch(newPassword, () => {
         passwordStrength.value = getPasswordStrength(newPassword.value)
-        passwordStrength.value >= 3 ? (isNewPasswordValid.value = true) : (isNewPasswordValid.value = false)
+        isNewPasswordValid.value = passwordStrength.value >= 3
     })
 
     const doPasswordsMatch = computed(() => {
@@ -50,7 +50,7 @@ export function useChangePasswordForm() {
 
         try {
             await axiosI.patch(
-                '/user/change-password/',
+                '/api/user/change-password/',
                 {
                     oldPassword: oldPassword.value,
                     newPassword: newPassword.value,

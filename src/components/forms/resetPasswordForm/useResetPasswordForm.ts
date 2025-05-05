@@ -21,7 +21,7 @@ export function useResetPasswordForm() {
 
     watch(newPassword, () => {
         passwordStrength.value = getPasswordStrength(newPassword.value)
-        passwordStrength.value >= 3 ? (isNewPasswordValid.value = true) : (isNewPasswordValid.value = false)
+        isNewPasswordValid.value = passwordStrength.value >= 3
     })
 
     const doPasswordsMatch = computed(() => {
@@ -49,7 +49,7 @@ export function useResetPasswordForm() {
         isLoading.value = true
 
         try {
-            await axiosI.patch('/user/reset-password/', {
+            await axiosI.patch('/api/user/reset-password/', {
                 token: token.value,
                 newPassword: newPassword.value,
                 confirmPassword: confirmPassword.value,
