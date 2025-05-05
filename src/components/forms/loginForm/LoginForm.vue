@@ -19,7 +19,7 @@ const { email, password, isLoading, expanded, onLogin, shibb } = useLoginForm()
         class="margin-top-8"
         @click="shibb"
         label="TEST appel axios"
-    ></QBtn>
+    />
     <QExpansionItem
         class="margin-top-8"
         v-model="expanded"

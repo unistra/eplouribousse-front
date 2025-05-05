@@ -5,7 +5,6 @@ import { AxiosError } from 'axios'
 import { useAuthentication } from '@/composables/useAuthentication'
 import { useI18n } from 'vue-i18n'
 import axiosI from '@/plugins/axios'
-import { useUserStore } from '@/stores/userStore'
 
 export function useLoginForm() {
     const { t } = useI18n()
@@ -13,7 +12,6 @@ export function useLoginForm() {
     const { login } = useAuthentication()
     const router = useRouter()
     const route = useRoute()
-    const userStore = useUserStore()
 
     const email = ref<string>('')
     const password = ref<string>('')
@@ -24,7 +22,6 @@ export function useLoginForm() {
         isLoading.value = true
         try {
             await axiosI.get('/saml2/login/')
-            userStore.isAuth = true
         } catch (e) {
             password.value = ''
 
@@ -53,7 +50,6 @@ export function useLoginForm() {
                 type: 'positive',
                 message: t('forms.login.success'),
             })
-            const route = useRoute()
             await router.push((route.query.redirect as string | undefined) ?? { name: 'Home' })
         } catch (e) {
             password.value = ''
