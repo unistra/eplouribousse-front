@@ -15,8 +15,9 @@ export function useLoginForm() {
     const password = ref<string>('')
     const isLoading = ref<boolean>(false)
 
-    async function onLogin() {
+    const onLogin = async () => {
         isLoading.value = true
+
         try {
             await login(email.value, password.value)
             notify({
