@@ -1,25 +1,27 @@
 import { useI18n } from 'vue-i18n'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import axiosI from '@/plugins/axios.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useRouter } from 'vue-router'
 import { AxiosError } from 'axios'
+import { useFormUtils } from '@/composables/useFormUtils'
 
 export function useResetPasswordForm() {
     const { t } = useI18n()
     const { notify } = useComposableQuasar()
+    const { getPasswordStrength } = useFormUtils()
     const router = useRouter()
 
+    const passwordStrength = ref<number>(0)
     const newPassword = ref<string>('')
     const confirmPassword = ref<string>('')
     const token = ref<string | null>('')
     const isLoading = ref(false)
+    const isNewPasswordValid = ref<boolean>(false)
 
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/
-
-    const isNewPasswordValid = computed(() => {
-        if (!newPassword.value) return true
-        return passwordRegex.test(newPassword.value)
+    watch(newPassword, () => {
+        passwordStrength.value = getPasswordStrength(newPassword.value)
+        passwordStrength.value >= 3 ? (isNewPasswordValid.value = true) : (isNewPasswordValid.value = false)
     })
 
     const doPasswordsMatch = computed(() => {
@@ -31,7 +33,7 @@ export function useResetPasswordForm() {
         if (!isNewPasswordValid.value) {
             notify({
                 type: 'negative',
-                message: t('forms.resetPassword.passwordRequirements'),
+                message: t('forms.password.passwordRequirements'),
             })
             return
         }
@@ -39,7 +41,7 @@ export function useResetPasswordForm() {
         if (!doPasswordsMatch.value) {
             notify({
                 type: 'negative',
-                message: t('forms.resetPassword.passwordsDoNotMatch'),
+                message: t('forms.password.passwordsDoNotMatch'),
             })
             return
         }
@@ -55,15 +57,16 @@ export function useResetPasswordForm() {
 
             notify({
                 type: 'positive',
-                message: t('forms.resetPassword.success'),
+                message: t('forms.password.reset.success'),
             })
 
             await router.push({ name: 'Login' })
         } catch (e) {
             if (e instanceof AxiosError && e.response?.status === 400 && e.response.data.token.length > 0) {
+                console.log(e.response.data)
                 notify({
                     type: 'negative',
-                    message: t(`forms.resetPassword.${e.response.data.token[0]}`),
+                    message: e.response.data.token[0],
                 })
             } else {
                 notify({
@@ -79,6 +82,7 @@ export function useResetPasswordForm() {
     return {
         newPassword,
         confirmPassword,
+        passwordStrength,
         token,
         isLoading,
         isNewPasswordValid,

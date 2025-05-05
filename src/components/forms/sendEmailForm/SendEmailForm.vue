@@ -24,7 +24,7 @@ const { email, isLoading, sendEmail } = useSendEmailForm()
             type="submit"
             class="submit-btn"
         >
-            {{ t('forms.resetPassword.sendEmail') }}
+            {{ t('forms.password.reset.sendEmail') }}
         </QBtn>
     </QForm>
 </template>
