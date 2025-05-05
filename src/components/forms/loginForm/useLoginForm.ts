@@ -18,6 +18,7 @@ export function useLoginForm() {
     const email = ref<string>('')
     const password = ref<string>('')
     const isLoading = ref<boolean>(false)
+    const expanded = ref<boolean>(false)
 
     async function shibb() {
         isLoading.value = true
@@ -77,6 +78,7 @@ export function useLoginForm() {
         email,
         password,
         isLoading,
+        expanded,
         onLogin,
         shibb,
     }

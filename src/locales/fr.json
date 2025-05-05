@@ -34,7 +34,9 @@
             "credentialsError": "Identifiants incorrects",
             "forgottenPassword": "Mot de passe oublié ?",
             "clickHere": "Cliquez ici",
-            "success": "Vous êtes désormais connecté"
+            "success": "Vous êtes désormais connecté",
+            "localAccount": "Connexion Eplouribousse",
+            "renater": "Connexion via Renater"
         },
         "password": {
             "passwordStrength": "Robustesse du mot de passe",
