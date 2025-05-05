@@ -13,6 +13,12 @@ const { email, password, isLoading, expanded, onLogin, shibb } = useLoginForm()
         no-caps
         href="https://t1-eplouribousse-api-pprd.app.unistra.fr/saml2/login/"
         :label="t('forms.login.renater')"
+    />
+    <QBtn
+        no-caps
+        class="margin-top-8"
+        @click="shibb"
+        label="TEST appel axios"
     ></QBtn>
     <QExpansionItem
         class="margin-top-8"
