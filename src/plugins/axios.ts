@@ -5,6 +5,7 @@ const config = {
     baseURL: import.meta.env.VITE_APP_BASE_URL,
 }
 const axiosI = axios.create(config)
+const exclusions = ['/token/', '/handshake/', '/reset/', '/profile/']
 
 const expired = (token: string): boolean => {
     if (!token) return true
@@ -25,8 +26,7 @@ export const refresh = async (): Promise<void> => {
 // Based on https://git.unistra.fr/vue-unistra/cas-authentication/-/blob/main/src/
 axiosI.interceptors.request.use(
     async (config: InternalAxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
-        // If the URL contains "/token/" the plugin lets the request pass.
-        if (config.url?.match(/\/token\//) || config.url?.match(/handshake/) || config.url?.match(/reset/)) {
+        if (config.url && exclusions.includes(config.url)) {
             return config
         }
 

@@ -21,7 +21,7 @@ export function useResetPasswordForm() {
 
     watch(newPassword, () => {
         passwordStrength.value = getPasswordStrength(newPassword.value)
-        passwordStrength.value >= 3 ? (isNewPasswordValid.value = true) : (isNewPasswordValid.value = false)
+        isNewPasswordValid.value = passwordStrength.value >= 3
     })
 
     const doPasswordsMatch = computed(() => {
