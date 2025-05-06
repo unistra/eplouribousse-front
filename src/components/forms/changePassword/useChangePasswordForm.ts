@@ -65,7 +65,7 @@ export function useChangePasswordForm() {
 
             notify({
                 type: 'positive',
-                message: t('forms.changePassword.success'),
+                message: t('forms.password.change.success'),
             })
 
             await router.push({ path: '/' })
@@ -73,7 +73,7 @@ export function useChangePasswordForm() {
             if (e instanceof AxiosError && e.response?.status === 400) {
                 notify({
                     type: 'negative',
-                    message: t('forms.changePassword.oldPasswordIncorrect'),
+                    message: t('forms.password.oldPasswordIncorrect'),
                 })
             } else {
                 notify({

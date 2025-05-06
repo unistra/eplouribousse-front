@@ -8,6 +8,7 @@ const config = {
 const axiosI = axios.create(config)
 const exclusions = [
     '/saml2/login/',
+    '/saml2/logout/',
     '/api/token/',
     '/api/user/profile/',
     '/api/user/login-handshake/',
