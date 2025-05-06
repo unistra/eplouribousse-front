@@ -47,6 +47,7 @@
             "passwordRequirements": "Le mot de passe ne respecte pas les critères de sécurité",
             "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
             "passwordMustContain": "Le mot de passe devrait contenir au moins",
+            "oldPasswordIncorrect": "L'ancien mot de passe est incorrect",
             "minLength": "Au moins 8 caractères",
             "upperCase": "Une lettre majuscule",
             "lowerCase": "Une lettre minuscule",

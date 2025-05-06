@@ -6,7 +6,16 @@ const config = {
 }
 
 const axiosI = axios.create(config)
-const exclusions = ['/token/', '/handshake/', '/reset/', '/profile/', '/saml2/']
+const exclusions = [
+    '/saml2/login/',
+    '/saml2/logout/',
+    '/api/token/',
+    '/api/user/profile/',
+    '/api/user/login-handshake/',
+    '/api/user/send-reset-email/',
+    '/api/user/reset-password/',
+    '/api/user/change-password/',
+]
 
 const expired = (token: string): boolean => {
     if (!token) return true
