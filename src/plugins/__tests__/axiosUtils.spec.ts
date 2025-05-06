@@ -1,6 +1,6 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { isExpired, redirectToLogin, refreshToken } from '@/plugins/useAxios.ts'
-import axiosI from '@/plugins/axios.ts'
+import { axiosI } from '@/plugins/axios.ts'
 
 const mocks = vi.hoisted(() => ({
     location: {
@@ -33,6 +33,10 @@ describe('axios utils', () => {
         vi.stubGlobal('JSON', {
             parse: mocks.jsonParse,
         })
+    })
+
+    afterEach(() => {
+        vi.restoreAllMocks()
     })
 
     describe('redirectToLogin()', () => {

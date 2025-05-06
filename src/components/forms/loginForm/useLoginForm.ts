@@ -24,9 +24,7 @@ export function useLoginForm() {
                 message: t('forms.login.success'),
             })
             const route = useRoute()
-            await router.push(
-                (route.query.redirect as string | undefined) ?? { name: 'Home' }
-            )
+            await router.push((route.query.redirect as string | undefined) ?? { name: 'Home' })
         } catch (e) {
             password.value = ''
 
