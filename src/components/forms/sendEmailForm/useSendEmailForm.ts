@@ -1,6 +1,6 @@
 import { useComposableQuasar } from '@/composables/useComposableQuasar'
 import { ref } from 'vue'
-import axiosI from '@/plugins/axios.ts'
+import { axiosI } from '@/plugins/axios.ts'
 import { useI18n } from 'vue-i18n'
 import { AxiosError } from 'axios'
 

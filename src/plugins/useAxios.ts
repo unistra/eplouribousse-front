@@ -1,5 +1,14 @@
-import type { InternalAxiosRequestConfig } from 'axios'
-import axiosI from '@/plugins/axios.ts'
+import { axiosI } from '@/plugins/axios.ts'
+
+export const skippedRoutes: Readonly<string[]> = [
+    '/token/',
+    '/api/user/reset-password/',
+    '/api/user/send-reset-email/',
+    '/api/user/login-handshake/',
+    '/api/user/invite-handshake/',
+    '/cas/login/',
+    '/saml2/login/',
+]
 
 export const isExpired = (token: string): boolean => {
     if (!token) return true
@@ -15,33 +24,4 @@ export const redirectToLogin = async () => {
 export const refreshToken = async (): Promise<void> => {
     const response = await axiosI.post(`/token/refresh/`, { refresh: localStorage.getItem('JWT__refresh__token') })
     localStorage.setItem('JWT__access__token', response.data.access)
-}
-
-// Based on https://git.unistra.fr/vue-unistra/cas-authentication/-/blob/main/src/
-export const axiosRequestInterceptor = async (
-    config: InternalAxiosRequestConfig,
-): Promise<InternalAxiosRequestConfig> => {
-    // If the URL contains "/token/" the plugin lets the request pass.
-    if (config.url?.match(/\/token\//)) {
-        return config
-    }
-    if (localStorage.getItem('JWT__access__token') !== null) {
-        if (isExpired(localStorage.getItem('JWT__access__token') as string)) {
-            if (localStorage.getItem('JWT__refresh__token') !== null) {
-                if (isExpired(localStorage.getItem('JWT__refresh__token') as string)) {
-                    await redirectToLogin()
-                } else {
-                    await refreshToken()
-                }
-            } else {
-                await redirectToLogin()
-            }
-        }
-
-        config.headers.Authorization = `Bearer ${localStorage.getItem('JWT__access__token')}`
-    } else {
-        await redirectToLogin()
-    }
-
-    return config
 }

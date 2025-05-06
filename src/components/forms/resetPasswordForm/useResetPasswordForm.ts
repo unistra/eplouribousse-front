@@ -1,6 +1,6 @@
 import { useI18n } from 'vue-i18n'
 import { ref, computed } from 'vue'
-import axiosI from '@/plugins/axios.ts'
+import { axiosI } from '@/plugins/axios.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useRouter } from 'vue-router'
 import { AxiosError } from 'axios'
