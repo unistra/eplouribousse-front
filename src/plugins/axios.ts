@@ -1,68 +1,49 @@
-import axios from 'axios'
-import type { InternalAxiosRequestConfig } from 'axios'
+import axios, { type InternalAxiosRequestConfig } from 'axios'
+import { useAxios } from '@/composables/useAxios'
 
-const config = {
+const { isExpired, redirectToLogin, refreshToken, skippedRoutes } = useAxios()
+
+const configAuth = {
     baseURL: import.meta.env.VITE_APP_BASE_URL,
 }
+const axiosAuth = axios.create(configAuth) // NO INTERCEPTORS
 
-const axiosI = axios.create(config)
-const exclusions = [
-    '/saml2/login/',
-    '/saml2/logout/',
-    '/api/token/',
-    '/api/user/profile/',
-    '/api/user/login-handshake/',
-    '/api/user/send-reset-email/',
-    '/api/user/reset-password/',
-    '/api/user/change-password/',
-]
-
-const expired = (token: string): boolean => {
-    if (!token) return true
-    return JSON.parse(window.atob(token.split('.')[1])).exp < Math.trunc(Date.now() / 1000)
+const configAPI = {
+    baseURL: import.meta.env.VITE_APP_BASE_URL + '/api',
 }
-
-const login = async () => {
-    localStorage.removeItem('JWT__access__token')
-    localStorage.removeItem('JWT__refresh__token')
-    window.location.replace(`/login?redirect=${window.location.pathname}`)
-}
-
-export const refresh = async (): Promise<void> => {
-    const response = await axiosI.post(`/token/refresh/`, { refresh: localStorage.getItem('JWT__refresh__token') })
-    localStorage.setItem('JWT__access__token', response.data.access)
-}
+const axiosI = axios.create(configAPI) // WITH INTERCEPTORS
 
 // Based on https://git.unistra.fr/vue-unistra/cas-authentication/-/blob/main/src/
-axiosI.interceptors.request.use(
-    async (config: InternalAxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
-        if (config.url && exclusions.includes(config.url)) {
-            return config
-        }
-
-        if (localStorage.getItem('JWT__access__token') !== null) {
-            if (expired(localStorage.getItem('JWT__access__token') as string)) {
-                if (localStorage.getItem('JWT__refresh__token') !== null) {
-                    if (expired(localStorage.getItem('JWT__refresh__token') as string)) {
-                        await login()
-                    } else {
-                        await refresh()
-                    }
-                } else {
-                    await login()
-                }
-            }
-
-            config.headers.Authorization = `Bearer ${localStorage.getItem('JWT__access__token')}`
-        } else {
-            await login()
-        }
-
+export const axiosRequestInterceptor = async (
+    config: InternalAxiosRequestConfig,
+): Promise<InternalAxiosRequestConfig> => {
+    if (config.url && skippedRoutes.some((route) => config.url?.includes(route))) {
         return config
-    },
-    (error: unknown) => {
-        return Promise.reject(error)
-    },
-)
+    }
 
-export default axiosI
+    if (localStorage.getItem('JWT__access__token') !== null) {
+        if (isExpired(localStorage.getItem('JWT__access__token') as string)) {
+            if (localStorage.getItem('JWT__refresh__token') !== null) {
+                if (isExpired(localStorage.getItem('JWT__refresh__token') as string)) {
+                    await redirectToLogin()
+                } else {
+                    await refreshToken()
+                }
+            } else {
+                await redirectToLogin()
+            }
+        }
+
+        config.headers.Authorization = `Bearer ${localStorage.getItem('JWT__access__token')}`
+    } else {
+        await redirectToLogin()
+    }
+
+    return config
+}
+
+axiosI.interceptors.request.use(axiosRequestInterceptor, (error: unknown) => {
+    return Promise.reject(error)
+})
+
+export { axiosI, axiosAuth }

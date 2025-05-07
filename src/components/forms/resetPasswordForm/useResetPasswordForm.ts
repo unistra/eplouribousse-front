@@ -1,6 +1,6 @@
 import { useI18n } from 'vue-i18n'
 import { ref, computed, watch } from 'vue'
-import axiosI from '@/plugins/axios.ts'
+import { axiosI } from '@/plugins/axios.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useRouter } from 'vue-router'
 import { AxiosError } from 'axios'
@@ -16,7 +16,7 @@ export function useResetPasswordForm() {
     const newPassword = ref<string>('')
     const confirmPassword = ref<string>('')
     const token = ref<string | null>('')
-    const isLoading = ref(false)
+    const isLoading = ref<boolean>(false)
     const isNewPasswordValid = ref<boolean>(false)
 
     watch(newPassword, () => {
@@ -49,7 +49,7 @@ export function useResetPasswordForm() {
         isLoading.value = true
 
         try {
-            await axiosI.patch('/api/user/reset-password/', {
+            await axiosI.patch('/user/reset-password/', {
                 token: token.value,
                 newPassword: newPassword.value,
                 confirmPassword: confirmPassword.value,

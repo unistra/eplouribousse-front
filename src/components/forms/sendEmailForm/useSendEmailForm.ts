@@ -1,6 +1,6 @@
 import { useComposableQuasar } from '@/composables/useComposableQuasar'
 import { ref } from 'vue'
-import axiosI from '@/plugins/axios.ts'
+import { axiosI } from '@/plugins/axios.ts'
 import { useI18n } from 'vue-i18n'
 
 export function useSendEmailForm() {
@@ -13,7 +13,7 @@ export function useSendEmailForm() {
         console.log('test')
         isLoading.value = true
         try {
-            await axiosI.post('/api/user/send-reset-email/', {
+            await axiosI.post('/user/send-reset-email/', {
                 email: email.value,
             })
         } finally {

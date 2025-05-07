@@ -2,42 +2,44 @@ import { ref } from 'vue'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useRoute, useRouter } from 'vue-router'
 import { AxiosError } from 'axios'
-import { useAuthentication } from '@/composables/useAuthentication'
 import { useI18n } from 'vue-i18n'
-import axiosI from '@/plugins/axios'
+import { axiosAuth, axiosI } from '@/plugins/axios'
+import { useUserStore } from '@/stores/userStore.ts'
+
+const login = async (email: string, password: string) => {
+    const userStore = useUserStore()
+    const response = await axiosI.post<{ refresh: string; access: string }>('/token/', {
+        username: email,
+        password: password,
+    })
+
+    userStore.isAuth = true
+    localStorage.setItem('JWT__access__token', response.data.access)
+    localStorage.setItem('JWT__refresh__token', response.data.refresh)
+
+    const profile = await axiosI.get('/user/profile/')
+    localStorage.setItem('username', profile.data.username)
+}
 
 export function useLoginForm() {
     const { t } = useI18n()
     const { notify } = useComposableQuasar()
-    const { login } = useAuthentication()
     const router = useRouter()
     const route = useRoute()
 
     const email = ref<string>('')
     const password = ref<string>('')
     const isLoading = ref<boolean>(false)
-    const expanded = ref<boolean>(false)
 
-    async function shibb() {
+    async function loginViaShibbolet() {
         isLoading.value = true
         try {
-            await axiosI.get('/saml2/login/')
-        } catch (e) {
-            password.value = ''
-
-            if (e instanceof AxiosError && e.response?.status === 401) {
-                notify({
-                    type: 'negative',
-                    message: t('forms.login.credentialsError'),
-                })
-            } else {
-                notify({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        } finally {
-            isLoading.value = false
+            await axiosAuth.get('/saml2/login/')
+        } catch {
+            notify({
+                type: 'negative',
+                message: t('errors.unknown'),
+            })
         }
     }
 
@@ -74,8 +76,7 @@ export function useLoginForm() {
         email,
         password,
         isLoading,
-        expanded,
         onLogin,
-        shibb,
+        loginViaShibbolet,
     }
 }

@@ -3,7 +3,7 @@ import { useI18n } from 'vue-i18n'
 import { onMounted } from 'vue'
 import { useGlobalStore } from '@/stores/globalStore.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
-import axiosI from '@/plugins/axios'
+import { axiosI } from '@/plugins/axios'
 
 const { t } = useI18n()
 const globalStore = useGlobalStore()
@@ -21,7 +21,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="row">
+    <main class="row">
         <div class="col-3">
             {{ t('test') }}
             <QBtn
@@ -30,5 +30,5 @@ onMounted(() => {
                 @click="console.log('test')"
             />
         </div>
-    </div>
+    </main>
 </template>

@@ -22,6 +22,9 @@
         "placeholder": "Donnez ici toutes le informations utiles",
         "send": "Envoyer"
     },
+    "logout": {
+        "success": "Vous avez été déconnecté"
+    },
     "forms": {
         "fieldIsRequired": "Ce champ est requis",
         "login": {
@@ -36,7 +39,8 @@
             "clickHere": "Cliquez ici",
             "success": "Vous êtes désormais connecté",
             "localAccount": "Connexion Eplouribousse",
-            "renater": "Connexion via Renater"
+            "renater": "Connexion via Renater",
+            "or": "ou"
         },
         "password": {
             "passwordStrength": "Robustesse du mot de passe",
