@@ -8,6 +8,12 @@ const { t } = useI18n()
 const { dark } = useComposableQuasar()
 const userStore = useUserStore()
 const { tenantConfiguration, userPreferences } = storeToRefs(userStore)
+
+function updateDarkMode(darkMode: boolean) {
+    userPreferences.value.darkMode = darkMode
+    dark.set(darkMode)
+    localStorage.setItem('darkMode', darkMode.toString())
+}
 </script>
 
 <template>
@@ -36,7 +42,7 @@ const { tenantConfiguration, userPreferences } = storeToRefs(userStore)
                     :model-value="userPreferences.darkMode"
                     @update:model-value="
                         (newDarkMode) => {
-                            ;(userPreferences.darkMode = newDarkMode), dark.set(newDarkMode)
+                            updateDarkMode(newDarkMode)
                         }
                     "
                 />

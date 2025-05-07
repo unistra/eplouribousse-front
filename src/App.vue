@@ -5,8 +5,10 @@ import LayoutFooter from './components/layout/LayoutFooter.vue'
 import LayoutHeader from './components/layout/LayoutHeader.vue'
 import { useUserStore } from './stores/userStore'
 import axiosI from './plugins/axios'
+import { useComposableQuasar } from './composables/useComposableQuasar'
 
 const userStore = useUserStore()
+const { dark } = useComposableQuasar()
 
 onMounted(async () => {
     const tenantInfo = await axiosI.get('/api/consortium/')
@@ -24,6 +26,10 @@ onMounted(async () => {
     }
     if (localStorage.getItem('JWT__access__token') !== null) {
         userStore.isAuth = true
+    }
+    if (localStorage.getItem('darkMode') !== null && localStorage.getItem('darkMode') === 'true') {
+        userStore.userPreferences.darkMode = true
+        dark.set(true)
     }
 })
 </script>
