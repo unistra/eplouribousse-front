@@ -1,15 +1,17 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import { useHeaderLinks } from '@/composables/useNavLinks'
-import { useUserStore } from '@/stores/userStore'
 import { useAuthentication } from '@/composables/useAuthentication'
 import { useRouter } from 'vue-router'
+import { computed } from 'vue'
 
 const { t } = useI18n()
 const { logout } = useAuthentication()
-const userStore = useUserStore()
 const navLinks = useHeaderLinks()
 const router = useRouter()
+const isAuth = computed(() => {
+    return localStorage.getItem('username') !== null
+})
 
 async function onLogout() {
     logout()
@@ -29,7 +31,7 @@ async function onLogout() {
         <QItemSection>{{ t(`navigation.${navLink.label}`) }}</QItemSection>
     </QItem>
     <QItem
-        v-if="userStore.isAuth"
+        v-if="isAuth"
         dense
         class="text-white"
         clickable

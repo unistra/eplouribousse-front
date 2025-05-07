@@ -34,49 +34,47 @@
             "credentialsError": "Identifiants incorrects",
             "forgottenPassword": "Mot de passe oublié ?",
             "clickHere": "Cliquez ici",
-            "success": "Vous êtes désormais connecté"
+            "success": "Vous êtes désormais connecté",
+            "localAccount": "Connexion Eplouribousse",
+            "renater": "Connexion via Renater"
         },
-        "resetPassword": {
-            "title": "Réinitialiser le mot de passe",
+        "password": {
+            "passwordStrength": "Robustesse du mot de passe",
+            "weak": "Faible",
+            "oldPassword": "Ancien mot de passe",
             "newPassword": "Nouveau mot de passe",
             "confirmPassword": "Confirmer le nouveau mot de passe",
-            "submit": "Changer mon mot de passe",
-            "success": "Votre mot de passe a été réinitialisé avec succès",
             "passwordRequirements": "Le mot de passe ne respecte pas les critères de sécurité",
             "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
-            "passwordMustContain": "Le mot de passe doit contenir",
+            "passwordMustContain": "Le mot de passe devrait contenir au moins",
+            "oldPasswordIncorrect": "L'ancien mot de passe est incorrect",
             "minLength": "Au moins 8 caractères",
             "upperCase": "Une lettre majuscule",
             "lowerCase": "Une lettre minuscule",
             "digit": "Un chiffre",
             "specialChar": "Un caractère spécial",
-            "sendEmail": "Envoyer l'email",
-            "emailSent": "Email envoyé avec succès",
-            "emailNotSent": "Problème lors de l'envoi de l'email",
-            "incorrectEmail": "L'adresse mail n'est associée à aucun compte existant",
-            "token": "Jeton de validation",
-            "signatureHasExpired": "Le jeton a expiré",
-            "signatureDoesNotMatch": "Le jeton est invalide"
-        },
-        "changePassword": {
-            "title": "Changer de mot de passe",
-            "oldPassword": "Ancien mot de passe",
-            "newPassword": "Nouveau mot de passe",
-            "confirmPassword": "Confirmer le nouveau mot de passe",
-            "submit": "Changer mon mot de passe",
-            "success": "Votre mot de passe a été changé avec succès",
-            "passwordRequirements": "Le mot de passe ne respecte pas les critères de sécurité",
-            "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
-            "oldPasswordIncorrect": "L'ancien mot de passe est incorrect",
-            "passwordMustContain": "Le mot de passe doit contenir",
-            "minLength": "Au moins 8 caractères",
-            "upperCase": "Une lettre majuscule",
-            "lowerCase": "Une lettre minuscule",
-            "digit": "Un chiffre",
-            "specialChar": "Un caractère spécial"
+            "change": {
+                "title": "Changer de mot de passe",
+                "submit": "Changer mon mot de passe",
+                "success": "Votre mot de passe a été changé avec succès"
+            },
+            "reset": {
+                "title": "Réinitialiser le mot de passe",
+                "confirmPassword": "Confirmer le nouveau mot de passe",
+                "submit": "Réinitialiser mon mot de passe",
+                "success": "Votre mot de passe a été réinitialisé avec succès",
+                "sendEmail": "Envoyer l'email",
+                "emailSent": "Si un compte est trouvé à l'adresse \"{email}\", vous allez recevoir un email pour réinitialiser votre mot de passe",
+                "emailNotSent": "Problème lors de l'envoi de l'email",
+                "incorrectEmail": "L'adresse mail n'est associée à aucun compte existant",
+                "token": "Jeton de validation",
+                "signatureHasExpired": "Le jeton a expiré",
+                "signatureDoesNotMatch": "Le jeton est invalide"
+            }
         }
     },
     "errors": {
-        "unknown": "Une erreur est survenue"
+        "unknown": "Une erreur est survenue",
+        "retry": "veuillez réessayer"
     }
 }

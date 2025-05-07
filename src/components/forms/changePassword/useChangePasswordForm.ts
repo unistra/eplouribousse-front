@@ -1,29 +1,27 @@
 import { useI18n } from 'vue-i18n'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { axiosI } from '@/plugins/axios.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useRouter } from 'vue-router'
 import { AxiosError } from 'axios'
+import { useFormUtils } from '@/composables/useFormUtils'
 
 export function useChangePasswordForm() {
     const { t } = useI18n()
-    const router = useRouter()
     const { notify } = useComposableQuasar()
+    const { getPasswordStrength } = useFormUtils()
+    const router = useRouter()
 
-    const oldPassword = ref('')
-    const newPassword = ref('')
-    const confirmPassword = ref('')
+    const passwordStrength = ref<number>(0)
+    const oldPassword = ref<string>('')
+    const newPassword = ref<string>('')
+    const confirmPassword = ref<string>('')
     const isLoading = ref(false)
+    const isNewPasswordValid = ref<boolean>(false)
 
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/
-    // ⚠️ WARNING ⚠️ //
-    // Backend is actually using zxcvbn as validator
-    // This is not actually the case
-    // MAKE SURE to change your password with a strong enough one
-
-    const isNewPasswordValid = computed(() => {
-        if (!newPassword.value) return true // Don't show error if empty
-        return passwordRegex.test(newPassword.value)
+    watch(newPassword, () => {
+        passwordStrength.value = getPasswordStrength(newPassword.value)
+        isNewPasswordValid.value = passwordStrength.value >= 3
     })
 
     const doPasswordsMatch = computed(() => {
@@ -52,7 +50,7 @@ export function useChangePasswordForm() {
 
         try {
             await axiosI.patch(
-                '/user/change-password/',
+                '/api/user/change-password/',
                 {
                     oldPassword: oldPassword.value,
                     newPassword: newPassword.value,
@@ -67,7 +65,7 @@ export function useChangePasswordForm() {
 
             notify({
                 type: 'positive',
-                message: t('forms.changePassword.success'),
+                message: t('forms.password.change.success'),
             })
 
             await router.push({ path: '/' })
@@ -75,7 +73,7 @@ export function useChangePasswordForm() {
             if (e instanceof AxiosError && e.response?.status === 400) {
                 notify({
                     type: 'negative',
-                    message: t('forms.changePassword.oldPasswordIncorrect'),
+                    message: t('forms.password.oldPasswordIncorrect'),
                 })
             } else {
                 notify({
@@ -95,6 +93,7 @@ export function useChangePasswordForm() {
     return {
         oldPassword,
         newPassword,
+        passwordStrength,
         confirmPassword,
         isLoading,
         isNewPasswordValid,

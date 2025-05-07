@@ -24,6 +24,8 @@
     "dependencies": {
         "@quasar/extras": "^1.16.17",
         "@sentry/vue": "^9.11.0",
+        "@zxcvbn-ts/core": "^3.0.4",
+        "@zxcvbn-ts/language-common": "^3.0.4",
         "axios": "^1.8.4",
         "pinia": "^3.0.1",
         "quasar": "^2.18.1",
