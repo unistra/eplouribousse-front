@@ -4,6 +4,7 @@ import { useHeaderLinks } from '@/composables/useNavLinks'
 import { useAuthentication } from '@/composables/useAuthentication'
 import { useRouter } from 'vue-router'
 import { computed } from 'vue'
+import { useGlobalStore } from '@/stores/globalStore.ts'
 
 const { t } = useI18n()
 const { logout } = useAuthentication()
@@ -15,6 +16,10 @@ const isAuth = computed(() => {
 
 async function onLogout() {
     logout()
+    const { addNotify } = useGlobalStore()
+    addNotify({
+        message: t('logout.success'),
+    })
     await router.push({ name: 'Home' })
 }
 </script>

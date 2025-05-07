@@ -36,7 +36,8 @@
             "clickHere": "Cliquez ici",
             "success": "Vous êtes désormais connecté",
             "localAccount": "Connexion Eplouribousse",
-            "renater": "Connexion via Renater"
+            "renater": "Connexion via Renater",
+            "or": "ou"
         },
         "password": {
             "passwordStrength": "Robustesse du mot de passe",
