@@ -69,6 +69,14 @@ const routes: RouteRecordRaw[] = [
             title: 'Handshake',
         },
     },
+    {
+        path: '/settings',
+        name: 'Settings',
+        component: () => import('@/views/SettingsView.vue'),
+        meta: {
+            title: 'Paramètres',
+        },
+    },
 ]
 
 export default routes

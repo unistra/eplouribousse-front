@@ -22,8 +22,8 @@ const { tenantConfiguration, userPreferences } = storeToRefs(userStore)
                 <QItem
                     v-close-popup
                     clickable
-                    to="/"
                     class="text-white"
+                    :to="{ name: 'Settings' }"
                 >
                     <QItemSection>
                         {{ t('settings.core') }}
