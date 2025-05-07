@@ -22,11 +22,7 @@ onMounted(async () => {
         localStorage.setItem('JWT__access__token', response.data.access)
         localStorage.setItem('JWT__refresh__token', response.data.refresh)
 
-        const profile = await axiosI.get('/user/profile/', {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('JWT__access__token')}`,
-            },
-        })
+        const profile = await axiosI.get('/user/profile/')
         localStorage.setItem('username', profile.data.username)
 
         await router.push({

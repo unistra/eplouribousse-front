@@ -1,12 +1,13 @@
 import { axiosI } from '@/plugins/axios.ts'
 
 export const skippedRoutes: Readonly<string[]> = [
-    '/api/token/',
-    '/api/token/refresh/',
-    '/api/user/reset-password/',
-    '/api/user/send-reset-email/',
-    '/api/user/login-handshake/',
-    '/api/user/invite-handshake/',
+    '/token/',
+    '/token/refresh/',
+    '/user/reset-password/',
+    '/user/send-reset-email/',
+    '/user/login-handshake/',
+    '/user/invite-handshake/',
+    '/consortium/',
     '/cas/login/',
     '/saml2/login/',
 ]
