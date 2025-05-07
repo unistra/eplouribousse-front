@@ -11,9 +11,17 @@ const userStore = useUserStore()
         <h1>{{ t('settings.core') }}</h1>
     </div>
     <div
-        class="container-left"
+        class="row"
         v-if="userStore.isAuth"
     >
-        <h4>{{ t('settings.account') }}</h4>
+        <div class="col-4">
+            <h4>{{ t('settings.account') }}</h4>
+            <br />
+            <ul>
+                <li>
+                    <RouterLink :to="{ name: 'changePassword' }">{{ t('settings.changePassword') }}</RouterLink>
+                </li>
+            </ul>
+        </div>
     </div>
 </template>

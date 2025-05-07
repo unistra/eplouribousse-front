@@ -58,7 +58,7 @@ function submitEmailForm() {
 </template>
 
 <style>
-.vertical_space {
+.vertical-space {
     padding-bottom: 4rem;
 }
 </style>
