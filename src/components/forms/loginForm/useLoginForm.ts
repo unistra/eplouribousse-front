@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { AxiosError } from 'axios'
 import { useAuthentication } from '@/composables/useAuthentication'
 import { useI18n } from 'vue-i18n'
-import { axiosI } from '@/plugins/axios'
+import { axiosAuth } from '@/plugins/axios'
 
 export function useLoginForm() {
     const { t } = useI18n()
@@ -16,12 +16,11 @@ export function useLoginForm() {
     const email = ref<string>('')
     const password = ref<string>('')
     const isLoading = ref<boolean>(false)
-    const expanded = ref<boolean>(false)
 
     async function shibb() {
         isLoading.value = true
         try {
-            await axiosI.get('/saml2/login/')
+            await axiosAuth.get('/saml2/login/')
         } catch (e) {
             password.value = ''
 
@@ -74,7 +73,6 @@ export function useLoginForm() {
         email,
         password,
         isLoading,
-        expanded,
         onLogin,
         shibb,
     }

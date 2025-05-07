@@ -27,7 +27,8 @@ vi.mock('@/plugins/useAxios.ts', async () => {
         isExpired: mocks.isExpired,
         refreshToken: mocks.refreshToken,
         skippedRoutes: [
-            '/token/',
+            '/api/token/',
+            '/api/token/refresh/',
             '/api/user/reset-password/',
             '/api/user/send-reset-email/',
             '/api/user/login-handshake/',
