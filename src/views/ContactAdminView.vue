@@ -18,41 +18,43 @@ function submitEmailForm() {
 </script>
 
 <template>
-    <div class="container-center vertical_space">
-        <h1>{{ t('contactAdmin.title') }}</h1>
-    </div>
-    <div class="row">
-        <div class="col-4">
-            <QForm @submit.prevent="submitEmailForm">
-                <QSelect
-                    :label="t('contactAdmin.object')"
-                    :options="objects_available"
-                    emit-value
-                    map-options
-                    v-model="object"
-                    outlined
-                    required
-                    style="padding-bottom: 2rem"
-                />
-                <QInput
-                    :hint="t('contactAdmin.message')"
-                    :label="t('contactAdmin.placeholder')"
-                    :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
-                    v-model="subject"
-                    reactive-rules
-                    counter
-                    outlined
-                    style="padding-bottom: 2rem"
-                    type="textarea"
-                />
-                <QBtn
-                    :label="t('contactAdmin.send')"
-                    outline
-                    type="submit"
-                />
-            </QForm>
+    <main>
+        <div class="container-center vertical_space">
+            <h1>{{ t('contactAdmin.title') }}</h1>
         </div>
-    </div>
+        <div class="row">
+            <div class="col-4">
+                <QForm @submit.prevent="submitEmailForm">
+                    <QSelect
+                        :label="t('contactAdmin.object')"
+                        :options="objects_available"
+                        emit-value
+                        map-options
+                        v-model="object"
+                        outlined
+                        required
+                        style="padding-bottom: 2rem"
+                    />
+                    <QInput
+                        :hint="t('contactAdmin.message')"
+                        :label="t('contactAdmin.placeholder')"
+                        :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
+                        v-model="subject"
+                        reactive-rules
+                        counter
+                        outlined
+                        style="padding-bottom: 2rem"
+                        type="textarea"
+                    />
+                    <QBtn
+                        :label="t('contactAdmin.send')"
+                        outline
+                        type="submit"
+                    />
+                </QForm>
+            </div>
+        </div>
+    </main>
 </template>
 
 <style>

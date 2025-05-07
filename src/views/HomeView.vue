@@ -21,7 +21,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="row">
+    <main class="row">
         <div class="col-3">
             {{ t('test') }}
             <QBtn
@@ -30,5 +30,5 @@ onMounted(() => {
                 @click="console.log('test')"
             />
         </div>
-    </div>
+    </main>
 </template>

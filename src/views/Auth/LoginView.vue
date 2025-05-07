@@ -6,7 +6,7 @@ import LoginForm from '@/components/forms/loginForm/LoginForm.vue'
     <!-- - Select with different CAS (if none, do not display) -->
     <!-- - Renater -->
     <!-- - Login form -->
-    <div class="container-center">
+    <main class="container-center">
         <LoginForm />
-    </div>
+    </main>
 </template>
