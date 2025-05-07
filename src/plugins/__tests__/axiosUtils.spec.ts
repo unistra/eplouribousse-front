@@ -1,7 +1,8 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
-import { isExpired, redirectToLogin, refreshToken } from '@/plugins/useAxios.ts'
 import { axiosI } from '@/plugins/axios.ts'
+import { useAxios } from '@/composables/useAxios'
 
+const { isExpired, redirectToLogin, refreshToken } = useAxios()
 const mocks = vi.hoisted(() => ({
     location: {
         pathname: '/test',

@@ -21,8 +21,8 @@ const mocks = vi.hoisted(() => ({
     refreshToken: vi.fn(),
 }))
 
-vi.mock('@/plugins/useAxios.ts', async () => {
-    return {
+vi.mock('@/composables/useAxios.ts', async () => ({
+    useAxios: () => ({
         redirectToLogin: mocks.redirectToLogin,
         isExpired: mocks.isExpired,
         refreshToken: mocks.refreshToken,
@@ -35,8 +35,8 @@ vi.mock('@/plugins/useAxios.ts', async () => {
             '/cas/login/',
             '/saml2/login/',
         ],
-    }
-})
+    }),
+}))
 
 const useLocalConfig = () => structuredClone(baseConfigAxios)
 

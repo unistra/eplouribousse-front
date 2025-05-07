@@ -1,5 +1,7 @@
 import axios, { type InternalAxiosRequestConfig } from 'axios'
-import { isExpired, redirectToLogin, refreshToken, skippedRoutes } from '@/plugins/useAxios.ts'
+import { useAxios } from '@/composables/useAxios'
+
+const { isExpired, redirectToLogin, refreshToken, skippedRoutes } = useAxios()
 
 const configAuth = {
     baseURL: import.meta.env.VITE_APP_BASE_URL,

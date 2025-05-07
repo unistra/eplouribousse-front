@@ -16,7 +16,7 @@ export function useResetPasswordForm() {
     const newPassword = ref<string>('')
     const confirmPassword = ref<string>('')
     const token = ref<string | null>('')
-    const isLoading = ref(false)
+    const isLoading = ref<boolean>(false)
     const isNewPasswordValid = ref<boolean>(false)
 
     watch(newPassword, () => {
