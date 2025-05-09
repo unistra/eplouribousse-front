@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import LinearProgress from '@/components/utils/linearProgress/LinearProgress.vue'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { QSlideTransition, type ValidationRule } from 'quasar'
-import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
-import { dictionary } from '@zxcvbn-ts/language-common'
 import type { QInput } from 'quasar'
+import { usePasswordValidators } from '@/composables/usePasswordValidators.ts'
 
 const { t } = useI18n()
+const { getPasswordStrength } = usePasswordValidators()
 
 const props = defineProps<{
     modelValue: string
@@ -23,15 +23,6 @@ const isPasswordVisible = ref<boolean>(false)
 const icon = computed(() => (isPasswordVisible.value ? 'mdi-eye-off-outline' : 'mdi-eye-outline'))
 const passwordVisibilityLabel = computed(() => `forms.password.isVisibleTooltip.${isPasswordVisible.value.toString()}`)
 const passwordStrength = ref(0)
-
-const getPasswordStrength = (password: string) => {
-    zxcvbnOptions.setOptions({
-        dictionary: {
-            ...dictionary,
-        },
-    })
-    return zxcvbn(password).score as number
-}
 
 const emit = defineEmits<{
     'update:modelValue': [value: string]

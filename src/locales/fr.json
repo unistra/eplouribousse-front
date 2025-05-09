@@ -30,8 +30,6 @@
         "login": {
             "email": "Adresse email",
             "password": "Mot de passe",
-            "showPassword": "Afficher le mot de passe",
-            "hidePassword": "Masquer le mot de passe",
             "submit": "Se connecter",
             "forgotPassword": "Mot de passe oublié ?",
             "credentialsError": "Identifiants incorrects",
@@ -43,6 +41,10 @@
             "or": "ou"
         },
         "password": {
+            "isVisibleTooltip": {
+                "false": "Afficher le mot de passe",
+                "true": "Masquer le mot de passe"
+            },
             "passwordStrength": "Robustesse du mot de passe",
             "weak": "Faible",
             "oldPassword": "Ancien mot de passe",
@@ -75,6 +77,14 @@
                 "signatureHasExpired": "Le jeton a expiré",
                 "signatureDoesNotMatch": "Le jeton est invalide"
             }
+        },
+        "invite": {
+            "title": "Inviter quelqu'un à rejoindre Eplouribousse",
+            "email": "Adresse e-mail",
+            "send": "Envoyer",
+            "inviteSentTo": "L'invitation a bien été envoyée à",
+            "emailAlreadyLinked": "Cette adresse e-mail est déjà liée à un compte",
+            "emailNotSent": "l'invitation n'a pas pu être envoyée"
         }
     },
     "errors": {
