@@ -1,5 +1,5 @@
 import { useUserStore } from '@/stores/userStore'
-import { axiosAuth } from '@/plugins/axios.ts'
+import { axiosAuth } from '@/plugins/axios/axios.ts'
 
 export function useAuthentication() {
     async function logout() {

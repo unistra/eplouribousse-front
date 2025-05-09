@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { axiosI } from '@/plugins/axios.ts'
+import { axiosI } from '@/plugins/axios/axios.ts'
 import { AxiosError } from 'axios'
 import type { ComposerTranslation } from 'vue-i18n'
 import type { QNotifyCreateOptions } from 'quasar'

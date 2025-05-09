@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { axiosI } from '@/plugins/axios.ts'
+import { axiosI } from '@/plugins/axios/axios.ts'
 import { useGlobalStore } from '@/stores/globalStore.ts'
 import { useI18n } from 'vue-i18n'
 import { onMounted } from 'vue'
