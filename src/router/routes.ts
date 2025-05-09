@@ -69,6 +69,16 @@ const routes: RouteRecordRaw[] = [
             title: 'Handshake',
         },
     },
+    {
+        path: '/invite',
+        name: 'inviteNewUser',
+        component: () => import('@/views/InviteView.vue'),
+        meta: {
+            title: 'Invite new user',
+            hiddenInNav: true,
+            unistraCasAuthentication: true,
+        },
+    },
 ]
 
 export default routes
