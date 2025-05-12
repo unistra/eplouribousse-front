@@ -24,12 +24,12 @@ const {
             v-model="newPassword"
             :label="t('forms.password.newPassword')"
             :linear-progress="true"
-            :rules="[() => isPasswordStrongEnough || t('forms.password.passwordRequirements')]"
+            :rules="[() => isPasswordStrongEnough || t('forms.password.validation.passwordRequirements')]"
         />
         <PasswordField
             v-model="confirmPassword"
             :label="t('forms.password.confirmPassword')"
-            :rules="[() => arePasswordsMatching || t('forms.password.passwordsDoNotMatch')]"
+            :rules="[() => arePasswordsMatching || t('forms.password.validation.passwordsDoNotMatch')]"
         />
 
         <div class="password-requirements">

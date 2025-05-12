@@ -24,7 +24,7 @@ export function useChangePasswordForm() {
         if (!isPasswordStrongEnough.value) {
             notify({
                 type: 'negative',
-                message: t('forms.changePassword.passwordRequirements'),
+                message: t('forms.password.validation.passwordRequirements'),
             })
             return
         }
@@ -32,7 +32,7 @@ export function useChangePasswordForm() {
         if (!arePasswordsMatching.value) {
             notify({
                 type: 'negative',
-                message: t('forms.changePassword.passwordsDoNotMatch'),
+                message: t('forms.password.validation.passwordsDoNotMatch'),
             })
             return
         }
