@@ -1,89 +1,33 @@
 <script setup lang="ts">
-import { useFormUtils } from '@/composables/useFormUtils.ts'
 import { useI18n } from 'vue-i18n'
 import { useResetPasswordForm } from './useResetPasswordForm'
+import PasswordField from '@/components/utils/form/PasswordField.vue'
 import { onMounted } from 'vue'
-import LinearProgress from '@/components/utils/linearProgress/LinearProgress.vue'
+import { useRoute } from 'vue-router'
 const { t } = useI18n()
 
-const {
-    newPassword,
-    confirmPassword,
-    passwordStrength,
-    token,
-    isLoading,
-    isNewPasswordValid,
-    doPasswordsMatch,
-    resetPassword,
-} = useResetPasswordForm()
-const { icon, passwordVisibility, passwordVisibilityLabel, updatePasswordVisibility } = useFormUtils()
+const { newPassword, confirmPassword, token, isLoading, isPasswordStrongEnough, arePasswordsMatching, resetPassword } =
+    useResetPasswordForm()
 
 onMounted(() => {
-    const url = new URLSearchParams(window.location.search)
-    url.has('token') ? (token.value = url.get('token')) : (token.value = '')
+    const route = useRoute()
+    if (route.query?.token) token.value = route.query.token as string
 })
 </script>
 
 <template>
     <QForm @submit.prevent="resetPassword">
-        <QInput
-            :label="t('forms.password.newPassword')"
-            :type="passwordVisibility"
+        <PasswordField
             v-model="newPassword"
-            data-testid="new-password"
-            required
-            autofocus
-            :rules="[() => isNewPasswordValid || t('forms.password.passwordRequirements')]"
-            ><template #append>
-                <QBtn
-                    flat
-                    dense
-                    rounded
-                    data-testid="visibility-button"
-                    :icon="icon"
-                    @click="updatePasswordVisibility"
-                >
-                    <QTooltip>
-                        {{ t('forms.login.' + passwordVisibilityLabel) }}
-                    </QTooltip>
-                </QBtn>
-            </template></QInput
-        >
-        <LinearProgress
-            :password-strength="passwordStrength"
-            v-if="newPassword.length > 0"
-            data-testid="progress"
+            :label="t('forms.password.newPassword')"
+            :linear-progress="true"
+            :rules="[() => isPasswordStrongEnough || t('forms.password.validation.passwordRequirements')]"
         />
 
-        <QInput
+        <PasswordField
             v-model="confirmPassword"
             :label="t('forms.password.confirmPassword')"
-            :type="passwordVisibility"
-            data-testid="confirm-password"
-            required
-            :rules="[() => doPasswordsMatch || t('forms.password.passwordsDoNotMatch')]"
-            ><template #append>
-                <QBtn
-                    flat
-                    dense
-                    rounded
-                    data-testid="visibility-button"
-                    :icon="icon"
-                    @click="updatePasswordVisibility"
-                >
-                    <QTooltip>
-                        {{ t('forms.login.' + passwordVisibilityLabel) }}
-                    </QTooltip>
-                </QBtn>
-            </template></QInput
-        >
-        <QInput
-            :label="t('forms.password.reset.token')"
-            :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
-            reactive-rules
-            v-model="token"
-            type="text"
-            data-testid="token-input"
+            :rules="[() => arePasswordsMatching || t('forms.password.validation.passwordsDoNotMatch')]"
         />
 
         <div class="password-requirements">
