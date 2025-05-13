@@ -22,7 +22,7 @@ const mock = vi.hoisted(() => {
             newPassword: 'NewPassword123!',
             confirmPassword: 'NewPassword123!',
             isLoading: false,
-            changePassword: vi.fn(() => console.log('changePassword !!!!')),
+            changePassword: vi.fn(),
             isPasswordStrongEnough: true,
             arePasswordsMatching: true,
         },
