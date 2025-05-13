@@ -24,12 +24,32 @@
     align-items: center;
 }
 
+.margin-b1 {
+    margin-bottom: 1rem;
+}
+
+.margin-b2 {
+    margin-bottom: 2rem;
+}
+
+.margin-t1 {
+    margin-top: 1rem;
+}
+
+.margin-t2 {
+    margin-top: 2rem;
+}
+
 a,
 .green {
     text-decoration: none;
     color: hsla(160, 100%, 37%, 1);
     transition: 0.4s;
     padding: 3px;
+}
+
+h1 {
+    font-size: clamp(2rem, 1.799rem + 0.85vw, 2.75rem)!important;
 }
 
 @media (hover: hover) {

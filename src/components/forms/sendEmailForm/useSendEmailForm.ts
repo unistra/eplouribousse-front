@@ -10,7 +10,6 @@ export function useSendEmailForm() {
     const isLoading = ref<boolean>(false)
 
     async function sendEmail() {
-        console.log('test')
         isLoading.value = true
         try {
             await axiosI.post('/user/send-reset-email/', {

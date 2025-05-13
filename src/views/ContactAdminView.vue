@@ -19,7 +19,7 @@ function submitEmailForm() {
 
 <template>
     <main>
-        <div class="container-center vertical_space">
+        <div class="container-center margin-b2">
             <h1>{{ t('contactAdmin.title') }}</h1>
         </div>
         <div class="row">
@@ -56,9 +56,3 @@ function submitEmailForm() {
         </div>
     </main>
 </template>
-
-<style>
-.vertical-space {
-    padding-bottom: 4rem;
-}
-</style>

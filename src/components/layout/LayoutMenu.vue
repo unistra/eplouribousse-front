@@ -23,7 +23,7 @@ function updateDarkMode(darkMode: boolean) {
         icon="mdi-account-circle-outline"
         round
     >
-        <QMenu :class="tenantConfiguration.color">
+        <QMenu :style="'background-color: ' + tenantConfiguration?.settings.color">
             <QList>
                 <QItem
                     v-close-popup
@@ -50,5 +50,3 @@ function updateDarkMode(darkMode: boolean) {
         </QMenu>
     </QBtn>
 </template>
-
-<style scoped></style>

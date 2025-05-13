@@ -12,7 +12,7 @@ const rightDrawerOpen = ref<boolean>(false)
 
 <template>
     <QHeader
-        :class="userStore.tenantConfiguration.color"
+        :style="'background-color: ' + tenantConfiguration?.settings.color"
         elevated
     >
         <QToolbar>
@@ -22,7 +22,7 @@ const rightDrawerOpen = ref<boolean>(false)
                     to="/"
                     class="text-white"
                 >
-                    Eplouribousse - {{ tenantConfiguration.tenantName }}
+                    Eplouribousse - {{ tenantConfiguration?.name }}
                 </QItem>
             </QToolbarTitle>
             <div class="navbar-links gt-md">
@@ -39,7 +39,7 @@ const rightDrawerOpen = ref<boolean>(false)
         </QToolbar>
     </QHeader>
     <QDrawer
-        :class="tenantConfiguration.color"
+        :style="'background-color: ' + tenantConfiguration?.settings.color"
         v-model="rightDrawerOpen"
         bordered
         side="right"
