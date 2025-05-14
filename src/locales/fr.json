@@ -51,7 +51,8 @@
             "weak": "Faible",
             "oldPassword": "Ancien mot de passe",
             "newPassword": "Nouveau mot de passe",
-            "confirmPassword": "Confirmer le nouveau mot de passe",
+            "confirmNewPassword": "Confirmer le nouveau mot de passe",
+            "confirmPassword": "Confirmer le mot de passe",
             "validation": {
                 "passwordRequirements": "Le mot de passe ne respecte pas les critères de sécurité",
                 "passwordsDoNotMatch": "Les mots de passe ne correspondent pas"

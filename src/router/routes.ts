@@ -1,5 +1,12 @@
 import type { RouteRecordRaw } from 'vue-router'
 
+declare module 'vue-router' {
+    interface RouteMeta {
+        title: string
+        require?: string[]
+    }
+}
+
 const routes: RouteRecordRaw[] = [
     {
         path: '/',
@@ -7,8 +14,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/HomeView.vue'),
         meta: {
             title: 'Accueil',
-            hiddenInNav: true,
-            unistraCasAuthentication: true,
         },
     },
     {
@@ -17,8 +22,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/ContactAdminView.vue'),
         meta: {
             title: 'Contact',
-            hiddenInNav: false,
-            unistraCasAuthentication: true,
         },
     },
     {
@@ -27,8 +30,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/Auth/LoginView.vue'),
         meta: {
             title: 'Connexion',
-            hiddenInNav: false,
-            unistraCasAuthentication: true,
         },
     },
     {
@@ -37,8 +38,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/Auth/ChangePasswordView.vue'),
         meta: {
             title: 'Changer le mot de passe',
-            hiddenInNav: true,
-            unistraCasAuthentication: true,
+            require: [],
         },
     },
     {
@@ -47,8 +47,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/Auth/ResetPasswordView.vue'),
         meta: {
             title: 'Réinitialiser le mot de passe',
-            hiddenInNav: true,
-            unistraCasAuthentication: true,
         },
     },
     {
@@ -57,8 +55,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/Auth/SendEmailView.vue'),
         meta: {
             title: 'Réinitialiser le mot de passe',
-            hiddenInNav: true,
-            unistraCasAuthentication: true,
         },
     },
     {
@@ -75,6 +71,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/SettingsView.vue'),
         meta: {
             title: 'Paramètres',
+            require: [],
         },
     },
 ]

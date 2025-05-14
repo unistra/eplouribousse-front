@@ -1,18 +1,18 @@
 <script lang="ts" setup>
 import { useUserStore } from '@/stores/userStore'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import LayoutMenu from './LayoutMenu.vue'
 import LayoutNavLinks from './LayoutNavLinks.vue'
 import { storeToRefs } from 'pinia'
 
 const userStore = useUserStore()
-const { tenantConfiguration } = storeToRefs(userStore)
+const { tenantConfiguration, tenantColor } = storeToRefs(userStore)
 const rightDrawerOpen = ref<boolean>(false)
 </script>
 
 <template>
     <QHeader
-        :style="'background-color: ' + tenantConfiguration?.settings.color"
+        :style="tenantColor"
         elevated
     >
         <QToolbar>
@@ -39,7 +39,7 @@ const rightDrawerOpen = ref<boolean>(false)
         </QToolbar>
     </QHeader>
     <QDrawer
-        :style="'background-color: ' + tenantConfiguration?.settings.color"
+        :style="tenantColor"
         v-model="rightDrawerOpen"
         bordered
         side="right"

@@ -7,7 +7,7 @@ import { storeToRefs } from 'pinia'
 const { t } = useI18n()
 const { dark } = useComposableQuasar()
 const userStore = useUserStore()
-const { tenantConfiguration, userPreferences } = storeToRefs(userStore)
+const { tenantConfiguration, userPreferences, tenantColor } = storeToRefs(userStore)
 
 function updateDarkMode(darkMode: boolean) {
     userPreferences.value.darkMode = darkMode
@@ -23,13 +23,13 @@ function updateDarkMode(darkMode: boolean) {
         icon="mdi-account-circle-outline"
         round
     >
-        <QMenu :style="'background-color: ' + tenantConfiguration?.settings.color">
+        <QMenu :style="tenantColor">
             <QList>
                 <QItem
                     v-close-popup
                     clickable
                     class="text-white"
-                    :to="{ name: 'Settings' }"
+                    :to="{ name: 'settings' }"
                 >
                     <QItemSection>
                         {{ t('settings.core') }}
@@ -40,11 +40,7 @@ function updateDarkMode(darkMode: boolean) {
                     class="text-white"
                     :label="t('settings.darkMode')"
                     :model-value="userPreferences.darkMode"
-                    @update:model-value="
-                        (newDarkMode) => {
-                            updateDarkMode(newDarkMode)
-                        }
-                    "
+                    @update:model-value="updateDarkMode"
                 />
             </QList>
         </QMenu>

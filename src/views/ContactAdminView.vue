@@ -19,9 +19,7 @@ function submitEmailForm() {
 
 <template>
     <main>
-        <div class="container-center margin-b2">
-            <h1>{{ t('contactAdmin.title') }}</h1>
-        </div>
+        <h1 style="text-align: center">{{ t('contactAdmin.title') }}</h1>
         <div class="row">
             <div class="col-4">
                 <QForm @submit.prevent="submitEmailForm">
