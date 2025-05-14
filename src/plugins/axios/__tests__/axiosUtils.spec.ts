@@ -1,8 +1,7 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
-import { axiosI } from '@/plugins/axios.ts'
-import { useAxios } from '@/composables/useAxios'
+import { axiosI } from '@/plugins/axios/axios.ts'
+import { redirectToLogin, refreshToken } from '@/plugins/axios/axiosUtils.ts'
 
-const { isExpired, redirectToLogin, refreshToken } = useAxios()
 const mocks = vi.hoisted(() => ({
     location: {
         pathname: '/test',
@@ -46,31 +45,6 @@ describe('axios utils', () => {
             expect(localStorage.removeItem).toHaveBeenCalledWith('JWT__access__token')
             expect(localStorage.removeItem).toHaveBeenCalledWith('JWT__refresh__token')
             expect(window.location.replace).toHaveBeenCalledWith(`/login?redirect=${mocks.location.pathname}`)
-        })
-    })
-
-    describe('isExpired()', () => {
-        test('should return true if token is expired', () => {
-            mocks.windowAtob.mockReturnValue('{"exp":123}')
-            mocks.jsonParse.mockReturnValue({ exp: Math.trunc(Date.now() / 1000) - 3600 }) // Set exp to 1 hour in the past
-
-            const result = isExpired('test')
-
-            expect(result).toBe(true)
-            expect(mocks.windowAtob).toHaveBeenCalled()
-            expect(mocks.jsonParse).toHaveBeenCalled()
-        })
-
-        test('should return false if token is not expired', () => {
-            // Setup mocks
-            mocks.windowAtob.mockReturnValue('{"exp":123}')
-            mocks.jsonParse.mockReturnValue({ exp: Math.trunc(Date.now() / 1000) + 3600 }) // Set exp to 1 hour in the future
-
-            const result = isExpired('test')
-
-            expect(result).toBe(false)
-            expect(mocks.windowAtob).toHaveBeenCalled()
-            expect(mocks.jsonParse).toHaveBeenCalled()
         })
     })
 

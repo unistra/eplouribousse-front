@@ -3,7 +3,7 @@ import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useRoute, useRouter } from 'vue-router'
 import { AxiosError } from 'axios'
 import { useI18n } from 'vue-i18n'
-import { axiosAuth, axiosI } from '@/plugins/axios'
+import { axiosAuth, axiosI } from '@/plugins/axios/axios.ts'
 import { useUserStore } from '@/stores/userStore.ts'
 
 const login = async (email: string, password: string) => {

@@ -1,6 +1,6 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest'
 import { baseConfigAxios } from '~/fixtures/axios.ts'
-import { axiosRequestInterceptor } from '@/plugins/axios.ts'
+import { axiosRequestInterceptor } from '@/plugins/axios/axios.ts'
 
 const mocks = vi.hoisted(() => ({
     location: {
@@ -21,10 +21,9 @@ const mocks = vi.hoisted(() => ({
     refreshToken: vi.fn(),
 }))
 
-vi.mock('@/composables/useAxios.ts', async () => ({
-    useAxios: () => ({
+vi.mock('@/plugins/axios/axiosUtils.ts', async () => {
+    return {
         redirectToLogin: mocks.redirectToLogin,
-        isExpired: mocks.isExpired,
         refreshToken: mocks.refreshToken,
         skippedRoutes: [
             '/token/',
@@ -35,8 +34,13 @@ vi.mock('@/composables/useAxios.ts', async () => ({
             '/cas/login/',
             '/saml2/login/',
         ],
-    }),
-}))
+    }
+})
+vi.mock('@/utils/jwt.ts', async () => {
+    return {
+        isExpired: mocks.isExpired,
+    }
+})
 
 const useLocalConfig = () => structuredClone(baseConfigAxios)
 

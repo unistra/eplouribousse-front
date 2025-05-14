@@ -1,14 +1,32 @@
-import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
+import { beforeEach, describe, expect, test, vi } from 'vitest'
 import { Quasar } from 'quasar'
 import { mount } from '@vue/test-utils'
 import type { I18n } from 'vue-i18n'
 import useI18nMock from '~/mocks/i18n'
 import ResetPasswordForm from '@/components/forms/resetPasswordForm/ResetPasswordForm.vue'
+import PasswordField from '@/components/utils/form/PasswordField.vue'
 
 let i18n: I18n
 
 const mock = vi.hoisted(() => {
-    return { getPasswordStrengthMock: vi.fn() }
+    return {
+        notify: vi.fn(),
+        resetPasswordMock: vi.fn(),
+        useResetPasswordForm: {
+            newPassword: 'NewPassword123!',
+            confirmPassword: 'NewPassword123!',
+            token: {
+                value: 'initial-token',
+            },
+            isLoading: false,
+            isPasswordStrongEnough: true,
+            arePasswordsMatching: true,
+            resetPassword: vi.fn(),
+        },
+        routeQuery: {
+            token: 'new-token',
+        },
+    }
 })
 
 vi.mock('@/composables/useComposableQuasar.ts', () => ({
@@ -20,42 +38,96 @@ vi.mock('@/composables/useComposableQuasar.ts', () => ({
             show: vi.fn(),
             hide: vi.fn(),
         },
-        notify: vi.fn(),
+        notify: mock.notify,
     }),
 }))
 
-vi.mock('@/composables/useFormUtils.ts', () => ({
-    useFormUtils: () => ({
-        getPasswordStrength: mock.getPasswordStrengthMock,
+vi.mock('vue-router', () => ({
+    useRoute: () => ({
+        query: mock.routeQuery,
     }),
 }))
 
-describe('LoginForm', () => {
+vi.mock('@/components/forms/resetPasswordForm/useResetPasswordForm.ts', () => ({
+    useResetPasswordForm: () => mock.useResetPasswordForm,
+}))
+
+describe('ResetPasswordForm', () => {
     beforeEach(() => {
+        vi.clearAllMocks()
         const { i18nMock } = useI18nMock()
         i18n = i18nMock
+
+        mock.useResetPasswordForm.token = { value: 'initial-token' }
+        mock.useResetPasswordForm.newPassword = 'NewPassword123!'
+        mock.useResetPasswordForm.confirmPassword = 'NewPassword123!'
+        mock.useResetPasswordForm.isLoading = false
+        mock.useResetPasswordForm.isPasswordStrongEnough = true
+        mock.useResetPasswordForm.arePasswordsMatching = true
     })
-    afterEach(() => {
-        vi.clearAllMocks()
-    })
-    test('should call getPasswordStrength when writing on the "newPaswword" input', async () => {
+
+    test('renders two password fields', () => {
         const wrapper = mount(ResetPasswordForm, {
             global: {
                 plugins: [i18n, Quasar],
             },
         })
-        await wrapper.find('[data-testid="new-password"]').setValue('aaa')
-        expect(mock.getPasswordStrengthMock).toHaveBeenCalledOnce()
+
+        const passwordFields = wrapper.findAllComponents(PasswordField)
+        expect(passwordFields).toHaveLength(2)
+        expect(passwordFields[0].props('label')).toContain('Nouveau mot de passe')
+        expect(passwordFields[1].props('label')).toContain('Confirmer le nouveau mot de passe')
     })
-    test('should not print and error message if password is strong enough (score > 3)', async () => {
+
+    test('validation rules are applied correctly to fields', async () => {
         const wrapper = mount(ResetPasswordForm, {
             global: {
                 plugins: [i18n, Quasar],
             },
         })
-        await wrapper.find('[data-testid="new-password"]').setValue('5698@BigcomplecatePassw0rd') // strength score > 3
-        expect(wrapper.find('[data-testid="new-password"]').html()).not.toContain(
-            'Le mot de passe ne respecte pas les critères de sécurité',
-        )
+
+        const passwordFields = wrapper.findAllComponents(PasswordField)
+        expect(passwordFields[0].props('rules')).toBeTruthy() // new password
+        expect(passwordFields[1].props('rules')).toBeTruthy() // confirm password
+    })
+
+    test('submits the form successfully', async () => {
+        const wrapper = mount(ResetPasswordForm, {
+            global: {
+                plugins: [i18n, Quasar],
+            },
+        })
+
+        await wrapper.find('form').trigger('submit')
+
+        // Use a slight delay to ensure async operations complete 🙃
+        await new Promise((resolve) => setTimeout(resolve, 0))
+
+        expect(mock.useResetPasswordForm.resetPassword).toHaveBeenCalledOnce()
+    })
+
+    test('sets token from route query params on mount', async () => {
+        expect(mock.useResetPasswordForm.token).toEqual({ value: 'initial-token' })
+
+        mount(ResetPasswordForm, {
+            global: {
+                plugins: [i18n, Quasar],
+            },
+        })
+
+        expect(mock.useResetPasswordForm.token).toEqual({ value: 'new-token' })
+    })
+
+    test('shows validation error when password is not strong enough', async () => {
+        mock.useResetPasswordForm.isPasswordStrongEnough = false
+        const wrapper = mount(ResetPasswordForm, {
+            global: {
+                plugins: [i18n, Quasar],
+            },
+        })
+
+        await wrapper.find('form').trigger('submit')
+
+        expect(wrapper.html()).toContain('Le mot de passe ne respecte pas les critères de sécurité')
     })
 })

@@ -1,47 +1,38 @@
 import { useI18n } from 'vue-i18n'
-import { ref, computed, watch } from 'vue'
-import { axiosI } from '@/plugins/axios.ts'
+import { ref, computed } from 'vue'
+import { axiosI } from '@/plugins/axios/axios.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useRouter } from 'vue-router'
 import { AxiosError } from 'axios'
-import { useFormUtils } from '@/composables/useFormUtils'
+import { usePasswordValidators } from '@/composables/usePasswordValidators.ts'
 
 export function useChangePasswordForm() {
     const { t } = useI18n()
     const { notify } = useComposableQuasar()
-    const { getPasswordStrength } = useFormUtils()
     const router = useRouter()
+    const { passwordMatchingValidator, passwordStrengthValidator } = usePasswordValidators()
 
-    const passwordStrength = ref<number>(0)
+    const isLoading = ref(false)
+
     const oldPassword = ref<string>('')
     const newPassword = ref<string>('')
     const confirmPassword = ref<string>('')
-    const isLoading = ref(false)
-    const isNewPasswordValid = ref<boolean>(false)
-
-    watch(newPassword, () => {
-        passwordStrength.value = getPasswordStrength(newPassword.value)
-        isNewPasswordValid.value = passwordStrength.value >= 3
-    })
-
-    const doPasswordsMatch = computed(() => {
-        if (!confirmPassword.value) return true // Don't show error if empty
-        return newPassword.value === confirmPassword.value
-    })
+    const isPasswordStrongEnough = computed(() => passwordStrengthValidator(newPassword.value))
+    const arePasswordsMatching = computed(() => passwordMatchingValidator(newPassword.value, confirmPassword.value))
 
     const changePassword = async () => {
-        if (!isNewPasswordValid.value) {
+        if (!isPasswordStrongEnough.value) {
             notify({
                 type: 'negative',
-                message: t('forms.changePassword.passwordRequirements'),
+                message: t('forms.password.validation.passwordRequirements'),
             })
             return
         }
 
-        if (!doPasswordsMatch.value) {
+        if (!arePasswordsMatching.value) {
             notify({
                 type: 'negative',
-                message: t('forms.changePassword.passwordsDoNotMatch'),
+                message: t('forms.password.validation.passwordsDoNotMatch'),
             })
             return
         }
@@ -85,11 +76,10 @@ export function useChangePasswordForm() {
     return {
         oldPassword,
         newPassword,
-        passwordStrength,
         confirmPassword,
         isLoading,
-        isNewPasswordValid,
-        doPasswordsMatch,
         changePassword,
+        isPasswordStrongEnough,
+        arePasswordsMatching,
     }
 }

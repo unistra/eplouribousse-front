@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useLoginForm } from './useLoginForm'
-import { useFormUtils } from '@/composables/useFormUtils'
 import OrDividerUtils from '@/components/utils/OrDividerUtils.vue'
+import PasswordField from '@/components/utils/form/PasswordField.vue'
 
 const { t } = useI18n()
-const { icon, passwordVisibility, passwordVisibilityLabel, updatePasswordVisibility } = useFormUtils()
 const { email, password, isLoading, onLogin, loginViaShibbolet } = useLoginForm()
 </script>
 
@@ -26,37 +25,19 @@ const { email, password, isLoading, onLogin, loginViaShibbolet } = useLoginForm(
             reactive-rules
             v-model="email"
             type="email"
-            data-testid="email-input"
         />
-        <QInput
+
+        <PasswordField
+            v-model="password"
             :label="t('forms.login.password')"
             :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
-            :type="passwordVisibility"
-            data-testid="password-input"
-            reactive-rules
-            v-model="password"
-            ><template #append>
-                <QBtn
-                    flat
-                    dense
-                    rounded
-                    data-testid="visibility-button"
-                    :icon="icon"
-                    @click="updatePasswordVisibility"
-                >
-                    <QTooltip>
-                        {{ t('forms.login.' + passwordVisibilityLabel) }}
-                    </QTooltip>
-                </QBtn>
-            </template>
-        </QInput>
+        />
         <p>
             {{ t('forms.login.forgottenPassword') }} <a href="/send-email"> {{ t('forms.login.clickHere') }}</a>
         </p>
         <QBtn
             :loading="isLoading"
             no-caps
-            data-testid="submit-button"
             type="submit"
             class="margin-t1"
         >

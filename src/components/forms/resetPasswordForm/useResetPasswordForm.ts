@@ -1,47 +1,41 @@
 import { useI18n } from 'vue-i18n'
-import { ref, computed, watch } from 'vue'
-import { axiosI } from '@/plugins/axios.ts'
+import { ref, computed } from 'vue'
+import { axiosI } from '@/plugins/axios/axios.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useRouter } from 'vue-router'
 import { AxiosError } from 'axios'
-import { useFormUtils } from '@/composables/useFormUtils'
+import { usePasswordValidators } from '@/composables/usePasswordValidators.ts'
+import { useGlobalStore } from '@/stores/globalStore.ts'
 
 export function useResetPasswordForm() {
     const { t } = useI18n()
     const { notify } = useComposableQuasar()
-    const { getPasswordStrength } = useFormUtils()
     const router = useRouter()
+    const { passwordMatchingValidator, passwordStrengthValidator } = usePasswordValidators()
 
     const passwordStrength = ref<number>(0)
     const newPassword = ref<string>('')
     const confirmPassword = ref<string>('')
     const token = ref<string | null>('')
+
+    const isPasswordStrongEnough = computed(() => passwordStrengthValidator(newPassword.value))
+    const arePasswordsMatching = computed(() => passwordMatchingValidator(newPassword.value, confirmPassword.value))
+
     const isLoading = ref<boolean>(false)
-    const isNewPasswordValid = ref<boolean>(false)
-
-    watch(newPassword, () => {
-        passwordStrength.value = getPasswordStrength(newPassword.value)
-        isNewPasswordValid.value = passwordStrength.value >= 3
-    })
-
-    const doPasswordsMatch = computed(() => {
-        if (!confirmPassword.value) return true
-        return newPassword.value === confirmPassword.value
-    })
 
     const resetPassword = async () => {
-        if (!isNewPasswordValid.value) {
+        if (!isPasswordStrongEnough.value) {
             notify({
                 type: 'negative',
-                message: t('forms.password.passwordRequirements'),
+                message: t('forms.password.validation.passwordRequirements'),
             })
             return
         }
 
-        if (!doPasswordsMatch.value) {
+        if (!arePasswordsMatching.value) {
             notify({
                 type: 'negative',
-                message: t('forms.password.passwordsDoNotMatch'),
+                message: t('forms.password.validation.passwordsDoNotMatch'),
             })
             return
         }
@@ -55,17 +49,19 @@ export function useResetPasswordForm() {
                 confirmPassword: confirmPassword.value,
             })
 
-            notify({
+            const { addNotify } = useGlobalStore()
+
+            addNotify({
                 type: 'positive',
                 message: t('forms.password.reset.success'),
             })
 
-            await router.push({ name: 'Login' })
+            await router.push({ name: 'Home' })
         } catch (e) {
-            if (e instanceof AxiosError && e.response?.status === 400 && e.response.data.token.length > 0) {
+            if (e instanceof AxiosError && e.response?.status === 400) {
                 notify({
                     type: 'negative',
-                    message: e.response.data.token[0],
+                    message: t('forms.password.reset.tokenRejected'),
                 })
             } else {
                 notify({
@@ -83,9 +79,9 @@ export function useResetPasswordForm() {
         confirmPassword,
         passwordStrength,
         token,
+        isPasswordStrongEnough,
+        arePasswordsMatching,
         isLoading,
-        isNewPasswordValid,
-        doPasswordsMatch,
         resetPassword,
     }
 }
