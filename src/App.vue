@@ -4,21 +4,28 @@ import { RouterView } from 'vue-router'
 import LayoutFooter from './components/layout/LayoutFooter.vue'
 import LayoutHeader from './components/layout/LayoutHeader.vue'
 import { useUserStore } from './stores/userStore'
+import { axiosI } from './plugins/axios'
+import { useComposableQuasar } from './composables/useComposableQuasar'
+import { useAxios } from './composables/useAxios'
 
 const userStore = useUserStore()
+const { dark } = useComposableQuasar()
+const { isExpired } = useAxios()
 
-onMounted(() => {
-    // for simulation purposes
-    if (window.location.href.includes('t1-eplouribousse')) {
-        userStore.tenantConfiguration = {
-            color: 'bg-green-8',
-            tenantName: 'Strasbourg',
-        }
-    } else {
-        userStore.tenantConfiguration = {
-            color: 'bg-purple-8',
-            tenantName: 'Pau',
-        }
+onMounted(async () => {
+    const tenantInfo = await axiosI.get('/consortium/')
+    const token = localStorage.getItem('JWT__access__token')
+    if (tenantInfo.data.settings.color !== '') {
+        userStore.tenantConfiguration = tenantInfo.data
+    }
+    if (token !== null && !isExpired(token)) {
+        userStore.isAuth = true
+        const user = await axiosI.get('/user/profile/')
+        userStore.user = user.data
+    }
+    if (localStorage.getItem('darkMode') !== null && localStorage.getItem('darkMode') === 'true') {
+        userStore.userPreferences.darkMode = true
+        dark.set(true)
     }
 })
 </script>

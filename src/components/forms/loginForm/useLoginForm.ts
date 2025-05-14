@@ -17,8 +17,8 @@ const login = async (email: string, password: string) => {
     localStorage.setItem('JWT__access__token', response.data.access)
     localStorage.setItem('JWT__refresh__token', response.data.refresh)
 
-    const profile = await axiosI.get('/user/profile/')
-    localStorage.setItem('username', profile.data.username)
+    const user = await axiosI.get('/user/profile/')
+    userStore.user = user.data
 }
 
 export function useLoginForm() {
@@ -40,6 +40,8 @@ export function useLoginForm() {
                 type: 'negative',
                 message: t('errors.unknown'),
             })
+        } finally {
+            isLoading.value = false
         }
     }
 

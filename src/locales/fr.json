@@ -13,7 +13,9 @@
     },
     "settings": {
         "core": "Paramètres",
-        "darkMode": "Thème sombre"
+        "darkMode": "Thème sombre",
+        "account": "Paramètres utilisateurs",
+        "changePassword": "Changer mon mot de passe"
     },
     "contactAdmin": {
         "title": "Contacter l'administrateur du site",
