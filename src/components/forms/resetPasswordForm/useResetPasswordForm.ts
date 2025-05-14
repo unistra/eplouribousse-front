@@ -63,7 +63,6 @@ export function useResetPasswordForm() {
             await router.push({ name: 'Login' })
         } catch (e) {
             if (e instanceof AxiosError && e.response?.status === 400 && e.response.data.token.length > 0) {
-                console.log(e.response.data)
                 notify({
                     type: 'negative',
                     message: e.response.data.token[0],

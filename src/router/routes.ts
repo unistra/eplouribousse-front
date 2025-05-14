@@ -13,7 +13,7 @@ const routes: RouteRecordRaw[] = [
     },
     {
         path: '/contact-admin',
-        name: 'ContactAdmin',
+        name: 'contactAdmin',
         component: () => import('@/views/ContactAdminView.vue'),
         meta: {
             title: 'Contact',
@@ -23,7 +23,7 @@ const routes: RouteRecordRaw[] = [
     },
     {
         path: '/login',
-        name: 'Login',
+        name: 'login',
         component: () => import('@/views/Auth/LoginView.vue'),
         meta: {
             title: 'Connexion',
@@ -43,7 +43,7 @@ const routes: RouteRecordRaw[] = [
     },
     {
         path: '/reset-password',
-        name: 'ResetPassword',
+        name: 'resetPassword',
         component: () => import('@/views/Auth/ResetPasswordView.vue'),
         meta: {
             title: 'Réinitialiser le mot de passe',
@@ -53,7 +53,7 @@ const routes: RouteRecordRaw[] = [
     },
     {
         path: '/send-email',
-        name: 'SendEmail',
+        name: 'sendEmail',
         component: () => import('@/views/Auth/SendEmailView.vue'),
         meta: {
             title: 'Réinitialiser le mot de passe',
@@ -67,6 +67,14 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/Auth/HandshakeView.vue'),
         meta: {
             title: 'Handshake',
+        },
+    },
+    {
+        path: '/settings',
+        name: 'settings',
+        component: () => import('@/views/SettingsView.vue'),
+        meta: {
+            title: 'Paramètres',
         },
     },
 ]

@@ -4,7 +4,7 @@ export const useHeaderLinks: () => NavLink[] = () => {
     return [
         { label: 'search', to: { name: 'Home' } },
         { label: 'supervision', to: { name: 'Home' } },
-        { label: 'contactAdmin', to: { name: 'ContactAdmin' } },
+        { label: 'contactAdmin', to: { name: 'contactAdmin' } },
         { label: 'diffusionList', to: { name: 'Home' } },
         { label: 'projectAdministration', to: { name: 'Home' } },
         { label: 'generalAdministration', to: { name: 'Home' } },
@@ -14,7 +14,7 @@ export const useHeaderLinks: () => NavLink[] = () => {
 
 export const useAuthLinks: () => NavLink[] = () => {
     return [
-        { label: 'login', to: { name: 'Login' } },
-        { label: 'logout', to: { name: 'Logout' } },
+        { label: 'login', to: { name: 'login' } },
+        { label: 'logout', to: { name: 'logout' } },
     ]
 }

@@ -8,6 +8,12 @@ const { t } = useI18n()
 const { dark } = useComposableQuasar()
 const userStore = useUserStore()
 const { tenantConfiguration, userPreferences } = storeToRefs(userStore)
+
+function updateDarkMode(darkMode: boolean) {
+    userPreferences.value.darkMode = darkMode
+    dark.set(darkMode)
+    localStorage.setItem('darkMode', darkMode.toString())
+}
 </script>
 
 <template>
@@ -17,13 +23,13 @@ const { tenantConfiguration, userPreferences } = storeToRefs(userStore)
         icon="mdi-account-circle-outline"
         round
     >
-        <QMenu :class="tenantConfiguration.color">
+        <QMenu :style="'background-color: ' + tenantConfiguration?.settings.color">
             <QList>
                 <QItem
                     v-close-popup
                     clickable
-                    to="/"
                     class="text-white"
+                    :to="{ name: 'Settings' }"
                 >
                     <QItemSection>
                         {{ t('settings.core') }}
@@ -36,7 +42,7 @@ const { tenantConfiguration, userPreferences } = storeToRefs(userStore)
                     :model-value="userPreferences.darkMode"
                     @update:model-value="
                         (newDarkMode) => {
-                            ;(userPreferences.darkMode = newDarkMode), dark.set(newDarkMode)
+                            updateDarkMode(newDarkMode)
                         }
                     "
                 />
@@ -44,5 +50,3 @@ const { tenantConfiguration, userPreferences } = storeToRefs(userStore)
         </QMenu>
     </QBtn>
 </template>
-
-<style scoped></style>

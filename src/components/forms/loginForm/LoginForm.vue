@@ -12,7 +12,7 @@ const { email, password, isLoading, onLogin, loginViaShibbolet } = useLoginForm(
 <template>
     <QBtn
         no-caps
-        class="margin-top-8"
+        class="margin-t1"
         @click="loginViaShibbolet"
         :label="t('forms.login.renater')"
     />
@@ -58,15 +58,9 @@ const { email, password, isLoading, onLogin, loginViaShibbolet } = useLoginForm(
             no-caps
             data-testid="submit-button"
             type="submit"
-            class="margin-top-8"
+            class="margin-t1"
         >
             {{ t('forms.login.submit') }}
         </QBtn>
     </QForm>
 </template>
-
-<style scoped lang="scss">
-.margin-top-8 {
-    margin-top: 8px; /* To not overlap with the input error message (absolute) */
-}
-</style>

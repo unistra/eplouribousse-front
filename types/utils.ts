@@ -4,8 +4,11 @@ export interface SelectOption {
 }
 
 export interface TenantConfiguration {
-    color: string
-    tenantName: string
+    id: string
+    name: string
+    settings: {
+        color: string
+    }
 }
 
 export interface NavLink {

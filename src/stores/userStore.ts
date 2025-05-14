@@ -8,8 +8,11 @@ export const useUserStore = defineStore('user', () => {
     const isAuth = ref<boolean>(false)
 
     const tenantConfiguration = ref<TenantConfiguration>({
-        color: 'bg-primary',
-        tenantName: 'Strasbourg',
+        id: '0',
+        name: 'dev',
+        settings: {
+            color: '#676767',
+        },
     })
 
     const userPreferences = ref<UserPreferences>({
