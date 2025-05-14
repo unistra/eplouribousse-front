@@ -1,13 +1,15 @@
 import { ref } from 'vue'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { AxiosError } from 'axios'
-import type { ComposerTranslation } from 'vue-i18n'
-import type { QNotifyCreateOptions } from 'quasar'
+import { useI18n } from 'vue-i18n'
+import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 
 export const useInviteForm = () => {
     const email = ref<string>('')
+    const { t } = useI18n()
+    const { notify } = useComposableQuasar()
 
-    const sendInvitation = async (notify: (opts: QNotifyCreateOptions) => void, t: ComposerTranslation) => {
+    const sendInvitation = async () => {
         try {
             const response = await axiosI.post<{ email: string }>('/users/invite/', {
                 email: email.value,
