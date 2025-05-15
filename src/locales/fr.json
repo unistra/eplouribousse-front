@@ -9,7 +9,8 @@
         "contactAdmin": "Contact du projet",
         "diffusionList": "Liste de diffusion",
         "projectAdministration": "Administration du projet",
-        "generalAdministration": "Administration générale"
+        "generalAdministration": "Administration générale",
+        "hasNoPerm": "Vous avez été redirigé car vous n'avez pas accès à cette page"
     },
     "settings": {
         "core": "Paramètres",

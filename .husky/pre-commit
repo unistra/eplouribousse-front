@@ -27,5 +27,14 @@ echo "✅ Format passed."
 echo ""
 
 echo ""
+  echo "🧪 Running unit test..."
+  if ! pnpm test:unit --run; then
+    echo "Unit test failed. Aborting commit."
+    exit 1
+  fi
+  echo "✅ Unit test passed."
+  echo ""
+
+echo ""
 echo "🚑️ Pre-commit checks passed. Committing..."
 exit 0

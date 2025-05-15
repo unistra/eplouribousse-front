@@ -21,6 +21,7 @@ const routes: RouteRecordRaw[] = [
         name: 'contactAdmin',
         component: () => import('@/views/ContactAdminView.vue'),
         meta: {
+            require: ['test'],
             title: 'Contact',
         },
     },
@@ -38,7 +39,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/Auth/ChangePasswordView.vue'),
         meta: {
             title: 'Changer le mot de passe',
-            require: [],
         },
     },
     {
@@ -71,7 +71,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/SettingsView.vue'),
         meta: {
             title: 'Paramètres',
-            require: [],
         },
     },
 ]
