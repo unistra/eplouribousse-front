@@ -4,4 +4,5 @@ export interface UserPreferences {
 
 export interface User {
     username: string
+    role: string
 }

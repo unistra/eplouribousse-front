@@ -9,7 +9,8 @@
         "contactAdmin": "Contact du projet",
         "diffusionList": "Liste de diffusion",
         "projectAdministration": "Administration du projet",
-        "generalAdministration": "Administration générale"
+        "generalAdministration": "Administration générale",
+        "hasNoPerm": "Vous avez été redirigé car vous n'avez pas accès à cette page"
     },
     "settings": {
         "core": "Paramètres",
@@ -51,7 +52,8 @@
             "weak": "Faible",
             "oldPassword": "Ancien mot de passe",
             "newPassword": "Nouveau mot de passe",
-            "confirmPassword": "Confirmer le nouveau mot de passe",
+            "confirmNewPassword": "Confirmer le nouveau mot de passe",
+            "confirmPassword": "Confirmer le mot de passe",
             "validation": {
                 "passwordRequirements": "Le mot de passe ne respecte pas les critères de sécurité",
                 "passwordsDoNotMatch": "Les mots de passe ne correspondent pas"

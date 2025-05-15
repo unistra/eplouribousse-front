@@ -5,12 +5,17 @@ import { useAuthentication } from '@/composables/useAuthentication'
 import { useRouter } from 'vue-router'
 import { useGlobalStore } from '@/stores/globalStore.ts'
 import { useUserStore } from '@/stores/userStore'
+import type { NavLink } from '#/utils'
 
 const { t } = useI18n()
 const { logout } = useAuthentication()
 const navLinks = useHeaderLinks()
 const router = useRouter()
 const userStore = useUserStore()
+
+function hasPerm(navLink: NavLink) {
+    return !navLink.require || (navLink.require && navLink.require.includes(userStore.user.role))
+}
 
 async function onLogout() {
     logout()
@@ -26,7 +31,7 @@ async function onLogout() {
     <QItem
         :key="index"
         :to="navLink.to"
-        v-for="(navLink, index) in navLinks"
+        v-for="(navLink, index) in navLinks.filter(hasPerm)"
         clickable
         dense
         class="text-white"

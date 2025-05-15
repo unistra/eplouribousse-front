@@ -4,13 +4,12 @@ import { RouterView } from 'vue-router'
 import LayoutFooter from './components/layout/LayoutFooter.vue'
 import LayoutHeader from './components/layout/LayoutHeader.vue'
 import { useUserStore } from './stores/userStore'
-import { axiosI } from './plugins/axios'
+import { axiosI } from '@/plugins/axios/axios.ts'
 import { useComposableQuasar } from './composables/useComposableQuasar'
-import { useAxios } from './composables/useAxios'
+import { isExpired } from './utils/jwt'
 
 const userStore = useUserStore()
 const { dark } = useComposableQuasar()
-const { isExpired } = useAxios()
 
 onMounted(async () => {
     const tenantInfo = await axiosI.get('/consortium/')

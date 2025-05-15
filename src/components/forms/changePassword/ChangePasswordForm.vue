@@ -28,7 +28,7 @@ const {
         />
         <PasswordField
             v-model="confirmPassword"
-            :label="t('forms.password.confirmPassword')"
+            :label="t('forms.password.confirmNewPassword')"
             :rules="[() => arePasswordsMatching || t('forms.password.validation.passwordsDoNotMatch')]"
         />
 

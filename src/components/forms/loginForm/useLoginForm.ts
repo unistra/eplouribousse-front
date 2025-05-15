@@ -19,6 +19,7 @@ const login = async (email: string, password: string) => {
 
     const user = await axiosI.get('/user/profile/')
     userStore.user = user.data
+    userStore.isLocal = true
 }
 
 export function useLoginForm() {

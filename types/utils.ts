@@ -14,7 +14,7 @@ export interface TenantConfiguration {
 export interface NavLink {
     label: string
     to: { name: string }
-    permissions?: unknown[]
+    require?: string[]
 }
 
 export interface Link {

@@ -12,7 +12,7 @@ const userStore = useUserStore()
     </div>
     <div
         class="row"
-        v-if="userStore.isAuth"
+        v-if="userStore.isAuth && userStore.isLocal"
     >
         <div class="col-4">
             <h4>{{ t('settings.account') }}</h4>
