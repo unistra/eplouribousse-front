@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useUserStore } from '@/stores/userStore'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import LayoutMenu from './LayoutMenu.vue'
 import LayoutNavLinks from './LayoutNavLinks.vue'
 import { storeToRefs } from 'pinia'

@@ -7,7 +7,7 @@ import { storeToRefs } from 'pinia'
 const { t } = useI18n()
 const { dark } = useComposableQuasar()
 const userStore = useUserStore()
-const { tenantConfiguration, userPreferences, tenantColor } = storeToRefs(userStore)
+const { userPreferences, tenantColor } = storeToRefs(userStore)
 
 function updateDarkMode(darkMode: boolean) {
     userPreferences.value.darkMode = darkMode

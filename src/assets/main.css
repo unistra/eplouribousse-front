@@ -49,7 +49,7 @@ a,
 }
 
 h1 {
-    font-size: clamp(2rem, 1.799rem + 0.85vw, 2.75rem)!important;
+    font-size: clamp(2rem, 1.799rem + 0.85vw, 2.75rem) !important;
 }
 
 @media (hover: hover) {
