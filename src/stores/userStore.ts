@@ -6,7 +6,7 @@ import { type User, type UserPreferences } from '#/user'
 export const useUserStore = defineStore('user', () => {
     const user = ref<User>({
         username: 'test',
-        role: 'pasadmin',
+        role: 'manager',
     })
     const isAuth = ref<boolean>(false)
     const isLocal = ref<boolean>(false)

@@ -21,6 +21,8 @@ onMounted(async () => {
         userStore.isAuth = true
         const user = await axiosI.get('/user/profile/')
         userStore.user = user.data
+        userStore.isLocal = true
+        userStore.user.role = 'manager'
     }
     if (localStorage.getItem('darkMode') !== null && localStorage.getItem('darkMode') === 'true') {
         userStore.userPreferences.darkMode = true

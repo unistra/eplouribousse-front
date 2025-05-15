@@ -10,13 +10,36 @@
         "diffusionList": "Liste de diffusion",
         "projectAdministration": "Administration du projet",
         "generalAdministration": "Administration générale",
-        "hasNoPerm": "Vous avez été redirigé car vous n'avez pas accès à cette page"
+        "hasNoPerm": "Vous avez été redirigé car vous n'avez pas accès à cette page",
+        "needAuth": "Vous devez vous connecter pour accéder à cette page"
     },
     "settings": {
         "core": "Paramètres",
         "darkMode": "Thème sombre",
         "account": "Paramètres utilisateurs",
         "changePassword": "Changer mon mot de passe"
+    },
+    "newProject": {
+        "requirements": {
+            "title": "Création d'un projet - Vérification",
+            "message": "Pour monter un nouveau projet, assurez-vous que vous disposez des éléments suivants :",
+            "requirementsOk": "Je suis prêt"
+        },
+        "creation": {},
+        "projectName": "Intitulé du projet",
+        "pilotEmails": "Email du ou des pilotes du projet",
+        "adminEmails": "Email du ou des administrateurs du projet",
+        "controllerEmail": "Email du ou des contrôlleurs du projet",
+        "libraryNames": "Nom des bibliothèques participantes",
+        "libraryRCRs": "RCR des bibliothèques participantes",
+        "libraryInstructorEmails": "Emails de leurs intructeurs respectifs",
+        "libraryCollections": "Ensemble des collections participantes de chacune des bibliothèques, sans exemplaire multiple d'une même ressource",
+        "libraryResourceTooltip": "Rappel : 1 ressource = 1 PPN. Dans le cas où une bibliothèque possède des exemplaires en double, il faudra créer une bibliothèque supplémentaire qui ne se distinguera de la principale que par un indice apposé au RCR de la principale (par exemple 674821001 pour la principale et 674821001_1 pour les exemplaires en double ; éventuellement plus s'il le faut : 674821001_2 etc...",
+        "csvFormat": "au format csv",
+        "additionalInfos": "ppn;cote;état de collection;lacunes",
+        "storageNames": "Nom des lieux de conservation alternatifs (et leur RCR le cas échéant)",
+        "storageOperatorEmails": "Identifiants et emails de leurs opérateurs respectifs",
+        "searchUsers": "Vous pouvez utiliser l'outil de recherche ci-dessous pour vérifier si les utilisateurs ont déjà un compte, si ce n'est pas le cas, *contactez-les pour qu'ils se connectent au site :"
     },
     "contactAdmin": {
         "title": "Contacter l'administrateur du site",

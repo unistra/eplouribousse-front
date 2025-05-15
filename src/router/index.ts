@@ -20,6 +20,12 @@ router.beforeEach(async (to) => {
         })
         await router.replace({ name: 'login' })
     }
+    if (to.meta.needAuth && !userStore.isAuth) {
+        notify({
+            message: i18n.global.t('navigation.needAuth'),
+        })
+        await router.replace({ name: 'login' })
+    }
 })
 
 export default router

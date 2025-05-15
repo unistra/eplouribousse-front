@@ -3,6 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 declare module 'vue-router' {
     interface RouteMeta {
         title: string
+        needAuth?: boolean
         require?: string[]
     }
 }
@@ -21,7 +22,7 @@ const routes: RouteRecordRaw[] = [
         name: 'contactAdmin',
         component: () => import('@/views/ContactAdminView.vue'),
         meta: {
-            require: ['test'],
+            // require: ['test'],
             title: 'Contact',
         },
     },
@@ -39,6 +40,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/Auth/ChangePasswordView.vue'),
         meta: {
             title: 'Changer le mot de passe',
+            needAuth: true,
         },
     },
     {
@@ -71,6 +73,15 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/SettingsView.vue'),
         meta: {
             title: 'Paramètres',
+        },
+    },
+    {
+        path: '/new-project-requirements',
+        name: 'newProjectRequirements',
+        component: () => import('@/views/NewProjectRequirements.vue'),
+        meta: {
+            title: 'Nouveau Projet',
+            require: ['manager'],
         },
     },
 ]
