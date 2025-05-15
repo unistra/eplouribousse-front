@@ -14,7 +14,7 @@ const userStore = useUserStore()
 
 onMounted(async () => {
     try {
-        const response = await axiosI.post<{ access: string; refresh: string }>('/user/login-handshake/', {
+        const response = await axiosI.post<{ access: string; refresh: string }>('/users/login-handshake/', {
             t: token,
         })
 
@@ -22,7 +22,7 @@ onMounted(async () => {
         localStorage.setItem('JWT__access__token', response.data.access)
         localStorage.setItem('JWT__refresh__token', response.data.refresh)
 
-        const profile = await axiosI.get('/user/profile/')
+        const profile = await axiosI.get('/users/profile/')
         localStorage.setItem('username', profile.data.username)
 
         await router.push({

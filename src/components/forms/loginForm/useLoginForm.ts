@@ -17,7 +17,7 @@ const login = async (email: string, password: string) => {
     localStorage.setItem('JWT__access__token', response.data.access)
     localStorage.setItem('JWT__refresh__token', response.data.refresh)
 
-    const user = await axiosI.get('/user/profile/')
+    const user = await axiosI.get('/users/profile/')
     userStore.user = user.data
     userStore.isLocal = true
 }

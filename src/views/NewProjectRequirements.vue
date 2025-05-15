@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -34,7 +35,8 @@ const { t } = useI18n()
                     <li>{{ t('newProject.storageOperatorEmails') }}</li>
                 </ul>
                 <QSeparator />
-                <p class="margin-t1">{{ t('newProject.searchUsers') }}</p>
+                <p class="margin-t1 margin-b1">{{ t('newProject.searchUsers') }}</p>
+                <SearchUser />
             </div>
         </div>
     </main>

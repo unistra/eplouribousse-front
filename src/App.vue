@@ -19,9 +19,9 @@ onMounted(async () => {
     }
     if (token !== null && !isExpired(token)) {
         userStore.isAuth = true
-        const user = await axiosI.get('/user/profile/')
+        const user = await axiosI.get('/users/profile/')
         userStore.user = user.data
-        userStore.isLocal = true
+        userStore.isLocal = userStore.user.canAuthenticateLocally
         userStore.user.role = 'manager'
     }
     if (localStorage.getItem('darkMode') !== null && localStorage.getItem('darkMode') === 'true') {

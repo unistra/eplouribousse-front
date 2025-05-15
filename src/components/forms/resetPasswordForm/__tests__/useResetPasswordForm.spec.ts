@@ -122,7 +122,7 @@ describe('useResetPasswordForm', () => {
         await resetPasswordPromise
         await flushPromises()
 
-        expect(mock.axiosPatch).toHaveBeenCalledWith('/user/reset-password/', {
+        expect(mock.axiosPatch).toHaveBeenCalledWith('/users/reset-password/', {
             token: 'valid-reset-token',
             newPassword: 'NewPassword123!',
             confirmPassword: 'NewPassword123!',

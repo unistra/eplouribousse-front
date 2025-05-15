@@ -14,7 +14,7 @@ const router = useRouter()
 const userStore = useUserStore()
 
 function hasPerm(navLink: NavLink) {
-    return !navLink.require || (navLink.require && navLink.require.includes(userStore.user.role))
+    return !navLink.require || (navLink.require && userStore.user.role && navLink.require.includes(userStore.user.role))
 }
 
 async function onLogout() {

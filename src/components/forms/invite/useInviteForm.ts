@@ -9,7 +9,7 @@ export const useInviteForm = () => {
 
     const sendInvitation = async (notify: (opts: QNotifyCreateOptions) => void, t: ComposerTranslation) => {
         try {
-            const response = await axiosI.post<{ email: string }>('/user/invite/', {
+            const response = await axiosI.post<{ email: string }>('/users/invite/', {
                 email: email.value,
             })
 
