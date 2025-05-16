@@ -84,6 +84,22 @@ const routes: RouteRecordRaw[] = [
             require: ['manager'],
         },
     },
+    {
+        path: '/invite',
+        name: 'invite',
+        component: () => import('@/views/InviteView.vue'),
+        meta: {
+            title: 'Inviter un utilisateur',
+        },
+    },
+    {
+        path: '/create-account',
+        name: 'createAccount',
+        component: () => import('@/views/Auth/CreateAccountView.vue'),
+        meta: {
+            title: 'Create your account',
+        },
+    },
 ]
 
 export default routes

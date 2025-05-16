@@ -114,10 +114,18 @@
             "inviteSentTo": "L'invitation a bien été envoyée à",
             "emailAlreadyLinked": "Cette adresse e-mail est déjà liée à un compte",
             "emailNotSent": "l'invitation n'a pas pu être envoyée"
+        },
+        "createAccount": {
+            "title": "Création de votre compte",
+            "submit": "Créer mon compte",
+            "tokenRejected": "Le jeton est expiré ou invalide",
+            "accountCreated": "Votre compte a été créé avec succès, vous pouvez vous connecter",
+            "fetchEmailFailed": "Impossible de récupérer l'adresse e-mail"
         }
     },
     "errors": {
         "unknown": "Une erreur est survenue",
-        "retry": "veuillez réessayer"
+        "retry": "veuillez réessayer",
+        "unknownRetry": "Une erreur est survenue, veuillez réessayer"
     }
 }
