@@ -58,7 +58,7 @@ export const useCreateAccountForm = () => {
             } else {
                 addNotify({
                     type: 'negative',
-                    message: `${t('errors.unknown')} ${t('errors.retry')}`,
+                    message: t('errors.unknownRetry'),
                     timeout: 8000,
                 })
                 await router.push({ name: 'Home' })
