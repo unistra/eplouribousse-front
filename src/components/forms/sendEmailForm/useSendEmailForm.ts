@@ -12,7 +12,7 @@ export function useSendEmailForm() {
     async function sendEmail() {
         isLoading.value = true
         try {
-            await axiosI.post('/user/send-reset-email/', {
+            await axiosI.post('/users/send-reset-email/', {
                 email: email.value,
             })
         } finally {

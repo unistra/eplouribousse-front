@@ -40,7 +40,7 @@ export function useChangePasswordForm() {
         isLoading.value = true
 
         try {
-            await axiosI.patch('/user/change-password/', {
+            await axiosI.patch('/users/change-password/', {
                 oldPassword: oldPassword.value,
                 newPassword: newPassword.value,
                 confirmPassword: confirmPassword.value,

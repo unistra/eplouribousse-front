@@ -43,7 +43,7 @@ export function useResetPasswordForm() {
         isLoading.value = true
 
         try {
-            await axiosI.patch('/user/reset-password/', {
+            await axiosI.patch('/users/reset-password/', {
                 token: token.value,
                 newPassword: newPassword.value,
                 confirmPassword: confirmPassword.value,

@@ -115,7 +115,7 @@ describe('useChangePasswordForm', () => {
         await changePasswordPromise
         await flushPromises()
 
-        expect(mock.axiosPatch).toHaveBeenCalledWith('/user/change-password/', {
+        expect(mock.axiosPatch).toHaveBeenCalledWith('/users/change-password/', {
             oldPassword: 'OldPassword123!',
             newPassword: 'NewPassword123!',
             confirmPassword: 'NewPassword123!',

@@ -110,7 +110,7 @@ describe('useLoginForm', () => {
             password: 'password123',
         })
 
-        expect(mock.axios.get).toHaveBeenCalledWith('/user/profile/')
+        expect(mock.axios.get).toHaveBeenCalledWith('/users/profile/')
 
         expect(mock.userStore.isAuth).toBe(true)
         expect(mock.localStorage.setItem).toHaveBeenCalledWith('JWT__access__token', 'access-token')

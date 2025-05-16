@@ -28,9 +28,9 @@ vi.mock('@/plugins/axios/axiosUtils.ts', async () => {
         skippedRoutes: [
             '/token/',
             '/token/refresh/',
-            '/user/reset-password/',
-            '/user/send-reset-email/',
-            '/user/login-handshake/',
+            '/users/reset-password/',
+            '/users/send-reset-email/',
+            '/users/login-handshake/',
             '/cas/login/',
             '/saml2/login/',
         ],

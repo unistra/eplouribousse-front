@@ -3,6 +3,11 @@ export interface UserPreferences {
 }
 
 export interface User {
+    id: string
     username: string
-    role: string
+    email: string
+    canAuthenticateLocally: boolean
+    firstname?: string
+    lastname?: string
+    role?: string
 }
