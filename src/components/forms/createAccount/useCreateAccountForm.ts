@@ -31,6 +31,7 @@ export const useCreateAccountForm = () => {
                 message: t('forms.createAccount.missingToken'),
             })
             await router.push({ name: 'Home' })
+            return
         }
         try {
             const response = await axiosI.post<{ email: string }>('/user/invite-handshake/', {
