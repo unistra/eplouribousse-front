@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
+import { useUserStore } from '@/stores/userStore'
+import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
+const userStore = useUserStore()
+const { tenantColor } = storeToRefs(userStore)
 </script>
 
 <template>
@@ -36,7 +40,18 @@ const { t } = useI18n()
                 </ul>
                 <QSeparator />
                 <p class="margin-t1 margin-b1">{{ t('newProject.searchUsers') }}</p>
-                <SearchUser />
+                <SearchUser role="" />
+            </div>
+            <div class="col-3 table-center">
+                <div class="table-cell-vertical-align">
+                    <QBtn
+                        text-color="white"
+                        no-caps
+                        :to="{ name: 'newProject' }"
+                        :style="tenantColor"
+                        >{{ t('newProject.requirements.requirementsOk') }}</QBtn
+                    >
+                </div>
             </div>
         </div>
     </main>

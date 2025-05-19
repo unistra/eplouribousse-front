@@ -26,6 +26,12 @@ router.beforeEach(async (to) => {
         })
         await router.replace({ name: 'login' })
     }
+    if (to.meta.needLocal && !userStore.isLocal) {
+        notify({
+            message: i18n.global.t('navigation.needLocal'),
+        })
+        await router.replace({ name: 'login' })
+    }
 })
 
 export default router

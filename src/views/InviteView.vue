@@ -6,7 +6,7 @@ const { t } = useI18n()
 
 <template>
     <main>
-        <h1>{{ t('forms.invite.title') }}</h1>
+        <h1 style="text-align: center">{{ t('forms.invite.title') }}</h1>
         <InviteForm />
     </main>
 </template>
