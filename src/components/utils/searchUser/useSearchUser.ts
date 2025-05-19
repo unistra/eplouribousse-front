@@ -1,9 +1,10 @@
 import type { User } from '#/user'
 import { axiosI } from '@/plugins/axios/axios'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 export function useSearchUser() {
     const username = ref<string>('')
+    const getter = computed(() => username.value)
     const users = ref<User[]>([])
     const matchingUsers = ref<User[]>([])
     const isLoading = ref<boolean>(false)
@@ -11,6 +12,7 @@ export function useSearchUser() {
 
     async function fillUsers() {
         isLoading.value = true
+        console.log(getter.value)
 
         const usersList = await axiosI.get('/users/?search=' + username.value)
         users.value = usersList.data.results
@@ -42,6 +44,7 @@ export function useSearchUser() {
 
     return {
         username,
+        getter,
         users,
         matchingUsers,
         isLoading,

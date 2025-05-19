@@ -17,7 +17,11 @@ const { email, sendInvitation } = useInviteForm()
             :label="t('forms.invite.email')"
             type="email"
         />
-        <QBtn type="submit">{{ t('forms.invite.send') }}</QBtn>
+        <QBtn
+            no-caps
+            type="submit"
+            >{{ t('forms.invite.send') }}</QBtn
+        >
     </QForm>
 </template>
 

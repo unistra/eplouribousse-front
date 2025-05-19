@@ -19,6 +19,16 @@
     flex-direction: column;
 }
 
+.table-center {
+    display: table;
+    text-align: center;
+}
+
+.table-cell-vertical-align {
+    display: table-cell;
+    vertical-align: middle;
+}
+
 .container-align {
     display: flex;
     align-items: center;
