@@ -34,7 +34,7 @@ export const useCreateAccountForm = () => {
             return
         }
         try {
-            const response = await axiosI.post<{ email: string }>('/user/invite-handshake/', {
+            const response = await axiosI.post<{ email: string }>('/users/invite-handshake/', {
                 token: token,
             })
             if (response.status === 200 && response.data.email) {

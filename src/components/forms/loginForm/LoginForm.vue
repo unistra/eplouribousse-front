@@ -3,16 +3,22 @@ import { useI18n } from 'vue-i18n'
 import { useLoginForm } from './useLoginForm'
 import OrDividerUtils from '@/components/utils/OrDividerUtils.vue'
 import PasswordField from '@/components/utils/form/PasswordField.vue'
+import { onMounted, ref } from 'vue'
 
 const { t } = useI18n()
 const { email, password, isLoading, onLogin, loginViaShibbolet } = useLoginForm()
+const loginURL = ref<string>('')
+
+onMounted(() => {
+    loginURL.value = window.location.href.split('.app.unistra.fr')[0].concat('.app.unistra.fr/saml2/login/')
+})
 </script>
 
 <template>
     <QBtn
         no-caps
         class="margin-t1"
-        @click="loginViaShibbolet"
+        :href="loginURL"
         :label="t('forms.login.renater')"
     />
 
