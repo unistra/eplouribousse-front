@@ -10,7 +10,7 @@ const { email, password, isLoading, onLogin } = useLoginForm()
 const loginURL = ref<string>('')
 
 onMounted(() => {
-    loginURL.value = window.location.href.split('.app.unistra.fr')[0].concat('.app.unistra.fr/saml2/login/')
+    loginURL.value = location.href.split('-pprd.app.unistra.fr')[0].concat('-api-pprd.app.unistra.fr/saml2/login/')
 })
 </script>
 
