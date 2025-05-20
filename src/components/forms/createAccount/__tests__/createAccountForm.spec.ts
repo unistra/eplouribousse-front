@@ -91,7 +91,7 @@ describe('CreateAccountForm', () => {
         const passwordFields = wrapper.findAllComponents(PasswordField)
         expect(passwordFields).toHaveLength(2)
         expect(passwordFields[0].props('label')).toContain('Mot de passe')
-        expect(passwordFields[1].props('label')).toContain('Confirmer le nouveau mot de passe') // might change !
+        expect(passwordFields[1].props('label')).toContain('Confirmer le mot de passe') // might change !
     })
 
     test('email input should be disabled', () => {

@@ -85,7 +85,7 @@ describe('useCreateAccountForm', () => {
 
             await fetchEmailFromToken()
 
-            expect(mock.axiosPost).toHaveBeenCalledWith('/user/invite-handshake/', {
+            expect(mock.axiosPost).toHaveBeenCalledWith('/users/invite-handshake/', {
                 token: 'valid-token',
             })
             expect(email.value).toBe('test@example.com')

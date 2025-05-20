@@ -47,7 +47,7 @@ describe('useInviteForm', () => {
         await sendInvitation()
         await flushPromises()
 
-        expect(mock.axiosPost).toHaveBeenCalledWith('/user/invite/', {
+        expect(mock.axiosPost).toHaveBeenCalledWith('/users/invite/', {
             email: 'test@example.com',
         })
 
