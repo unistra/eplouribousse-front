@@ -6,7 +6,7 @@ import PasswordField from '@/components/utils/form/PasswordField.vue'
 import { onMounted, ref } from 'vue'
 
 const { t } = useI18n()
-const { email, password, isLoading, onLogin, loginViaShibbolet } = useLoginForm()
+const { email, password, isLoading, onLogin } = useLoginForm()
 const loginURL = ref<string>('')
 
 onMounted(() => {

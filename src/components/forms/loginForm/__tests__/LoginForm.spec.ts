@@ -11,7 +11,6 @@ const mock = vi.hoisted(() => {
     return {
         t: vi.fn((key) => key),
         onLogin: vi.fn(),
-        loginViaShibbolet: vi.fn(),
     }
 })
 
@@ -21,7 +20,6 @@ vi.mock('@/components/forms/loginForm/useLoginForm.ts', () => ({
         password: ref('MyPassword123!'),
         isLoading: ref(false),
         onLogin: mock.onLogin,
-        loginViaShibbolet: mock.loginViaShibbolet,
     }),
 }))
 
@@ -66,19 +64,5 @@ describe('LoginForm', () => {
         await flushPromises()
 
         expect(mock.onLogin).toHaveBeenCalled()
-    })
-
-    test('calls loginViaShibbolet when Renater button is clicked', async () => {
-        const wrapper = mount(LoginForm, {
-            global: {
-                plugins: [i18n, Quasar],
-            },
-        })
-
-        await wrapper
-            .findAll('.q-btn')
-            .filter((btn) => btn.text() === 'Connexion via Renater')[0]
-            .trigger('click')
-        expect(mock.loginViaShibbolet).toHaveBeenCalled()
     })
 })

@@ -45,7 +45,7 @@ onMounted(() => {
         <QItemSection>{{ t(`navigation.${navLink.label}`) }}</QItemSection>
     </QItem>
     <QItem
-        v-if="userStore.isAuth"
+        v-if="userStore.isAuth && userStore.isLocal"
         dense
         class="text-white"
         clickable
@@ -54,20 +54,21 @@ onMounted(() => {
         <QItemSection>{{ t('navigation.logout') }}</QItemSection>
     </QItem>
     <QItem
-        v-else-if="userStore.isLocal"
+        v-else-if="userStore.isAuth && !userStore.isLocal"
         dense
         class="text-white"
         clickable
-        to="/login"
+        @click="onLogout"
+        :href="logoutURL"
     >
-        <QItemSection>{{ t('navigation.login') }}</QItemSection>
+        <QItemSection>{{ t('navigation.logout') }}</QItemSection>
     </QItem>
     <QItem
         v-else
         dense
         class="text-white"
         clickable
-        :href="logoutURL"
+        to="/login"
     >
         <QItemSection>{{ t('navigation.login') }}</QItemSection>
     </QItem>
