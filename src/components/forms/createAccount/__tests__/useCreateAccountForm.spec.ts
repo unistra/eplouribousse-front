@@ -224,7 +224,7 @@ describe('useCreateAccountForm', () => {
                 message: 'forms.createAccount.accountCreated',
             })
 
-            expect(mock.routerPush).toHaveBeenCalledWith({ name: 'Home' })
+            expect(mock.routerPush).toHaveBeenCalledWith({ name: 'login' })
             expect(isLoading.value).toBe(false)
         })
 

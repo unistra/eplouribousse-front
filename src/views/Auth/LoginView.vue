@@ -1,5 +1,13 @@
 <script setup lang="ts">
 import LoginForm from '@/components/forms/loginForm/LoginForm.vue'
+import { onMounted } from 'vue'
+import { useGlobalStore } from '@/stores/globalStore.ts'
+
+const globalStore = useGlobalStore()
+
+onMounted(() => {
+    globalStore.showNotify()
+})
 </script>
 
 <template>

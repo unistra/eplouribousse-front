@@ -92,7 +92,7 @@ export const useCreateAccountForm = () => {
 
             isLoading.value = false
 
-            await router.push({ name: 'Home' })
+            await router.push({ name: 'login' })
         } catch {
             notify({
                 type: 'negative',
