@@ -213,7 +213,7 @@ describe('useCreateAccountForm', () => {
             await createAccountPromise
             await flushPromises()
 
-            expect(mock.axiosPost).toHaveBeenCalledWith('/user/create-account/', {
+            expect(mock.axiosPost).toHaveBeenCalledWith('/users/create-account/', {
                 token: 'valid-token',
                 password: 'StrongPassword123!',
                 confirmPassword: 'StrongPassword123!',

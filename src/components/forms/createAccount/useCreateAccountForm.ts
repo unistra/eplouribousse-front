@@ -48,21 +48,15 @@ export const useCreateAccountForm = () => {
                 await router.push({ name: 'Home' })
             }
         } catch (e) {
-            if (e instanceof AxiosError && e.response?.status === 403) {
-                addNotify({
-                    type: 'negative',
-                    message: `${t('forms.createAccount.tokenRejected')}`,
-                    timeout: 8000,
-                })
-                await router.push({ name: 'Home' })
-            } else {
-                addNotify({
-                    type: 'negative',
-                    message: t('errors.unknownRetry'),
-                    timeout: 8000,
-                })
-                await router.push({ name: 'Home' })
-            }
+            addNotify({
+                type: 'negative',
+                message:
+                    e instanceof AxiosError && e.response?.status === 403
+                        ? t('forms.createAccount.tokenRejected')
+                        : t('errors.unknownRetry'),
+                timeout: 8000,
+            })
+            await router.push({ name: 'Home' })
         }
     }
 
@@ -85,7 +79,7 @@ export const useCreateAccountForm = () => {
 
         isLoading.value = true
         try {
-            await axiosI.post('/user/create-account/', {
+            await axiosI.post('/users/create-account/', {
                 token: token,
                 password: password.value,
                 confirmPassword: confirmPassword.value,
