@@ -29,9 +29,7 @@ async function onLogout() {
 }
 
 onMounted(() => {
-    logoutURL.value = window.location.href
-        .split('-pprd.app.unistra.fr')[0]
-        .concat('-api-pprd.app.unistra.fr/saml2/login/')
+    logoutURL.value = location.href.split('-pprd.app.unistra.fr')[0].concat('-api-pprd.app.unistra.fr/saml2/logout/')
 })
 </script>
 
