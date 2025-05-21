@@ -30,7 +30,8 @@
         },
         "creation": {
             "title": "Création d'un projet",
-            "name": "Nom du projet"
+            "name": "Nom du projet",
+            "userAlreadyAssigned": "L'utilisateur a déjà été assigné"
         },
         "projectName": "Intitulé du projet",
         "pilotEmails": "Email du ou des pilotes du projet",

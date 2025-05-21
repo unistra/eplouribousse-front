@@ -2,42 +2,11 @@
 import type { User } from '#/user'
 import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
 import UserItem from '@/components/utils/userItem/UserItem.vue'
-import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useCreateProjectForm } from './useCreateProjectForm'
 
 const { t } = useI18n()
-const admins = ref<User[]>([])
-const pilots = ref<User[]>([])
-const controllers = ref<User[]>([])
-const name = ref<string>('')
-
-function addUser(value: { user: User; role: string }) {
-    switch (value.role) {
-        case 'admin':
-            admins.value.push(value.user)
-            break
-        case 'pilot':
-            pilots.value.push(value.user)
-            break
-        case 'controller':
-            controllers.value.push(value.user)
-            break
-    }
-}
-
-function removeUser(value: { user: User; role: string }) {
-    switch (value.role) {
-        case 'admin':
-            admins.value = admins.value.filter((user) => user.id !== value.user.id)
-            break
-        case 'pilot':
-            pilots.value = pilots.value.filter((user) => user.id !== value.user.id)
-            break
-        case 'controller':
-            controllers.value = controllers.value.filter((user) => user.id !== value.user.id)
-            break
-    }
-}
+const { admins, pilots, controllers, name, addUser, removeUser, isUserInArray } = useCreateProjectForm()
 </script>
 
 <template>
