@@ -17,6 +17,7 @@ export function useResetPasswordForm() {
     const newPassword = ref<string>('')
     const confirmPassword = ref<string>('')
     const token = ref<string | null>('')
+    const uidb64 = ref<string | null>('')
 
     const isPasswordStrongEnough = computed(() => passwordStrengthValidator(newPassword.value))
     const arePasswordsMatching = computed(() => passwordMatchingValidator(newPassword.value, confirmPassword.value))
@@ -45,6 +46,7 @@ export function useResetPasswordForm() {
         try {
             await axiosI.patch('/users/reset-password/', {
                 token: token.value,
+                uidb64: uidb64.value,
                 newPassword: newPassword.value,
                 confirmPassword: confirmPassword.value,
             })
@@ -79,6 +81,7 @@ export function useResetPasswordForm() {
         confirmPassword,
         passwordStrength,
         token,
+        uidb64,
         isPasswordStrongEnough,
         arePasswordsMatching,
         isLoading,

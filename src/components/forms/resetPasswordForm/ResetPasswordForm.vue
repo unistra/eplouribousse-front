@@ -6,12 +6,21 @@ import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 const { t } = useI18n()
 
-const { newPassword, confirmPassword, token, isLoading, isPasswordStrongEnough, arePasswordsMatching, resetPassword } =
-    useResetPasswordForm()
+const {
+    newPassword,
+    confirmPassword,
+    token,
+    uidb64,
+    isLoading,
+    isPasswordStrongEnough,
+    arePasswordsMatching,
+    resetPassword,
+} = useResetPasswordForm()
 
 onMounted(() => {
     const route = useRoute()
     if (route.query?.token) token.value = route.query.token as string
+    if (route.query?.uidb64) uidb64.value = route.query.uidb64 as string
 })
 </script>
 
