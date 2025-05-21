@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { User } from '#/user'
 import UserItem from '../userItem/UserItem.vue'
 import { useSearchUser } from './useSearchUser'
 import { useI18n } from 'vue-i18n'
@@ -25,7 +26,7 @@ const { username, matchingUsers, isLoading, nextPage, fillUsers, appendUsers } =
         </template>
     </QInput>
     <QList dense>
-        <QScrollArea style="min-height: 100px">
+        <QScrollArea style="min-height: 150px">
             <UserItem
                 v-for="user in matchingUsers"
                 :role="role"
