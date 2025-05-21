@@ -25,7 +25,7 @@ function addUser(value: { user: User; role: string }) {
     }
 }
 
-function removeUserFromArray(value: { user: User; role: string }) {
+function removeUser(value: { user: User; role: string }) {
     switch (value.role) {
         case 'admin':
             admins.value = admins.value.filter((user) => user.id !== value.user.id)
@@ -80,7 +80,7 @@ function removeUserFromArray(value: { user: User; role: string }) {
             </QCardSection>
             <QSeparator vertical />
             <QCardSection class="col-4">
-                <QScrollArea style="min-height: 100px">
+                <QScrollArea style="min-height: 150px">
                     <UserItem
                         v-for="user in section.array"
                         action="remove"
@@ -88,7 +88,7 @@ function removeUserFromArray(value: { user: User; role: string }) {
                         :key="user.id"
                         :role="section.role"
                         :user="user"
-                        @remove-user="removeUserFromArray"
+                        @remove-user="removeUser"
                     />
                 </QScrollArea>
             </QCardSection>

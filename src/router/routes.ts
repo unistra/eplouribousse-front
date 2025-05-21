@@ -113,7 +113,7 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/new-project',
         name: 'newProject',
-        component: () => import('@/views/NewProjectView.vue'),
+        component: () => import('@/views/CreateProjectView.vue'),
         meta: {
             title: 'Nouveau Projet',
             require: ['manager'],
