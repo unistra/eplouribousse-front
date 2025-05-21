@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LoginForm from '@/components/forms/loginForm/LoginForm.vue'
+import LoginForm from '@/components/forms/auth/loginForm/LoginForm.vue'
 import { onMounted } from 'vue'
 import { useGlobalStore } from '@/stores/globalStore.ts'
 

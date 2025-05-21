@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest'
-import { useSendEmailResetPasswordForm } from '../useSendEmailResetPasswordForm'
+import { useSendEmailResetPasswordForm } from '../useSendEmailResetPasswordForm.ts'
 
 const mock = vi.hoisted(() => {
     return {

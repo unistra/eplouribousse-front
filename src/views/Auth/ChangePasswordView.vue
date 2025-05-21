@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ChangePasswordForm from '@/components/forms/changePassword/ChangePasswordForm.vue'
+import ChangePasswordForm from '@/components/forms/auth/changePassword/ChangePasswordForm.vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()

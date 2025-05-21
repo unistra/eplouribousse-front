@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest'
-import { useLoginForm } from '../useLoginForm'
+import { useLoginForm } from '../useLoginForm.ts'
 import { flushPromises } from '@vue/test-utils'
 import { AxiosError, type AxiosRequestHeaders } from 'axios'
 

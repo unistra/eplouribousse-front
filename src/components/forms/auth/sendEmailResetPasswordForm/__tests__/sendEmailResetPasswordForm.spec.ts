@@ -2,8 +2,8 @@ import { beforeEach, describe, expect, test, vi } from 'vitest'
 import { QBtn, QInput, Quasar } from 'quasar'
 import { mount } from '@vue/test-utils'
 import type { I18n } from 'vue-i18n'
-import useI18nMock from '~/mocks/i18n'
-import SendEmailResetPasswordForm from '@/components/forms/sendEmailResetPasswordForm/SendEmailResetPasswordForm.vue'
+import useI18nMock from '~/mocks/i18n.ts'
+import SendEmailResetPasswordForm from '@/components/forms/auth/sendEmailResetPasswordForm/SendEmailResetPasswordForm.vue'
 
 let i18n: I18n
 const mock = vi.hoisted(() => {
@@ -28,7 +28,7 @@ vi.mock('@/composables/useComposableQuasar.ts', () => ({
     },
 }))
 
-vi.mock('@/components/forms/sendEmailResetPasswordForm/useSendEmailResetPasswordForm.ts', () => ({
+vi.mock('@/components/forms/auth/sendEmailResetPasswordForm/useSendEmailResetPasswordForm.ts', () => ({
     useSendEmailResetPasswordForm: () => mock.useSendEmailResetPasswordForm,
 }))
 

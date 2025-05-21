@@ -2,8 +2,8 @@ import { beforeEach, describe, expect, test, vi } from 'vitest'
 import { Quasar } from 'quasar'
 import { mount } from '@vue/test-utils'
 import type { I18n } from 'vue-i18n'
-import useI18nMock from '~/mocks/i18n'
-import ResetPasswordForm from '@/components/forms/resetPasswordForm/ResetPasswordForm.vue'
+import useI18nMock from '~/mocks/i18n.ts'
+import ResetPasswordForm from '@/components/forms/auth/resetPasswordForm/ResetPasswordForm.vue'
 import PasswordField from '@/components/utils/form/passwordField/PasswordField.vue'
 
 let i18n: I18n
@@ -48,7 +48,7 @@ vi.mock('vue-router', () => ({
     }),
 }))
 
-vi.mock('@/components/forms/resetPasswordForm/useResetPasswordForm.ts', () => ({
+vi.mock('@/components/forms/auth/resetPasswordForm/useResetPasswordForm.ts', () => ({
     useResetPasswordForm: () => mock.useResetPasswordForm,
 }))
 

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest'
-import { useResetPasswordForm } from '../useResetPasswordForm'
+import { useResetPasswordForm } from '../useResetPasswordForm.ts'
 import { flushPromises } from '@vue/test-utils'
 import { AxiosError, type AxiosRequestHeaders } from 'axios'
 

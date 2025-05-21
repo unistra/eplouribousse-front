@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useCreateAccountForm } from '@/components/forms/createAccount/useCreateAccountForm.ts'
+import { useCreateAccountForm } from '@/components/forms/auth/createAccount/useCreateAccountForm.ts'
 import PasswordField from '@/components/utils/form/passwordField/PasswordField.vue'
 
 const { t } = useI18n()

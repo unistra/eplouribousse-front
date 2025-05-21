@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useResetPasswordForm } from '@/components/forms/resetPasswordForm/useResetPasswordForm.ts'
+import { useResetPasswordForm } from '@/components/forms/auth/resetPasswordForm/useResetPasswordForm.ts'
 import PasswordField from '@/components/utils/form/passwordField/PasswordField.vue'
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'

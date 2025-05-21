@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SendEmailResetPasswordForm from '@/components/forms/sendEmailResetPasswordForm/SendEmailResetPasswordForm.vue'
+import SendEmailResetPasswordForm from '@/components/forms/auth/sendEmailResetPasswordForm/SendEmailResetPasswordForm.vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()

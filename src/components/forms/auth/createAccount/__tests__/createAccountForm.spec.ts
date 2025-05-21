@@ -2,8 +2,8 @@ import { beforeEach, describe, expect, test, vi } from 'vitest'
 import { Quasar } from 'quasar'
 import { mount } from '@vue/test-utils'
 import type { I18n } from 'vue-i18n'
-import useI18nMock from '~/mocks/i18n'
-import CreateAccountForm from '@/components/forms/createAccount/CreateAccountForm.vue'
+import useI18nMock from '~/mocks/i18n.ts'
+import CreateAccountForm from '@/components/forms/auth/createAccount/CreateAccountForm.vue'
 import PasswordField from '@/components/utils/form/passwordField/PasswordField.vue'
 
 let i18n: I18n
@@ -61,7 +61,7 @@ vi.mock('@/composables/usePasswordValidators.ts', () => ({
     }),
 }))
 
-vi.mock('@/components/forms/createAccount/useCreateAccountForm.ts', () => ({
+vi.mock('@/components/forms/auth/createAccount/useCreateAccountForm.ts', () => ({
     useCreateAccountForm: () => mock.useCreateAccountForm,
 }))
 

@@ -3,7 +3,7 @@ import { flushPromises, mount } from '@vue/test-utils'
 import type { I18n } from 'vue-i18n'
 import { Quasar } from 'quasar'
 import useI18nMock from '~/mocks/i18n.ts'
-import LoginForm from '@/components/forms/loginForm/LoginForm.vue'
+import LoginForm from '@/components/forms/auth/loginForm/LoginForm.vue'
 import { ref } from 'vue'
 
 let i18n: I18n
@@ -14,7 +14,7 @@ const mock = vi.hoisted(() => {
     }
 })
 
-vi.mock('@/components/forms/loginForm/useLoginForm.ts', () => ({
+vi.mock('@/components/forms/auth/loginForm/useLoginForm.ts', () => ({
     useLoginForm: () => ({
         email: ref('test@test.com'),
         password: ref('MyPassword123!'),
