@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SendEmailForm from '@/components/forms/sendEmailForm/SendEmailForm.vue'
+import SendEmailResetPasswordForm from '@/components/forms/sendEmailResetPasswordForm/SendEmailResetPasswordForm.vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -8,6 +8,6 @@ const { t } = useI18n()
 <template>
     <main class="container-center">
         <h1>{{ t('forms.password.reset.title') }}</h1>
-        <SendEmailForm />
+        <SendEmailResetPasswordForm />
     </main>
 </template>

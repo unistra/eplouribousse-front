@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useSendEmailForm } from './useSendEmailForm'
+import { useSendEmailResetPasswordForm } from './useSendEmailResetPasswordForm.ts'
 
 const { t } = useI18n()
-const { email, isLoading, sendEmail } = useSendEmailForm()
+const { email, isLoading, sendEmail } = useSendEmailResetPasswordForm()
 </script>
 
 <template>
@@ -20,7 +20,6 @@ const { email, isLoading, sendEmail } = useSendEmailForm()
         <QBtn
             :loading="isLoading"
             no-caps
-            data-testid="submit-button"
             type="submit"
             class="submit-btn"
         >

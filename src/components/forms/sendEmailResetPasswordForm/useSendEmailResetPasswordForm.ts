@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { useI18n } from 'vue-i18n'
 
-export function useSendEmailForm() {
+export function useSendEmailResetPasswordForm() {
     const { notify } = useComposableQuasar()
     const { t } = useI18n()
     const email = ref<string>('')
@@ -15,13 +15,17 @@ export function useSendEmailForm() {
             await axiosI.post('/users/send-reset-email/', {
                 email: email.value,
             })
-        } finally {
-            isLoading.value = false
             notify({
                 type: 'positive',
                 message: t('forms.password.reset.emailSent', { email: email.value }),
             })
+        } catch {
+            notify({
+                type: 'negative',
+                message: t('forms.password.reset.emailNotSent'),
+            })
         }
+        isLoading.value = false
     }
 
     return {
