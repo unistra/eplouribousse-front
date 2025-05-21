@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useChangePasswordForm } from './useChangePasswordForm.ts'
 import { useI18n } from 'vue-i18n'
-import PasswordField from '@/components/utils/form/PasswordField.vue'
+import PasswordField from '@/components/utils/form/passwordField/PasswordField.vue'
 const { t } = useI18n()
 const {
     changePassword,
