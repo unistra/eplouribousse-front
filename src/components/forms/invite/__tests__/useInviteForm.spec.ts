@@ -81,7 +81,6 @@ describe('useInviteForm', () => {
         expect(mock.notify).toHaveBeenCalledWith({
             type: 'negative',
             message: 'forms.invite.emailAlreadyLinked: existing@example.com',
-            timeout: 10000,
         })
 
         expect(email.value).toBe('')
@@ -109,7 +108,6 @@ describe('useInviteForm', () => {
         expect(mock.notify).toHaveBeenCalledWith({
             type: 'negative',
             message: 'errors.unknown, forms.invite.emailNotSent',
-            timeout: 10000,
         })
 
         expect(email.value).toBe('')

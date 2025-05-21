@@ -116,7 +116,6 @@ describe('useCreateAccountForm', () => {
             expect(mock.addNotify).toHaveBeenCalledWith({
                 type: 'negative',
                 message: 'forms.createAccount.fetchEmailFailed',
-                timeout: 8000,
             })
             expect(mock.routerPush).toHaveBeenCalledWith({ name: 'Home' })
         })
@@ -142,7 +141,6 @@ describe('useCreateAccountForm', () => {
             expect(mock.addNotify).toHaveBeenCalledWith({
                 type: 'negative',
                 message: 'forms.createAccount.tokenRejected',
-                timeout: 8000,
             })
             expect(mock.routerPush).toHaveBeenCalledWith({ name: 'Home' })
         })
@@ -157,7 +155,6 @@ describe('useCreateAccountForm', () => {
             expect(mock.addNotify).toHaveBeenCalledWith({
                 type: 'negative',
                 message: 'errors.unknownRetry',
-                timeout: 8000,
             })
             expect(mock.routerPush).toHaveBeenCalledWith({ name: 'Home' })
         })

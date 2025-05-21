@@ -32,7 +32,6 @@ onMounted(async () => {
         globalStore.addNotify({
             type: 'negative',
             message: t('errors.unknown') + ', ' + t('errors.retry'),
-            timeout: 10000,
         })
         await router.push({ name: 'Home' })
     }
