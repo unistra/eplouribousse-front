@@ -25,21 +25,14 @@ export const useInviteForm = () => {
         } catch (e: unknown) {
             if (!(e instanceof AxiosError)) throw new Error(t('errors.unknown'))
 
-            if (e.status === 400) {
-                notify({
-                    type: 'negative',
-                    message: `${t('forms.invite.emailAlreadyLinked')}: ${email.value}`,
-                    timeout: 10000,
-                })
-                email.value = ''
-            } else if (e.status === 500) {
-                notify({
-                    type: 'negative',
-                    message: `${t('errors.unknown')}, ${t('forms.invite.emailNotSent')}`,
-                    timeout: 10000,
-                })
-                email.value = ''
-            }
+            notify({
+                type: 'negative',
+                message:
+                    e.status === 400
+                        ? `${t('forms.invite.emailAlreadyLinked')}: ${email.value}`
+                        : `${t('errors.unknown')}, ${t('forms.invite.emailNotSent')}`,
+            })
+            email.value = ''
         }
     }
 

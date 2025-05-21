@@ -2,7 +2,7 @@
 import { useI18n } from 'vue-i18n'
 import { useLoginForm } from './useLoginForm'
 import OrDividerUtils from '@/components/utils/OrDividerUtils.vue'
-import PasswordField from '@/components/utils/form/PasswordField.vue'
+import PasswordField from '@/components/utils/form/passwordField/PasswordField.vue'
 import { onMounted, ref } from 'vue'
 
 const { t } = useI18n()

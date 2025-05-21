@@ -4,7 +4,7 @@ import { mount } from '@vue/test-utils'
 import type { I18n } from 'vue-i18n'
 import useI18nMock from '~/mocks/i18n'
 import ChangePasswordForm from '@/components/forms/changePassword/ChangePasswordForm.vue'
-import PasswordField from '@/components/utils/form/PasswordField.vue'
+import PasswordField from '@/components/utils/form/passwordField/PasswordField.vue'
 
 let i18n: I18n
 const mock = vi.hoisted(() => {

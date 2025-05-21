@@ -2,8 +2,8 @@ import { beforeEach, describe, expect, test, vi } from 'vitest'
 import { Quasar } from 'quasar'
 import { mount } from '@vue/test-utils'
 import type { I18n } from 'vue-i18n'
-import useI18nMock from '~/mocks/i18n'
-import PasswordField from '@/components/utils/form/PasswordField.vue'
+import useI18nMock from '~/mocks/i18n.ts'
+import PasswordField from '@/components/utils/form/passwordField/PasswordField.vue'
 
 let i18n: I18n
 const mock = vi.hoisted(() => {

@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import LinearProgress from '@/components/utils/linearProgress/LinearProgress.vue'
-import { computed, ref, watch } from 'vue'
+import { watch } from 'vue'
 import { QSlideTransition, type ValidationRule } from 'quasar'
 import type { QInput } from 'quasar'
 import { usePasswordValidators } from '@/composables/usePasswordValidators.ts'
+import { usePasswordField } from '@/components/utils/form/passwordField/usePasswordField.ts'
 
 const { t } = useI18n()
 const { getPasswordStrength } = usePasswordValidators()
@@ -17,12 +18,8 @@ const props = defineProps<{
     autofocus?: boolean
     rules?: ValidationRule[]
 }>()
-
-const label = props.label ?? t('forms.login.password')
-const isPasswordVisible = ref<boolean>(false)
-const icon = computed(() => (isPasswordVisible.value ? 'mdi-eye-off-outline' : 'mdi-eye-outline'))
-const passwordVisibilityLabel = computed(() => `forms.password.isVisibleTooltip.${isPasswordVisible.value.toString()}`)
-const passwordStrength = ref(0)
+const { isInputFocused, passwordStrength, isPasswordVisible, passwordVisibilityLabel, defaultLabel, icon } =
+    usePasswordField()
 
 const emit = defineEmits<{
     'update:modelValue': [value: string]
@@ -36,8 +33,6 @@ watch(
         emit('passwordStrengthChange', passwordStrength.value)
     },
 )
-
-const isInputFocused = ref<boolean>(false)
 </script>
 
 <template>
@@ -48,7 +43,7 @@ const isInputFocused = ref<boolean>(false)
         <QInput
             :model-value="modelValue"
             @update:model-value="(val) => emit('update:modelValue', val as string)"
-            :label="label"
+            :label="label ?? defaultLabel"
             :type="isPasswordVisible ? 'text' : 'password'"
             :required="required"
             :autofocus="autofocus"

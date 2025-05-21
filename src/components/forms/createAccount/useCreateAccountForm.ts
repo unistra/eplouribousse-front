@@ -43,7 +43,6 @@ export const useCreateAccountForm = () => {
                 addNotify({
                     type: 'negative',
                     message: t('forms.createAccount.fetchEmailFailed'),
-                    timeout: 8000,
                 })
                 await router.push({ name: 'Home' })
             }
@@ -54,7 +53,6 @@ export const useCreateAccountForm = () => {
                     e instanceof AxiosError && e.response?.status === 403
                         ? t('forms.createAccount.tokenRejected')
                         : t('errors.unknownRetry'),
-                timeout: 8000,
             })
             await router.push({ name: 'Home' })
         }
@@ -92,7 +90,7 @@ export const useCreateAccountForm = () => {
 
             isLoading.value = false
 
-            await router.push({ name: 'Home' })
+            await router.push({ name: 'login' })
         } catch {
             notify({
                 type: 'negative',
