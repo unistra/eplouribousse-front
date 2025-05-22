@@ -42,6 +42,20 @@
         "storageOperatorEmails": "Identifiants et emails de leurs opérateurs respectifs",
         "searchUsers": "Vous pouvez utiliser l'outil de recherche ci-dessous pour vérifier si les utilisateurs ont déjà un compte, si ce n'est pas le cas, *contactez-les pour qu'ils se connectent au site :"
     },
+    "libraries": {
+        "title": "Bibliothèques",
+        "name": "Nom de la bibliothèque",
+        "add": {
+            "title": "Ajouter une bibliothèque",
+            "submit": "Ajouter",
+            "cancel": "Annuler",
+            "fields": {
+                "name": "Nom",
+                "alias": "Alias",
+                "code": "Code ou identifiant"
+            }
+        }
+    },
     "contactAdmin": {
         "title": "Contacter l'administrateur du site",
         "object": "Objet",
@@ -53,6 +67,9 @@
         "success": "Vous avez été déconnecté"
     },
     "forms": {
+        "validation": {
+            "fieldIsRequired": "Ce champ est requis"
+        },
         "fieldIsRequired": "Ce champ est requis",
         "login": {
             "email": "Adresse email",
