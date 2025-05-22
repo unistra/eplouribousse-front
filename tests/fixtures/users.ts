@@ -1,5 +1,15 @@
 import type { User } from '#/user'
 
+export const singleUser: User = {
+    id: '1',
+    username: 'meriadeg',
+    firstname: 'meriadeg',
+    lastname: 'guichard',
+    email: 'm@unistra.fr',
+    role: 'admin',
+    canAuthenticateLocally: true,
+}
+
 export const mockDuplicateUsers: User[] = [
     {
         id: '1',
