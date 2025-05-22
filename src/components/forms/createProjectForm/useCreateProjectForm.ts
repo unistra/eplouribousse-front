@@ -48,7 +48,7 @@ export function useCreateProjectForm() {
     }
 
     function isUserInArray(user: User) {
-        for (var array of [admins, pilots, controllers]) {
+        for (const array of [admins, pilots, controllers]) {
             if (array.value.find((u) => u.id === user.id)) {
                 return true
             }

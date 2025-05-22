@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n'
 import { useCreateProjectForm } from './useCreateProjectForm'
 
 const { t } = useI18n()
-const { admins, pilots, controllers, name, addUser, removeUser, isUserInArray } = useCreateProjectForm()
+const { admins, pilots, controllers, name, addUser, removeUser } = useCreateProjectForm()
 </script>
 
 <template>
@@ -49,11 +49,12 @@ const { admins, pilots, controllers, name, addUser, removeUser, isUserInArray } 
             </QCardSection>
             <QSeparator vertical />
             <QCardSection class="col-4">
-                <QScrollArea style="min-height: 150px">
+                <p style="text-align: center">{{ t('newProject.creation.userToAdd') }}</p>
+                <QScrollArea style="min-height: 10rem">
                     <UserItem
                         v-for="user in section.array"
                         action="remove"
-                        style="min-width: 70px"
+                        style="min-width: 4rem"
                         :key="user.id"
                         :role="section.role"
                         :user="user"
