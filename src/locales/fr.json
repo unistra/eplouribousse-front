@@ -26,12 +26,16 @@
             "title": "Création d'un projet - Vérification",
             "message": "Pour monter un nouveau projet, assurez-vous que vous disposez des éléments suivants :",
             "email": "Adresse email de l'utilisateur",
-            "requirementsOk": "Je suis prêt"
+            "requirementsOk": "Je suis prêt",
+            "invite": "Inviter",
+            "inviteUser": "Inviter un utilisateur",
+            "inviteMessage": "Si un utilisateur n'est pas présent, cliquez sur le bouton et remplissez le formulaire d'invitation"
         },
         "creation": {
             "title": "Création d'un projet",
             "name": "Nom du projet",
-            "userAlreadyAssigned": "L'utilisateur a déjà été assigné"
+            "userAlreadyAssigned": "L'utilisateur a déjà été assigné",
+            "userToAdd": "Utilisateurs"
         },
         "projectName": "Intitulé du projet",
         "pilotEmails": "Email du ou des pilotes du projet",

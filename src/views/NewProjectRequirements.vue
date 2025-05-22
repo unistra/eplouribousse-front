@@ -1,19 +1,22 @@
 <script setup lang="ts">
+import InviteForm from '@/components/forms/invite/InviteForm.vue'
 import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 const userStore = useUserStore()
 const { tenantColor } = storeToRefs(userStore)
+const open = ref<boolean>(false)
 </script>
 
 <template>
     <main>
         <h1 style="text-align: center">{{ t('newProject.requirements.title') }}</h1>
         <div class="row">
-            <div class="col-4">
+            <div class="col-8">
                 <p style="font-weight: bold">
                     {{ t('newProject.requirements.message') }}
                 </p>
@@ -40,6 +43,13 @@ const { tenantColor } = storeToRefs(userStore)
                 </ul>
                 <QSeparator />
                 <p class="margin-t1 margin-b1">{{ t('newProject.searchUsers') }}</p>
+                <div class="container-center">
+                    <QBtn
+                        :label="t('newProject.requirements.invite')"
+                        :style="tenantColor"
+                        @click="open = true"
+                    />
+                </div>
                 <SearchUser role="" />
             </div>
             <div class="col-3 table-center">
@@ -49,10 +59,34 @@ const { tenantColor } = storeToRefs(userStore)
                         no-caps
                         :to="{ name: 'newProject' }"
                         :style="tenantColor"
-                        >{{ t('newProject.requirements.requirementsOk') }}</QBtn
                     >
+                        {{ t('newProject.requirements.requirementsOk') }}
+                    </QBtn>
                 </div>
             </div>
+            <QDialog v-model="open">
+                <QCard
+                    style="min-width: 24rem; min-height: 20rem"
+                    bordered
+                >
+                    <QCardSection style="display: flex; align-items: baseline">
+                        <h6>{{ t('newProject.requirements.inviteUser') }}</h6>
+                        <QSpace />
+                        <QBtn
+                            icon="mdi-close"
+                            flat
+                            round
+                            dense
+                            v-close-popup
+                        />
+                    </QCardSection>
+
+                    <QSeparator />
+                    <QCardSection>
+                        <InviteForm />
+                    </QCardSection>
+                </QCard>
+            </QDialog>
         </div>
     </main>
 </template>

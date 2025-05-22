@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { User } from '#/user'
+import { onMounted } from 'vue'
 import UserItem from '../userItem/UserItem.vue'
 import { useSearchUser } from './useSearchUser'
 import { useI18n } from 'vue-i18n'
@@ -11,6 +11,22 @@ defineProps<{
 const { t } = useI18n()
 const emit = defineEmits(['addUser', 'removeUser'])
 const { username, matchingUsers, isLoading, nextPage, fillUsers, appendUsers } = useSearchUser()
+
+/* eslint-disable */
+function onLoad(_index: number, done: any) {
+    if (matchingUsers.value?.size && matchingUsers.value.size >= 10 && nextPage.value !== null) {
+        isLoading.value = true
+        appendUsers()
+        done()
+    } else {
+        done()
+    }
+}
+/* eslint-enable */
+
+onMounted(() => {
+    matchingUsers.value?.clear()
+})
 </script>
 
 <template>
@@ -25,8 +41,17 @@ const { username, matchingUsers, isLoading, nextPage, fillUsers, appendUsers } =
             <QIcon name="mdi-magnify" />
         </template>
     </QInput>
-    <QList dense>
-        <QScrollArea style="min-height: 150px">
+    <QList
+        id="scroll"
+        class="scroll"
+        dense
+        style="max-height: 150px"
+    >
+        <QInfiniteScroll
+            :offset="148"
+            scroll-target="#scroll"
+            @load="onLoad"
+        >
             <UserItem
                 v-for="user in matchingUsers"
                 :key="user.id"
@@ -36,13 +61,14 @@ const { username, matchingUsers, isLoading, nextPage, fillUsers, appendUsers } =
                 @add-user="() => emit(`addUser`, { user, role })"
                 @remove-user="() => emit(`removeUser`, { user, role })"
             />
-        </QScrollArea>
-        <QBtn
-            v-if="matchingUsers.length >= 10 && nextPage !== null"
-            flat
-            icon="mdi-plus-circle-outline"
-            rounded
-            @click="appendUsers"
-        />
+            <template v-slot:loading>
+                <div class="row justify-center q-my-md">
+                    <QSpinnerDots
+                        color="primary"
+                        size="40px"
+                    />
+                </div>
+            </template>
+        </QInfiniteScroll>
     </QList>
 </template>
