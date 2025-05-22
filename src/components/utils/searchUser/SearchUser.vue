@@ -10,19 +10,7 @@ defineProps<{
 }>()
 const { t } = useI18n()
 const emit = defineEmits(['addUser', 'removeUser'])
-const { username, matchingUsers, isLoading, nextPage, fillUsers, appendUsers } = useSearchUser()
-
-/* eslint-disable */
-function onLoad(_index: number, done: any) {
-    if (matchingUsers.value?.size && matchingUsers.value.size >= 10 && nextPage.value !== null) {
-        isLoading.value = true
-        appendUsers()
-        done()
-    } else {
-        done()
-    }
-}
-/* eslint-enable */
+const { username, matchingUsers, fillUsers, onLoad } = useSearchUser()
 
 onMounted(() => {
     matchingUsers.value?.clear()
@@ -32,6 +20,7 @@ onMounted(() => {
 <template>
     <QInput
         v-model="username"
+        data-testid="search"
         :label="t('newProject.requirements.email')"
         :loading="isLoading"
         type="search"
@@ -46,14 +35,15 @@ onMounted(() => {
         dense
         class="scroll"
         id="scroll"
+        data-testid="list"
     >
         <QInfiniteScroll
-            :offset="148"
+            :offset="150"
             @load="onLoad"
             scroll-target="#scroll"
         >
             <UserItem
-                v-for="(user, index) in matchingUsers"
+                v-for="(user, index) in matchingUsers?.values()"
                 :role="role"
                 :action="action"
                 :user="user"
@@ -61,14 +51,6 @@ onMounted(() => {
                 @add-user="() => emit(`addUser`, { user, role })"
                 @remove-user="() => emit(`removeUser`, { user, role })"
             />
-            <template v-slot:loading>
-                <div class="row justify-center q-my-md">
-                    <QSpinnerDots
-                        color="primary"
-                        size="40px"
-                    />
-                </div>
-            </template>
         </QInfiniteScroll>
     </QList>
 </template>

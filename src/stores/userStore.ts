@@ -9,7 +9,7 @@ export const useUserStore = defineStore('user', () => {
         username: 'test',
         email: 'test@test.fr',
         canAuthenticateLocally: true,
-        role: '',
+        role: 'manager',
     })
     const isAuth = ref<boolean>(false)
     const isLocal = ref<boolean>(false)

@@ -1,4 +1,5 @@
 import type { User } from '#/user'
+import { UniqueSet } from '#/utils'
 import { axiosI } from '@/plugins/axios/axios'
 import { computed, ref } from 'vue'
 
@@ -6,7 +7,7 @@ export function useSearchUser() {
     const username = ref<string>('')
     const getter = computed(() => username.value)
     const users = ref<User[]>([])
-    const matchingUsers = ref<Set<User>>()
+    const matchingUsers = ref<UniqueSet<User>>()
     const isLoading = ref<boolean>(false)
     const nextPage = ref<number | null>(1)
 
@@ -21,7 +22,10 @@ export function useSearchUser() {
             matchingUsers.value?.clear()
             nextPage.value = null
         } else {
-            matchingUsers.value = new Set(users.value.filter((user) => user.email.includes(username.value)))
+            matchingUsers.value = new UniqueSet(
+                (user) => user.id,
+                users.value.filter((user) => user.email.includes(username.value)),
+            )
         }
         isLoading.value = false
     }
@@ -34,10 +38,24 @@ export function useSearchUser() {
             matchingUsers.value?.clear()
             nextPage.value = null
         } else {
-            matchingUsers.value = new Set(users.value.filter((user) => user.email.includes(username.value)))
-            console.log(matchingUsers.value)
+            matchingUsers.value = new UniqueSet(
+                (user) => user.id,
+                users.value.filter((user) => user.email.includes(username.value)),
+            )
         }
     }
+
+    /* eslint-disable */
+    function onLoad(_index: number, done: any) {
+        if (matchingUsers.value?.size && matchingUsers.value.size() >= 10 && nextPage.value !== null) {
+            isLoading.value = true
+            appendUsers()
+            done()
+        } else {
+            done()
+        }
+    }
+    /* eslint-enable */
 
     return {
         username,
@@ -48,5 +66,6 @@ export function useSearchUser() {
         nextPage,
         fillUsers,
         appendUsers,
+        onLoad,
     }
 }
