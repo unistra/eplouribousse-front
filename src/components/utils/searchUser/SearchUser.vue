@@ -10,19 +10,7 @@ defineProps<{
 }>()
 const { t } = useI18n()
 const emit = defineEmits(['addUser', 'removeUser'])
-const { username, matchingUsers, isLoading, nextPage, fillUsers, appendUsers } = useSearchUser()
-
-/* eslint-disable */
-function onLoad(_index: number, done: any) {
-    if (matchingUsers.value?.size && matchingUsers.value.size >= 10 && nextPage.value !== null) {
-        isLoading.value = true
-        appendUsers()
-        done()
-    } else {
-        done()
-    }
-}
-/* eslint-enable */
+const { username, matchingUsers, fillUsers, onLoad } = useSearchUser()
 
 onMounted(() => {
     matchingUsers.value?.clear()
@@ -32,6 +20,7 @@ onMounted(() => {
 <template>
     <QInput
         v-model="username"
+        data-testid="search"
         :label="t('newProject.requirements.email')"
         :loading="isLoading"
         type="search"
@@ -44,6 +33,7 @@ onMounted(() => {
     <QList
         id="scroll"
         class="scroll"
+        data-testid="list"
         dense
         style="max-height: 150px"
     >

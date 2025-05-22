@@ -56,7 +56,6 @@ const open = ref<boolean>(false)
                 <div class="table-cell-vertical-align">
                     <QBtn
                         text-color="white"
-                        no-caps
                         :to="{ name: 'newProject' }"
                         :style="tenantColor"
                     >
