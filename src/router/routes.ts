@@ -100,6 +100,14 @@ const routes: RouteRecordRaw[] = [
             title: 'Create your account',
         },
     },
+    {
+        path: '/libraries',
+        name: 'libraries',
+        component: () => import('@/views/LibrariesView.vue'),
+        meta: {
+            title: 'Manage library',
+        },
+    },
 ]
 
 export default routes
