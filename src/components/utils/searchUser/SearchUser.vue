@@ -21,18 +21,18 @@ const { username, matchingUsers, isLoading, nextPage, fillUsers, appendUsers } =
     <QList dense>
         <QScrollArea style="height: 200px">
             <QItem
-                clickable
                 v-for="user in matchingUsers"
                 :key="user.id"
+                clickable
             >
                 <QItemSection>{{ user.username }}</QItemSection>
             </QItem>
         </QScrollArea>
         <QBtn
+            v-if="matchingUsers.length >= 10 && nextPage !== null"
             icon="mdi-plus-circle-outline"
             rounded
             flat
-            v-if="matchingUsers.length >= 10 && nextPage !== null"
             @click="appendUsers"
         />
     </QList>

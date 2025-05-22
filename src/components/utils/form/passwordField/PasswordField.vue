@@ -42,13 +42,13 @@ watch(
     >
         <QInput
             :model-value="modelValue"
-            @update:model-value="(val) => emit('update:modelValue', val as string)"
             :label="label ?? defaultLabel"
             :type="isPasswordVisible ? 'text' : 'password'"
             :required="required"
             :autofocus="autofocus"
             :rules="rules"
             :hide-bottom-space="true"
+            @update:model-value="(val) => emit('update:modelValue', val as string)"
             @focus="() => (isInputFocused = true)"
             @blur="() => (isInputFocused = false)"
         >

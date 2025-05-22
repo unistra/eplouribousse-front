@@ -24,20 +24,20 @@ function submitEmailForm() {
             <div class="col-4">
                 <QForm @submit.prevent="submitEmailForm">
                     <QSelect
+                        v-model="object"
                         :label="t('contactAdmin.object')"
                         :options="objects_available"
                         emit-value
                         map-options
-                        v-model="object"
                         outlined
                         required
                         style="padding-bottom: 2rem"
                     />
                     <QInput
+                        v-model="subject"
                         :hint="t('contactAdmin.message')"
                         :label="t('contactAdmin.placeholder')"
                         :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
-                        v-model="subject"
                         reactive-rules
                         counter
                         outlined

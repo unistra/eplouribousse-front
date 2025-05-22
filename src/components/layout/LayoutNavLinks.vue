@@ -35,9 +35,9 @@ onMounted(() => {
 
 <template>
     <QItem
+        v-for="(navLink, index) in navLinks.filter(hasPerm)"
         :key="index"
         :to="navLink.to"
-        v-for="(navLink, index) in navLinks.filter(hasPerm)"
         clickable
         dense
         class="text-white"
@@ -58,8 +58,8 @@ onMounted(() => {
         dense
         class="text-white"
         clickable
-        @click="onLogout"
         :href="logoutURL"
+        @click="onLogout"
     >
         <QItemSection>{{ t('navigation.logout') }}</QItemSection>
     </QItem>

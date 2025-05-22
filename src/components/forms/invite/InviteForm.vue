@@ -12,9 +12,9 @@ const { email, sendInvitation } = useInviteForm()
         @submit.prevent="sendInvitation"
     >
         <QInput
+            v-model="email"
             type="email"
             :label="t('forms.invite.email')"
-            v-model="email"
             autofocus
         />
         <QBtn type="submit">{{ t('forms.invite.send') }}</QBtn>

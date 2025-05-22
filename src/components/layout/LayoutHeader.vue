@@ -32,15 +32,15 @@ const rightDrawerOpen = ref<boolean>(false)
                 dense
                 flat
                 icon="mdi-menu"
-                @click="rightDrawerOpen = !rightDrawerOpen"
                 class="lt-lg"
+                @click="rightDrawerOpen = !rightDrawerOpen"
             />
             <LayoutMenu />
         </QToolbar>
     </QHeader>
     <QDrawer
-        :style="tenantColor"
         v-model="rightDrawerOpen"
+        :style="tenantColor"
         bordered
         side="right"
     >

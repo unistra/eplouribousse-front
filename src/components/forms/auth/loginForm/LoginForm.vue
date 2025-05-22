@@ -26,10 +26,10 @@ onMounted(() => {
 
     <QForm @submit.prevent="onLogin">
         <QInput
+            v-model="email"
             :label="t('forms.login.email')"
             :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
             reactive-rules
-            v-model="email"
             type="email"
         />
 
