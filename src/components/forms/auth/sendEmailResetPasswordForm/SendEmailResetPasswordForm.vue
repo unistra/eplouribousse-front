@@ -10,18 +10,18 @@ const { email, isLoading, sendEmail } = useSendEmailResetPasswordForm()
     <QForm @submit.prevent="sendEmail">
         <QInput
             v-model="email"
-            :label="t('forms.login.email')"
-            :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
-            reactive-rules
-            type="email"
-            data-testid="email-input"
             autofocus
+            data-testid="email-input"
+            :label="t('forms.login.email')"
+            reactive-rules
+            :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
+            type="email"
         />
         <QBtn
+            class="submit-btn"
             :loading="isLoading"
             no-caps
             type="submit"
-            class="submit-btn"
         >
             {{ t('forms.password.reset.sendEmail') }}
         </QBtn>

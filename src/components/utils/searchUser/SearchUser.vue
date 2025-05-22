@@ -9,9 +9,9 @@ const { username, matchingUsers, isLoading, nextPage, fillUsers, appendUsers } =
 <template>
     <QInput
         v-model="username"
-        type="search"
-        :loading="isLoading"
         :label="t('newProject.requirements.email')"
+        :loading="isLoading"
+        type="search"
         @update:model-value="fillUsers"
     >
         <template #append>
@@ -30,9 +30,9 @@ const { username, matchingUsers, isLoading, nextPage, fillUsers, appendUsers } =
         </QScrollArea>
         <QBtn
             v-if="matchingUsers.length >= 10 && nextPage !== null"
+            flat
             icon="mdi-plus-circle-outline"
             rounded
-            flat
             @click="appendUsers"
         />
     </QList>

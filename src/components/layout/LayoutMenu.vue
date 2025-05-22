@@ -27,8 +27,8 @@ function updateDarkMode(darkMode: boolean) {
             <QList>
                 <QItem
                     v-close-popup
-                    clickable
                     class="text-white"
+                    clickable
                     :to="{ name: 'settings' }"
                 >
                     <QItemSection>

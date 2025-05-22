@@ -31,9 +31,9 @@ const { dialog, openDialog, library, createLibrary } = useLibraryCreateButtonWit
                 <QCardSection>
                     <QInput
                         v-model="library.name"
+                        autofocus
                         :label="t('libraries.add.fields.name')"
                         :rules="[(val) => !!val || t('forms.validation.fieldIsRequired')]"
-                        autofocus
                     />
                     <QInput
                         v-model="library.alias"
@@ -53,8 +53,8 @@ const { dialog, openDialog, library, createLibrary } = useLibraryCreateButtonWit
                 >
                     <QBtn
                         v-close-popup
-                        :label="t('libraries.add.cancel')"
                         flat
+                        :label="t('libraries.add.cancel')"
                     />
                     <QBtn
                         flat

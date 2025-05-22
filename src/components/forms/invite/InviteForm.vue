@@ -13,9 +13,9 @@ const { email, sendInvitation } = useInviteForm()
     >
         <QInput
             v-model="email"
-            type="email"
-            :label="t('forms.invite.email')"
             autofocus
+            :label="t('forms.invite.email')"
+            type="email"
         />
         <QBtn type="submit">{{ t('forms.invite.send') }}</QBtn>
     </QForm>

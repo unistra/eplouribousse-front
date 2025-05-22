@@ -46,7 +46,7 @@ export default defineConfigWithVueTs(
                         'EVENTS',
                         'CONTENT',
                     ],
-                    alphabetical: false,
+                    alphabetical: true,
                 },
             ],
             'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',

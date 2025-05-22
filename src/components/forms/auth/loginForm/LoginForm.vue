@@ -16,10 +16,10 @@ onMounted(() => {
 
 <template>
     <QBtn
-        no-caps
         class="margin-t1"
         :href="loginURL"
         :label="t('forms.login.renater')"
+        no-caps
     />
 
     <OrDividerUtils />
@@ -28,8 +28,8 @@ onMounted(() => {
         <QInput
             v-model="email"
             :label="t('forms.login.email')"
-            :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
             reactive-rules
+            :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
             type="email"
         />
 
@@ -42,10 +42,10 @@ onMounted(() => {
             {{ t('forms.login.forgottenPassword') }} <a href="/send-email"> {{ t('forms.login.clickHere') }}</a>
         </p>
         <QBtn
+            class="margin-t1"
             :loading="isLoading"
             no-caps
             type="submit"
-            class="margin-t1"
         >
             {{ t('forms.login.submit') }}
         </QBtn>

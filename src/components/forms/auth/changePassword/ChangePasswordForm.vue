@@ -44,10 +44,10 @@ const {
         </div>
 
         <QBtn
-            type="submit"
-            no-caps
-            :loading="isLoading"
             class="submit-btn"
+            :loading="isLoading"
+            no-caps
+            type="submit"
         >
             {{ t('forms.password.change.submit') }}
         </QBtn>

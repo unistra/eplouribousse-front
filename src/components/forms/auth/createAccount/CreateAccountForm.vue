@@ -21,10 +21,10 @@ fetchEmailFromToken()
 <template>
     <QForm @submit="createAccount">
         <QInput
-            :model-value="email"
-            type="email"
             disable
             :label="t('forms.login.email')"
+            :model-value="email"
+            type="email"
         />
         <PasswordField
             v-model="password"
@@ -39,8 +39,8 @@ fetchEmailFromToken()
         />
 
         <QBtn
-            type="submit"
             :loading="isLoading"
+            type="submit"
         >
             {{ t('forms.createAccount.submit') }}
         </QBtn>
