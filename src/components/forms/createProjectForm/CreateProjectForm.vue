@@ -48,7 +48,10 @@ const { admins, pilots, controllers, name, addUser, removeUser } = useCreateProj
                 />
             </QCardSection>
             <QSeparator vertical />
-            <QCardSection class="col-4">
+            <QCardSection
+                class="col-4"
+                :data-testid="section.role + '-list'"
+            >
                 <p style="text-align: center">{{ t('newProject.creation.userToAdd') }}</p>
                 <QScrollArea style="min-height: 10rem">
                     <UserItem

@@ -13,8 +13,6 @@ let i18n: I18n
 const mock = vi.hoisted(() => {
     return {
         notify: vi.fn(),
-        routerPush: vi.fn(),
-        axiosGet: vi.fn(),
         useSearchUser: {
             username: 'fr',
             users: new Array<User>(),
@@ -39,12 +37,6 @@ vi.mock('@/composables/useComposableQuasar.ts', () => ({
         },
         notify: mock.notify,
     }),
-}))
-
-vi.mock('@/plugins/axios/axios.ts', () => ({
-    axiosI: {
-        get: mock.axiosGet,
-    },
 }))
 
 vi.mock('@/components/utils/searchUser/useSearchUser.ts', () => ({
