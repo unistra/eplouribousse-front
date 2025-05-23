@@ -4,6 +4,7 @@ import { axiosI } from '@/plugins/axios/axios.ts'
 import { useLibraryStore } from '@/stores/libraryStore.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useI18n } from 'vue-i18n'
+import { AxiosError } from 'axios'
 
 export const useLibraryCreateButtonWithDialog = () => {
     const { notify } = useComposableQuasar()
@@ -18,9 +19,21 @@ export const useLibraryCreateButtonWithDialog = () => {
         code: '',
     })
 
+    const nameError = ref<string | undefined>(undefined)
+    const aliasError = ref<string | undefined>(undefined)
+    const codeError = ref<string | undefined>(undefined)
+
+    // Function to reset errors
+    const resetErrors = () => {
+        nameError.value = undefined
+        aliasError.value = undefined
+        codeError.value = undefined
+    }
+
     const libraryStore = useLibraryStore()
 
     const createLibrary = async () => {
+        resetErrors()
         try {
             const response = await axiosI.post<Library>('/libraries/', {
                 name: library.name,
@@ -35,11 +48,27 @@ export const useLibraryCreateButtonWithDialog = () => {
             library.code = ''
 
             dialog.value = false
-        } catch {
-            notify({
-                type: 'error',
-                message: t('errors.unknown'),
-            })
+        } catch (error: unknown) {
+            if (error instanceof AxiosError && error.response?.data) {
+                const errors = error.response.data
+
+                const errorFields = {
+                    name: nameError,
+                    alias: aliasError,
+                    code: codeError,
+                }
+
+                for (const [field, errorRef] of Object.entries(errorFields)) {
+                    if (errors[field]) {
+                        errorRef.value = Array.isArray(errors[field]) ? errors[field][0] : errors[field]
+                    }
+                }
+            } else {
+                notify({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
         }
     }
 
@@ -48,5 +77,8 @@ export const useLibraryCreateButtonWithDialog = () => {
         openDialog,
         library,
         createLibrary,
+        nameError,
+        aliasError,
+        codeError,
     }
 }

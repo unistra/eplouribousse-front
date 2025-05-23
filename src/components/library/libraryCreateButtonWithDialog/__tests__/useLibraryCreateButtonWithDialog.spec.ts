@@ -102,7 +102,7 @@ describe('useLibraryCreateButtonWithDialog', () => {
         })
 
         expect(mock.notify).toHaveBeenCalledWith({
-            type: 'error',
+            type: 'negative',
             message: 'errors.unknown',
         })
 

@@ -9,7 +9,8 @@ defineProps<{
 
 const { t } = useI18n()
 
-const { dialog, openDialog, library, createLibrary } = useLibraryCreateButtonWithDialog()
+const { dialog, openDialog, library, createLibrary, nameError, aliasError, codeError } =
+    useLibraryCreateButtonWithDialog()
 </script>
 
 <template>
@@ -32,16 +33,22 @@ const { dialog, openDialog, library, createLibrary } = useLibraryCreateButtonWit
                     <QInput
                         v-model="library.name"
                         autofocus
+                        :error="!!nameError"
+                        :error-message="nameError"
                         :label="t('libraries.add.fields.name')"
                         :rules="[(val) => !!val || t('forms.validation.fieldIsRequired')]"
                     />
                     <QInput
                         v-model="library.alias"
+                        :error="!!aliasError"
+                        :error-message="aliasError"
                         :label="t('libraries.add.fields.alias')"
                         :rules="[(val) => !!val || t('forms.validation.fieldIsRequired')]"
                     />
                     <QInput
                         v-model="library.code"
+                        :error="!!codeError"
+                        :error-message="codeError"
                         :label="t('libraries.add.fields.code')"
                         :rules="[(val) => !!val || t('forms.validation.fieldIsRequired')]"
                     />
