@@ -7,7 +7,6 @@ const mock = vi.hoisted(() => {
         notify: vi.fn(),
         axiosPost: vi.fn(),
         t: vi.fn((key) => key),
-        addLibrary: vi.fn(),
     }
 })
 
@@ -27,12 +26,6 @@ vi.mock('@/plugins/axios/axios.ts', () => ({
     axiosI: {
         post: mock.axiosPost,
     },
-}))
-
-vi.mock('@/stores/libraryStore.ts', () => ({
-    useLibraryStore: () => ({
-        addLibrary: mock.addLibrary,
-    }),
 }))
 
 describe('useLibraryCreateButtonWithDialog', () => {
@@ -82,8 +75,6 @@ describe('useLibraryCreateButtonWithDialog', () => {
             code: 'TL',
         })
 
-        expect(mock.addLibrary).toHaveBeenCalledWith(mockLibraryResponse.data)
-
         expect(library.name).toBe('')
         expect(library.alias).toBe('')
         expect(library.code).toBe('')
@@ -110,7 +101,5 @@ describe('useLibraryCreateButtonWithDialog', () => {
         expect(library.alias).toBe('test')
         expect(library.code).toBe('TL')
         expect(dialog.value).toBe(true)
-
-        expect(mock.addLibrary).not.toHaveBeenCalled()
     })
 })

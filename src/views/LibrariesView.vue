@@ -9,11 +9,5 @@ const { t } = useI18n()
 <template>
     <h1>{{ t('libraries.title') }}</h1>
     <LibraryCreateButtonWithDialog />
-    <LibraryTable class="library-table" />
+    <LibraryTable />
 </template>
-
-<style scoped>
-.library-table {
-    margin-top: 16px;
-}
-</style>

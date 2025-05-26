@@ -11,6 +11,19 @@ const { t } = useI18n()
 
 const { dialog, openDialog, library, createLibrary, nameError, aliasError, codeError } =
     useLibraryCreateButtonWithDialog()
+
+const emit = defineEmits<{
+    created: [value: boolean]
+}>()
+
+const createLibraryAndEmit = async () => {
+    try {
+        await createLibrary()
+        emit('created', true)
+    } catch {
+        console.error('Failed to create library')
+    }
+}
 </script>
 
 <template>
@@ -28,7 +41,7 @@ const { dialog, openDialog, library, createLibrary, nameError, aliasError, codeE
                 <div class="text-h6">{{ t('libraries.add.title') }}</div>
             </QCardSection>
 
-            <QForm @submit.prevent="createLibrary">
+            <QForm @submit.prevent="createLibraryAndEmit">
                 <QCardSection>
                     <QInput
                         v-model="library.name"
