@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useLibraryCreateButtonWithDialog } from '@/components/library/libraryCreateButtonWithDialog/useLibraryCreateButtonWithDialog.ts'
+import { useLibraryCreateAndEditBtn } from '@/components/library/libraryCreateAndEditBtn/useLibraryCreateAndEditBtn.ts'
 import type { Library } from '#/library.ts'
 import { onMounted } from 'vue'
 
@@ -13,7 +13,7 @@ const props = defineProps<{
 const { t } = useI18n()
 
 const { dialog, openDialog, library, createLibrary, nameError, aliasError, codeError, updateLibrary } =
-    useLibraryCreateButtonWithDialog()
+    useLibraryCreateAndEditBtn()
 
 const isToEdit = !!props.libraryToEdit
 

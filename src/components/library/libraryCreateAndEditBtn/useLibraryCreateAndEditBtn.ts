@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n'
 import { AxiosError } from 'axios'
 import { useLibraryStore } from '@/stores/libraryStore.ts'
 
-export const useLibraryCreateButtonWithDialog = () => {
+export const useLibraryCreateAndEditBtn = () => {
     const { notify } = useComposableQuasar()
     const { t } = useI18n()
 

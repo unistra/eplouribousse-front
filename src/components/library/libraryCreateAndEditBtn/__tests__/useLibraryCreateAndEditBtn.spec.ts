@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest'
-import { useLibraryCreateButtonWithDialog } from '../useLibraryCreateButtonWithDialog.ts'
+import { useLibraryCreateAndEditBtn } from '../useLibraryCreateAndEditBtn.ts'
 import { flushPromises } from '@vue/test-utils'
 
 const mock = vi.hoisted(() => {
@@ -28,14 +28,14 @@ vi.mock('@/plugins/axios/axios.ts', () => ({
     },
 }))
 
-describe('useLibraryCreateButtonWithDialog', () => {
+describe('useLibraryCreateAndEditBtn', () => {
     beforeEach(() => {
         vi.clearAllMocks()
         mock.axiosPost.mockResolvedValue({ data: {} })
     })
 
     test('initial state should have empty library fields and closed dialog', () => {
-        const { library, dialog } = useLibraryCreateButtonWithDialog()
+        const { library, dialog } = useLibraryCreateAndEditBtn()
 
         expect(library.name).toBe('')
         expect(library.alias).toBe('')
@@ -44,7 +44,7 @@ describe('useLibraryCreateButtonWithDialog', () => {
     })
 
     const setupTests = async () => {
-        const { createLibrary, library, dialog } = useLibraryCreateButtonWithDialog()
+        const { createLibrary, library, dialog } = useLibraryCreateAndEditBtn()
 
         library.name = 'Test Library'
         library.alias = 'test'
