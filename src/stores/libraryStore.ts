@@ -12,32 +12,36 @@ export const useLibraryStore = defineStore('library', () => {
         previous: null,
         results: [],
     })
-    const isLoading = ref(false)
     const error = ref<string | null>(null)
 
-    const fetchLibraries = async () => {
-        isLoading.value = true
+    const fetchLibraries = async (params?: {
+        page?: number
+        pageSize?: number
+        sortBy?: 'name' | 'alias'
+        descending?: boolean
+        filter?: string
+    }) => {
         error.value = null
 
         try {
-            const response = await axiosI.get<Pagination<Library>>('/libraries/')
+            const queryParams = new URLSearchParams()
+
+            if (params?.page) queryParams.append('page', `${params.page}`)
+            if (params?.pageSize) queryParams.append('page_size', `${params.pageSize}`)
+            if (params?.sortBy) queryParams.append('ordering', `${params.descending ? '-' : ''}${params.sortBy}`)
+            if (params?.filter) queryParams.append('search', params.filter)
+
+            const url = `/libraries/${queryParams.toString() ? `?${queryParams}` : ''}`
+            const response = await axiosI.get<Pagination<Library>>(url)
             libraries.value = response.data
         } catch {
             error.value = 'Failed to fetch library'
-        } finally {
-            isLoading.value = false
         }
-    }
-
-    const addLibrary = (library: Library) => {
-        libraries.value.results.push(library)
     }
 
     return {
         libraries,
-        isLoading,
         error,
         fetchLibraries,
-        addLibrary,
     }
 })

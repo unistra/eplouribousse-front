@@ -2,7 +2,6 @@ import { setActivePinia, createPinia } from 'pinia'
 import { beforeEach, describe, expect, test, vi } from 'vitest'
 import { useLibraryStore } from '@/stores/libraryStore'
 import { axiosI } from '@/plugins/axios/axios'
-import type { Library } from '#/library.ts'
 
 vi.mock('@/plugins/axios/axios', () => ({
     axiosI: {
@@ -23,7 +22,6 @@ describe('LibraryStore', () => {
 
         expect(store.libraries.results).toEqual([])
         expect(store.libraries.count).toBe(0)
-        expect(store.isLoading).toBe(false)
         expect(store.error).toBe(null)
     })
 
@@ -46,7 +44,6 @@ describe('LibraryStore', () => {
 
         expect(axiosI.get).toHaveBeenCalledWith('/libraries/')
         expect(store.libraries).toEqual(mockLibraries)
-        expect(store.isLoading).toBe(false)
         expect(store.error).toBe(null)
     })
 
@@ -58,38 +55,6 @@ describe('LibraryStore', () => {
 
         expect(axiosI.get).toHaveBeenCalledWith('/libraries/')
         expect(store.libraries.results).toEqual([])
-        expect(store.isLoading).toBe(false)
         expect(store.error).toBe('Failed to fetch library')
-    })
-
-    test('addLibrary adds a library to results', () => {
-        const store = useLibraryStore()
-        const newLibrary: Library = { name: 'New Library', alias: 'newlib', code: 'test-code' }
-
-        store.addLibrary({ ...newLibrary })
-
-        expect(store.libraries.results).toContainEqual({ ...newLibrary })
-        expect(store.libraries.results.length).toBe(1)
-    })
-
-    test('loading state is true during API call', async () => {
-        // Create a promise that we can resolve manually
-        let resolvePromise: (value: unknown) => void
-        const promise = new Promise((resolve) => {
-            resolvePromise = resolve
-        })
-
-        vi.mocked(axiosI.get).mockReturnValue(promise)
-
-        const store = useLibraryStore()
-        const fetchPromise = store.fetchLibraries()
-
-        expect(store.isLoading).toBe(true)
-
-        // Resolve the API call
-        resolvePromise!({ data: { count: 0, next: null, previous: null, results: [] } })
-        await fetchPromise
-
-        expect(store.isLoading).toBe(false)
     })
 })
