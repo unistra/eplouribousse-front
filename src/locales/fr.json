@@ -45,18 +45,24 @@
     "libraries": {
         "title": "Bibliothèques",
         "name": "Nom de la bibliothèque",
-        "add": {
-            "title": "Ajouter une bibliothèque",
-            "submit": "Ajouter",
-            "cancel": "Annuler",
+        "form": {
             "fields": {
                 "name": "Nom",
                 "alias": "Alias",
                 "code": "Code ou identifiant"
-            }
+            },
+            "add": "Ajouter",
+            "edit": "Modifier",
+            "cancel": "Annuler",
+            "aLibrary": "une bibliothèque",
+            "delete": "Supprimer",
+            "confirmDelete": "Êtes-vous sûr de vouloir supprimer cette bibliothèque ?"
         },
         "table": {
             "search": "Rechercher"
+        },
+        "errors": {
+            "notFound": "Bibliothèque non trouvée"
         }
     },
     "contactAdmin": {
