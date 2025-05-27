@@ -4,7 +4,7 @@ import { mount } from '@vue/test-utils'
 import type { I18n } from 'vue-i18n'
 import useI18nMock from '~/mocks/i18n.ts'
 import { ref } from 'vue'
-import LibraryCreateAndEditBtn from '@/components/library/libraryCreateAndEditBtn/libraryCreateAndEditBtn.vue'
+import LibraryCreateAndEditBtn from '@/components/library/libraryCreateAndEditBtn/LibraryCreateAndEditBtn.vue'
 
 let i18n: I18n
 const mock = vi.hoisted(() => {
