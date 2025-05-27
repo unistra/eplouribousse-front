@@ -55,8 +55,12 @@
             "edit": "Modifier",
             "cancel": "Annuler",
             "aLibrary": "une bibliothèque",
-            "delete": "Supprimer",
-            "confirmDelete": "Êtes-vous sûr de vouloir supprimer cette bibliothèque ?"
+            "theLibrary": "la bibliothèque",
+            "delete": {
+                "i": "Supprimer",
+                "youAreAboutToDelete": "Vous êtes sur le point de supprimer",
+                "thisActionCannotBeUndone": "Cette action ne peut pas être annulée"
+            }
         },
         "table": {
             "search": "Rechercher"
