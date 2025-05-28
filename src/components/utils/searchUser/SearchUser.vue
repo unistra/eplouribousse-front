@@ -38,6 +38,7 @@ onMounted(() => {
         style="max-height: 150px"
     >
         <QInfiniteScroll
+            data-testid="scroll"
             :offset="148"
             scroll-target="#scroll"
             @load="onLoad"

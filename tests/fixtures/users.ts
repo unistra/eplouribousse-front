@@ -1,6 +1,6 @@
 import type { User } from '#/user'
 
-export const singleUser: User = {
+export const mockSingleUser: User = {
     id: '1',
     username: 'meriadeg',
     firstname: 'meriadeg',
@@ -12,7 +12,7 @@ export const singleUser: User = {
 
 export const mockDuplicateUsers: User[] = [
     {
-        id: '1',
+        id: '2',
         username: 'meriadeg',
         firstname: 'meriadeg',
         lastname: 'guichard',
@@ -21,7 +21,7 @@ export const mockDuplicateUsers: User[] = [
         canAuthenticateLocally: true,
     },
     {
-        id: '1',
+        id: '2',
         username: 'meriadeg',
         firstname: 'meriadeg',
         lastname: 'guichard',
@@ -119,33 +119,6 @@ export const mockUsers: User[] = [
         firstname: 'meriadeg',
         lastname: 'guichard',
         email: 'i@unistra.fr',
-        role: 'admin',
-        canAuthenticateLocally: true,
-    },
-    {
-        id: '13',
-        username: 'jeriadeg',
-        firstname: 'meriadeg',
-        lastname: 'guichard',
-        email: 'j@unistra.fr',
-        role: 'admin',
-        canAuthenticateLocally: true,
-    },
-    {
-        id: '14',
-        username: 'keriadeg',
-        firstname: 'meriadeg',
-        lastname: 'guichard',
-        email: 'k@unistra.fr',
-        role: 'admin',
-        canAuthenticateLocally: true,
-    },
-    {
-        id: '15',
-        username: 'leriadeg',
-        firstname: 'meriadeg',
-        lastname: 'guichard',
-        email: 'l@unistra.fr',
         role: 'admin',
         canAuthenticateLocally: true,
     },

@@ -13,8 +13,13 @@ let i18n: I18n
 const mock = vi.hoisted(() => {
     return {
         notify: vi.fn(),
+        t: vi.fn((key) => key),
+        axiosGet: vi.fn(),
         useSearchUser: {
             username: 'fr',
+            userComparator: (a: User, b: User) => {
+                return a.id === b.id
+            },
             users: new Array<User>(),
             matchingUsers: new Array<User>(),
             isLoading: false,
@@ -39,20 +44,29 @@ vi.mock('@/composables/useComposableQuasar.ts', () => ({
     }),
 }))
 
+vi.mock('@/plugins/axios/axios.ts', () => ({
+    axiosI: {
+        get: mock.axiosGet,
+    },
+}))
+
 vi.mock('@/components/utils/searchUser/useSearchUser.ts', () => ({
     useSearchUser: () => mock.useSearchUser,
 }))
 
 describe('SearchUser', () => {
     beforeEach(() => {
-        vi.clearAllMocks()
         const { i18nMock } = useI18nMock()
         i18n = i18nMock
-        mock.useSearchUser.users = mockUsers
     })
     afterEach(() => {
         vi.clearAllMocks()
     })
+
+    /**
+     * Printing
+     */
+
     test('prints nothing if no user is matching the input', () => {
         const wrapper = mount(SearchItem, {
             global: {
@@ -63,7 +77,7 @@ describe('SearchUser', () => {
         expect(wrapper.findAllComponents(UserItem).length).toBe(0)
     })
     test('prints matching users given the input', async () => {
-        mock.useSearchUser.matchingUsers = new UniqueSet<User>((user) => user.id, mockUsers).values() // simulate that the research match all users
+        mock.useSearchUser.matchingUsers = new UniqueSet<User>(mock.useSearchUser.userComparator, mockUsers).values() // simulate that the research match all users
         const wrapper = mount(SearchItem, {
             global: {
                 plugins: [i18n, Quasar],
@@ -73,7 +87,10 @@ describe('SearchUser', () => {
         expect(wrapper.findAllComponents(UserItem).length).toBe(mockUsers.length)
     })
     test('prints only unique matches (each user is unique in the matching users)', () => {
-        mock.useSearchUser.matchingUsers = new UniqueSet<User>((user) => user.id, mockDuplicateUsers).values() // simulate that the research returns two same users (eventual bug)
+        mock.useSearchUser.matchingUsers = new UniqueSet<User>(
+            mock.useSearchUser.userComparator,
+            mockDuplicateUsers,
+        ).values() // simulate that the research returns two same users (eventual bug)
         const wrapper = mount(SearchItem, {
             global: {
                 plugins: [i18n, Quasar],
@@ -81,5 +98,31 @@ describe('SearchUser', () => {
             props: { role: '' },
         })
         expect(wrapper.findAllComponents(UserItem).length).toBe(1) // and not 2
+    })
+
+    /**
+     * Triggering
+     */
+
+    test('trigger fillUsers when updating the username input', async () => {
+        const wrapper = mount(SearchItem, {
+            global: {
+                plugins: [i18n, Quasar],
+            },
+            props: { role: '' },
+        })
+        await wrapper.find('[data-testid="search"]').setValue('newValue')
+        expect(mock.useSearchUser.fillUsers).toHaveBeenCalledOnce()
+    })
+
+    test('triggers onLoad when scrolling to the bottom', async () => {
+        const wrapper = mount(SearchItem, {
+            global: {
+                plugins: [i18n, Quasar],
+            },
+            props: { role: '' },
+        })
+        await wrapper.find('[data-testid="scroll"]').trigger('load')
+        expect(mock.useSearchUser.onLoad).toHaveBeenCalledOnce()
     })
 })

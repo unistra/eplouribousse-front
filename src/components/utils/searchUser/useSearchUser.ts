@@ -1,11 +1,14 @@
 import type { User } from '#/user'
-import { UniqueSet } from '#/utils'
+import { UniqueSet, type Comparator } from '#/utils'
 import { axiosI } from '@/plugins/axios/axios'
 import { computed, ref } from 'vue'
 
 export function useSearchUser() {
-    const username = ref<string>('')
+    const userComparator: Comparator<User> = (a: User, b: User) => {
+        return a.id === b.id
+    }
     const getter = computed(() => username.value)
+    const username = ref<string>('')
     const users = ref<User[]>([])
     const matchingUsers = ref<UniqueSet<User>>()
     const isLoading = ref<boolean>(false)
@@ -23,7 +26,7 @@ export function useSearchUser() {
             nextPage.value = null
         } else {
             matchingUsers.value = new UniqueSet(
-                (user) => user.id,
+                userComparator,
                 users.value.filter((user) => user.email.includes(username.value)),
             )
         }
@@ -39,7 +42,7 @@ export function useSearchUser() {
             nextPage.value = null
         } else {
             matchingUsers.value = new UniqueSet(
-                (user) => user.id,
+                userComparator,
                 users.value.filter((user) => user.email.includes(username.value)),
             )
         }

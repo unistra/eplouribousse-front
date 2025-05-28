@@ -25,9 +25,9 @@ const { admins, pilots, controllers, name, addUser, removeUser } = useCreateProj
     <QCard
         bordered
         v-for="section in [
-            { title: 'Administrateurs', role: 'admin', array: admins },
-            { title: 'Pilotes de projet', role: 'pilot', array: pilots },
-            { title: 'Controlleurs', role: 'controller', array: controllers },
+            { title: 'Administrateurs', role: 'admin', array: admins.values() },
+            { title: 'Pilotes de projet', role: 'pilot', array: pilots.values() },
+            { title: 'Controlleurs', role: 'controller', array: controllers.values() },
         ]"
         :key="section.title"
     >

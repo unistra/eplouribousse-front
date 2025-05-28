@@ -18,11 +18,13 @@ const emit = defineEmits(['addUser', 'removeUser'])
         <QItemSection>{{ user.email }}</QItemSection>
         <QBtn
             v-if="action && action === 'add'"
+            :data-testid="'add-user-' + user.id"
             @click="emit(`addUser`, { user, role })"
             >+</QBtn
         >
         <QBtn
             v-if="action && action === 'remove'"
+            :data-testid="'remove-user-' + user.id"
             @click="emit('removeUser', { user, role })"
             >-</QBtn
         >

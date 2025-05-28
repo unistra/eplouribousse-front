@@ -22,13 +22,16 @@ export interface Link {
     value: string
 }
 
-export class UniqueSet<T> {
-    private items: T[] = []
-    private itemNumber: number = 0
-    private getKey: (item: T) => string
+export type Comparator<T> = (a: T, b: T) => boolean
 
-    constructor(getKey: (item: T) => string, from?: T[]) {
-        this.getKey = getKey
+export class UniqueSet<T> {
+    private items: Set<T>
+    private comparator: Comparator<T>
+
+    constructor(comparator: Comparator<T>, from?: T[]) {
+        this.comparator = comparator
+        this.items = new Set<T>()
+
         if (from !== undefined) {
             for (const obj of from) {
                 this.add(obj)
@@ -37,15 +40,29 @@ export class UniqueSet<T> {
     }
 
     add(item: T): void {
-        const key = this.getKey(item)
-        if (!this.items.some((existing) => this.getKey(existing) === key)) {
-            this.items.push(item)
-            this.itemNumber++
+        if (this.has(item)) {
+            return
+        } else {
+            this.items.add(item)
+        }
+    }
+
+    remove(item: T): void {
+        if (this.has(item)) {
+            this.items.delete(item)
         }
     }
 
     has(item: T): boolean {
-        return this.items.some((existing) => this.getKey(existing) === this.getKey(item))
+        const exist = Array.from(this.items).find((existing) => {
+            return this.comparator(item, existing)
+        })
+
+        if (exist) {
+            return true
+        } else {
+            return false
+        }
     }
 
     values(): T[] {
@@ -53,10 +70,10 @@ export class UniqueSet<T> {
     }
 
     clear(): void {
-        this.items = []
+        this.items.clear()
     }
 
     size(): number {
-        return this.itemNumber
+        return this.items.size
     }
 }
