@@ -1,59 +1,42 @@
 import type { User } from '#/user'
-import { useComposableQuasar } from '@/composables/useComposableQuasar'
+import { UniqueSet, type Comparator } from '#/utils'
 import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
 
 export function useCreateProjectForm() {
-    const { t } = useI18n()
-    const { notify } = useComposableQuasar()
-    const admins = ref<User[]>([])
-    const pilots = ref<User[]>([])
-    const controllers = ref<User[]>([])
+    const userComparator: Comparator<User> = (a: User, b: User) => {
+        return a.id === b.id
+    }
+    const admins = ref<UniqueSet<User>>(new UniqueSet<User>(userComparator))
+    const pilots = ref<UniqueSet<User>>(new UniqueSet<User>(userComparator))
+    const controllers = ref<UniqueSet<User>>(new UniqueSet<User>(userComparator))
     const name = ref<string>('')
 
     function addUser(value: { user: User; role: string }) {
-        if (!isUserInArray(value.user)) {
-            switch (value.role) {
-                case 'admin':
-                    admins.value.push(value.user)
-                    break
-                case 'pilot':
-                    pilots.value.push(value.user)
-                    break
-                case 'controller':
-                    controllers.value.push(value.user)
-                    break
-            }
-        } else {
-            notify({
-                type: 'negative',
-                color: 'blue-6',
-                message: t('newProject.creation.userAlreadyAssigned'),
-            })
+        switch (value.role) {
+            case 'admin':
+                admins.value.add(value.user)
+                break
+            case 'pilot':
+                pilots.value.add(value.user)
+                break
+            case 'controller':
+                controllers.value.add(value.user)
+                break
         }
     }
 
     function removeUser(value: { user: User; role: string }) {
         switch (value.role) {
             case 'admin':
-                admins.value = admins.value.filter((user) => user.id !== value.user.id)
+                admins.value.remove(value.user)
                 break
             case 'pilot':
-                pilots.value = pilots.value.filter((user) => user.id !== value.user.id)
+                pilots.value.remove(value.user)
                 break
             case 'controller':
-                controllers.value = controllers.value.filter((user) => user.id !== value.user.id)
+                controllers.value.remove(value.user)
                 break
         }
-    }
-
-    function isUserInArray(user: User) {
-        for (const array of [admins, pilots, controllers]) {
-            if (array.value.find((u) => u.id === user.id)) {
-                return true
-            }
-        }
-        return false
     }
 
     return {
@@ -63,6 +46,5 @@ export function useCreateProjectForm() {
         name,
         addUser,
         removeUser,
-        isUserInArray,
     }
 }
