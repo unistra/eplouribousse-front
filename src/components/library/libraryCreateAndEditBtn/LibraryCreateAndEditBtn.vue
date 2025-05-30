@@ -9,26 +9,15 @@ const props = defineProps<{
     buttonIcon?: string
     libraryToEdit?: Library
 }>()
-
-const { t } = useI18n()
-
-const { dialog, openDialog, library, createLibrary, nameError, aliasError, codeError, updateLibrary } =
-    useLibraryCreateAndEditBtn()
-
-const isToEdit = !!props.libraryToEdit
-
 const emit = defineEmits<{
     submitted: []
 }>()
 
-const onSubmit = async () => {
-    try {
-        isToEdit ? await updateLibrary() : await createLibrary()
-        emit('submitted')
-    } catch {
-        console.error('Failed to create or update library')
-    }
-}
+const { t } = useI18n()
+
+const isToEdit = !!props.libraryToEdit
+const { dialog, library, onSubmit, errors } = useLibraryCreateAndEditBtn(isToEdit, emit)
+
 onMounted(() => {
     if (props.libraryToEdit) {
         library.id = props.libraryToEdit.id
@@ -42,16 +31,16 @@ onMounted(() => {
 <template>
     <slot
         name="button"
-        :openDialog="openDialog"
+        :openDialog="dialog.open"
     >
         <QBtn
             :icon="buttonIcon || 'mdi-plus'"
             :label="buttonLabel || t('libraries.form.add')"
-            @click="openDialog"
+            @click="dialog.open"
         />
     </slot>
     <QDialog
-        v-model="dialog"
+        v-model="dialog.isOpen.value"
         persistent
     >
         <QCard>
@@ -67,22 +56,22 @@ onMounted(() => {
                     <QInput
                         v-model="library.name"
                         autofocus
-                        :error="!!nameError"
-                        :error-message="nameError"
+                        :error="!!errors.name"
+                        :error-message="errors.name"
                         :label="t('libraries.form.fields.name')"
                         :rules="[(val) => !!val || t('forms.validation.fieldIsRequired')]"
                     />
                     <QInput
                         v-model="library.alias"
-                        :error="!!aliasError"
-                        :error-message="aliasError"
+                        :error="!!errors.alias"
+                        :error-message="errors.alias"
                         :label="t('libraries.form.fields.alias')"
                         :rules="[(val) => !!val || t('forms.validation.fieldIsRequired')]"
                     />
                     <QInput
                         v-model="library.code"
-                        :error="!!codeError"
-                        :error-message="codeError"
+                        :error="!!errors.code"
+                        :error-message="errors.code"
                         :label="t('libraries.form.fields.code')"
                         :rules="[(val) => !!val || t('forms.validation.fieldIsRequired')]"
                     />

@@ -14,6 +14,10 @@ export const useLibraryStore = defineStore('library', () => {
     })
     const error = ref<string | null>(null)
 
+    const find = (original: Library) => {
+        return libraries.value.results.find((lib) => lib.id === original.id)
+    }
+
     const fetchLibraries = async (params?: {
         page?: number
         pageSize?: number
@@ -43,5 +47,6 @@ export const useLibraryStore = defineStore('library', () => {
         libraries,
         error,
         fetchLibraries,
+        find,
     }
 })

@@ -6,12 +6,15 @@ import { useI18n } from 'vue-i18n'
 import { AxiosError } from 'axios'
 import { useLibraryStore } from '@/stores/libraryStore.ts'
 
-export const useLibraryCreateAndEditBtn = () => {
+export const useLibraryCreateAndEditBtn = (isToEdit: boolean, emit: (evt: 'submitted') => void) => {
     const { notify } = useComposableQuasar()
     const { t } = useI18n()
 
-    const dialog = ref<boolean>(false)
-    const openDialog = () => (dialog.value = true)
+    const dialog = {
+        isOpen: ref(false),
+        open: () => (dialog.isOpen.value = true),
+        close: () => (dialog.isOpen.value = false),
+    }
 
     const library = reactive<Library>({
         name: '',
@@ -19,30 +22,30 @@ export const useLibraryCreateAndEditBtn = () => {
         code: '',
     })
 
-    const nameError = ref<string | undefined>(undefined)
-    const aliasError = ref<string | undefined>(undefined)
-    const codeError = ref<string | undefined>(undefined)
+    const errors = reactive({
+        name: '',
+        alias: '',
+        code: '',
+    })
 
     const resetErrors = () => {
-        nameError.value = undefined
-        aliasError.value = undefined
-        codeError.value = undefined
+        errors.name = ''
+        errors.alias = ''
+        errors.code = ''
     }
 
     const handleError = (error: unknown) => {
         if (error instanceof AxiosError && error.response?.data) {
-            const errors = error.response.data
+            const responseErrors = error.response.data
 
-            const errorFields = {
-                name: nameError,
-                alias: aliasError,
-                code: codeError,
+            if (responseErrors.name) {
+                errors.name = Array.isArray(responseErrors.name) ? responseErrors.name[0] : responseErrors.name
             }
-
-            for (const [field, errorRef] of Object.entries(errorFields)) {
-                if (errors[field]) {
-                    errorRef.value = Array.isArray(errors[field]) ? errors[field][0] : errors[field]
-                }
+            if (responseErrors.alias) {
+                errors.alias = Array.isArray(responseErrors.alias) ? responseErrors.alias[0] : responseErrors.alias
+            }
+            if (responseErrors.code) {
+                errors.code = Array.isArray(responseErrors.code) ? responseErrors.code[0] : responseErrors.code
             }
         } else {
             notify({
@@ -52,21 +55,7 @@ export const useLibraryCreateAndEditBtn = () => {
         }
     }
 
-    const updateLibraryStore = async () => {
-        const libraryStore = useLibraryStore()
-        try {
-            await libraryStore.fetchLibraries({
-                page: 1,
-                pageSize: 10,
-                sortBy: 'name',
-                descending: false,
-            })
-        } catch (error) {
-            handleError(error)
-        }
-    }
-
-    const createLibrary = async (updateStore: boolean = false) => {
+    const createLibrary = async () => {
         resetErrors()
         try {
             await axiosI.post<Library>('/libraries/', {
@@ -79,20 +68,17 @@ export const useLibraryCreateAndEditBtn = () => {
             library.alias = ''
             library.code = ''
 
-            dialog.value = false
-
-            if (updateStore) await updateLibraryStore()
+            dialog.close()
         } catch (error: unknown) {
             handleError(error)
         }
     }
 
-    const updateLibrary = async (updateStore: boolean = false) => {
+    const updateLibrary = async () => {
         resetErrors()
 
         const libraryStore = useLibraryStore()
-        const originalLibrary = libraryStore.libraries.results.find((lib) => lib.id === library.id)
-
+        const originalLibrary = libraryStore.find(library)
         if (!originalLibrary) {
             notify({
                 type: 'negative',
@@ -107,7 +93,7 @@ export const useLibraryCreateAndEditBtn = () => {
             originalLibrary.code !== library.code
 
         if (!hasChanges) {
-            dialog.value = false
+            dialog.close()
             return
         }
 
@@ -118,8 +104,7 @@ export const useLibraryCreateAndEditBtn = () => {
                 code: library.code,
             })
 
-            dialog.value = false
-            if (updateStore) await updateLibraryStore()
+            dialog.close()
 
             library.name = ''
             library.alias = ''
@@ -129,14 +114,15 @@ export const useLibraryCreateAndEditBtn = () => {
         }
     }
 
+    const onSubmit = async () => {
+        isToEdit ? await updateLibrary() : await createLibrary()
+        emit('submitted')
+    }
+
     return {
         dialog,
-        openDialog,
         library,
-        createLibrary,
-        nameError,
-        aliasError,
-        codeError,
-        updateLibrary,
+        onSubmit,
+        errors,
     }
 }
