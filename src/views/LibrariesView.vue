@@ -8,6 +8,5 @@ const { t } = useI18n()
 
 <template>
     <h1>{{ t('libraries.title') }}</h1>
-    <LibraryCreateAndEditBtn />
     <LibraryTable />
 </template>

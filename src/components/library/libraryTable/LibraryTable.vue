@@ -23,6 +23,7 @@ onMounted(async () => {
 </script>
 
 <template>
+    <LibraryCreateAndEditBtn @submitted="tableRef?.requestServerInteraction" />
     <QToggle v-model="accessActions" />
     <QTable
         ref="qTable"
