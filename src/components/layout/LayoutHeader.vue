@@ -12,15 +12,15 @@ const rightDrawerOpen = ref<boolean>(false)
 
 <template>
     <QHeader
-        :style="tenantColor"
         elevated
+        :style="tenantColor"
     >
         <QToolbar>
             <QToolbarTitle>
                 <QItem
+                    class="text-white"
                     clickable
                     to="/"
-                    class="text-white"
                 >
                     Eplouribousse - {{ tenantConfiguration?.name }}
                 </QItem>
@@ -29,20 +29,20 @@ const rightDrawerOpen = ref<boolean>(false)
                 <LayoutNavLinks />
             </div>
             <QBtn
+                class="lt-lg"
                 dense
                 flat
                 icon="mdi-menu"
                 @click="rightDrawerOpen = !rightDrawerOpen"
-                class="lt-lg"
             />
             <LayoutMenu />
         </QToolbar>
     </QHeader>
     <QDrawer
-        :style="tenantColor"
         v-model="rightDrawerOpen"
         bordered
         side="right"
+        :style="tenantColor"
     >
         <QList>
             <LayoutNavLinks />

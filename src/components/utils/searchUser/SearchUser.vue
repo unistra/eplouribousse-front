@@ -9,9 +9,9 @@ const { username, matchingUsers, isLoading, nextPage, fillUsers, appendUsers } =
 <template>
     <QInput
         v-model="username"
-        type="search"
-        :loading="isLoading"
         :label="t('newProject.requirements.email')"
+        :loading="isLoading"
+        type="search"
         @update:model-value="fillUsers"
     >
         <template #append>
@@ -21,18 +21,18 @@ const { username, matchingUsers, isLoading, nextPage, fillUsers, appendUsers } =
     <QList dense>
         <QScrollArea style="height: 200px">
             <QItem
-                clickable
                 v-for="user in matchingUsers"
                 :key="user.id"
+                clickable
             >
                 <QItemSection>{{ user.username }}</QItemSection>
             </QItem>
         </QScrollArea>
         <QBtn
+            v-if="matchingUsers.length >= 10 && nextPage !== null"
+            flat
             icon="mdi-plus-circle-outline"
             rounded
-            flat
-            v-if="matchingUsers.length >= 10 && nextPage !== null"
             @click="appendUsers"
         />
     </QList>

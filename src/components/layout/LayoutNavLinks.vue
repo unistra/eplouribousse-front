@@ -35,39 +35,39 @@ onMounted(() => {
 
 <template>
     <QItem
-        :key="index"
-        :to="navLink.to"
         v-for="(navLink, index) in navLinks.filter(hasPerm)"
+        :key="index"
+        class="text-white"
         clickable
         dense
-        class="text-white"
+        :to="navLink.to"
     >
         <QItemSection>{{ t(`navigation.${navLink.label}`) }}</QItemSection>
     </QItem>
     <QItem
         v-if="userStore.isAuth && userStore.isLocal"
-        dense
         class="text-white"
         clickable
+        dense
         @click="onLogout"
     >
         <QItemSection>{{ t('navigation.logout') }}</QItemSection>
     </QItem>
     <QItem
         v-else-if="userStore.isAuth && !userStore.isLocal"
-        dense
         class="text-white"
         clickable
-        @click="onLogout"
+        dense
         :href="logoutURL"
+        @click="onLogout"
     >
         <QItemSection>{{ t('navigation.logout') }}</QItemSection>
     </QItem>
     <QItem
         v-else
-        dense
         class="text-white"
         clickable
+        dense
         to="/login"
     >
         <QItemSection>{{ t('navigation.login') }}</QItemSection>

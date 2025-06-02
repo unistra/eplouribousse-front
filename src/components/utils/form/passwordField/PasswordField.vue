@@ -41,24 +41,24 @@ watch(
         class="wrapper"
     >
         <QInput
-            :model-value="modelValue"
-            @update:model-value="(val) => emit('update:modelValue', val as string)"
-            :label="label ?? defaultLabel"
-            :type="isPasswordVisible ? 'text' : 'password'"
-            :required="required"
             :autofocus="autofocus"
-            :rules="rules"
             :hide-bottom-space="true"
-            @focus="() => (isInputFocused = true)"
+            :label="label ?? defaultLabel"
+            :model-value="modelValue"
+            :required="required"
+            :rules="rules"
+            :type="isPasswordVisible ? 'text' : 'password'"
             @blur="() => (isInputFocused = false)"
+            @focus="() => (isInputFocused = true)"
+            @update:model-value="(val) => emit('update:modelValue', val as string)"
         >
             <template #append>
                 <QBtn
-                    flat
-                    dense
-                    rounded
                     data-testid="visibility-button"
+                    dense
+                    flat
                     :icon="icon"
+                    rounded
                     @click="() => (isPasswordVisible = !isPasswordVisible)"
                 >
                     <QTooltip>
