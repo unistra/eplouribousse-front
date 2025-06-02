@@ -109,9 +109,11 @@ describe('useResetPasswordForm', () => {
     })
 
     test('should submit the form successfully', async () => {
-        const { resetPassword, newPassword, confirmPassword, token, isLoading } = useResetPasswordForm()
+        const { resetPassword, newPassword, confirmPassword, token, uidb64, isLoading } = useResetPasswordForm()
 
         token.value = 'valid-reset-token'
+        uidb64.value = 'valid-uidb64-token'
+
         newPassword.value = 'NewPassword123!'
         confirmPassword.value = 'NewPassword123!'
 
@@ -124,6 +126,7 @@ describe('useResetPasswordForm', () => {
 
         expect(mock.axiosPatch).toHaveBeenCalledWith('/users/reset-password/', {
             token: 'valid-reset-token',
+            uidb64: 'valid-uidb64-token',
             newPassword: 'NewPassword123!',
             confirmPassword: 'NewPassword123!',
         })
