@@ -1,5 +1,4 @@
-<script setup lang="ts">
-import type { User } from '#/user'
+<script lang="ts" setup>
 import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
 import UserItem from '@/components/utils/userItem/UserItem.vue'
 import { useI18n } from 'vue-i18n'
@@ -16,20 +15,20 @@ const { admins, pilots, controllers, name, addUser, removeUser } = useCreateProj
     >
         <QCardSection>
             <QInput
-                type="text"
                 v-model="name"
                 :label="t('newProject.creation.name')"
+                type="text"
             />
         </QCardSection>
     </QCard>
     <QCard
-        bordered
         v-for="section in [
             { title: 'Administrateurs', role: 'admin', array: admins.values() },
             { title: 'Pilotes de projet', role: 'pilot', array: pilots.values() },
             { title: 'Controlleurs', role: 'controller', array: controllers.values() },
         ]"
         :key="section.title"
+        bordered
     >
         <QItem>
             <QItemSection>
@@ -56,10 +55,10 @@ const { admins, pilots, controllers, name, addUser, removeUser } = useCreateProj
                 <QScrollArea style="min-height: 10rem">
                     <UserItem
                         v-for="user in section.array"
-                        action="remove"
-                        style="min-width: 4rem"
                         :key="user.id"
+                        action="remove"
                         :role="section.role"
+                        style="min-width: 4rem"
                         :user="user"
                         @remove-user="removeUser"
                     />

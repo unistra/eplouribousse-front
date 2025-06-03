@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { onMounted } from 'vue'
 import UserItem from '../userItem/UserItem.vue'
 import { useSearchUser } from './useSearchUser'
@@ -22,8 +22,6 @@ onMounted(() => {
         v-model="username"
         data-testid="search"
         :label="t('newProject.requirements.email')"
-        :loading="isLoading"
-        type="search"
         @update:model-value="fillUsers"
     >
         <template #append>
@@ -39,12 +37,12 @@ onMounted(() => {
     >
         <QInfiniteScroll
             data-testid="scroll"
-            :offset="148"
+            :offset="150"
             scroll-target="#scroll"
             @load="onLoad"
         >
             <UserItem
-                v-for="user in matchingUsers"
+                v-for="user in matchingUsers?.values()"
                 :key="user.id"
                 :action="action"
                 :role="role"
@@ -52,14 +50,6 @@ onMounted(() => {
                 @add-user="() => emit(`addUser`, { user, role })"
                 @remove-user="() => emit(`removeUser`, { user, role })"
             />
-            <template v-slot:loading>
-                <div class="row justify-center q-my-md">
-                    <QSpinnerDots
-                        color="primary"
-                        size="40px"
-                    />
-                </div>
-            </template>
         </QInfiniteScroll>
     </QList>
 </template>
