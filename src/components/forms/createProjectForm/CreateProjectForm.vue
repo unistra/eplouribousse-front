@@ -15,20 +15,20 @@ const { userToExclude, userToInject, name, addUser, removeUser, getUsersByRole }
     >
         <QCardSection>
             <QInput
-                type="text"
                 v-model="name"
                 :label="t('newProject.creation.name')"
+                type="text"
             />
         </QCardSection>
     </QCard>
     <QCard
-        bordered
         v-for="section in [
             { title: 'Administrateurs', role: 'admin' },
             { title: 'Pilotes de projet', role: 'pilot' },
             { title: 'Controlleurs', role: 'controller' },
         ]"
         :key="section.title"
+        bordered
     >
         <QItem>
             <QItemSection>

@@ -55,9 +55,9 @@ const open = ref<boolean>(false)
             <div class="col-3 table-center">
                 <div class="table-cell-vertical-align">
                     <QBtn
+                        :style="tenantColor"
                         text-color="white"
                         :to="{ name: 'newProject' }"
-                        :style="tenantColor"
                     >
                         {{ t('newProject.requirements.requirementsOk') }}
                     </QBtn>
@@ -65,18 +65,18 @@ const open = ref<boolean>(false)
             </div>
             <QDialog v-model="open">
                 <QCard
-                    style="min-width: 24rem; min-height: 20rem"
                     bordered
+                    style="min-width: 24rem; min-height: 20rem"
                 >
                     <QCardSection style="display: flex; align-items: baseline">
                         <h6>{{ t('newProject.requirements.inviteUser') }}</h6>
                         <QSpace />
                         <QBtn
-                            icon="mdi-close"
-                            flat
-                            round
-                            dense
                             v-close-popup
+                            dense
+                            flat
+                            icon="mdi-close"
+                            round
                         />
                     </QCardSection>
 

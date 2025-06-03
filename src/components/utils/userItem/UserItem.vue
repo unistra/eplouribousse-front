@@ -11,8 +11,8 @@ const emit = defineEmits(['addUser', 'removeUser'])
 
 <template>
     <QItem
-        clickable
         :key="user.id"
+        clickable
     >
         <QItemSection>{{ user.email }}</QItemSection>
         <QBtn
