@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import InviteForm from '@/components/forms/invite/InviteForm.vue'
 import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
 import { useUserStore } from '@/stores/userStore'

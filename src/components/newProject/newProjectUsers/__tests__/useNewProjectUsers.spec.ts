@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test, vi } from 'vitest'
-import { useCreateProjectForm } from '../useCreateProjectForm'
-import { mockSingleUser } from '~/fixtures/users'
+import { mockSingleUser } from '~/fixtures/users.ts'
+import { useNewProjectUsers } from '@/components/newProject/newProjectUsers/useNewProjectUsers.ts'
 
 const mock = vi.hoisted(() => {
     return {
@@ -21,12 +21,12 @@ vi.mock('@/plugins/axios/axios.ts', () => ({
     },
 }))
 
-describe('useCreateProjectForm', () => {
+describe('useNewProjectUsers', () => {
     afterEach(() => {
         vi.clearAllMocks()
     })
     test('add a user in a set', () => {
-        const { admins, pilots, controllers, addUser } = useCreateProjectForm()
+        const { admins, pilots, controllers, addUser } = useNewProjectUsers()
 
         addUser({ user: mockSingleUser, role: 'admin' })
         expect(admins.value.has(mockSingleUser)).toBeTruthy()
@@ -38,7 +38,7 @@ describe('useCreateProjectForm', () => {
         expect(controllers.value.has(mockSingleUser)).toBeTruthy()
     })
     test('remove a user in a set', () => {
-        const { admins, pilots, controllers, addUser, removeUser } = useCreateProjectForm()
+        const { admins, pilots, controllers, addUser, removeUser } = useNewProjectUsers()
 
         addUser({ user: mockSingleUser, role: 'admin' })
         removeUser({ user: mockSingleUser, role: 'admin' })

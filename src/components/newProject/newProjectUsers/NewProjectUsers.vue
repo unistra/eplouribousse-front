@@ -2,10 +2,10 @@
 import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
 import UserItem from '@/components/utils/userItem/UserItem.vue'
 import { useI18n } from 'vue-i18n'
-import { useCreateProjectForm } from './useCreateProjectForm'
+import { useNewProjectUsers } from './useNewProjectUsers.ts'
 
 const { t } = useI18n()
-const { admins, pilots, controllers, name, addUser, removeUser } = useCreateProjectForm()
+const { admins, pilots, controllers, name, addUser, removeUser } = useNewProjectUsers()
 </script>
 
 <template>

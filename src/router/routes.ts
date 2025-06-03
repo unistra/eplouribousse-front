@@ -78,15 +78,6 @@ const routes: RouteRecordRaw[] = [
         },
     },
     {
-        path: '/new-project-requirements',
-        name: 'newProjectRequirements',
-        component: () => import('@/views/NewProjectRequirements.vue'),
-        meta: {
-            title: 'Nouveau Projet',
-            require: ['manager'],
-        },
-    },
-    {
         path: '/invite',
         name: 'invite',
         component: () => import('@/views/InviteView.vue'),
@@ -113,7 +104,7 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/new-project',
         name: 'newProject',
-        component: () => import('@/views/CreateProjectView.vue'),
+        component: () => import('@/views/NewProjectView.vue'),
         meta: {
             title: 'Nouveau Projet',
             require: ['manager'],
