@@ -1,11 +1,11 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import { useLibraryDeleteBtn } from '@/components/library/libraryDeleteBtn/useLibraryDeleteBtn.ts'
-import type { Library } from '#/library.ts'
+import type { LibraryI } from '#/library.d.ts'
 import { defineEmits, onMounted } from 'vue'
 
 const props = defineProps<{
-    libraryToDelete: Library
+    libraryToDelete: LibraryI
 }>()
 const emit = defineEmits<{
     submitted: []
@@ -38,7 +38,10 @@ onMounted(() => {
     <QDialog v-model="dialog.value">
         <QCard>
             <QCardSection>
-                <div class="text-h6">{{ t('libraries.form.delete.i') }} {{ t('libraries.form.theLibrary') }}</div>
+                <div class="text-h6">
+                    {{ t('libraries.form.delete.i') }}
+                    {{ t('libraries.form.theLibrary') }}
+                </div>
             </QCardSection>
             <QCardSection>
                 <p>{{ t('libraries.form.delete.youAreAboutToDelete') }} {{ t('libraries.form.theLibrary') }}:</p>
@@ -71,7 +74,7 @@ onMounted(() => {
     </QDialog>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .library-to-delete {
     display: flex;
     flex-direction: column;
