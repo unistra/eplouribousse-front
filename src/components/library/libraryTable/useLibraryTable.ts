@@ -65,6 +65,15 @@ export const useLibraryTable = () => {
         },
         ...defaultColumns,
     ]
+    const columnsWithAddBtn: QTableProps['columns'] = [
+        {
+            name: 'addBtn',
+            label: '',
+            align: 'left',
+            field: () => null,
+        },
+        ...defaultColumns,
+    ]
 
     const onRequest = async (props: Parameters<NonNullable<QTableProps['onRequest']>>[0]) => {
         const { page, rowsPerPage, sortBy, descending } = props.pagination
@@ -95,6 +104,7 @@ export const useLibraryTable = () => {
     return {
         defaultColumns,
         columnsWithActions,
+        columnsWithAddBtn,
         loading,
         filter,
         rows,
