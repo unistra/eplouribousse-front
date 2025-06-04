@@ -1,17 +1,27 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useLibraryStore } from '@/stores/libraryStore.ts'
 import { computed, onMounted, ref } from 'vue'
 import { useLibraryTable } from '@/components/library/libraryTable/useLibraryTable.ts'
 import { useI18n } from 'vue-i18n'
 import LibraryCreateAndEditBtn from '@/components/library/libraryCreateAndEditBtn/LibraryCreateAndEditBtn.vue'
 import LibraryDeleteBtn from '@/components/library/libraryDeleteBtn/LibraryDeleteBtn.vue'
+import type { Library } from '#/library.ts'
 
-const { defaultColumns, columnsWithActions, loading, filter, onRequest, pagination, tableRef } = useLibraryTable()
+const props = defineProps<{
+    withAddBtn?: boolean
+}>()
+const emit = defineEmits<{
+    selected: Library[]
+}>()
+
+const { defaultColumns, columnsWithActions, columnsWithAddBtn, loading, filter, onRequest, pagination, tableRef } =
+    useLibraryTable()
 const libraryStore = useLibraryStore()
 const { t } = useI18n()
 
 const accessActions = ref(false)
 const hasAccessToActions = computed(() => {
+    if (props.withAddBtn) return columnsWithAddBtn
     return accessActions.value ? defaultColumns : columnsWithActions
 })
 
@@ -96,6 +106,15 @@ onMounted(async () => {
                         </QList>
                     </QMenu>
                 </QBtn>
+            </QTd>
+        </template>
+        <template #body-cell-addBtn="props">
+            <QTd style="width: 1px">
+                <QBtn
+                    flat
+                    icon="mdi-plus"
+                    @click="emit('selected', props.row)"
+                />
             </QTd>
         </template>
     </QTable>
