@@ -5,7 +5,7 @@ import { nextTick } from 'vue'
 import type { I18n } from 'vue-i18n'
 import useI18nMock from '~/mocks/i18n.ts'
 import LibraryCreateAndEditBtn from '@/components/library/libraryCreateAndEditBtn/LibraryCreateAndEditBtn.vue'
-import type { Library } from '#/library.ts'
+import type { LibraryI } from '#/library.d.ts'
 
 let i18n: I18n
 
@@ -27,7 +27,7 @@ const mock = vi.hoisted(() => {
             alias: '',
             code: '',
         },
-        onSubmit: vi.fn(() => console.log('Form submittedddddddddddddddd')),
+        onSubmit: vi.fn(),
     }
 })
 
@@ -105,11 +105,13 @@ describe('LibraryCreateAndEditBtn.vue', () => {
     })
 
     test('pre-fills form when libraryToEdit is provided', async () => {
-        const libraryToEdit: Library = {
-            id: 'id',
+        const libraryToEdit: LibraryI = {
+            id: 'id-A',
             name: 'Lib A',
             alias: 'lib-a',
             code: '001',
+            updatedAt: '',
+            createdAt: '',
         }
 
         mount(LibraryCreateAndEditBtn, {
@@ -117,7 +119,7 @@ describe('LibraryCreateAndEditBtn.vue', () => {
             global: { plugins: [i18n, Quasar] },
         })
 
-        expect(mock.library.id).toBe('id')
+        expect(mock.library.id).toBe('id-A')
         expect(mock.library.name).toBe('Lib A')
         expect(mock.library.alias).toBe('lib-a')
         expect(mock.library.code).toBe('001')
