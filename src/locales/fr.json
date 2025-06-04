@@ -22,8 +22,21 @@
         "changePassword": "Changer mon mot de passe"
     },
     "newProject": {
+        "title": "Création d'un nouveau projet",
+        "steps": {
+            "informations": {
+                "title": "Informations sur le projet",
+                "name": "Nom du projet",
+                "description": "Description du projet"
+            },
+            "libraries": {
+                "title": "Bibliothèques participantes",
+                "description": "Sélectionnez les bibliothèques qui participeront au projet",
+                "addLibrary": "Ajouter une bibliothèque",
+                "searchLibraries": "Rechercher des bibliothèques"
+            }
+        },
         "requirements": {
-            "title": "Création d'un projet - Vérification",
             "message": "Pour monter un nouveau projet, assurez-vous que vous disposez des éléments suivants :",
             "email": "Adresse email de l'utilisateur",
             "requirementsOk": "Je suis prêt",
