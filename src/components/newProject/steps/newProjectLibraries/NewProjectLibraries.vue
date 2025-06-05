@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import NewProjectLibraryCard from '@/components/newProject/newProjectLibraries/NewProjectLibraryCard.vue'
+import NewProjectLibraryCard from '@/components/newProject/steps/newProjectLibraries/NewProjectLibraryCard.vue'
 import { storeToRefs } from 'pinia'
 import { useNewProjectStore } from '@/stores/newProjectStore.ts'
-import NewProjectLibraryAdd from '@/components/newProject/newProjectLibraries/NewProjectLibraryAdd.vue'
+import NewProjectLibraryAdd from '@/components/newProject/steps/newProjectLibraries/NewProjectLibraryAdd.vue'
 
 const { projectLibraries } = storeToRefs(useNewProjectStore())
 </script>

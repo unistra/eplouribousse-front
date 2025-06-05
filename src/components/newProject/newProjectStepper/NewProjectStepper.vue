@@ -2,14 +2,12 @@
 import { ref, useTemplateRef } from 'vue'
 import { QStepper } from 'quasar'
 import { useI18n } from 'vue-i18n'
-import NewProjectLibraries from '@/components/newProject/newProjectLibraries/NewProjectLibraries.vue'
+import NewProjectLibraries from '@/components/newProject/steps/newProjectLibraries/NewProjectLibraries.vue'
+import NewProjectInformations from '@/components/newProject/steps/newProjectInformations/NewProjectInformations.vue'
 
 const { t } = useI18n()
 const step = ref(1)
 const stepper = useTemplateRef<QStepper>('stepper')
-
-const name = ref('')
-const description = ref('')
 </script>
 
 <template>
@@ -27,16 +25,7 @@ const description = ref('')
             :name="1"
             :title="t('newProject.steps.informations.title')"
         >
-            <QInput
-                v-model="name"
-                :label="t('newProject.steps.informations.name')"
-                type="text"
-            />
-            <QInput
-                v-model="description"
-                :label="t('newProject.steps.informations.description')"
-                type="textarea"
-            />
+            <NewProjectInformations />
         </QStep>
 
         <QStep
@@ -49,25 +38,13 @@ const description = ref('')
         </QStep>
 
         <QStep
-            disable
             icon="assignment"
             :name="3"
             title="Ad template"
         >
-            This step won't show up because it is disabled.
         </QStep>
 
-        <QStep
-            icon="add_comment"
-            :name="4"
-            title="Create an ad"
-        >
-            Try out different ad text to see what brings in the most customers, and learn how to enhance your ads using
-            features like ad extensions. If you run into any problems with your ads, find out how to tell if they're
-            running and how to resolve approval issues.
-        </QStep>
-
-        <template v-slot:navigation>
+        <template #navigation>
             <QStepperNavigation>
                 <QBtn
                     color="primary"
