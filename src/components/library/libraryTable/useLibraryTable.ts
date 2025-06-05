@@ -5,7 +5,7 @@ import { ref, useTemplateRef, watch } from 'vue'
 import { useLibraryStore } from '@/stores/libraryStore.ts'
 import { storeToRefs } from 'pinia'
 
-export const useLibraryTable = (librarySelected: LibraryI['id'][]) => {
+export const useLibraryTable = (librarySelected: LibraryI[]) => {
     const { t } = useI18n()
     const { libraries } = storeToRefs(useLibraryStore())
     const { fetchLibraries } = useLibraryStore()
@@ -88,7 +88,7 @@ export const useLibraryTable = (librarySelected: LibraryI['id'][]) => {
                 sortBy: (sortBy as 'name' | 'alias') || 'name',
                 descending,
                 filter: filterValue,
-                excludeId: librarySelected,
+                excludeId: librarySelected.map((lib) => lib.id),
             })
 
             pagination.value.page = page
