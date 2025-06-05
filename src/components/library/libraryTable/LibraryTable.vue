@@ -5,14 +5,14 @@ import { useLibraryTable } from '@/components/library/libraryTable/useLibraryTab
 import { useI18n } from 'vue-i18n'
 import LibraryCreateAndEditBtn from '@/components/library/libraryCreateAndEditBtn/LibraryCreateAndEditBtn.vue'
 import LibraryDeleteBtn from '@/components/library/libraryDeleteBtn/LibraryDeleteBtn.vue'
-import type { Library, LibraryI } from '#/library.d.ts'
+import type { LibraryI } from '#/library.d.ts'
 
 const props = defineProps<{
     withAddBtn?: boolean // Button to add library to a selection (e.g., on a project creation)
-    librarySelected?: LibraryI['id'][] // Libraries that are already selected, that should not be listed in the table
+    librarySelected?: LibraryI[] // Libraries that are already selected, that should not be listed in the table
 }>()
 const emit = defineEmits<{
-    selected: Library[]
+    selected: LibraryI[]
 }>()
 
 const { defaultColumns, columnsWithActions, columnsWithAddBtn, loading, filter, onRequest, pagination, tableRef } =
