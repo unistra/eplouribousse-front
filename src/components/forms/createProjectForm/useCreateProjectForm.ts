@@ -1,4 +1,4 @@
-import type { User } from '#/user'
+import { type User } from '#/user'
 import { UniqueSet, type Comparator } from '#/utils'
 import { ref } from 'vue'
 
@@ -6,45 +6,40 @@ export function useCreateProjectForm() {
     const userComparator: Comparator<User> = (a: User, b: User) => {
         return a.id === b.id
     }
-    const admins = ref<UniqueSet<User>>(new UniqueSet<User>(userComparator))
-    const pilots = ref<UniqueSet<User>>(new UniqueSet<User>(userComparator))
-    const controllers = ref<UniqueSet<User>>(new UniqueSet<User>(userComparator))
+    const projectUsers = ref<UniqueSet<User>>(new UniqueSet<User>(userComparator))
+    const userToExclude = ref<User | undefined>(undefined)
+    const userToInject = ref<User | undefined>(undefined)
     const name = ref<string>('')
 
     function addUser(value: { user: User; role: string }) {
-        switch (value.role) {
-            case 'admin':
-                admins.value.add(value.user)
-                break
-            case 'pilot':
-                pilots.value.add(value.user)
-                break
-            case 'controller':
-                controllers.value.add(value.user)
-                break
-        }
+        value.user.role = value.role
+        projectUsers.value.add(value.user)
+        userToExclude.value = value.user
     }
 
-    function removeUser(value: { user: User; role: string }) {
-        switch (value.role) {
-            case 'admin':
-                admins.value.remove(value.user)
-                break
-            case 'pilot':
-                pilots.value.remove(value.user)
-                break
-            case 'controller':
-                controllers.value.remove(value.user)
-                break
-        }
+    function removeUser(user: User) {
+        projectUsers.value.remove(user)
+        userToInject.value = user
+    }
+
+    function getUsersByRole(role: string) {
+        let users: User[] = []
+        projectUsers.value.values().forEach((user: User) => {
+            if (user.role && user.role === role) {
+                users.push(user)
+                console.log(user)
+            }
+        })
+        return users
     }
 
     return {
-        admins,
-        pilots,
-        controllers,
+        projectUsers,
+        userToExclude,
+        userToInject,
         name,
         addUser,
         removeUser,
+        getUsersByRole,
     }
 }

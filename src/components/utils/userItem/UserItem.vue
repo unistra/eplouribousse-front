@@ -3,7 +3,6 @@ import type { User } from '#/user'
 
 defineProps<{
     user: User
-    role: string
     action?: 'add' | 'remove'
 }>()
 
@@ -19,13 +18,13 @@ const emit = defineEmits(['addUser', 'removeUser'])
         <QBtn
             v-if="action && action === 'add'"
             :data-testid="'add-user-' + user.id"
-            @click="emit(`addUser`, { user, role })"
+            @click="emit(`addUser`, user)"
             >+</QBtn
         >
         <QBtn
             v-if="action && action === 'remove'"
             :data-testid="'remove-user-' + user.id"
-            @click="emit('removeUser', { user, role })"
+            @click="emit('removeUser', user)"
             >-</QBtn
         >
     </QItem>

@@ -108,8 +108,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/LibrariesView.vue'),
         meta: {
             title: 'Manage library',
-        }
-    }
+        },
+    },
     {
         path: '/new-project',
         name: 'newProject',

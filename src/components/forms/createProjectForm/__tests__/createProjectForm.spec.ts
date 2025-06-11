@@ -14,16 +14,17 @@ const mock = vi.hoisted(() => {
         notify: vi.fn(),
         useSearchUser: {
             username: 'fr',
-            matchingUsers: new Array<User>(),
+            matchingUsers: new Set<User>(),
         },
         useCreateProjectForm: {
-            admins: new Array<User>(),
-            pilots: new Array<User>(),
-            controllers: new Array<User>(),
+            projectUsers: new Set<User>(),
+            userComparator: (a: User, b: User) => {
+                return a.id === b.id
+            },
             name: '',
             addUser: vi.fn(),
             removeUser: vi.fn(),
-            isUserInArray: vi.fn(),
+            getUsersByRole: vi.fn(),
         },
     }
 })
@@ -54,12 +55,28 @@ describe('CreateProjectForm', () => {
         vi.clearAllMocks()
         const { i18nMock } = useI18nMock()
         i18n = i18nMock
+        mock.useCreateProjectForm.addUser.mockImplementation((value: { user: User; role: string }) => {
+            value.user.role = value.role
+            mock.useCreateProjectForm.projectUsers.add(value.user)
+        })
+        mock.useCreateProjectForm.removeUser.mockImplementation((user: User) => {
+            mock.useCreateProjectForm.projectUsers.delete(user)
+        })
+        mock.useCreateProjectForm.getUsersByRole.mockImplementation((role: string) => {
+            let users: User[] = []
+            mock.useCreateProjectForm.projectUsers.forEach((user: User) => {
+                if (user.role && user.role === role) {
+                    users.push(user)
+                }
+            })
+            return users
+        })
+        mock.useCreateProjectForm.getUsersByRole.mockReturnValue([])
     })
     afterEach(() => {
         vi.clearAllMocks()
-        mock.useCreateProjectForm.admins = []
-        mock.useCreateProjectForm.pilots = []
-        mock.useCreateProjectForm.controllers = []
+        mock.useCreateProjectForm.projectUsers.clear()
+        mock.useSearchUser.matchingUsers.clear()
     })
     test('prints an empty form when it is mounted', () => {
         const wrapper = mount(CreateProjectForm, {
@@ -69,28 +86,8 @@ describe('CreateProjectForm', () => {
         })
         expect(wrapper.findAllComponents(UserItem).length).toBe(0)
     })
-    test('add user in the admin/pilots/controllers array given its role', () => {
-        mock.useCreateProjectForm.admins.push(mockSingleUser)
-        const wrapper = mount(CreateProjectForm, {
-            global: {
-                plugins: [i18n, Quasar],
-            },
-        })
-        expect(wrapper.findAllComponents(UserItem).length).toBe(1) // test if it exists
-        expect(wrapper.find('[data-testid="admin-list"]').findAllComponents(UserItem).length).toBe(1) // check it is added in the admin section
-        expect(wrapper.find('[data-testid="pilot-list"]').findAllComponents(UserItem).length).toBe(0)
-        expect(wrapper.find('[data-testid="controller-list"]').findAllComponents(UserItem).length).toBe(0)
-    })
-    test('remove the UserItem if we remove its corresponding user from its corresponding array', () => {
-        const wrapper = mount(CreateProjectForm, {
-            global: {
-                plugins: [i18n, Quasar],
-            },
-        })
-        expect(wrapper.find('[data-testid="admin-list"]').findAllComponents(UserItem).length).toBe(0)
-    })
     test('trigger the addUser function when clicking on the add button', async () => {
-        mock.useSearchUser.matchingUsers.push(mockSingleUser)
+        mock.useSearchUser.matchingUsers.add(mockSingleUser)
         const wrapper = mount(CreateProjectForm, {
             global: {
                 plugins: [i18n, Quasar],
@@ -100,17 +97,18 @@ describe('CreateProjectForm', () => {
         await wrapper.find('[data-testid="add-user-1"]').trigger('click')
         expect(mock.useCreateProjectForm.addUser).toHaveBeenCalledOnce()
         expect(mock.useCreateProjectForm.addUser).toHaveBeenCalledWith({ user: mockSingleUser, role: 'admin' })
+        expect(mock.useCreateProjectForm.projectUsers.size).toBe(1)
     })
     test('trigger the removeUser function when clicking on the remove button', async () => {
-        mock.useCreateProjectForm.admins.push(mockSingleUser)
+        mock.useCreateProjectForm.projectUsers.add(mockSingleUser)
+        mock.useCreateProjectForm.getUsersByRole.mockReturnValueOnce([mockSingleUser])
         const wrapper = mount(CreateProjectForm, {
             global: {
                 plugins: [i18n, Quasar],
             },
         })
-
         await wrapper.find('[data-testid="remove-user-1"]').trigger('click')
         expect(mock.useCreateProjectForm.removeUser).toHaveBeenCalledOnce()
-        expect(mock.useCreateProjectForm.removeUser).toHaveBeenCalledWith({ user: mockSingleUser, role: 'admin' })
+        expect(mock.useCreateProjectForm.removeUser).toHaveBeenCalledWith(mockSingleUser)
     })
 })

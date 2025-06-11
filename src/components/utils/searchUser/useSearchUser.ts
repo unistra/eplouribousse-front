@@ -1,4 +1,4 @@
-import type { User } from '#/user'
+import { type User } from '#/user'
 import { UniqueSet, type Comparator } from '#/utils'
 import { axiosI } from '@/plugins/axios/axios'
 import { computed, ref } from 'vue'
@@ -13,11 +13,24 @@ export function useSearchUser() {
     const matchingUsers = ref<UniqueSet<User>>()
     const isLoading = ref<boolean>(false)
     const nextPage = ref<number | null>(1)
+    const filter = ref<Set<string>>(new Set<string>())
+
+    function constructQueryWithExcludedIDs() {
+        if (filter.value.size === 0) {
+            return ''
+        } else {
+            let filterQuery = '&exclude_ids='
+            filter.value.forEach((element) => {
+                filterQuery += element
+                filterQuery += ','
+            })
+            return filterQuery
+        }
+    }
 
     async function fillUsers() {
         isLoading.value = true
-
-        const usersList = await axiosI.get('/users/?search=' + username.value)
+        const usersList = await axiosI.get('/users/?search=' + username.value + constructQueryWithExcludedIDs())
         users.value = usersList.data.results
         nextPage.value = usersList.data.next
 
@@ -34,7 +47,9 @@ export function useSearchUser() {
     }
 
     async function appendUsers() {
-        const usersList = await axiosI.get('/users/?page=' + nextPage.value + '&search=' + username.value)
+        const usersList = await axiosI.get(
+            '/users/?page=' + nextPage.value + '&search=' + username.value + constructQueryWithExcludedIDs(),
+        )
         nextPage.value = usersList.data.next
         users.value.push(...usersList.data.results)
         if (username.value === '') {
@@ -67,6 +82,7 @@ export function useSearchUser() {
         matchingUsers,
         isLoading,
         nextPage,
+        filter,
         fillUsers,
         appendUsers,
         onLoad,

@@ -69,6 +69,10 @@ export class UniqueSet<T> {
         return [...this.items]
     }
 
+    last(): T {
+        return [...this.items][this.items.size - 1]
+    }
+
     clear(): void {
         this.items.clear()
     }

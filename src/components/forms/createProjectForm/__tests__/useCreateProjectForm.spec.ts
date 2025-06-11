@@ -26,33 +26,33 @@ describe('useCreateProjectForm', () => {
         vi.clearAllMocks()
     })
     test('add a user in a set', () => {
-        const { admins, pilots, controllers, addUser } = useCreateProjectForm()
+        const { projectUsers, addUser } = useCreateProjectForm()
 
         addUser({ user: mockSingleUser, role: 'admin' })
-        expect(admins.value.has(mockSingleUser)).toBeTruthy()
+        expect(projectUsers.value.has(mockSingleUser)).toBeTruthy()
 
         addUser({ user: mockSingleUser, role: 'pilot' })
-        expect(pilots.value.has(mockSingleUser)).toBeTruthy()
+        expect(projectUsers.value.has(mockSingleUser)).toBeTruthy()
 
         addUser({ user: mockSingleUser, role: 'controller' })
-        expect(controllers.value.has(mockSingleUser)).toBeTruthy()
+        expect(projectUsers.value.has(mockSingleUser)).toBeTruthy()
     })
     test('remove a user in a set', () => {
-        const { admins, pilots, controllers, addUser, removeUser } = useCreateProjectForm()
+        const { projectUsers, addUser, removeUser } = useCreateProjectForm()
 
         addUser({ user: mockSingleUser, role: 'admin' })
-        removeUser({ user: mockSingleUser, role: 'admin' })
-        expect(admins.value.has(mockSingleUser)).toBeFalsy()
-        expect(admins.value.size()).toBe(0)
+        removeUser(mockSingleUser)
+        expect(projectUsers.value.has(mockSingleUser)).toBeFalsy()
+        expect(projectUsers.value.size()).toBe(0)
 
         addUser({ user: mockSingleUser, role: 'pilot' })
-        removeUser({ user: mockSingleUser, role: 'pilot' })
-        expect(pilots.value.has(mockSingleUser)).toBeFalsy()
-        expect(pilots.value.size()).toBe(0)
+        removeUser(mockSingleUser)
+        expect(projectUsers.value.has(mockSingleUser)).toBeFalsy()
+        expect(projectUsers.value.size()).toBe(0)
 
         addUser({ user: mockSingleUser, role: 'controller' })
-        removeUser({ user: mockSingleUser, role: 'controller' })
-        expect(controllers.value.has(mockSingleUser)).toBeFalsy()
-        expect(controllers.value.size()).toBe(0)
+        removeUser(mockSingleUser)
+        expect(projectUsers.value.has(mockSingleUser)).toBeFalsy()
+        expect(projectUsers.value.size()).toBe(0)
     })
 })

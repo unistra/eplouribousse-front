@@ -1,22 +1,42 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 import UserItem from '../userItem/UserItem.vue'
 import { useSearchUser } from './useSearchUser'
 import { useI18n } from 'vue-i18n'
 import type { User } from '#/user'
 
-defineProps<{
+const props = defineProps<{
     role: string
     action?: 'add' | 'remove'
+    userToInject?: User
+    userToExclude?: User
 }>()
 const { t } = useI18n()
 const emit = defineEmits(['addUser', 'removeUser'])
-const { username, matchingUsers, fillUsers, onLoad } = useSearchUser()
+const { username, matchingUsers, filter, fillUsers, onLoad } = useSearchUser()
 
-function removeUserTest(user: User, role: string) {
-    console.log('YES')
-    emit(`removeUser`, { user, role })
-}
+watch(
+    () => props.userToExclude,
+    (user) => {
+        if (user !== undefined) {
+            filter.value.add(user.id)
+            matchingUsers.value?.remove(user)
+        }
+        console.log(filter.value)
+    },
+)
+
+watch(
+    () => props.userToInject,
+    (user) => {
+        if (user !== undefined) {
+            filter.value.delete(user.id)
+            if (username.value !== '') {
+                matchingUsers.value?.add(user)
+            }
+        }
+    },
+)
 
 onMounted(() => {
     matchingUsers.value?.clear()
@@ -27,10 +47,10 @@ onMounted(() => {
     <QInput
         v-model="username"
         data-testid="search"
+        clearable
         :label="t('newProject.requirements.email')"
-        :loading="isLoading"
-        type="search"
         @update:model-value="fillUsers"
+        @clear="(matchingUsers?.clear(), (username = ''))"
     >
         <template #append>
             <QIcon name="mdi-magnify" />

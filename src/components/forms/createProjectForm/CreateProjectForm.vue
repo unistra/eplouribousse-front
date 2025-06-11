@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import type { User } from '#/user'
 import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
 import UserItem from '@/components/utils/userItem/UserItem.vue'
 import { useI18n } from 'vue-i18n'
 import { useCreateProjectForm } from './useCreateProjectForm'
 
 const { t } = useI18n()
-const { admins, pilots, controllers, name, addUser, removeUser } = useCreateProjectForm()
+const { userToExclude, userToInject, name, addUser, removeUser, getUsersByRole } = useCreateProjectForm()
 </script>
 
 <template>
@@ -25,9 +24,9 @@ const { admins, pilots, controllers, name, addUser, removeUser } = useCreateProj
     <QCard
         bordered
         v-for="section in [
-            { title: 'Administrateurs', role: 'admin', array: admins.values() },
-            { title: 'Pilotes de projet', role: 'pilot', array: pilots.values() },
-            { title: 'Controlleurs', role: 'controller', array: controllers.values() },
+            { title: 'Administrateurs', role: 'admin' },
+            { title: 'Pilotes de projet', role: 'pilot' },
+            { title: 'Controlleurs', role: 'controller' },
         ]"
         :key="section.title"
     >
@@ -39,27 +38,31 @@ const { admins, pilots, controllers, name, addUser, removeUser } = useCreateProj
 
         <QSeparator />
 
-        <QCardSection horizontal>
+        <QCardSection
+            horizontal
+            :data-testid="'list-' + section.role"
+        >
             <QCardSection class="col-8">
                 <SearchUser
                     action="add"
                     :role="section.role"
+                    :user-to-exclude="userToExclude"
+                    :user-to-inject="userToInject"
                     @add-user="addUser"
                 />
             </QCardSection>
             <QSeparator vertical />
             <QCardSection
                 class="col-4"
-                :data-testid="section.role + '-list'"
+                :data-testid="'users-' + section.role"
             >
                 <p style="text-align: center">{{ t('newProject.creation.userToAdd') }}</p>
                 <QScrollArea style="min-height: 10rem">
                     <UserItem
-                        v-for="user in section.array"
+                        v-for="user in getUsersByRole(section.role)"
                         action="remove"
                         style="min-width: 4rem"
                         :key="user.id"
-                        :role="section.role"
                         :user="user"
                         @remove-user="removeUser"
                     />
