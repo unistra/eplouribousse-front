@@ -8,16 +8,20 @@ const { projectName, projectDescription } = storeToRefs(useNewProjectStore())
 </script>
 
 <template>
-    <QInput
-        v-model="projectName"
-        :label="t('newProject.steps.informations.name')"
-        type="text"
-    />
-    <QInput
-        v-model="projectDescription"
-        :label="t('newProject.steps.informations.description')"
-        type="textarea"
-    />
+    <div class="container-column">
+        <QInput
+            v-model="projectName"
+            :label="t('newProject.steps.informations.name')"
+            type="text"
+            class="container-item"
+        />
+        <QInput
+            v-model="projectDescription"
+            :label="t('newProject.steps.informations.description')"
+            type="textarea"
+            class="container-item"
+        />
+    </div>
 </template>
 
 <style scoped></style>
