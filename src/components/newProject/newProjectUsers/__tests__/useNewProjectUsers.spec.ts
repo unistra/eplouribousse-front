@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test, vi } from 'vitest'
-import { useCreateProjectForm } from '../useCreateProjectForm'
+import { useCreateProjectForm } from '../useNewProjectUsers'
 import { mockSingleUser } from '~/fixtures/users'
 
 const mock = vi.hoisted(() => {

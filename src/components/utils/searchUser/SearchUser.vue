@@ -18,17 +18,23 @@ const { username, matchingUsers, filter, fillUsers, onLoad } = useSearchUser()
 watch(
     () => props.userToExclude,
     (user) => {
+        if (filter.value === undefined) {
+            filter.value = new Set<string>()
+        }
         if (user !== undefined) {
             filter.value.add(user.id)
             matchingUsers.value?.remove(user)
+            console.log(filter.value)
         }
-        console.log(filter.value)
     },
 )
 
 watch(
     () => props.userToInject,
     (user) => {
+        if (filter.value === undefined) {
+            filter.value = new Set<string>()
+        }
         if (user !== undefined) {
             filter.value.delete(user.id)
             if (username.value !== '') {

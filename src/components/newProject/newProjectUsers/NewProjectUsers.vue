@@ -2,7 +2,7 @@
 import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
 import UserItem from '@/components/utils/userItem/UserItem.vue'
 import { useI18n } from 'vue-i18n'
-import { useCreateProjectForm } from './useCreateProjectForm'
+import { useCreateProjectForm } from './useNewProjectUsers'
 
 const { t } = useI18n()
 const { userToExclude, userToInject, name, addUser, removeUser, getUsersByRole } = useCreateProjectForm()
@@ -62,6 +62,7 @@ const { userToExclude, userToInject, name, addUser, removeUser, getUsersByRole }
                         v-for="user in getUsersByRole(section.role)"
                         action="remove"
                         style="min-width: 4rem"
+                        :data-testid="section.role + '-user-remove-' + user.id"
                         :key="user.id"
                         :user="user"
                         @remove-user="removeUser"

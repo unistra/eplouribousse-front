@@ -4,6 +4,7 @@ import { QStepper } from 'quasar'
 import { useI18n } from 'vue-i18n'
 import NewProjectLibraries from '@/components/newProject/steps/newProjectLibraries/NewProjectLibraries.vue'
 import NewProjectInformations from '@/components/newProject/steps/newProjectInformations/NewProjectInformations.vue'
+import NewProjectUsers from '../newProjectUsers/NewProjectUsers.vue'
 
 const { t } = useI18n()
 const step = ref(1)
@@ -42,6 +43,7 @@ const stepper = useTemplateRef<QStepper>('stepper')
             :name="3"
             title="Ad template"
         >
+            <NewProjectUsers />
         </QStep>
 
         <template #navigation>

@@ -3,7 +3,7 @@ import type { User } from '#/user'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import type { I18n } from 'vue-i18n'
 import UserItem from '@/components/utils/userItem/UserItem.vue'
-import CreateProjectForm from '@/components/forms/createProjectForm/CreateProjectForm.vue'
+import NewProjectUsers from '@/components/newProject/newProjectUsers/NewProjectUsers.vue'
 import useI18nMock from '~/mocks/i18n'
 import { mount } from '@vue/test-utils'
 import { Quasar } from 'quasar'
@@ -14,6 +14,7 @@ const mock = vi.hoisted(() => {
         notify: vi.fn(),
         useSearchUser: {
             username: 'fr',
+            filter: new Set<string>(),
             matchingUsers: new Set<User>(),
         },
         useCreateProjectForm: {
@@ -46,7 +47,7 @@ vi.mock('@/components/utils/searchUser/useSearchUser.ts', () => ({
     useSearchUser: () => mock.useSearchUser,
 }))
 
-vi.mock('@/components/forms/createProjectForm/useCreateProjectForm.ts', () => ({
+vi.mock('@/components/newProject/newProjectUsers/useNewProjectUsers', () => ({
     useCreateProjectForm: () => mock.useCreateProjectForm,
 }))
 
@@ -72,6 +73,7 @@ describe('CreateProjectForm', () => {
             return users
         })
         mock.useCreateProjectForm.getUsersByRole.mockReturnValue([])
+        mock.useSearchUser.filter = new Set<string>()
     })
     afterEach(() => {
         vi.clearAllMocks()
@@ -79,7 +81,7 @@ describe('CreateProjectForm', () => {
         mock.useSearchUser.matchingUsers.clear()
     })
     test('prints an empty form when it is mounted', () => {
-        const wrapper = mount(CreateProjectForm, {
+        const wrapper = mount(NewProjectUsers, {
             global: {
                 plugins: [i18n, Quasar],
             },
@@ -88,12 +90,11 @@ describe('CreateProjectForm', () => {
     })
     test('trigger the addUser function when clicking on the add button', async () => {
         mock.useSearchUser.matchingUsers.add(mockSingleUser)
-        const wrapper = mount(CreateProjectForm, {
+        const wrapper = mount(NewProjectUsers, {
             global: {
                 plugins: [i18n, Quasar],
             },
         })
-
         await wrapper.find('[data-testid="add-user-1"]').trigger('click')
         expect(mock.useCreateProjectForm.addUser).toHaveBeenCalledOnce()
         expect(mock.useCreateProjectForm.addUser).toHaveBeenCalledWith({ user: mockSingleUser, role: 'admin' })
@@ -102,12 +103,13 @@ describe('CreateProjectForm', () => {
     test('trigger the removeUser function when clicking on the remove button', async () => {
         mock.useCreateProjectForm.projectUsers.add(mockSingleUser)
         mock.useCreateProjectForm.getUsersByRole.mockReturnValueOnce([mockSingleUser])
-        const wrapper = mount(CreateProjectForm, {
+        const wrapper = mount(NewProjectUsers, {
             global: {
                 plugins: [i18n, Quasar],
             },
         })
-        await wrapper.find('[data-testid="remove-user-1"]').trigger('click')
+
+        await wrapper.find('[data-testid="admin-user-remove-1"]').trigger('click')
         expect(mock.useCreateProjectForm.removeUser).toHaveBeenCalledOnce()
         expect(mock.useCreateProjectForm.removeUser).toHaveBeenCalledWith(mockSingleUser)
     })
