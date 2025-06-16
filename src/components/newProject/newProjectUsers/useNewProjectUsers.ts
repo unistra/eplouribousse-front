@@ -23,7 +23,7 @@ export function useCreateProjectForm() {
     }
 
     function getUsersByRole(role: string) {
-        let users: User[] = []
+        const users: User[] = []
         projectUsers.value.values().forEach((user: User) => {
             if (user !== undefined && user.role && user.role === role) {
                 users.push(user)

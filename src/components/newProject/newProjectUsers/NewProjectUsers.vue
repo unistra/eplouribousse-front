@@ -39,8 +39,8 @@ const { userToExclude, userToInject, name, addUser, removeUser, getUsersByRole }
         <QSeparator />
 
         <QCardSection
-            horizontal
             :data-testid="'list-' + section.role"
+            horizontal
         >
             <QCardSection class="col-8">
                 <SearchUser
@@ -60,10 +60,10 @@ const { userToExclude, userToInject, name, addUser, removeUser, getUsersByRole }
                 <QScrollArea style="min-height: 10rem">
                     <UserItem
                         v-for="user in getUsersByRole(section.role)"
-                        action="remove"
-                        style="min-width: 4rem"
-                        :data-testid="section.role + '-user-remove-' + user.id"
                         :key="user.id"
+                        action="remove"
+                        :data-testid="section.role + '-user-remove-' + user.id"
+                        style="min-width: 4rem"
                         :user="user"
                         @remove-user="removeUser"
                     />

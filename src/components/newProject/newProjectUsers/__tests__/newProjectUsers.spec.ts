@@ -64,7 +64,7 @@ describe('CreateProjectForm', () => {
             mock.useCreateProjectForm.projectUsers.delete(user)
         })
         mock.useCreateProjectForm.getUsersByRole.mockImplementation((role: string) => {
-            let users: User[] = []
+            const users: User[] = []
             mock.useCreateProjectForm.projectUsers.forEach((user: User) => {
                 if (user.role && user.role === role) {
                     users.push(user)
