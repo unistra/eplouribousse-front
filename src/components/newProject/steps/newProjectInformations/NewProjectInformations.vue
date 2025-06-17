@@ -11,15 +11,15 @@ const { projectName, projectDescription } = storeToRefs(useNewProjectStore())
     <div class="container-column">
         <QInput
             v-model="projectName"
+            class="container-item"
             :label="t('newProject.steps.informations.name')"
             type="text"
-            class="container-item"
         />
         <QInput
             v-model="projectDescription"
+            class="container-item"
             :label="t('newProject.steps.informations.description')"
             type="textarea"
-            class="container-item"
         />
     </div>
 </template>

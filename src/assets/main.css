@@ -1,5 +1,5 @@
 @import './base.css';
-@import './classes.css';
+@import './container.scss';
 
 #app {
     margin: 0 auto;

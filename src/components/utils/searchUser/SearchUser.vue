@@ -67,7 +67,7 @@ onMounted(() => {
         class="scroll"
         data-testid="list"
         dense
-        style="max-height: 150px"
+        style="max-height: 10rem"
     >
         <QInfiniteScroll
             data-testid="scroll"

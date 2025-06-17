@@ -9,7 +9,7 @@ const { userToExclude, userToInject, name, addUser, removeUser, getUsersByRole }
 </script>
 
 <template>
-    <div class="container-row">
+    <div class="container">
         <div
             v-for="section in [
                 { title: 'Administrateurs', role: 'admin' },
@@ -17,7 +17,7 @@ const { userToExclude, userToInject, name, addUser, removeUser, getUsersByRole }
                 { title: 'Controlleurs', role: 'controller' },
             ]"
             :key="section.title"
-            class="container-item"
+            class="container-item base"
         >
             <QCard bordered>
                 <QItem>

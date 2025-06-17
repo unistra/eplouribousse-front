@@ -1,0 +1,149 @@
+@import './fonts.scss';
+
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.container-column {
+    @extend .container;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container-item {
+    width: 50%;
+    padding: 1rem;
+}
+
+.container-3xs {
+    @extend .container;
+    width: 16rem;
+}
+
+.container-2xs {
+    @extend .container;
+    width: 18rem;
+}
+
+.container-xs {
+    @extend .container;
+    width: 20rem;
+}
+
+.container-sm {
+    @extend .container;
+    width: 24rem;
+}
+
+.container-md {
+    @extend .container;
+    width: 28rem;
+}
+
+.container-lg {
+    @extend .container;
+    width: 32rem;
+}
+
+.container-xl {
+    @extend .container;
+    width: 36rem;
+}
+
+.container-2xl {
+    @extend .container;
+    width: 42rem;
+}
+
+.container-3xl {
+    @extend .container;
+    width: 48rem;
+}
+
+.container-4xl {
+    @extend .container;
+    width: 56rem;
+}
+
+.container-5xl {
+    @extend .container;
+    width: 64rem;
+}
+
+.container-6xl {
+    @extend .container;
+    width: 72rem;
+}
+
+.container-7xl {
+    @extend .container;
+    width: 80rem;
+}
+
+.container-column-3xs {
+    @extend .container-column;
+    width: 16rem;
+}
+
+.container-column-2xs {
+    @extend .container-column;
+    width: 18rem;
+}
+
+.container-column-xs {
+    @extend .container-column;
+    width: 20rem;
+}
+
+.container-column-sm {
+    @extend .container-column;
+    width: 24rem;
+}
+
+.container-column-md {
+    @extend .container-column;
+    width: 28rem;
+}
+
+.container-column-lg {
+    @extend .container-column;
+    width: 32rem;
+}
+
+.container-column-xl {
+    @extend .container-column;
+    width: 36rem;
+}
+
+.container-column-2xl {
+    @extend .container-column;
+    width: 42rem;
+}
+
+.container-column-3xl {
+    @extend .container-column;
+    width: 48rem;
+}
+
+.container-column-4xl {
+    @extend .container-column;
+    width: 56rem;
+}
+
+.container-column-5xl {
+    @extend .container-column;
+    width: 64rem;
+}
+
+.container-column-6xl {
+    @extend .container-column;
+    width: 72rem;
+}
+
+.container-column-7xl {
+    @extend .container-column;
+    width: 80rem;
+}
