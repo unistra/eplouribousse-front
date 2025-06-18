@@ -32,7 +32,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <QLayout view="hhh lpR fff">
+    <QLayout view="lhh lpR fff">
         <LayoutHeader />
         <QPageContainer>
             <QPage padding>

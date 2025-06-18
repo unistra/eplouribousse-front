@@ -8,8 +8,8 @@ defineProps<{
 
 <template>
     <QIcon
-        :style="`color: var(--${color ? color : 'color-neutral-400'})`"
         :name="name"
+        :style="`color: var(--${color ? color : 'color-neutral-400'})`"
     >
         <QTooltip v-if="tooltip">{{ tooltip }}</QTooltip>
     </QIcon>

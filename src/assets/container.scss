@@ -2,148 +2,80 @@
 
 .container {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
-.container-column {
-    @extend .container;
-    flex-direction: column;
-    align-items: center;
+    gap: 1rem 1rem;
+    padding: 1rem
 }
 
 .container-item {
-    width: 50%;
-    padding: 1rem;
+    display: flex;
+    padding-top: 1rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    overflow-x: clip;
+    overflow-y: clip;
 }
 
-.container-3xs {
-    @extend .container;
-    width: 16rem;
+.row {
+    flex-direction: row;
 }
 
-.container-2xs {
-    @extend .container;
-    width: 18rem;
+.column {
+    flex-direction: column;
 }
 
-.container-xs {
-    @extend .container;
-    width: 20rem;
+.wrap {
+    flex-wrap: wrap;
 }
 
-.container-sm {
-    @extend .container;
-    width: 24rem;
+.even {
+    justify-content: space-between;
 }
 
-.container-md {
-    @extend .container;
-    width: 28rem;
+.center {
+    justify-content: center;
 }
 
-.container-lg {
-    @extend .container;
-    width: 32rem;
+.left {
+    justify-content: left;
 }
 
-.container-xl {
-    @extend .container;
-    width: 36rem;
+.right {
+    justify-content: right;
 }
 
-.container-2xl {
-    @extend .container;
-    width: 42rem;
+.align-center {
+    align-items: center;
 }
 
-.container-3xl {
-    @extend .container;
-    width: 48rem;
+.align-left {
+    align-items: left;
 }
 
-.container-4xl {
-    @extend .container;
-    width: 56rem;
+.align-right {
+    align-items: right;
 }
 
-.container-5xl {
-    @extend .container;
-    width: 64rem;
+.very-small {
+    max-width: 12rem;
 }
 
-.container-6xl {
-    @extend .container;
-    width: 72rem;
+.small {
+    max-width: 16rem;
 }
 
-.container-7xl {
-    @extend .container;
-    width: 80rem;
+.medium {
+    max-width: 20rem;
 }
 
-.container-column-3xs {
-    @extend .container-column;
-    width: 16rem;
+.base {
+    max-width: 28rem;
 }
 
-.container-column-2xs {
-    @extend .container-column;
-    width: 18rem;
+.large {
+    max-width: 42rem;
 }
 
-.container-column-xs {
-    @extend .container-column;
-    width: 20rem;
+.very-large {
+    max-width: 84rem;
 }
 
-.container-column-sm {
-    @extend .container-column;
-    width: 24rem;
-}
-
-.container-column-md {
-    @extend .container-column;
-    width: 28rem;
-}
-
-.container-column-lg {
-    @extend .container-column;
-    width: 32rem;
-}
-
-.container-column-xl {
-    @extend .container-column;
-    width: 36rem;
-}
-
-.container-column-2xl {
-    @extend .container-column;
-    width: 42rem;
-}
-
-.container-column-3xl {
-    @extend .container-column;
-    width: 48rem;
-}
-
-.container-column-4xl {
-    @extend .container-column;
-    width: 56rem;
-}
-
-.container-column-5xl {
-    @extend .container-column;
-    width: 64rem;
-}
-
-.container-column-6xl {
-    @extend .container-column;
-    width: 72rem;
-}
-
-.container-column-7xl {
-    @extend .container-column;
-    width: 80rem;
-}

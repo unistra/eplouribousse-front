@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import LayoutMenu from './LayoutMenu.vue'
 import LayoutNavLinks from './LayoutNavLinks.vue'
 import { storeToRefs } from 'pinia'
+import Drawer from './LayoutDrawer.vue'
 
 const userStore = useUserStore()
 const { tenantConfiguration, tenantColor } = storeToRefs(userStore)
@@ -38,7 +39,8 @@ const rightDrawerOpen = ref<boolean>(false)
             <LayoutMenu />
         </QToolbar>
     </QHeader>
-    <QDrawer
+    <Drawer />
+    <!-- <QDrawer
         v-model="rightDrawerOpen"
         bordered
         side="right"
@@ -47,7 +49,7 @@ const rightDrawerOpen = ref<boolean>(false)
         <QList>
             <LayoutNavLinks />
         </QList>
-    </QDrawer>
+    </QDrawer> -->
 </template>
 
 <style scoped>
