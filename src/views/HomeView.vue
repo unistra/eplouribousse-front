@@ -15,7 +15,7 @@ const _lines = ref<number>(2)
 const _rows = ref<number>(3)
 const _cols = ref<number>(2)
 const sizes = ['', 'very-small', 'small', 'medium', 'base', 'large', 'very-large']
-const cont = [0, 10, 10, 50, 100, 100, 200]
+const cont = [0, 3, 4, 6, 8, 9, 10]
 </script>
 
 <template>
@@ -46,14 +46,14 @@ const cont = [0, 10, 10, 50, 100, 100, 200]
     </div>
 
     <div
-        class="container column"
-        style="background-color: red"
+        class="container column items-center"
+        style="background-color: green"
     >
         <div
             v-for="i in 6"
             :key="i"
-            :class="`container-item ${sizes[i]} center`"
-            style="background-color: yellow; flex-grow: 1; align-content: stretch"
+            :class="`container-item ${sizes[i]}`"
+            style="background-color: blue"
         >
             <p
                 v-for="j in cont[i]"
@@ -65,75 +65,4 @@ const cont = [0, 10, 10, 50, 100, 100, 200]
             <QSpace />
         </div>
     </div>
-
-    <!-- <div
-        class="container row"
-        style="background-color: red"
-    >
-        <div
-            v-for="i in rows"
-            class="container-item very-large"
-            style="background-color: green"
-        >
-            <p
-                v-for="i in lines"
-                style="color: white; background-color: black"
-            >
-                Ceci est une longue chaine de caractère et c'est fait exprès
-            </p>
-        </div>
-        <div
-            class="container column"
-            style="background-color: blueviolet"
-        >
-            <div
-                class="container-item very-small"
-                style="background-color: green"
-                v-for="i in cols"
-            >
-                <p
-                    v-for="i in lines"
-                    style="color: white; background-color: black"
-                >
-                    Ceci est une longue chaine de caractère et c'est fait exprès
-                </p>
-            </div>
-        </div>
-    </div> -->
-
-    <!-- <div
-        class="container column"
-        style="background-color: red"
-    >
-        <div
-            v-for="i in rows"
-            class="container-item very-small"
-            style="background-color: yellow"
-        >
-            <p
-                v-for="i in lines"
-                style="background-color: black; color: white"
-            >
-                Ceci est une longue chaine de caractère et c'est fait exprès
-            </p>
-        </div>
-
-        <div
-            class="container row"
-            style="background-color: blueviolet"
-        >
-            <div
-                class="container-item very-small"
-                style="background-color: yellow"
-                v-for="i in cols"
-            >
-                <p
-                    v-for="i in lines"
-                    style="background-color: black; color: white"
-                >
-                    Ceci est une longue chaine de caractère et c'est fait exprès
-                </p>
-            </div>
-        </div>
-    </div> -->
 </template>
