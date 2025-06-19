@@ -16,12 +16,12 @@ defineProps<{
 <template>
     <QBtn
         :disable
-        :flat="color ? true : false"
         :label
         :noCaps
+        :flat="color ? true : false"
         :outline="color ? false : true"
+        :style="color ? `background-color:var(--color-${color});color:var(--color-white)` : ''"
         rounded
-        :style="color ? `background-color:${color};color:var(--color-white)` : ''"
     >
         <QTooltip v-if="tooltip">{{ tooltip }}</QTooltip>
         <AtomicIcon

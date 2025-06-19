@@ -8,7 +8,7 @@ const { projectName, projectDescription } = storeToRefs(useNewProjectStore())
 </script>
 
 <template>
-    <div class="container column center align-center">
+    <div class="container column align-center">
         <QInput
             v-model="projectName"
             class="container-item"

@@ -39,8 +39,7 @@ const rightDrawerOpen = ref<boolean>(false)
             <LayoutMenu />
         </QToolbar>
     </QHeader>
-    <Drawer />
-    <!-- <QDrawer
+    <QDrawer
         v-model="rightDrawerOpen"
         bordered
         side="right"
@@ -49,7 +48,7 @@ const rightDrawerOpen = ref<boolean>(false)
         <QList>
             <LayoutNavLinks />
         </QList>
-    </QDrawer> -->
+    </QDrawer>
 </template>
 
 <style scoped>
