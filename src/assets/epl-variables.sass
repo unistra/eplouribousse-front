@@ -1,0 +1,151 @@
+
+.abstract-font-size
+    &.very-small
+        font-size: 0.8rem
+
+    &.small
+        font-size: 0.85rem
+
+    &.medium
+        font-size: 0.9rem
+
+    &.base
+        font-size: 1rem
+
+    &.large
+        font-size: 1.2rem
+
+    &.very-large
+        font-size: 1.6rem
+
+.abstract-font-weight
+    &.thin
+        font-weight: 100
+
+    &.extralight
+        font-weight: 200
+
+    &.light
+        font-weight: 300
+
+    &.normal
+        font-weight: 400
+
+    &.medium
+        font-weight: 500
+
+    &.semibold
+        font-weight: 600
+
+    &.bold
+        font-weight: 700
+
+    &.extrabold
+        font-weight: 800
+
+    &.black
+        font-weight: 900
+
+.abstract-flex-direction
+    &.row
+        flex-direction: row
+
+    &.column
+        flex-direction: column
+
+.abstract-justify
+    &.justify-start
+        justify-content: flex-start
+
+    &.justify-end
+        justify-content: flex-end
+
+    &.justify-center
+        justify-content: center
+
+    &.justify-between
+        justify-content: space-between
+
+    &.justify-around
+        justify-content: space-around
+
+.abstract-align-items
+    &.items-center
+        align-items: center
+
+    &.items-start
+        align-items: flex-start
+
+    &.items-end
+        align-items: flex-end
+
+    &.items-baseline
+        align-items: baseline
+
+    &.items-stretch
+        align-items: stretch
+
+.abstract-align-content
+    &.content-center
+        align-content: center
+
+    &.content-start
+        align-content: flex-start
+
+    &.content-end
+        align-content: flex-end
+
+    &.content-stretch
+        align-content: stretch
+
+    &.content-around
+        align-content: space-around
+
+    &.content-between
+        align-content: space-between
+
+.abstract-container
+    @extend .abstract-flex-direction
+    @extend .abstract-justify
+    @extend .abstract-align-items
+    @extend .abstract-align-content
+    @extend .abstract-font-size
+    display: flex
+    overflow-x: clip
+    overflow-y: clip
+
+    &.very-small
+        max-width: 10vw
+
+    &.small
+        max-width: 14vw
+
+    &.medium
+        max-width: 22vw
+
+    &.base
+        max-width: 30vw
+
+    &.large
+        max-width: 40vw
+
+    &.very-large
+        max-width: 60vw
+
+.container
+    @extend .abstract-container
+    gap: 1.4vh 1.4vh
+    padding: 1.2vw
+
+    &-no-padding
+        padding: 0
+
+.container-item
+    @extend .abstract-container
+    padding-top: 1vw
+    padding-right: 1vw
+    padding-left: 1vw
+
+p
+    @extend .abstract-font-weight
+    @extend .abstract-font-size

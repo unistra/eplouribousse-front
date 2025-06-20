@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import LayoutMenu from './LayoutMenu.vue'
 import LayoutNavLinks from './LayoutNavLinks.vue'
 import { storeToRefs } from 'pinia'
+import Drawer from './LayoutDrawer.vue'
 
 const userStore = useUserStore()
 const { tenantConfiguration, tenantColor } = storeToRefs(userStore)

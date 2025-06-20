@@ -1,11 +1,11 @@
 import type { QTable, QTableProps } from 'quasar'
-import type { Library } from '#/library.ts'
+import type { LibraryI } from '#/library.d.ts'
 import { useI18n } from 'vue-i18n'
 import { ref, useTemplateRef, watch } from 'vue'
 import { useLibraryStore } from '@/stores/libraryStore.ts'
 import { storeToRefs } from 'pinia'
 
-export const useLibraryTable = () => {
+export const useLibraryTable = (librarySelected: LibraryI[]) => {
     const { t } = useI18n()
     const { libraries } = storeToRefs(useLibraryStore())
     const { fetchLibraries } = useLibraryStore()
@@ -37,7 +37,7 @@ export const useLibraryTable = () => {
             required: true,
             label: t('libraries.form.fields.name'),
             align: 'left',
-            field: (row: Library) => row.name,
+            field: (row: LibraryI) => row.name,
             sortable: true,
         },
         {
@@ -45,7 +45,7 @@ export const useLibraryTable = () => {
             required: true,
             label: t('libraries.form.fields.alias'),
             align: 'left',
-            field: (row: Library) => row.alias,
+            field: (row: LibraryI) => row.alias,
             sortable: true,
         },
         {
@@ -53,12 +53,21 @@ export const useLibraryTable = () => {
             required: true,
             label: t('libraries.form.fields.code'),
             align: 'left',
-            field: (row: Library) => row.code,
+            field: (row: LibraryI) => row.code,
         },
     ]
     const columnsWithActions: QTableProps['columns'] = [
         {
             name: 'menu',
+            label: '',
+            align: 'left',
+            field: () => null,
+        },
+        ...defaultColumns,
+    ]
+    const columnsWithAddBtn: QTableProps['columns'] = [
+        {
+            name: 'addBtn',
             label: '',
             align: 'left',
             field: () => null,
@@ -79,6 +88,7 @@ export const useLibraryTable = () => {
                 sortBy: (sortBy as 'name' | 'alias') || 'name',
                 descending,
                 filter: filterValue,
+                excludeId: librarySelected.map((lib) => lib.id),
             })
 
             pagination.value.page = page
@@ -95,6 +105,7 @@ export const useLibraryTable = () => {
     return {
         defaultColumns,
         columnsWithActions,
+        columnsWithAddBtn,
         loading,
         filter,
         rows,

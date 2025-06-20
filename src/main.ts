@@ -55,7 +55,7 @@ app.use(Quasar, {
     plugins: {
         Notify,
         Loading,
-    }, // import Quasar plugins and add here
+    },
     lang: quasarLang,
     iconSet: quasarIconSet,
     /*

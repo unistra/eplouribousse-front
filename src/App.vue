@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue'
 import { RouterView } from 'vue-router'
-import LayoutFooter from './components/layout/LayoutFooter.vue'
-import LayoutHeader from './components/layout/LayoutHeader.vue'
 import { useUserStore } from './stores/userStore'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { useComposableQuasar } from './composables/useComposableQuasar'
 import { isExpired } from './utils/jwt'
+import LayoutDrawer from './components/layout/LayoutDrawer.vue'
 
 const userStore = useUserStore()
 const { dark } = useComposableQuasar()
@@ -32,13 +31,14 @@ onMounted(async () => {
 </script>
 
 <template>
-    <QLayout view="hhh lpR fff">
-        <LayoutHeader />
+    <QLayout view="lhh lpR fff">
+        <!-- <LayoutHeader /> -->
+        <LayoutDrawer />
         <QPageContainer>
             <QPage padding>
                 <RouterView />
             </QPage>
         </QPageContainer>
-        <LayoutFooter />
+        <!-- <LayoutFooter /> -->
     </QLayout>
 </template>

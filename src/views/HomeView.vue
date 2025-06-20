@@ -2,7 +2,6 @@
 import { useI18n } from 'vue-i18n'
 import { onMounted } from 'vue'
 import { useGlobalStore } from '@/stores/globalStore.ts'
-
 const { t } = useI18n()
 const globalStore = useGlobalStore()
 
@@ -12,13 +11,15 @@ onMounted(() => {
 </script>
 
 <template>
-    <main class="row">
-        <div class="col-3">
-            <QBtn
-                :label="t('homePage')"
-                outline
-                @click="console.log('test')"
-            />
+    <div class="container column items-center">
+        <div class="container very-large row justify-center home-message">
+            <p class="black">{{ t('homeMessage') }}</p>
         </div>
-    </main>
+    </div>
 </template>
+
+<style lang="sass" scoped>
+.home-message
+    top: 50%
+    position: absolute
+</style>
