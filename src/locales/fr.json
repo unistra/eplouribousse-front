@@ -9,9 +9,11 @@
         "contactAdmin": "Contact du projet",
         "diffusionList": "Liste de diffusion",
         "projectAdministration": "Administration du projet",
+        "newProjectRequirements": "Création d'un nouveau projet",
         "generalAdministration": "Administration générale",
         "hasNoPerm": "Vous avez été redirigé car vous n'avez pas accès à cette page",
-        "needAuth": "Vous devez vous connecter pour accéder à cette page"
+        "needAuth": "Vous devez vous connecter pour accéder à cette page",
+        "needLocal": "Vous devez avoir un compte local pour changer votre mot de passe"
     },
     "settings": {
         "core": "Paramètres",
@@ -20,13 +22,34 @@
         "changePassword": "Changer mon mot de passe"
     },
     "newProject": {
+        "title": "Création d'un nouveau projet",
+        "steps": {
+            "informations": {
+                "title": "Informations sur le projet",
+                "name": "Nom du projet",
+                "description": "Description du projet"
+            },
+            "libraries": {
+                "title": "Bibliothèques participantes",
+                "description": "Sélectionnez les bibliothèques qui participeront au projet",
+                "addLibrary": "Ajouter une bibliothèque",
+                "searchLibraries": "Rechercher des bibliothèques"
+            }
+        },
         "requirements": {
-            "title": "Création d'un projet - Vérification",
             "message": "Pour monter un nouveau projet, assurez-vous que vous disposez des éléments suivants :",
             "email": "Adresse email de l'utilisateur",
-            "requirementsOk": "Je suis prêt"
+            "requirementsOk": "Je suis prêt",
+            "invite": "Inviter",
+            "inviteUser": "Inviter un utilisateur",
+            "inviteMessage": "Si un utilisateur n'est pas présent, cliquez sur le bouton et remplissez le formulaire d'invitation"
         },
-        "creation": {},
+        "creation": {
+            "title": "Création d'un projet",
+            "name": "Nom du projet",
+            "userAlreadyAssigned": "L'utilisateur a déjà été assigné",
+            "userToAdd": "Utilisateurs à ajouter"
+        },
         "projectName": "Intitulé du projet",
         "pilotEmails": "Email du ou des pilotes du projet",
         "adminEmails": "Email du ou des administrateurs du projet",
@@ -40,7 +63,7 @@
         "additionalInfos": "ppn;cote;état de collection;lacunes",
         "storageNames": "Nom des lieux de conservation alternatifs (et leur RCR le cas échéant)",
         "storageOperatorEmails": "Identifiants et emails de leurs opérateurs respectifs",
-        "searchUsers": "Vous pouvez utiliser l'outil de recherche ci-dessous pour vérifier si les utilisateurs ont déjà un compte, si ce n'est pas le cas, *contactez-les pour qu'ils se connectent au site :"
+        "searchUsers": "Vous pouvez utiliser l'outil de recherche ci-dessous pour vérifier si les utilisateurs ont déjà un compte, si ce n'est pas le cas, contactez-les pour qu'ils se connectent au site :"
     },
     "libraries": {
         "title": "Bibliothèques",

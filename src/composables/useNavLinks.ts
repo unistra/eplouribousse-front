@@ -6,7 +6,7 @@ export const useHeaderLinks: () => NavLink[] = () => {
         { label: 'supervision', to: { name: 'Home' }, require: ['superuser'] },
         { label: 'contactAdmin', to: { name: 'contactAdmin' } },
         { label: 'diffusionList', to: { name: 'Home' } },
-        { label: 'projectAdministration', to: { name: 'newProjectRequirements' }, require: ['manager'] },
+        { label: 'newProjectRequirements', to: { name: 'newProjectRequirements' }, require: ['manager'] },
         { label: 'generalAdministration', to: { name: 'Home' }, require: ['admin'] },
         { label: 'userGuide', to: { name: 'Home' } },
     ]

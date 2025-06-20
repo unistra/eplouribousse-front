@@ -1,5 +1,5 @@
 import { reactive, ref } from 'vue'
-import type { Library } from '#/library.ts'
+import type { Library, LibraryI } from '#/library.d.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useI18n } from 'vue-i18n'
@@ -16,7 +16,8 @@ export const useLibraryCreateAndEditBtn = (isToEdit: boolean, emit: (evt: 'submi
         close: () => (dialog.isOpen.value = false),
     }
 
-    const library = reactive<Library>({
+    const library = reactive<Library | LibraryI>({
+        id: undefined,
         name: '',
         alias: '',
         code: '',
@@ -76,14 +77,22 @@ export const useLibraryCreateAndEditBtn = (isToEdit: boolean, emit: (evt: 'submi
 
     const updateLibrary = async () => {
         resetErrors()
-
-        const libraryStore = useLibraryStore()
-        const originalLibrary = libraryStore.find(library)
-        if (!originalLibrary) {
+        const notifyNotFound = () => {
             notify({
                 type: 'negative',
                 message: t('libraries.errors.notFound'),
             })
+        }
+        if (!('id' in library)) {
+            notifyNotFound()
+            return
+        }
+
+        const libraryStore = useLibraryStore()
+
+        const originalLibrary = libraryStore.find(library)
+        if (!originalLibrary) {
+            notifyNotFound()
             return
         }
 

@@ -4,6 +4,7 @@ declare module 'vue-router' {
     interface RouteMeta {
         title: string
         needAuth?: boolean
+        needLocal?: boolean
         require?: string[]
     }
 }
@@ -41,6 +42,7 @@ const routes: RouteRecordRaw[] = [
         meta: {
             title: 'Changer le mot de passe',
             needAuth: true,
+            needLocal: true,
         },
     },
     {
@@ -76,15 +78,6 @@ const routes: RouteRecordRaw[] = [
         },
     },
     {
-        path: '/new-project-requirements',
-        name: 'newProjectRequirements',
-        component: () => import('@/views/NewProjectRequirements.vue'),
-        meta: {
-            title: 'Nouveau Projet',
-            require: ['manager'],
-        },
-    },
-    {
         path: '/invite',
         name: 'invite',
         component: () => import('@/views/InviteView.vue'),
@@ -106,6 +99,15 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/LibrariesView.vue'),
         meta: {
             title: 'Manage library',
+        },
+    },
+    {
+        path: '/new-project',
+        name: 'newProject',
+        component: () => import('@/views/NewProjectView.vue'),
+        meta: {
+            title: 'Nouveau Projet',
+            require: ['manager'],
         },
     },
 ]

@@ -1,13 +1,13 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import { useLibraryCreateAndEditBtn } from '@/components/library/libraryCreateAndEditBtn/useLibraryCreateAndEditBtn.ts'
-import type { Library } from '#/library.ts'
+import type { LibraryI } from '#/library.d.ts'
 import { onMounted } from 'vue'
 
 const props = defineProps<{
     buttonLabel?: string
     buttonIcon?: string
-    libraryToEdit?: Library
+    libraryToEdit?: LibraryI
 }>()
 const emit = defineEmits<{
     submitted: []
@@ -19,7 +19,7 @@ const isToEdit = !!props.libraryToEdit
 const { dialog, library, onSubmit, errors } = useLibraryCreateAndEditBtn(isToEdit, emit)
 
 onMounted(() => {
-    if (props.libraryToEdit) {
+    if (props.libraryToEdit && 'id' in library) {
         library.id = props.libraryToEdit.id
         library.name = props.libraryToEdit.name
         library.alias = props.libraryToEdit.alias

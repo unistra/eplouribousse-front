@@ -152,6 +152,7 @@ describe('useLibraryCreateAndEditBtn', () => {
 
         const { library, dialog, onSubmit } = useLibraryCreateAndEditBtn(true, mock.emit)
 
+        if (!('id' in library)) throw new Error()
         library.id = '1'
         library.name = 'Updated Library'
         library.alias = 'updated'
@@ -178,6 +179,7 @@ describe('useLibraryCreateAndEditBtn', () => {
 
         const { library, onSubmit } = useLibraryCreateAndEditBtn(true, mock.emit)
 
+        if (!('id' in library)) throw new Error()
         library.id = '1'
         library.name = 'Updated Library'
 
@@ -202,6 +204,7 @@ describe('useLibraryCreateAndEditBtn', () => {
 
         const { library, dialog, onSubmit } = useLibraryCreateAndEditBtn(true, mock.emit)
 
+        if (!('id' in library)) throw new Error()
         library.id = '1'
         library.name = 'Same Library'
         library.alias = 'same'

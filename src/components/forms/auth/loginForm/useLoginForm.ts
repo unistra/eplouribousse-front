@@ -19,6 +19,7 @@ const login = async (email: string, password: string) => {
 
     const user = await axiosI.get('/users/profile/')
     userStore.user = user.data
+    userStore.user.role = 'manager'
     userStore.isLocal = true
 }
 
@@ -56,6 +57,7 @@ export function useLoginForm() {
                 message: t('forms.login.success'),
             })
             await router.push((route.query.redirect as string | undefined) ?? { name: 'Home' })
+            // await router.go(0)
         } catch (e) {
             password.value = ''
 

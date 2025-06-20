@@ -11,3 +11,8 @@ export interface User {
     lastname?: string
     role?: string
 }
+
+export interface ProjectUser {
+    user: User
+    role: string
+}

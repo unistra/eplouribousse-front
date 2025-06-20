@@ -1,0 +1,132 @@
+.abstract-font
+    &.thin
+        font-weight: 100
+
+    &.extralight
+        font-weight: 200
+
+    &.light
+        font-weight: 300
+
+    &.normal
+        font-weight: 400
+
+    &.medium
+        font-weight: 500
+
+    &.semibold
+        font-weight: 600
+
+    &.bold
+        font-weight: 700
+
+    &.extrabold
+        font-weight: 800
+
+    &.black
+        font-weight: 900
+
+.abstract-flex-direction
+    &.row
+        flex-direction: row
+
+    &.column
+        flex-direction: column
+
+.abstract-justify
+    &.justify-left
+        justify-content: flex-start
+
+    &.justify-right
+        justify-content: flex-end
+
+    &.justify-center
+        justify-content: center
+
+    &.justify-between
+        justify-content: space-between
+
+    &.justify-around
+        justify-content: space-around
+
+.abstract-align-items
+    &.items-center
+        align-items: center
+
+    &.items-left
+        align-items: flex-start
+
+    &.items-end
+        align-items: flex-end
+
+    &.items-baseline
+        align-items: baseline
+
+    &.items-stretch
+        align-items: stretch
+
+.abstract-align-content
+    &.content-center
+        align-content: center
+
+    &.content-left
+        align-content: flex-start
+
+    &.content-right
+        align-content: flex-end
+
+    &.content-stretch
+        align-content: stretch
+
+    &.content-around
+        align-content: space-around
+
+    &.content-between
+        align-content: space-between
+
+.abstract-container
+    @extend .abstract-flex-direction
+    @extend .abstract-justify
+    @extend .abstract-align-items
+    @extend .abstract-align-content
+    display: flex
+    overflow-x: clip
+    overflow-y: clip
+
+    &.very-small
+        max-width: 10vw
+        font-size: 0.8rem
+
+    &.small
+        max-width: 14vw
+        font-size: 0.85rem
+
+    &.medium
+        max-width: 22vw
+        font-size: 0.9rem
+
+    &.base
+        max-width: 30vw
+        font-size: 1rem
+
+    &.large
+        max-width: 40vw
+        font-size: 1.2rem
+
+    &.very-large
+        max-width: 60vw
+        font-size: 1.6rem
+
+    &.wrap
+        flex-wrap: wrap
+
+.container
+    @extend .abstract-container
+    gap: 1.4vh 1.4vh
+    padding: 1.2vw
+
+.container-item
+    @extend .abstract-container
+    padding-top: 1vw
+    padding-right: 1vw
+    padding-left: 1vw

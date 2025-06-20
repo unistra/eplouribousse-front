@@ -1,6 +1,6 @@
-import { ref, reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { axiosI } from '@/plugins/axios/axios.ts'
-import type { Library } from '#/library.ts'
+import type { Library, LibraryI } from '#/library.d.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useI18n } from 'vue-i18n'
 
@@ -14,7 +14,7 @@ export const useLibraryDeleteBtn = (emit: (evt: 'submitted') => void) => {
         close: () => (dialog.value = false),
     })
 
-    const library = ref<Library>({
+    const library = ref<Omit<LibraryI, 'createdAt' | 'updatedAt'>>({
         id: '',
         name: '',
         alias: '',
