@@ -17,13 +17,13 @@ const names = ['Projet 1', 'Projet 2', 'Projet 3']
 
 <template>
     <QDrawer
-        v-model="drawer"
-        bordered
         :mini="collapsed"
         :mini-width="48"
+        :width="296"
+        v-model="drawer"
+        bordered
         persistent
         side="left"
-        :width="296"
     >
         <div
             id="wrapper"
@@ -31,16 +31,14 @@ const names = ['Projet 1', 'Projet 2', 'Projet 3']
         >
             <div
                 v-if="!collapsed"
-                id="home-section"
-                class="drawer-item"
+                class="home-section"
             >
                 <a href="/"><h1>Eplouribousse</h1></a>
                 <p class="large medium">{{ tenantConfiguration?.name }}</p>
             </div>
             <div
                 v-else
-                id="home-section"
-                class="drawer-item"
+                class="home-section"
             >
                 <DrawerItem
                     icon="mdi-home"
@@ -49,10 +47,7 @@ const names = ['Projet 1', 'Projet 2', 'Projet 3']
                 />
             </div>
 
-            <div
-                id="projects-section"
-                :class="!collapsed ? 'drawer-item' : 'drawer-item-no-padding'"
-            >
+            <div class="projects-section">
                 <p
                     v-if="!collapsed"
                     class="light"
@@ -60,53 +55,55 @@ const names = ['Projet 1', 'Projet 2', 'Projet 3']
                     {{ t('navigation.projects') }}
                 </p>
                 <DrawerItem
-                    v-for="(name, index) in names"
                     :key="index"
+                    :name="!collapsed ? name : ''"
+                    v-for="(name, index) in names"
                     icon="mdi-book-multiple"
-                    :name="name"
                 />
-                <div
-                    v-if="!collapsed"
-                    class="drawer-button"
-                >
+                <div class="drawer-button">
                     <AtomicButton
+                        v-if="!collapsed"
                         icon="mdi-plus"
-                        label="Créer un projet"
+                        :label="t('newProject.create')"
+                    />
+                    <DrawerItem
+                        v-else
+                        icon="mdi-plus"
+                        :tooltip="t('newProject.create')"
                     />
                 </div>
             </div>
 
-            <div
-                id="navigation-section"
-                class="drawer-item-no-padding"
-            >
+            <div class="navigation-section">
                 <DrawerItem
+                    :name="!collapsed ? t('navigation.userGuide') : ''"
+                    :tooltip="collapsed ? t('navigation.userGuide') : ''"
                     icon="mdi-file-document"
-                    :name="t('navigation.userGuide')"
                 />
                 <DrawerItem
+                    :name="!collapsed ? t('navigation.contactAdmin') : ''"
+                    :tooltip="collapsed ? t('navigation.contactAdmin') : ''"
                     icon="mdi-email"
-                    :name="t('navigation.contactAdmin')"
                     to="contactAdmin"
                 />
             </div>
 
-            <div
-                id="user-section"
-                class="drawer-item-no-padding"
-            >
+            <div class="user-section">
                 <DrawerItem
                     :icon="collapsed ? 'mdi-arrow-collapse-right' : 'mdi-arrow-collapse-left'"
-                    :name="t('navigation.collapse')"
+                    :name="!collapsed ? t('navigation.collapse') : ''"
+                    :tooltip="collapsed ? t('navigation.expand') : ''"
                     @click="() => (collapsed = !collapsed)"
                 />
                 <DrawerItem
                     icon="mdi-cog-outline"
-                    :name="t('settings.core')"
+                    :name="!collapsed ? t('settings.core') : ''"
+                    :tooltip="collapsed ? t('settings.core') : ''"
                 />
                 <DrawerItem
                     icon="mdi-account-circle"
-                    :name="t('settings.account')"
+                    :name="!collapsed ? t('settings.account') : ''"
+                    :tooltip="collapsed ? t('settings.account') : ''"
                 />
             </div>
         </div>
@@ -115,45 +112,65 @@ const names = ['Projet 1', 'Projet 2', 'Projet 3']
 
 <style lang="sass" scoped>
 .layout1
-    .drawer-item
+    .home-section
         display: flex
         flex-direction: column
         padding-left: 0.5vw
         padding-right: 0.5vw
         margin-bottom: 1vh
+        height: 10%
 
-        &-no-padding
+        &-collapsed
+            display: flex
+            flex-direction: column
+            padding-left: 0.5vw
+            padding-right: 0.5vw
             margin-bottom: 1vh
-            padding-left: 0
+            height: 10%
 
-    .drawer-item h1
+    .home-section h1
         font-size: 1.6rem !important
         font-weight: bold
         line-height: 2.5vw
 
-    .drawer-button
+    .projects-section
+        height: 60%
+        margin-bottom: 1vh
+        padding-left: 0.5vh
+
+        .drawer-button
+            display: flex
+            justify-content: center
+            padding: 1vw
+
+    .navigation-section
+        height: 12%
+        margin-bottom: 1vh
+
+    .user-section
         display: flex
-        padding: 1vw
+        flex-direction: column
+        height: 12%
+        justify-content: flex-end
 
 .layout2
+    @extend .layout1
+    .home-section
+        display: flex
+        flex-direction: column
+        // margin-left: 0.5vw
+        // margin-right: 0.5vw
+        margin-bottom: 1vh
+        height: 10%
+
+    .projects-section
+        // padding-left: 0.5vh
+
+    .navigation-section
+
+    .user-section
+        // padding-left: 2vh
 
 #wrapper
     height: 100%
-    background-color: gold
-
-#home-section
-    height: 10%
-    background-color: aliceblue
-
-#projects-section
-    height: 60%
-    background-color: aliceblue
-
-#navigation-section
-    height: 12%
-    background-color: aliceblue
-
-#user-section
-    height: 12%
-    background-color: aliceblue
 </style>
