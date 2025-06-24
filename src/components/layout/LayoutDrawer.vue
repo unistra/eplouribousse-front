@@ -7,6 +7,7 @@ const { tenantConfiguration } = storeToRefs(userStore)
 import { useI18n } from 'vue-i18n'
 import DrawerItem from '../utils/drawerItem/DrawerItem.vue'
 import AtomicButton from '../atomic/AtomicButton.vue'
+import AtomicIcon from '../atomic/AtomicIcon.vue'
 
 const { t } = useI18n()
 
@@ -18,7 +19,7 @@ const names = ['Projet 1', 'Projet 2', 'Projet 3']
 <template>
     <QDrawer
         :mini="collapsed"
-        :mini-width="48"
+        :mini-width="50"
         :width="296"
         v-model="drawer"
         bordered
@@ -76,15 +77,15 @@ const names = ['Projet 1', 'Projet 2', 'Projet 3']
 
             <div class="navigation-section">
                 <DrawerItem
+                    icon="mdi-file-document"
                     :name="!collapsed ? t('navigation.userGuide') : ''"
                     :tooltip="collapsed ? t('navigation.userGuide') : ''"
-                    icon="mdi-file-document"
                 />
                 <DrawerItem
-                    :name="!collapsed ? t('navigation.contactAdmin') : ''"
-                    :tooltip="collapsed ? t('navigation.contactAdmin') : ''"
                     icon="mdi-email"
+                    :name="!collapsed ? t('navigation.contactAdmin') : ''"
                     to="contactAdmin"
+                    :tooltip="collapsed ? t('navigation.contactAdmin') : ''"
                 />
             </div>
 
@@ -115,28 +116,19 @@ const names = ['Projet 1', 'Projet 2', 'Projet 3']
     .home-section
         display: flex
         flex-direction: column
-        padding-left: 0.5vw
-        padding-right: 0.5vw
+        margin-left: 0.5vw
         margin-bottom: 1vh
         height: 10%
-
-        &-collapsed
-            display: flex
-            flex-direction: column
-            padding-left: 0.5vw
-            padding-right: 0.5vw
-            margin-bottom: 1vh
-            height: 10%
 
     .home-section h1
         font-size: 1.6rem !important
         font-weight: bold
-        line-height: 2.5vw
+        line-height: 5vh
 
     .projects-section
         height: 60%
         margin-bottom: 1vh
-        padding-left: 0.5vh
+        margin-left: 0.5vw
 
         .drawer-button
             display: flex
@@ -144,32 +136,31 @@ const names = ['Projet 1', 'Projet 2', 'Projet 3']
             padding: 1vw
 
     .navigation-section
+        display: flex
+        flex-direction: column
+        justify-content: flex-end
         height: 12%
         margin-bottom: 1vh
 
     .user-section
         display: flex
         flex-direction: column
-        height: 12%
         justify-content: flex-end
+        height: 12%
 
 .layout2
     @extend .layout1
     .home-section
-        display: flex
-        flex-direction: column
-        // margin-left: 0.5vw
-        // margin-right: 0.5vw
-        margin-bottom: 1vh
-        height: 10%
+        // margin-left: 0
 
     .projects-section
-        // padding-left: 0.5vh
+        // margin-left: 0
 
     .navigation-section
+        margin-left: 0.5vw
 
     .user-section
-        // padding-left: 2vh
+        margin-left: 0.5vw
 
 #wrapper
     height: 100%

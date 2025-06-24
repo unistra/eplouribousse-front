@@ -12,7 +12,7 @@ defineProps<{
         :left="iconRight ? false : true"
         :name="name"
         :right="iconRight"
-        size="1.5rem"
+        size="1.7rem"
         :style="`color: var(--${color ? color : 'color-neutral-400'})`"
     >
         <QTooltip v-if="tooltip">{{ tooltip }}</QTooltip>
