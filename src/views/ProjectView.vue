@@ -6,6 +6,7 @@ import NewProjectStepper from '@/components/newProject/newProjectStepper/NewProj
 import { useProjectStore } from '@/stores/projectStore.ts'
 
 const route = useRoute()
+const id = route.params.id as string
 const project = ref<ProjectI | null>(null)
 const store = useProjectStore()
 
