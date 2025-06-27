@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import { ref, useTemplateRef } from 'vue'
 import { QStepper } from 'quasar'
 import { useI18n } from 'vue-i18n'
 import NewProjectLibraries from '@/components/newProject/steps/newProjectLibraries/NewProjectLibraries.vue'
 import NewProjectInformations from '@/components/newProject/steps/newProjectInformations/NewProjectInformations.vue'
 import NewProjectUsers from '../newProjectUsers/NewProjectUsers.vue'
+import { useNewProjectStepper } from '@/components/newProject/newProjectStepper/useNewProjectStepper.ts'
 
 const { t } = useI18n()
-const step = ref(1)
-const stepper = useTemplateRef<QStepper>('stepper')
+
+const { step, nextStep, previousStep, buttonLabel } = useNewProjectStepper()
 </script>
 
 <template>
@@ -50,8 +50,9 @@ const stepper = useTemplateRef<QStepper>('stepper')
             <QStepperNavigation>
                 <QBtn
                     color="primary"
-                    :label="step === 4 ? 'Finish' : 'Continue'"
-                    @click="stepper?.next"
+                    :label="buttonLabel"
+                    type="submit"
+                    @click="nextStep"
                 />
                 <QBtn
                     v-if="step > 1"
@@ -59,7 +60,7 @@ const stepper = useTemplateRef<QStepper>('stepper')
                     color="primary"
                     flat
                     label="Back"
-                    @click="stepper?.previous"
+                    @click="previousStep"
                 />
             </QStepperNavigation>
         </template>

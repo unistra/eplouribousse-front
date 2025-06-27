@@ -110,6 +110,11 @@ const routes: RouteRecordRaw[] = [
             require: ['manager'],
         },
     },
+    {
+        path: '/projects/:id',
+        name: 'project',
+        component: () => import('@/views/ProjectView.vue'),
+    },
 ]
 
 export default routes

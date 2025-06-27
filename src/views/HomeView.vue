@@ -2,9 +2,9 @@
 import { useI18n } from 'vue-i18n'
 import { onMounted, ref } from 'vue'
 import { useGlobalStore } from '@/stores/globalStore.ts'
-import AtomicIcon from '@/components/atomic/AtomicIcon.vue'
-import AtomicButton from '@/components/atomic/AtomicButton.vue'
-import AtomicInput from '@/components/atomic/AtomicInput.vue'
+import { axiosI } from '@/plugins/axios/axios.ts'
+import type { ProjectI } from '#/project'
+import type { Pagination } from '#/pagination.ts'
 
 const { t } = useI18n()
 const globalStore = useGlobalStore()
@@ -18,6 +18,18 @@ const _cols = ref<number>(2)
 const sizes = ['', 'very-small', 'small', 'medium', 'base', 'large', 'very-large']
 const cont = [0, 3, 4, 6, 8, 9, 10]
 const s = ref<string>()
+
+const projects = ref<ProjectI[]>([])
+
+onMounted(async () => {
+    const dataProjects = await axiosI.get<Pagination<ProjectI>>('/projects/', {
+        params: {
+            page_size: 100,
+        },
+    })
+    projects.value = dataProjects.data.results
+    console.log(projects.value)
+})
 </script>
 
 <template>
@@ -30,6 +42,12 @@ const s = ref<string>()
             style="background-color: aqua"
         >
             <p>Test</p>
+        </div>
+        <div
+            v-for="project in projects"
+            :key="project.id"
+        >
+            <RouterLink :to="`/projects/${project.id}/`">{{ project.name }}</RouterLink>
         </div>
     </div>
 </template>
