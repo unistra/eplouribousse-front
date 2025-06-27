@@ -1,15 +1,19 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { onMounted, watch } from 'vue'
 import UserItem from '../userItem/UserItem.vue'
 import { useSearchUser } from './useSearchUser'
 import { useI18n } from 'vue-i18n'
 import type { User } from '#/user'
+import type { Roles } from '#/project'
 
 const props = defineProps<{
     role: string
     action?: 'add' | 'remove'
     userToInject?: User
     userToExclude?: User
+    allowInvitations?: boolean
+    inviteFunction?: (email: string, role: Roles, library_id: string) => Promise<void>
+    library_id?: string
 }>()
 const { t } = useI18n()
 const emit = defineEmits(['addUser', 'removeUser'])
@@ -47,6 +51,11 @@ watch(
 onMounted(() => {
     matchingUsers.value?.clear()
 })
+
+const addInvitation = async () => {
+    await props.inviteFunction?.(username.value, 'instructor', props.library_id || '')
+    username.value = ''
+}
 </script>
 
 <template>
@@ -69,12 +78,20 @@ onMounted(() => {
         dense
         style="max-height: 10rem"
     >
+        <QItem
+            v-if="props.allowInvitations && props.inviteFunction && matchingUsers?.size() === 0 && username.length > 0"
+            clickable
+        >
+            <QItemSection>Invite user with this email: {{ username }}</QItemSection>
+            <QBtn @click="addInvitation"> +</QBtn>
+        </QItem>
         <QInfiniteScroll
             data-testid="scroll"
             :offset="150"
             scroll-target="#scroll"
             @load="onLoad"
         >
+            <!-- @vue-expect-error: i need to check User types with meriadeg -->
             <UserItem
                 v-for="(user, index) in matchingUsers?.values()"
                 :key="index"
