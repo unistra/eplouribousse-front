@@ -1,27 +1,30 @@
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia'
-import { useNewProjectStore } from '@/stores/newProjectStore.ts'
+import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
+import type { QInput } from 'quasar'
 
 const { t } = useI18n()
-const { projectName, projectDescription } = storeToRefs(useNewProjectStore())
+const store = useProjectStore()
 </script>
 
 <template>
-    <div class="container column align-center">
+    <QForm class="container column align-center">
         <QInput
-            v-model="projectName"
+            v-model="store.name"
             class="container-item"
             :label="t('newProject.steps.informations.name')"
+            required
+            :rules="[
+                () => store.nameRequired || t('forms.validation.fieldIsRequired'),
+                () => store.nameLengthValid || t('forms.validation.fieldLessThan255'),
+            ]"
             type="text"
         />
         <QInput
-            v-model="projectDescription"
+            v-model="store.description"
             class="container-item"
             :label="t('newProject.steps.informations.description')"
             type="textarea"
         />
-    </div>
+    </QForm>
 </template>
-
-<style scoped></style>
