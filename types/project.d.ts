@@ -1,0 +1,48 @@
+import { LibraryI } from './library'
+
+interface ProjectI {
+    id: string
+    name: string
+    description: string
+    isPrivate: boolean
+    activeAfter: string
+    status: number
+    settings: []
+    invitations: ProjectInvitation[]
+    roles: UserRole[]
+    libraries: LibraryI[]
+    createdAt: string
+    updatedAt: string
+}
+
+interface Project extends ProjectI {
+    initialState: ProjectI
+}
+
+interface ProjectInvitation {
+    email: string
+    role: Roles
+    library: string | undefined
+}
+
+type Roles =
+    | 'tenant_super_user'
+    | 'project_creator'
+    | 'project_admin'
+    | 'project_manager'
+    | 'instructor'
+    | 'controller'
+    | 'guest'
+
+type UserRole = {
+    role: Roles
+    user: UserRoleUser
+    library: string | undefined // SHOULD CHANGE NAME TO libraryId IN BACKEND
+}
+
+export type UserRoleUser = {
+    id: string
+    // email: string // NOT PRESENT YET BUT NEED TO BE ADDED !!!
+    firstName: string
+    lastName: string
+}
