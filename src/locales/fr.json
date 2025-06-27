@@ -23,6 +23,12 @@
     },
     "newProject": {
         "title": "Création d'un nouveau projet",
+        "buttons": {
+            "continue": "Continuer",
+            "back": "Retour",
+            "create": "Créer le projet",
+            "modify": "Modifier le projet"
+        },
         "steps": {
             "informations": {
                 "title": "Informations sur le projet",
@@ -31,9 +37,15 @@
             },
             "libraries": {
                 "title": "Bibliothèques participantes",
-                "description": "Sélectionnez les bibliothèques qui participeront au projet",
+                "description": "Sélectionnez les bibliothèques participant au projet, puis renseignez leurs collections ainsi que leur instructeur",
                 "addLibrary": "Ajouter une bibliothèque",
-                "searchLibraries": "Rechercher des bibliothèques"
+                "searchLibraries": "Rechercher des bibliothèques",
+                "instructors": "Instructeurs",
+                "collection": "Collection",
+                "errors": {
+                    "whileAdding": "Une erreur est survenue lors de l'ajout de la bibliothèque",
+                    "whileDeleting": "Une erreur est survenue lors de la suppression de la bibliothèque"
+                }
             }
         },
         "requirements": {
@@ -104,7 +116,8 @@
     },
     "forms": {
         "validation": {
-            "fieldIsRequired": "Ce champ est requis"
+            "fieldIsRequired": "Ce champ est requis",
+            "fieldLessThan255": "Ce champ doit être inférieur à 255 caractères"
         },
         "fieldIsRequired": "Ce champ est requis",
         "login": {
