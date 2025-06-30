@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
 import type { LibraryI } from '#/library'
-import type { Project, ProjectI, Roles } from '#/project'
+import type { Collection, ImportCSVResponse, Project, ProjectI, Roles } from '#/project'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { Notify } from 'quasar'
 import i18n from '@/plugins/i18n'
+import type { Pagination } from '#/pagination.ts'
 
 const { t } = i18n.global
 
@@ -171,7 +172,39 @@ export const useProjectStore = defineStore('project', {
                 })
             }
         },
+        async getCollection(libraryId: string): Promise<Pagination<Collection> | void> {
+            try {
+                const response = await axiosI.get<Pagination<Collection>>('/collections/', {
+                    params: {
+                        library: libraryId,
+                        project: this.id,
+                    },
+                })
 
+                return response.data
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async importCollection(file: File, libraryId: string): Promise<ImportCSVResponse> {
+            const formData = new FormData()
+            formData.append('csv_file', file)
+            formData.append('library', libraryId)
+            formData.append('project', this.id)
+
+            const response = await axiosI.post<ImportCSVResponse>('/collections/import-csv/', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+            return response.data
+        },
+        async deleteCollection(libraryId: string): Promise<void> {
+            console.log('Todo', libraryId)
+        },
         async addInvitation(email: string, role: Roles, library_id?: string) {
             try {
                 await axiosI.post(`/projects/${this.id}/invitations/`, {

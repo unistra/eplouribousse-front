@@ -46,3 +46,20 @@ export type UserRoleUser = {
     firstName: string
     lastName: string
 }
+
+export type ImportCSVResponse = Record<string, number>
+
+export type Collection = {
+    id: string
+    title: string
+    code: string
+    library: string
+    project: string
+    issn: string
+    call_number: string
+    hold_statement: string
+    missing: string
+    publication_history: string
+    numbering: string
+    notes: string
+}
