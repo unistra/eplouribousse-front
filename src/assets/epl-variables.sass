@@ -1,4 +1,24 @@
-.abstract-font
+
+.abstract-font-size
+    &.very-small
+        font-size: 0.8rem
+
+    &.small
+        font-size: 0.85rem
+
+    &.medium
+        font-size: 0.9rem
+
+    &.base
+        font-size: 1rem
+
+    &.large
+        font-size: 1.2rem
+
+    &.very-large
+        font-size: 1.6rem
+
+.abstract-font-weight
     &.thin
         font-weight: 100
 
@@ -34,10 +54,10 @@
         flex-direction: column
 
 .abstract-justify
-    &.justify-left
+    &.justify-start
         justify-content: flex-start
 
-    &.justify-right
+    &.justify-end
         justify-content: flex-end
 
     &.justify-center
@@ -49,11 +69,14 @@
     &.justify-around
         justify-content: space-around
 
+    &.justify-even
+        justify-content: space-evenly
+
 .abstract-align-items
     &.items-center
         align-items: center
 
-    &.items-left
+    &.items-start
         align-items: flex-start
 
     &.items-end
@@ -69,10 +92,10 @@
     &.content-center
         align-content: center
 
-    &.content-left
+    &.content-start
         align-content: flex-start
 
-    &.content-right
+    &.content-end
         align-content: flex-end
 
     &.content-stretch
@@ -94,39 +117,41 @@
     overflow-y: clip
 
     &.very-small
-        max-width: 10vw
-        font-size: 0.8rem
+        min-width: 10vw
 
     &.small
-        max-width: 14vw
-        font-size: 0.85rem
+        min-width: 14vw
 
     &.medium
-        max-width: 22vw
-        font-size: 0.9rem
+        min-width: 22vw
 
     &.base
-        max-width: 30vw
-        font-size: 1rem
+        min-width: 30vw
 
     &.large
-        max-width: 40vw
-        font-size: 1.2rem
+        min-width: 40vw
 
     &.very-large
-        max-width: 60vw
-        font-size: 1.6rem
-
-    &.wrap
-        flex-wrap: wrap
+        min-width: 60vw
 
 .container
     @extend .abstract-container
-    gap: 1.4vh 1.4vh
-    padding: 1.2vw
+    gap: 1.4vh 1.4vw
+    padding: 1.4vw
+    flex-wrap: wrap
+
+    &-no-padding
+        padding: 0
+
+    &.no-wrap
+        flex-wrap: nowrap
 
 .container-item
     @extend .abstract-container
-    padding-top: 1vw
+    padding-top: 1vh
     padding-right: 1vw
     padding-left: 1vw
+
+p
+    @extend .abstract-font-weight
+    @extend .abstract-font-size

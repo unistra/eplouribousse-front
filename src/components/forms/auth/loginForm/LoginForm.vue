@@ -4,6 +4,8 @@ import { useLoginForm } from './useLoginForm.ts'
 import OrDividerUtils from '@/components/utils/OrDividerUtils.vue'
 import PasswordField from '@/components/utils/form/passwordField/PasswordField.vue'
 import { onMounted, ref } from 'vue'
+import AtomicButton from '@/components/atomic/AtomicButton.vue'
+import AtomicInput from '@/components/atomic/AtomicInput.vue'
 
 const { t } = useI18n()
 const { email, password, isLoading, onLogin } = useLoginForm()
@@ -15,24 +17,28 @@ onMounted(() => {
 </script>
 
 <template>
-    <QBtn
-        class="margin-t1"
-        :href="loginURL"
-        :label="t('forms.login.renater')"
-        no-caps
-    />
+    <div class="container column medium">
+        <AtomicButton
+            :href="loginURL"
+            :label="t('forms.login.renater')"
+            no-caps
+        />
+    </div>
 
     <OrDividerUtils />
 
-    <QForm @submit.prevent="onLogin">
-        <QInput
-            v-model="email"
+    <QForm
+        class="container column medium"
+        @submit.prevent="onLogin"
+    >
+        <AtomicInput
             :label="t('forms.login.email')"
+            :model="email"
             reactive-rules
-            :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
+            :rules="[(val: string) => !!val || t('forms.fieldIsRequired')]"
             type="email"
+            @update:model="email = $event as string"
         />
-
         <PasswordField
             v-model="password"
             :label="t('forms.login.password')"
@@ -41,13 +47,14 @@ onMounted(() => {
         <p>
             {{ t('forms.login.forgottenPassword') }} <a href="/send-email"> {{ t('forms.login.clickHere') }}</a>
         </p>
-        <QBtn
-            class="margin-t1"
-            :loading="isLoading"
-            no-caps
-            type="submit"
-        >
-            {{ t('forms.login.submit') }}
-        </QBtn>
+
+        <div class="container justify-center">
+            <AtomicButton
+                :label="t('forms.login.submit')"
+                :loading="isLoading"
+                no-caps
+                type="submit"
+            />
+        </div>
     </QForm>
 </template>

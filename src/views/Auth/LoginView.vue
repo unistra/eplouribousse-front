@@ -11,10 +11,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <!-- - Select with different CAS (if none, do not display) -->
-    <!-- - Renater -->
-    <!-- - Login form -->
-    <main class="container-center">
+    <div class="container column content-center">
         <LoginForm />
-    </main>
+    </div>
 </template>

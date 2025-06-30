@@ -9,7 +9,10 @@ const { userToExclude, userToInject, name, addUser, removeUser, getUsersByRole }
 </script>
 
 <template>
-    <div class="container wrap even">
+    <div
+        class="container row justify-between"
+        style="background-color: aliceblue"
+    >
         <div
             v-for="section in [
                 { title: 'Administrateurs', role: 'admin' },
@@ -17,9 +20,12 @@ const { userToExclude, userToInject, name, addUser, removeUser, getUsersByRole }
                 { title: 'Controlleurs', role: 'controller' },
             ]"
             :key="section.title"
-            class="container-item"
+            style="width: 45%"
         >
-            <QCard bordered>
+            <QCard
+                bordered
+                flat
+            >
                 <QItem>
                     <QItemSection>
                         <QItemLabel style="text-align: left">{{ section.title }}</QItemLabel>
@@ -32,7 +38,7 @@ const { userToExclude, userToInject, name, addUser, removeUser, getUsersByRole }
                     :data-testid="'list-' + section.role"
                     horizontal
                 >
-                    <QCardSection class="col-8">
+                    <QCardSection class="col-7">
                         <SearchUser
                             action="add"
                             :role="section.role"
@@ -43,7 +49,7 @@ const { userToExclude, userToInject, name, addUser, removeUser, getUsersByRole }
                     </QCardSection>
                     <QSeparator vertical />
                     <QCardSection
-                        class="col-4"
+                        class="col-5"
                         :data-testid="'users-' + section.role"
                     >
                         <p style="text-align: center">{{ t('newProject.creation.userToAdd') }}</p>
@@ -53,7 +59,7 @@ const { userToExclude, userToInject, name, addUser, removeUser, getUsersByRole }
                                 :key="user.id"
                                 action="remove"
                                 :data-testid="section.role + '-user-remove-' + user.id"
-                                style="min-width: 4rem"
+                                style="min-width: 4vw"
                                 :user="user"
                                 @remove-user="removeUser"
                             />

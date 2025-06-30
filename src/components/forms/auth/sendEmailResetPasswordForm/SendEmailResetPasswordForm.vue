@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useSendEmailResetPasswordForm } from './useSendEmailResetPasswordForm.ts'
+import AtomicButton from '@/components/atomic/AtomicButton.vue'
 
 const { t } = useI18n()
 const { email, isLoading, sendEmail } = useSendEmailResetPasswordForm()
 </script>
 
 <template>
-    <QForm @submit.prevent="sendEmail">
+    <QForm
+        class="container column medium"
+        @submit.prevent="sendEmail"
+    >
         <QInput
             v-model="email"
             autofocus
@@ -17,14 +21,15 @@ const { email, isLoading, sendEmail } = useSendEmailResetPasswordForm()
             :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
             type="email"
         />
-        <QBtn
-            class="submit-btn"
-            :loading="isLoading"
-            no-caps
-            type="submit"
-        >
-            {{ t('forms.password.reset.sendEmail') }}
-        </QBtn>
+        <div class="container justify-center">
+            <AtomicButton
+                class="submit-btn"
+                :label="t('forms.password.reset.sendEmail')"
+                :loading="isLoading"
+                no-caps
+                type="submit"
+            />
+        </div>
     </QForm>
 </template>
 

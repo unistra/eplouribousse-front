@@ -9,7 +9,7 @@ const { projectLibraries } = storeToRefs(useNewProjectStore())
 
 <template>
     <p>Inserer les bibliothèque participantes</p>
-    <div class="container-row">
+    <div class="container row">
         <template v-if="projectLibraries.length > 0">
             <NewProjectLibraryCard
                 v-for="library in projectLibraries"
@@ -21,11 +21,3 @@ const { projectLibraries } = storeToRefs(useNewProjectStore())
         <NewProjectLibraryAdd />
     </div>
 </template>
-
-<style scoped>
-.container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-}
-</style>
