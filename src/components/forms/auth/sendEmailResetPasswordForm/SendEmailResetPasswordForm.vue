@@ -9,8 +9,8 @@ const { email, isLoading, sendEmail } = useSendEmailResetPasswordForm()
 
 <template>
     <QForm
-        @submit.prevent="sendEmail"
         class="container column medium"
+        @submit.prevent="sendEmail"
     >
         <QInput
             v-model="email"
@@ -23,9 +23,9 @@ const { email, isLoading, sendEmail } = useSendEmailResetPasswordForm()
         />
         <div class="container justify-center">
             <AtomicButton
-                :loading="isLoading"
-                :label="t('forms.password.reset.sendEmail')"
                 class="submit-btn"
+                :label="t('forms.password.reset.sendEmail')"
+                :loading="isLoading"
                 no-caps
                 type="submit"
             />

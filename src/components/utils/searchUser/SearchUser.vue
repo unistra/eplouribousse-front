@@ -4,6 +4,7 @@ import UserItem from '../userItem/UserItem.vue'
 import { useSearchUser } from './useSearchUser'
 import { useI18n } from 'vue-i18n'
 import type { User } from '#/user'
+import AtomicInput from '@/components/atomic/AtomicInput.vue'
 
 const props = defineProps<{
     role: string
@@ -50,18 +51,17 @@ onMounted(() => {
 </script>
 
 <template>
-    <QInput
-        v-model="username"
+    <AtomicInput
         clearable
         data-testid="search"
+        dense
+        icon="mdi-magnify"
         :label="t('newProject.requirements.email')"
+        :model="username"
         @clear="(matchingUsers?.clear(), (username = ''))"
-        @update:model-value="fillUsers"
-    >
-        <template #append>
-            <QIcon name="mdi-magnify" />
-        </template>
-    </QInput>
+        @update:model="((username = $event as string), fillUsers())"
+    />
+
     <QList
         id="scroll"
         class="scroll"

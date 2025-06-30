@@ -40,8 +40,8 @@ async function onLogout() {
         :width="296"
     >
         <div
-            :class="!collapsed ? 'layout1' : 'layout2'"
             id="wrapper"
+            :class="!collapsed ? 'layout1' : 'layout2'"
         >
             <div
                 v-if="!collapsed"
@@ -55,9 +55,9 @@ async function onLogout() {
                 class="home-section"
             >
                 <DrawerItem
-                    :tooltip="t('homePage')"
                     icon="mdi-home"
                     to="Home"
+                    :tooltip="t('homePage')"
                 />
             </div>
 
@@ -69,36 +69,36 @@ async function onLogout() {
                     {{ t('navigation.projects') }}
                 </p>
                 <DrawerItem
-                    :key="index"
-                    :name="!collapsed ? name : ''"
                     v-for="(name, index) in names"
+                    :key="index"
                     icon="mdi-book-multiple"
+                    :name="!collapsed ? name : ''"
                 />
                 <div class="drawer-button">
                     <AtomicButton
-                        :label="t('newProject.create')"
                         v-if="!collapsed"
                         icon="mdi-plus"
+                        :label="t('newProject.create')"
                     />
                     <DrawerItem
-                        :tooltip="t('newProject.create')"
                         v-else
                         icon="mdi-plus"
+                        :tooltip="t('newProject.create')"
                     />
                 </div>
             </div>
 
             <div class="navigation-section">
                 <DrawerItem
+                    icon="mdi-file-document"
                     :name="!collapsed ? t('navigation.userGuide') : ''"
                     :tooltip="collapsed ? t('navigation.userGuide') : ''"
-                    icon="mdi-file-document"
                 />
                 <DrawerItem
-                    :name="!collapsed ? t('navigation.contactAdmin') : ''"
-                    :tooltip="collapsed ? t('navigation.contactAdmin') : ''"
                     icon="mdi-email"
+                    :name="!collapsed ? t('navigation.contactAdmin') : ''"
                     to="contactAdmin"
+                    :tooltip="collapsed ? t('navigation.contactAdmin') : ''"
                 />
             </div>
 
@@ -130,8 +130,8 @@ async function onLogout() {
                 <DrawerItem
                     v-if="!userStore.isAuth"
                     icon="mdi-login"
-                    to="login"
                     :name="!collapsed ? t('navigation.login') : ''"
+                    to="login"
                     :tooltip="collapsed ? t('navigation.login') : ''"
                 />
             </div>
@@ -175,6 +175,9 @@ async function onLogout() {
 
 .layout2
     @extend .layout1
+    .projects-section
+        padding-bottom: 10vh
+
     .navigation-section
         margin-left: 0.5vw
 

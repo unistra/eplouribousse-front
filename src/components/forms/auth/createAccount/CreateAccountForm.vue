@@ -22,13 +22,13 @@ fetchEmailFromToken()
 
 <template>
     <QForm
-        @submit="createAccount"
         class="container column medium"
+        @submit="createAccount"
     >
         <AtomicInput
+            disable
             :label="t('forms.login.email')"
             :model="email"
-            disable
             type="email"
         />
         <PasswordField
@@ -45,8 +45,8 @@ fetchEmailFromToken()
 
         <div class="container column">
             <AtomicButton
-                :loading="isLoading"
                 :label="t('forms.createAccount.submit')"
+                :loading="isLoading"
                 type="submit"
             />
         </div>

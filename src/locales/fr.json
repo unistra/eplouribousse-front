@@ -32,7 +32,9 @@
             "informations": {
                 "title": "Informations sur le projet",
                 "name": "Nom du projet",
-                "description": "Description du projet"
+                "description": "Description du projet",
+                "continue": "Continuer",
+                "back": "Retour"
             },
             "libraries": {
                 "title": "Bibliothèques participantes",

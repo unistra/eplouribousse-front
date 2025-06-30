@@ -15,9 +15,9 @@ const { email, sendInvitation } = useInviteForm()
             @submit.prevent="sendInvitation"
         >
             <AtomicInput
+                autofocus
                 :label="t('forms.invite.email')"
                 :model="email"
-                autofocus
                 type="email"
                 @update:model="email = $event as string"
             />

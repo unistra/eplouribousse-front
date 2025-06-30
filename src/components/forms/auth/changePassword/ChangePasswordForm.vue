@@ -18,8 +18,8 @@ const {
 <template>
     <div class="container column">
         <QForm
-            @submit.prevent="changePassword"
             class="container column medium"
+            @submit.prevent="changePassword"
         >
             <PasswordField
                 v-model="oldPassword"
@@ -49,8 +49,8 @@ const {
             </div>
 
             <AtomicButton
-                :loading="isLoading"
                 :label="t('forms.password.change.submit')"
+                :loading="isLoading"
                 no-caps
                 type="submit"
             />

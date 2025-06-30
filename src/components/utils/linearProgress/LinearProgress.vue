@@ -12,8 +12,8 @@ const progress = computed(() => props.passwordStrength * 0.25)
 <template>
     <QLinearProgress
         :color="color[passwordStrength]"
-        :value="progress"
-        size="5px"
         rounded
+        size="5px"
+        :value="progress"
     />
 </template>

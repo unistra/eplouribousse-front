@@ -28,15 +28,15 @@ onMounted(() => {
     <OrDividerUtils />
 
     <QForm
-        @submit.prevent="onLogin"
         class="container column medium"
+        @submit.prevent="onLogin"
     >
         <AtomicInput
             :label="t('forms.login.email')"
-            :rules="[(val: string) => !!val || t('forms.fieldIsRequired')]"
             :model="email"
-            type="email"
             reactive-rules
+            :rules="[(val: string) => !!val || t('forms.fieldIsRequired')]"
+            type="email"
             @update:model="email = $event as string"
         />
         <PasswordField
@@ -50,8 +50,8 @@ onMounted(() => {
 
         <div class="container justify-center">
             <AtomicButton
-                :loading="isLoading"
                 :label="t('forms.login.submit')"
+                :loading="isLoading"
                 no-caps
                 type="submit"
             />

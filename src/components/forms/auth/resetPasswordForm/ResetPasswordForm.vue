@@ -27,8 +27,8 @@ onMounted(() => {
 
 <template>
     <QForm
-        @submit.prevent="resetPassword"
         class="container column"
+        @submit.prevent="resetPassword"
     >
         <PasswordField
             v-model="newPassword"
@@ -55,9 +55,9 @@ onMounted(() => {
         </div>
         <div class="container justify-center">
             <AtomicButton
-                :loading="isLoading"
-                :label="t('forms.password.reset.submit')"
                 class="submit-btn"
+                :label="t('forms.password.reset.submit')"
+                :loading="isLoading"
                 no-caps
                 type="submit"
             />
