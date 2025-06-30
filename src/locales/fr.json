@@ -41,7 +41,18 @@
                 "addLibrary": "Ajouter une bibliothèque",
                 "searchLibraries": "Rechercher des bibliothèques",
                 "instructors": "Instructeurs",
-                "collection": "Collection",
+                "collection": {
+                    "title": "Collection",
+                    "importSuccess": "L'import du CSV s'est fait avec succès",
+                    "weFound": "Nous avons trouvé",
+                    "elementPresent": "éléments présents",
+                    "times": "fois",
+                    "present": "Collection présente",
+                    "delete": {
+                        "warning": "Vous êtes sur le point de supprimer la collection associée à cette bibliothèque",
+                        "irreversible": "Cette action est irréversible"
+                    }
+                },
                 "errors": {
                     "whileAdding": "Une erreur est survenue lors de l'ajout de la bibliothèque",
                     "whileDeleting": "Une erreur est survenue lors de la suppression de la bibliothèque"

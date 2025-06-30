@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
 import UserItem from '@/components/utils/userItem/UserItem.vue'
 import type { UserRoleUser } from '#/project'
-import NewProjectLibraryCollection from '@/components/newProject/steps/newProjectLibraries/NewProjectLibraryCollection.vue'
+import NewProjectLibraryCollection from '@/components/newProject/steps/newProjectLibraries/collections/NewProjectLibraryCollection.vue'
 
 defineProps<{
     library: LibraryI
