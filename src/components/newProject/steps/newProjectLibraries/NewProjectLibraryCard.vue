@@ -61,18 +61,20 @@ function onFileChange(event: Event) {
                 :role="t('newProject.steps.libraries.instructors')"
                 @add-user="({ user }) => store.addInstructor(user.id, library.id)"
             />
-            <QItem
-                v-for="(invitation, index) in store.invitations.filter(
-                    (el) => el.role === 'instructor' && el.library === library.id,
-                )"
-                :key="index"
-            >
-                <QItemSection>
-                    <!--{{ user.email || 'No email' }}-->
-                    {{ invitation.email }} (invitation)
-                </QItemSection>
-                <QBtn @click="() => store.removeInvitation(invitation.email, 'instructor', library.id)"> - </QBtn>
-            </QItem>
+            <template v-if="Array.isArray(store.invitations)">
+                <QItem
+                    v-for="(invitation, index) in store.invitations.filter(
+                        (el) => el.role === 'instructor' && el.library === library.id,
+                    )"
+                    :key="index"
+                >
+                    <QItemSection>
+                        <!--{{ user.email || 'No email' }}-->
+                        {{ invitation.email }} (invitation)
+                    </QItemSection>
+                    <QBtn @click="() => store.removeInvitation(invitation.email, 'instructor', library.id)"> - </QBtn>
+                </QItem>
+            </template>
             <UserItem
                 v-for="(userRole, index) in store.roles.filter(
                     (el) => el.role === 'instructor' && el.library === library.id,
