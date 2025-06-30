@@ -2,6 +2,8 @@
 import { useI18n } from 'vue-i18n'
 import { useCreateAccountForm } from '@/components/forms/auth/createAccount/useCreateAccountForm.ts'
 import PasswordField from '@/components/utils/form/passwordField/PasswordField.vue'
+import AtomicInput from '@/components/atomic/AtomicInput.vue'
+import AtomicButton from '@/components/atomic/AtomicButton.vue'
 
 const { t } = useI18n()
 const {
@@ -19,11 +21,14 @@ fetchEmailFromToken()
 </script>
 
 <template>
-    <QForm @submit="createAccount">
-        <QInput
-            disable
+    <QForm
+        @submit="createAccount"
+        class="container column medium"
+    >
+        <AtomicInput
             :label="t('forms.login.email')"
-            :model-value="email"
+            :model="email"
+            disable
             type="email"
         />
         <PasswordField
@@ -38,26 +43,14 @@ fetchEmailFromToken()
             :rules="[() => arePasswordsMatching || t('forms.password.validation.passwordsDoNotMatch')]"
         />
 
-        <QBtn
-            :loading="isLoading"
-            type="submit"
-        >
-            {{ t('forms.createAccount.submit') }}
-        </QBtn>
+        <div class="container column">
+            <AtomicButton
+                :loading="isLoading"
+                :label="t('forms.createAccount.submit')"
+                type="submit"
+            />
+        </div>
     </QForm>
 </template>
 
-<style lang="scss" scoped>
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-
-    > * {
-        width: 100%;
-        max-width: 200px;
-    }
-}
-</style>
+<style lang="scss" scoped></style>

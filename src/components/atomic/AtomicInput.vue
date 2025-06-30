@@ -3,7 +3,9 @@ import AtomicIcon from './AtomicIcon.vue'
 
 defineProps<{
     model: string | number | undefined
-    type?: 'text' | 'textarea' | 'email' | 'search' | 'number' | 'url'
+    autofocus?: boolean
+    hideBottomSpace?: boolean
+    type?: 'text' | 'textarea' | 'email' | 'search' | 'number' | 'url' | 'password'
     label?: string
     clearable?: boolean
     disable?: boolean
@@ -20,13 +22,15 @@ const emit = defineEmits<{
 <template>
     <QInput
         :clearable
-        color="grey-100"
+        :autofocus
+        :hide-bottom-space
         :disable
         :label="`${label}${required ? ' *' : ''}`"
         :model-value="model"
+        :type="type ?? 'text'"
+        color="grey-100"
         outlined
         rounded
-        :type="type ?? 'text'"
         @update:model-value="emit('update:model', $event)"
     >
         <QTooltip v-if="tooltip">{{ tooltip }}</QTooltip>

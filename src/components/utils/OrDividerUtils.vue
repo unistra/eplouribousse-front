@@ -4,25 +4,9 @@ const { t } = useI18n()
 </script>
 
 <template>
-    <div class="or-block">
+    <div class="container row justify-center">
         <QSeparator />
         <span>{{ t('forms.login.or') }}</span>
         <QSeparator />
     </div>
 </template>
-
-<style scoped lang="scss">
-.or-block {
-    width: 256px;
-    margin: 24px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    gap: 16px;
-
-    hr {
-        width: 100%;
-    }
-}
-</style>

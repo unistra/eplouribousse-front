@@ -2,33 +2,46 @@
 import { ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
-const userStore = useUserStore()
-const { tenantConfiguration } = storeToRefs(userStore)
 import { useI18n } from 'vue-i18n'
+import { useGlobalStore } from '@/stores/globalStore.ts'
 import DrawerItem from '../utils/drawerItem/DrawerItem.vue'
 import AtomicButton from '../atomic/AtomicButton.vue'
-import AtomicIcon from '../atomic/AtomicIcon.vue'
+import { useAuthentication } from '@/composables/useAuthentication'
+import { useRouter } from 'vue-router'
 
 const { t } = useI18n()
+const { logout } = useAuthentication()
+const userStore = useUserStore()
+const router = useRouter()
+const { tenantConfiguration } = storeToRefs(userStore)
 
 const drawer = ref<boolean>(true)
 const collapsed = ref<boolean>(false)
 const names = ['Projet 1', 'Projet 2', 'Projet 3']
+
+async function onLogout() {
+    logout()
+    const { addNotify } = useGlobalStore()
+    addNotify({
+        message: t('logout.success'),
+    })
+    await router.push({ name: 'Home' })
+}
 </script>
 
 <template>
     <QDrawer
-        :mini="collapsed"
-        :mini-width="50"
-        :width="296"
         v-model="drawer"
         bordered
+        :mini="collapsed"
+        :mini-width="50"
         persistent
         side="left"
+        :width="296"
     >
         <div
-            id="wrapper"
             :class="!collapsed ? 'layout1' : 'layout2'"
+            id="wrapper"
         >
             <div
                 v-if="!collapsed"
@@ -42,9 +55,9 @@ const names = ['Projet 1', 'Projet 2', 'Projet 3']
                 class="home-section"
             >
                 <DrawerItem
+                    :tooltip="t('homePage')"
                     icon="mdi-home"
                     to="Home"
-                    :tooltip="t('homePage')"
                 />
             </div>
 
@@ -63,29 +76,29 @@ const names = ['Projet 1', 'Projet 2', 'Projet 3']
                 />
                 <div class="drawer-button">
                     <AtomicButton
+                        :label="t('newProject.create')"
                         v-if="!collapsed"
                         icon="mdi-plus"
-                        :label="t('newProject.create')"
                     />
                     <DrawerItem
+                        :tooltip="t('newProject.create')"
                         v-else
                         icon="mdi-plus"
-                        :tooltip="t('newProject.create')"
                     />
                 </div>
             </div>
 
             <div class="navigation-section">
                 <DrawerItem
-                    icon="mdi-file-document"
                     :name="!collapsed ? t('navigation.userGuide') : ''"
                     :tooltip="collapsed ? t('navigation.userGuide') : ''"
+                    icon="mdi-file-document"
                 />
                 <DrawerItem
-                    icon="mdi-email"
                     :name="!collapsed ? t('navigation.contactAdmin') : ''"
-                    to="contactAdmin"
                     :tooltip="collapsed ? t('navigation.contactAdmin') : ''"
+                    icon="mdi-email"
+                    to="contactAdmin"
                 />
             </div>
 
@@ -102,9 +115,24 @@ const names = ['Projet 1', 'Projet 2', 'Projet 3']
                     :tooltip="collapsed ? t('settings.core') : ''"
                 />
                 <DrawerItem
+                    v-if="userStore.isAuth"
                     icon="mdi-account-circle"
                     :name="!collapsed ? t('settings.account') : ''"
                     :tooltip="collapsed ? t('settings.account') : ''"
+                />
+                <DrawerItem
+                    v-if="userStore.isAuth"
+                    icon="mdi-logout"
+                    :name="!collapsed ? t('navigation.logout') : ''"
+                    :tooltip="collapsed ? t('navigation.logout') : ''"
+                    @click="onLogout"
+                />
+                <DrawerItem
+                    v-if="!userStore.isAuth"
+                    icon="mdi-login"
+                    to="login"
+                    :name="!collapsed ? t('navigation.login') : ''"
+                    :tooltip="collapsed ? t('navigation.login') : ''"
                 />
             </div>
         </div>
@@ -118,7 +146,6 @@ const names = ['Projet 1', 'Projet 2', 'Projet 3']
         flex-direction: column
         margin-left: 0.5vw
         margin-bottom: 1vh
-        height: 10%
 
     .home-section h1
         font-size: 1.6rem !important
@@ -126,8 +153,7 @@ const names = ['Projet 1', 'Projet 2', 'Projet 3']
         line-height: 5vh
 
     .projects-section
-        height: 60%
-        margin-bottom: 1vh
+        margin-bottom: 10vh
         margin-left: 0.5vw
 
         .drawer-button
@@ -138,24 +164,17 @@ const names = ['Projet 1', 'Projet 2', 'Projet 3']
     .navigation-section
         display: flex
         flex-direction: column
-        justify-content: flex-end
-        height: 12%
-        margin-bottom: 1vh
+        row-gap: 1vh
+        margin-bottom: 3vh
 
     .user-section
         display: flex
         flex-direction: column
-        justify-content: flex-end
-        height: 12%
+        row-gap: 1vh
+
 
 .layout2
     @extend .layout1
-    .home-section
-        // margin-left: 0
-
-    .projects-section
-        // margin-left: 0
-
     .navigation-section
         margin-left: 0.5vw
 

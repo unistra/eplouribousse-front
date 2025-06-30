@@ -13,7 +13,7 @@ onMounted(() => {
 <template>
     <div class="container column items-center">
         <div class="container very-large row justify-center home-message">
-            <p class="black">{{ t('homeMessage') }}</p>
+            <p class="black very-large">{{ t('homeMessage') }}</p>
         </div>
     </div>
 </template>

@@ -48,6 +48,9 @@ watch(
             :required="required"
             :rules="rules"
             :type="isPasswordVisible ? 'text' : 'password'"
+            rounded
+            outlined
+            color="grey-100"
             @blur="() => (isInputFocused = false)"
             @focus="() => (isInputFocused = true)"
             @update:model-value="(val) => emit('update:modelValue', val as string)"

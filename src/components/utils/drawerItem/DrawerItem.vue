@@ -14,9 +14,9 @@ const emit = defineEmits(['click'])
 <template>
     <QItem
         :class="'item-content'"
-        :to="to ? { name: to } : ''"
         clickable
         dense
+        :to="to ? { name: to } : ''"
         @click="emit('click')"
     >
         <AtomicIcon
