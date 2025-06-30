@@ -5,6 +5,7 @@ import NewProjectLibraries from '@/components/newProject/steps/newProjectLibrari
 import NewProjectInformations from '@/components/newProject/steps/newProjectInformations/NewProjectInformations.vue'
 import { useNewProjectStepper } from '@/components/newProject/newProjectStepper/useNewProjectStepper.ts'
 import NewProjectRoles from '@/components/newProject/steps/newProjectRoles/NewProjectRoles.vue'
+import AtomicButton from '@/components/atomic/AtomicButton.vue'
 
 const { t } = useI18n()
 
@@ -48,18 +49,13 @@ const { step, nextStep, previousStep, buttonLabel } = useNewProjectStepper()
 
         <template #navigation>
             <QStepperNavigation>
-                <QBtn
-                    color="primary"
+                <AtomicButton
                     :label="buttonLabel"
-                    type="submit"
                     @click="nextStep"
                 />
-                <QBtn
+                <AtomicButton
                     v-if="step > 1"
-                    class="q-ml-sm"
-                    color="primary"
-                    flat
-                    label="Back"
+                    :label="t('newProject.steps.informations.back')"
                     @click="previousStep"
                 />
             </QStepperNavigation>

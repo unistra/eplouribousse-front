@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import type { SelectOption } from '#/utils'
+import AtomicButton from '@/components/atomic/AtomicButton.vue'
+import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -18,54 +20,38 @@ function submitEmailForm() {
 </script>
 
 <template>
-    <main>
-        <h1 style="text-align: center">{{ t('contactAdmin.title') }}</h1>
-        <div class="row">
-            <div class="col-4">
-                <QForm @submit.prevent="submitEmailForm">
-                    <QSelect
-                        v-model="object"
-                        emit-value
-                        :label="t('contactAdmin.object')"
-                        map-options
-                        :options="objects_available"
-                        outlined
-                        required
-                        style="padding-bottom: 2rem"
-                    />
-                    <QInput
-                        v-model="subject"
-                        counter
-                        :hint="t('contactAdmin.message')"
-                        :label="t('contactAdmin.placeholder')"
-                        outlined
-                        reactive-rules
-                        :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
-                        style="padding-bottom: 2rem"
-                        type="textarea"
-                    />
-                    <QBtn
-                        :label="t('contactAdmin.send')"
-                        outline
-                        type="submit"
-                    />
-                </QForm>
+    <div class="container column content-center">
+        <h1>{{ t('contactAdmin.title') }}</h1>
+        <QForm
+            class="container column"
+            @submit.prevent="submitEmailForm"
+        >
+            <QSelect
+                v-model="object"
+                emit-value
+                :label="t('contactAdmin.object')"
+                map-options
+                :options="objects_available"
+                outlined
+                required
+                rounded
+            />
+            <AtomicInput
+                counter
+                :hint="t('contactAdmin.message')"
+                :label="t('contactAdmin.placeholder')"
+                :model="subject"
+                outlined
+                reactive-rules
+                :rules="[(val: string) => !!val || t('forms.fieldIsRequired')]"
+                type="textarea"
+            />
+            <div class="container justify-start">
+                <AtomicButton
+                    :label="t('contactAdmin.send')"
+                    type="submit"
+                />
             </div>
-        </div>
-        <div class="container row">
-            <div
-                class="container-item very-small"
-                style="background-color: black"
-            >
-                <p style="color: white">Ceci est une longue chaine de caractère et c'est fait exprès</p>
-                <p style="color: white">Ceci est une longue chaine de caractère et c'est fait exprès</p>
-                <p style="color: white">Ceci est une longue chaine de caractère et c'est fait exprès</p>
-                <p style="color: white">Ceci est une longue chaine de caractère et c'est fait exprès</p>
-                <p style="color: white">Ceci est une longue chaine de caractère et c'est fait exprès</p>
-                <p style="color: white">Ceci est une longue chaine de caractère et c'est fait exprès</p>
-                <p style="color: white">Ceci est une longue chaine de caractère et c'est fait exprès</p>
-                <p style="color: white">Ceci est une longue chaine de caractère et c'est fait exprès</p>
-            </div>
-        </div>
-    </main>
+        </QForm>
+    </div>
 </template>

@@ -4,6 +4,7 @@
 #app {
     margin: 0 auto;
     font-weight: normal;
+    font-family: sans-serif;
 }
 
 .container-left {
@@ -54,9 +55,11 @@
 a,
 .green {
     text-decoration: none;
-    color: hsla(160, 100%, 37%, 1);
+    background-color: var(--color-white);
+    color: var(--color-black);
+    /* color: hsla(160, 100%, 37%, 1); */
     transition: 0.4s;
-    padding: 3px;
+    /* padding: 3px; */
 }
 
 h1 {
@@ -65,6 +68,6 @@ h1 {
 
 @media (hover: hover) {
     a:hover {
-        background-color: hsla(160, 100%, 37%, 0.2);
+        background-color: var(--color-neutral-100);
     }
 }

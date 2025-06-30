@@ -42,10 +42,13 @@ watch(
     >
         <QInput
             :autofocus="autofocus"
+            color="grey-100"
             :hide-bottom-space="true"
             :label="label ?? defaultLabel"
             :model-value="modelValue"
+            outlined
             :required="required"
+            rounded
             :rules="rules"
             :type="isPasswordVisible ? 'text' : 'password'"
             @blur="() => (isInputFocused = false)"

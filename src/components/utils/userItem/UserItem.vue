@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { UserRoleUser } from '#/project'
+import AtomicButton from '@/components/atomic/AtomicButton.vue'
 
 defineProps<{
     user: UserRoleUser
@@ -13,6 +14,7 @@ const emit = defineEmits(['addUser', 'removeUser'])
 <template>
     <QItem
         :key="user.id"
+        class="container row"
         clickable
     >
         <QItemSection>
@@ -20,17 +22,17 @@ const emit = defineEmits(['addUser', 'removeUser'])
             {{ user.firstName || 'No firstName' }}
             {{ user.lastName || 'No lastName' }} - {{ 'No email' }}
         </QItemSection>
-        <QBtn
+        <AtomicButton
             v-if="action && action === 'add'"
             :data-testid="dataTestid ? dataTestid : 'add-user-' + user.id"
+            label="+"
             @click="emit(`addUser`, user)"
-            >+
-        </QBtn>
-        <QBtn
+        />
+        <AtomicButton
             v-if="action && action === 'remove'"
             :data-testid="dataTestid ? dataTestid : 'remove-user-' + user.id"
+            label="-"
             @click="emit('removeUser', user)"
-            >-
-        </QBtn>
+        />
     </QItem>
 </template>

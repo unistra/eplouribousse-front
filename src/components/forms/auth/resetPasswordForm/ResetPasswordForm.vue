@@ -4,6 +4,7 @@ import { useResetPasswordForm } from '@/components/forms/auth/resetPasswordForm/
 import PasswordField from '@/components/utils/form/passwordField/PasswordField.vue'
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import AtomicButton from '@/components/atomic/AtomicButton.vue'
 const { t } = useI18n()
 
 const {
@@ -25,7 +26,10 @@ onMounted(() => {
 </script>
 
 <template>
-    <QForm @submit.prevent="resetPassword">
+    <QForm
+        class="container column"
+        @submit.prevent="resetPassword"
+    >
         <PasswordField
             v-model="newPassword"
             :label="t('forms.password.newPassword')"
@@ -49,14 +53,15 @@ onMounted(() => {
                 <li>{{ t('forms.password.specialChar') }}</li>
             </ul>
         </div>
-        <QBtn
-            class="submit-btn"
-            :loading="isLoading"
-            no-caps
-            type="submit"
-        >
-            {{ t('forms.password.reset.submit') }}
-        </QBtn>
+        <div class="container justify-center">
+            <AtomicButton
+                class="submit-btn"
+                :label="t('forms.password.reset.submit')"
+                :loading="isLoading"
+                no-caps
+                type="submit"
+            />
+        </div>
     </QForm>
 </template>
 

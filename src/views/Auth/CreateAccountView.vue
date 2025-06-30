@@ -6,7 +6,7 @@ const { t } = useI18n()
 </script>
 
 <template>
-    <main class="container-center">
+    <main class="container column content-center">
         <h1>{{ t('forms.createAccount.title') }}</h1>
         <CreateAccountForm />
     </main>

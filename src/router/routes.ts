@@ -90,7 +90,7 @@ const routes: RouteRecordRaw[] = [
         name: 'createAccount',
         component: () => import('@/views/Auth/CreateAccountView.vue'),
         meta: {
-            title: 'Create your account',
+            title: 'Création du compte',
         },
     },
     {

@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import { useUserStore } from '@/stores/userStore'
 import { ref } from 'vue'
-import LayoutMenu from './LayoutMenu.vue'
-import LayoutNavLinks from './LayoutNavLinks.vue'
 import { storeToRefs } from 'pinia'
 
 const userStore = useUserStore()
@@ -26,7 +24,7 @@ const rightDrawerOpen = ref<boolean>(false)
                 </QItem>
             </QToolbarTitle>
             <div class="navbar-links gt-md">
-                <LayoutNavLinks />
+                <!--                <LayoutNavLinks />-->
             </div>
             <QBtn
                 class="lt-lg"
@@ -35,7 +33,7 @@ const rightDrawerOpen = ref<boolean>(false)
                 icon="mdi-menu"
                 @click="rightDrawerOpen = !rightDrawerOpen"
             />
-            <LayoutMenu />
+            <!--            <LayoutMenu />-->
         </QToolbar>
     </QHeader>
     <QDrawer
