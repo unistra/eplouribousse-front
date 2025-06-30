@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test, vi } from 'vitest'
-import { useCreateProjectForm } from '../useNewProjectUsers'
-import { mockSingleUser } from '~/fixtures/users'
+import { useCreateProjectForm } from '../useNewProjectRoles.ts'
+import { mockSingleUser } from '~/fixtures/users.ts'
 
 const mock = vi.hoisted(() => {
     return {

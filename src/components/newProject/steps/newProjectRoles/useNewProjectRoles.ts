@@ -1,5 +1,5 @@
-import { type User } from '#/user'
-import { UniqueSet, type Comparator } from '#/utils'
+import { type User } from '#/user.ts'
+import { type Comparator, UniqueSet } from '#/utils.ts'
 import { ref } from 'vue'
 
 export function useCreateProjectForm() {

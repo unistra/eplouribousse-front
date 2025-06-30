@@ -1,8 +1,8 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
 import UserItem from '@/components/utils/userItem/UserItem.vue'
 import { useI18n } from 'vue-i18n'
-import { useCreateProjectForm } from './useNewProjectUsers'
+import { useCreateProjectForm } from './useNewProjectRoles.ts'
 
 const { t } = useI18n()
 const { userToExclude, userToInject, name, addUser, removeUser, getUsersByRole } = useCreateProjectForm()
@@ -48,6 +48,7 @@ const { userToExclude, userToInject, name, addUser, removeUser, getUsersByRole }
                     >
                         <p style="text-align: center">{{ t('newProject.creation.userToAdd') }}</p>
                         <QScrollArea style="min-height: 10rem">
+                            <!-- @vue-expect-error: i need to check User types with meriadeg -->
                             <UserItem
                                 v-for="user in getUsersByRole(section.role)"
                                 :key="user.id"
