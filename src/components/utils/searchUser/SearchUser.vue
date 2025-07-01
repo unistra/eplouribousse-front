@@ -1,106 +1,124 @@
 <script lang="ts" setup>
-import { onMounted, watch } from 'vue'
-import UserItem from '../userItem/UserItem.vue'
+import { onMounted } from 'vue'
 import { useSearchUser } from './useSearchUser'
 import { useI18n } from 'vue-i18n'
-import type { User } from '#/user'
-import type { Roles } from '#/project'
+import type { ProjectInvitation, UserRoleUser } from '#/project'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
+import AtomicButton from '@/components/atomic/AtomicButton.vue'
 
-const props = defineProps<{
-    role: string
-    action?: 'add' | 'remove'
-    userToInject?: User
-    userToExclude?: User
-    allowInvitations?: boolean
-    inviteFunction?: (email: string, role: Roles, library_id: string) => Promise<void>
-    library_id?: string
+defineProps<{
+    usersSelected: UserRoleUser[]
+    invitationsSelected: ProjectInvitation[]
 }>()
 const { t } = useI18n()
-const emit = defineEmits(['addUser', 'removeUser'])
-const { username, matchingUsers, filter, fillUsers, onLoad } = useSearchUser()
-
-watch(
-    () => props.userToExclude,
-    (user) => {
-        if (filter.value === undefined) {
-            filter.value = new Set<string>()
-        }
-        if (user !== undefined) {
-            filter.value.add(user.id)
-            matchingUsers.value?.remove(user)
-            console.log(filter.value)
-        }
-    },
-)
-
-watch(
-    () => props.userToInject,
-    (user) => {
-        if (filter.value === undefined) {
-            filter.value = new Set<string>()
-        }
-        if (user !== undefined) {
-            filter.value.delete(user.id)
-            if (username.value !== '') {
-                matchingUsers.value?.add(user)
-            }
-        }
-    },
-)
+const emit = defineEmits<{
+    (e: 'addInvitation', email: string): void
+    (e: 'removeInvitation', invitation: ProjectInvitation): void
+    (e: 'addUser', userId: string): void
+    (e: 'removeUser', userId: string): void
+}>()
+const { username, matchingUsers, onLoad } = useSearchUser()
 
 onMounted(() => {
     matchingUsers.value?.clear()
 })
 
-const addInvitation = async () => {
-    await props.inviteFunction?.(username.value, 'instructor', props.library_id || '')
+const sendAction = (
+    action: 'addInvitation' | 'removeInvitation' | 'addUser' | 'removeUser',
+    payload?: { invitation?: ProjectInvitation; userId?: string },
+) => {
+    if (action === 'addInvitation') emit('addInvitation', username.value)
+    else if (payload?.invitation && action === 'removeInvitation') emit('removeInvitation', payload.invitation)
+    else if (payload?.userId && action === 'addUser') emit('addUser', payload.userId)
+    else if (payload?.userId && action === 'removeUser') emit('removeUser', payload.userId)
+    username.value = ''
+}
+
+const clear = () => {
+    matchingUsers.value?.clear()
     username.value = ''
 }
 </script>
 
 <template>
-    <AtomicInput
-        clearable
-        data-testid="search"
-        dense
-        icon="mdi-magnify"
-        :label="t('newProject.requirements.email')"
-        :model="username"
-        @clear="(matchingUsers?.clear(), (username = ''))"
-        @update:model="((username = $event as string), fillUsers())"
-    />
+    <div class="container column">
+        <AtomicInput
+            v-model="username"
+            clearable
+            data-testid="search"
+            dense
+            icon="mdi-magnify"
+            :label="t('utils.searchUser.inputPlaceholder')"
+            :tooltip="t('utils.searchUser.inputPlaceholder')"
+            @clear="clear"
+        />
 
-    <QList
-        id="scroll"
-        class="scroll"
-        data-testid="list"
-        dense
-        style="max-height: 10rem"
-    >
-        <QItem
-            v-if="props.allowInvitations && props.inviteFunction && matchingUsers?.size() === 0 && username.length > 0"
-            clickable
+        <QList
+            v-if="username.length > 0"
+            id="scroll"
+            bordered
+            class="scroll"
+            data-testid="list"
+            style="max-height: 10rem"
         >
-            <QItemSection>Invite user with this email: {{ username }}</QItemSection>
-            <QBtn @click="addInvitation"> +</QBtn>
-        </QItem>
-        <QInfiniteScroll
-            data-testid="scroll"
-            :offset="150"
-            scroll-target="#scroll"
-            @load="onLoad"
-        >
-            <!-- @vue-expect-error: i need to check User types with meriadeg -->
-            <UserItem
-                v-for="(user, index) in matchingUsers?.values()"
+            <QItem v-if="matchingUsers?.size() === 0 && username.length > 0">
+                <QItemSection>{{ t('utils.searchUser.inviteText') }}: {{ username }}</QItemSection>
+                <AtomicButton
+                    icon="mdi-plus"
+                    size="sm"
+                    @click="sendAction('addInvitation')"
+                />
+            </QItem>
+            <QInfiniteScroll
+                data-testid="scroll"
+                :offset="150"
+                scroll-target="#scroll"
+                @load="onLoad"
+            >
+                <QItem
+                    v-for="user in matchingUsers?.values()"
+                    :key="user.id"
+                    class="container row"
+                    clickable
+                    @click="sendAction('addUser', { userId: user.id })"
+                >
+                    <QItemSection>
+                        <!--{{ user.email || 'No email' }}-->
+                        {{ user.firstName || 'No firstName' }}
+                        {{ user.lastName || 'No lastName' }} - {{ 'No email' }}
+                    </QItemSection>
+                </QItem>
+            </QInfiniteScroll>
+        </QList>
+        <template v-if="usersSelected.length > 0 || invitationsSelected.length > 0">
+            <QItem
+                v-for="(invitation, index) in invitationsSelected"
                 :key="index"
-                :action="action"
-                :role="role"
-                :user="user"
-                @add-user="() => emit(`addUser`, { user, role })"
-                @remove-user="emit(`removeUser`, { user, role })"
-            />
-        </QInfiniteScroll>
-    </QList>
+            >
+                <QItemSection>
+                    <!--{{ user.email || 'No email' }}-->
+                    📨 {{ invitation.email }}
+                </QItemSection>
+                <AtomicButton
+                    icon="mdi-close"
+                    :no-border="true"
+                    @click="sendAction('removeInvitation', { invitation: invitation })"
+                />
+            </QItem>
+            <QItem
+                v-for="user in usersSelected"
+                :key="user.id"
+            >
+                <QItemSection>
+                    {{ user.firstName || 'No firstName' }}
+                    {{ user.lastName || 'No lastName' }} - {{ 'No email' }}
+                </QItemSection>
+                <AtomicButton
+                    icon="mdi-close"
+                    :no-border="true"
+                    @click="sendAction('removeUser', { userId: user.id })"
+                />
+            </QItem>
+        </template>
+    </div>
 </template>

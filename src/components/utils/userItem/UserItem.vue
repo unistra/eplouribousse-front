@@ -15,7 +15,8 @@ const emit = defineEmits(['addUser', 'removeUser'])
     <QItem
         :key="user.id"
         class="container row"
-        clickable
+        :clickable="action === 'add'"
+        @click="emit(`addUser`, user)"
     >
         <QItemSection>
             <!--{{ user.email || 'No email' }}-->
@@ -23,15 +24,11 @@ const emit = defineEmits(['addUser', 'removeUser'])
             {{ user.lastName || 'No lastName' }} - {{ 'No email' }}
         </QItemSection>
         <AtomicButton
-            v-if="action && action === 'add'"
-            :data-testid="dataTestid ? dataTestid : 'add-user-' + user.id"
-            label="+"
-            @click="emit(`addUser`, user)"
-        />
-        <AtomicButton
             v-if="action && action === 'remove'"
             :data-testid="dataTestid ? dataTestid : 'remove-user-' + user.id"
-            label="-"
+            flat
+            icon="mdi-close"
+            size="sm"
             @click="emit('removeUser', user)"
         />
     </QItem>
