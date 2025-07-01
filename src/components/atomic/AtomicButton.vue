@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 defineProps<{
     label?: string
     icon?: string
@@ -13,11 +13,14 @@ defineProps<{
     to?: string
     type?: 'submit'
     dataTestid?: string
+    size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+    noBorder?: boolean
 }>()
 </script>
 
 <template>
     <QBtn
+        :class="{ 'border-0': noBorder }"
         :data-testid
         :disable
         :flat="flat ? flat : !!color"
@@ -28,8 +31,9 @@ defineProps<{
         :noCaps
         :outline="outline ? outline : !color"
         rounded
+        :size
         :style="color ? `background-color:var(--color-${color});color:var(--color-white)` : ''"
-        :to="to ? { name: to } : ''"
+        :to
         :type
     >
         <QTooltip v-if="tooltip">{{ tooltip }}</QTooltip>

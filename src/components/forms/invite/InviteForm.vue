@@ -1,8 +1,9 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import { useInviteForm } from '@/components/forms/invite/useInviteForm.ts'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
+
 const { t } = useI18n()
 
 const { email, sendInvitation } = useInviteForm()
@@ -15,11 +16,10 @@ const { email, sendInvitation } = useInviteForm()
             @submit.prevent="sendInvitation"
         >
             <AtomicInput
+                v-model="email"
                 autofocus
                 :label="t('forms.invite.email')"
-                :model="email"
                 type="email"
-                @update:model="email = $event as string"
             />
             <AtomicButton
                 :label="t('forms.invite.send')"
