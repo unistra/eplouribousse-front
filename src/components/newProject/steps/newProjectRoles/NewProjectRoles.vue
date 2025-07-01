@@ -1,73 +1,38 @@
 <script lang="ts" setup>
 import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
-import UserItem from '@/components/utils/userItem/UserItem.vue'
 import { useI18n } from 'vue-i18n'
-import { useCreateProjectForm } from './useNewProjectRoles.ts'
+import type { Roles } from '#/project'
+import { useProjectStore } from '@/stores/projectStore.ts'
 
 const { t } = useI18n()
-const { userToExclude, userToInject, name, addUser, removeUser, getUsersByRole } = useCreateProjectForm()
+const store = useProjectStore()
+
+const roles: {
+    title: string
+    role: Roles
+}[] = [
+    { title: t('roles.projectAdmin'), role: 'project_admin' },
+    { title: t('roles.projectManager'), role: 'project_manager' },
+    { title: t('roles.controller'), role: 'controller' },
+]
 </script>
 
 <template>
-    <div
-        class="container row justify-between"
-        style="background-color: aliceblue"
-    >
+    <div class="container">
         <div
-            v-for="section in [
-                { title: 'Administrateurs', role: 'admin' },
-                { title: 'Pilotes de projet', role: 'pilot' },
-                { title: 'Controlleurs', role: 'controller' },
-            ]"
-            :key="section.title"
-            style="width: 45%"
+            v-for="(role, index) in roles"
+            :key="index"
+            class="container column base"
         >
-            <QCard
-                bordered
-                flat
-            >
-                <QItem>
-                    <QItemSection>
-                        <QItemLabel style="text-align: left">{{ section.title }}</QItemLabel>
-                    </QItemSection>
-                </QItem>
-
-                <QSeparator />
-
-                <QCardSection
-                    :data-testid="'list-' + section.role"
-                    horizontal
-                >
-                    <QCardSection class="col-7">
-                        <SearchUser
-                            action="add"
-                            :role="section.role"
-                            :user-to-exclude="userToExclude"
-                            :user-to-inject="userToInject"
-                            @add-user="addUser"
-                        />
-                    </QCardSection>
-                    <QSeparator vertical />
-                    <QCardSection
-                        class="col-5"
-                        :data-testid="'users-' + section.role"
-                    >
-                        <p style="text-align: center">{{ t('newProject.creation.userToAdd') }}</p>
-                        <QScrollArea style="min-height: 10rem">
-                            <!-- @vue-expect-error: i need to check User types with meriadeg -->
-                            <UserItem
-                                v-for="user in getUsersByRole(section.role)"
-                                :key="user.id"
-                                action="remove"
-                                :data-testid="section.role + '-user-remove-' + user.id"
-                                style="min-width: 4vw"
-                                :user="user"
-                                @remove-user="removeUser"
-                            />
-                        </QScrollArea>
-                    </QCardSection>
-                </QCardSection>
-            </QCard>
+            <p>{{ role.title }}</p>
+            <SearchUser
+                :invitations-selected="store.invitations.filter((el) => el.role === role.role)"
+                :users-selected="store.roles.filter((el) => el.role === role.role).map((el) => el.user)"
+                @add-invitation="async (email) => await store.addInvitation(email, role.role)"
+                @add-user="async (userId) => await store.addRole(userId, role.role)"
+                @remove-invitation="async ({ email }) => await store.removeInvitation(email, role.role)"
+                @remove-user="async (userId) => await store.removeRole(userId, role.role)"
+            />
         </div>
     </div>
 </template>
