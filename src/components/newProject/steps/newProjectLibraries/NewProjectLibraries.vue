@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import NewProjectLibraryCard from '@/components/newProject/steps/newProjectLibraries/NewProjectLibraryCard.vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
-import NewProjectLibraryAdd from '@/components/newProject/steps/newProjectLibraries/NewProjectLibraryAdd.vue'
 import { useI18n } from 'vue-i18n'
+import NewProjectLibraryAdd from '@/components/newProject/steps/newProjectLibraries/NewProjectLibraryAdd.vue'
+import NewProjectLibraryCard from '@/components/newProject/steps/newProjectLibraries/NewProjectLibraryCard.vue'
 
 const { t } = useI18n()
 const store = useProjectStore()
@@ -10,7 +10,7 @@ const store = useProjectStore()
 
 <template>
     <p>{{ t('newProject.steps.libraries.description') }}</p>
-    <div class="container-row">
+    <div class="container">
         <template v-if="store.libraries.length > 0">
             <NewProjectLibraryCard
                 v-for="library in store.libraries"

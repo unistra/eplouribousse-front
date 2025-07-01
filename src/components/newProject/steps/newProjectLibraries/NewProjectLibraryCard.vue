@@ -2,10 +2,8 @@
 import type { LibraryI } from '#/library'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
-import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
-import UserItem from '@/components/utils/userItem/UserItem.vue'
-import type { UserRoleUser } from '#/project'
 import NewProjectLibraryCollection from '@/components/newProject/steps/newProjectLibraries/collections/NewProjectLibraryCollection.vue'
+import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
 
 defineProps<{
     library: LibraryI
@@ -29,35 +27,18 @@ const store = useProjectStore()
         <QCardSection>
             <p>{{ t('newProject.steps.libraries.instructors') }}</p>
             <SearchUser
-                action="add"
-                :allow-invitations="true"
-                :invite-function="store.addInvitation"
-                :library_id="library.id"
-                :role="t('newProject.steps.libraries.instructors')"
-                @add-user="({ user }) => store.addInstructor(user.id, library.id)"
-            />
-            <template v-if="Array.isArray(store.invitations)">
-                <QItem
-                    v-for="(invitation, index) in store.invitations.filter(
-                        (el) => el.role === 'instructor' && el.library === library.id,
-                    )"
-                    :key="index"
-                >
-                    <QItemSection>
-                        <!--{{ user.email || 'No email' }}-->
-                        {{ invitation.email }} (invitation)
-                    </QItemSection>
-                    <QBtn @click="() => store.removeInvitation(invitation.email, 'instructor', library.id)"> - </QBtn>
-                </QItem>
-            </template>
-            <UserItem
-                v-for="(userRole, index) in store.roles.filter(
-                    (el) => el.role === 'instructor' && el.library === library.id,
-                )"
-                :key="index"
-                action="remove"
-                :user="userRole.user"
-                @remove-user="(user: UserRoleUser) => store.removeInstructor(user.id, library.id)"
+                :invitations-selected="
+                    store.invitations.filter((el) => el.role === 'instructor' && el.library === library.id)
+                "
+                :users-selected="
+                    store.roles
+                        .filter((el) => el.role === 'instructor' && el.library === library.id)
+                        .map((el) => el.user)
+                "
+                @add-invitation="async (email) => await store.addInvitation(email, 'instructor', library.id)"
+                @add-user="async (userId) => await store.addRole(userId, 'instructor', library.id)"
+                @remove-invitation="async ({ email, role }) => await store.removeInvitation(email, role, library.id)"
+                @remove-user="async (userId) => await store.removeRole(userId, 'instructor', library.id)"
             />
         </QCardSection>
 
