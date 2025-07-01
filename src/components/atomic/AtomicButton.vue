@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { RouterLinkProps } from 'vue-router'
+
 defineProps<{
     label?: string
     icon?: string
@@ -10,7 +12,7 @@ defineProps<{
     disable?: boolean
     tooltip?: string
     color?: string
-    to?: string
+    to?: RouterLinkProps['to']
     type?: 'submit'
     dataTestid?: string
     size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'

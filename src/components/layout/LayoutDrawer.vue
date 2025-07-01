@@ -1,5 +1,5 @@
-<script setup lang="ts">
-import { ref } from 'vue'
+<script lang="ts" setup>
+import { ref, watch } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
@@ -8,6 +8,9 @@ import DrawerItem from '../utils/drawerItem/DrawerItem.vue'
 import AtomicButton from '../atomic/AtomicButton.vue'
 import { useAuthentication } from '@/composables/useAuthentication'
 import { useRouter } from 'vue-router'
+import { axiosI } from '@/plugins/axios/axios.ts'
+import type { Pagination } from '#/pagination.ts'
+import type { ProjectI } from '#/project'
 
 const { t } = useI18n()
 const { logout } = useAuthentication()
@@ -18,6 +21,23 @@ const { tenantConfiguration } = storeToRefs(userStore)
 const drawer = ref<boolean>(true)
 const collapsed = ref<boolean>(false)
 const names = ['Projet 1', 'Projet 2', 'Projet 3']
+const projects = ref<ProjectI[]>([])
+
+watch(
+    () => userStore.isAuth,
+    async (isAuth) => {
+        if (isAuth) {
+            const dataProjects = await axiosI.get<Pagination<ProjectI>>('/projects/', {
+                params: {
+                    page_size: 100,
+                },
+            })
+            projects.value = dataProjects.data.results
+        } else {
+            projects.value = []
+        }
+    },
+)
 
 async function onLogout() {
     logout()
@@ -68,21 +88,32 @@ async function onLogout() {
                 >
                     {{ t('navigation.projects') }}
                 </p>
-                <DrawerItem
-                    v-for="(name, index) in names"
-                    :key="index"
-                    icon="mdi-book-multiple"
-                    :name="!collapsed ? name : ''"
-                />
+                <template v-if="projects.length > 0">
+                    <DrawerItem
+                        v-for="project in projects"
+                        :key="project.id"
+                        icon="mdi-book-multiple"
+                        :name="!collapsed ? project.name : ''"
+                        :to="{ name: 'project', params: { id: project.id } }"
+                    />
+                </template>
+                <p
+                    v-else
+                    class="no-project"
+                >
+                    {{ t('navigation.noProject') }}
+                </p>
                 <div class="drawer-button">
                     <AtomicButton
                         v-if="!collapsed"
                         icon="mdi-plus"
                         :label="t('newProject.create')"
+                        :to="{ name: 'newProject' }"
                     />
                     <DrawerItem
                         v-else
                         icon="mdi-plus"
+                        :to="{ name: 'newProject' }"
                         :tooltip="t('newProject.create')"
                     />
                 </div>
@@ -175,6 +206,7 @@ async function onLogout() {
 
 .layout2
     @extend .layout1
+
     .projects-section
         padding-bottom: 10vh
 
@@ -186,4 +218,9 @@ async function onLogout() {
 
 #wrapper
     height: 100%
+
+.no-project
+    color: var(--color-grey-400)
+    font-style: italic
+    text-align: center
 </style>
