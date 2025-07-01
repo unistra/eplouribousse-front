@@ -3,6 +3,7 @@ import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import AtomicButton from '@/components/atomic/AtomicButton.vue'
 
 const { t } = useI18n()
 const userStore = useUserStore()
@@ -54,13 +55,12 @@ const emit = defineEmits<{
     </div>
     <div class="col-3 table-center">
         <div class="table-cell-vertical-align">
-            <QBtn
-                :style="tenantColor"
-                :to="{ name: 'newProject' }"
+            <AtomicButton
+                :label="t('newProject.buttons.ready')"
                 @click="() => emit('validate')"
             >
                 {{ t('newProject.requirements.requirementsOk') }}
-            </QBtn>
+            </AtomicButton>
         </div>
     </div>
     <!--    <QDialog v-model="open">-->

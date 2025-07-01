@@ -40,9 +40,9 @@ const { step, nextStep, previousStep, buttonLabel } = useNewProjectStepper()
         </QStep>
 
         <QStep
-            icon="assignment"
+            icon="mdi-account"
             :name="3"
-            title="Ad template"
+            :title="t('newProject.steps.roles.title')"
         >
             <NewProjectRoles />
         </QStep>
