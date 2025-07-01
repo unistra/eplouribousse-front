@@ -50,6 +50,8 @@ export const useProjectStore = defineStore('project', {
                 ...data,
                 initialState: { ...data },
             }
+
+            if (!Array.isArray(this.invitations)) this.invitations = []
         },
 
         // TITLE & DESCRIPTION
@@ -136,13 +138,18 @@ export const useProjectStore = defineStore('project', {
 
             this.libraries = this.libraries.filter((lib) => lib.id !== library.id)
         },
-        async addInstructor(user_id: string, library_id: string) {
+        async addRole(userId: string, role: Roles, libraryId?: string) {
+            const data: {
+                user_id: string
+                role: Roles
+                library_id?: string
+            } = {
+                user_id: userId,
+                role,
+                ...(libraryId && { library_id: libraryId }),
+            }
             try {
-                await axiosI.post(`/projects/${this.id}/roles/`, {
-                    user_id: user_id,
-                    role: 'instructor',
-                    library_id,
-                })
+                await axiosI.post(`/projects/${this.id}/roles/`, data)
 
                 await this.fetchProjectById(this.id) // TEMPORARY SOLUTION WAITING FOR THE ENDPOINT TO RETURN THE WELL ORGANISED OBJECT TO INSERT IN this.roles
             } catch {
@@ -152,18 +159,22 @@ export const useProjectStore = defineStore('project', {
                 })
             }
         },
-        async removeInstructor(user_id: string, library_id: string) {
+        async removeRole(userId: string, role: Roles, libraryId?: string) {
+            const data: {
+                user_id: string
+                role: Roles
+                library_id?: string
+            } = {
+                user_id: userId,
+                role,
+                ...(libraryId && { library_id: libraryId }),
+            }
             try {
                 await axiosI.delete(`/projects/${this.id}/roles/`, {
-                    params: {
-                        user_id,
-                        role: 'instructor',
-                        library_id,
-                    },
+                    params: data,
                 })
-
                 this.roles = this.roles.filter(
-                    (el) => !(el.role === 'instructor' && el.library === library_id && el.user.id === user_id),
+                    (el) => !(el.role === role && el.library === (libraryId || null) && el.user.id === userId),
                 )
             } catch {
                 Notify.create({
@@ -205,12 +216,12 @@ export const useProjectStore = defineStore('project', {
         async deleteCollection(libraryId: string): Promise<void> {
             console.log('Todo', libraryId)
         },
-        async addInvitation(email: string, role: Roles, library_id?: string) {
+        async addInvitation(email: string, role: Roles, libraryId?: string) {
             try {
                 await axiosI.post(`/projects/${this.id}/invitations/`, {
                     email,
                     role,
-                    library: library_id,
+                    ...(libraryId && { library: libraryId }),
                 })
 
                 await this.fetchProjectById(this.id) // TEMPORARY SOLUTION WAITING FOR THE ENDPOINT TO RETURN THE WELL ORGANISED OBJECT TO INSERT IN this.roles
@@ -221,17 +232,17 @@ export const useProjectStore = defineStore('project', {
                 })
             }
         },
-        async removeInvitation(email: string, role: Roles, library_id?: string) {
+        async removeInvitation(email: string, role: Roles, libraryId?: string) {
             try {
                 await axiosI.delete(`/projects/${this.id}/invitations/`, {
                     params: {
                         email,
                         role,
-                        library: library_id,
+                        ...(libraryId && { library: libraryId }),
                     },
                 })
                 this.invitations = this.invitations.filter(
-                    (el) => !(el.role === 'instructor' && el.library === library_id && el.email === email),
+                    (el) => !(el.role === 'instructor' && el.library === libraryId && el.email === email),
                 )
             } catch {
                 Notify.create({
