@@ -1,10 +1,11 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import AtomicIcon from '@/components/atomic/AtomicIcon.vue'
+import type { RouterLinkProps } from 'vue-router'
 
 defineProps<{
     name?: string
     icon?: string
-    to?: string
+    to?: RouterLinkProps['to']
     tooltip?: string
 }>()
 
@@ -16,7 +17,7 @@ const emit = defineEmits(['click'])
         :class="'item-content'"
         clickable
         dense
-        :to="to ? { name: to } : ''"
+        :to
         @click="emit('click')"
     >
         <AtomicIcon
@@ -24,7 +25,7 @@ const emit = defineEmits(['click'])
             :name="icon ?? ''"
             :tooltip="tooltip ? tooltip : undefined"
         />
-        <QItemSection v-if="name"> {{ name }} </QItemSection>
+        <QItemSection v-if="name"> {{ name }}</QItemSection>
     </QItem>
 </template>
 

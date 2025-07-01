@@ -28,7 +28,7 @@ onMounted(async () => {
         },
     })
     projects.value = dataProjects.data.results
-    console.log(projects.value)
+    console.log('Projects fetched:', projects.value)
 })
 </script>
 

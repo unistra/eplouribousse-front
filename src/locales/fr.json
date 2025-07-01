@@ -19,6 +19,14 @@
         "collapse": "Masquer",
         "expand": "Afficher"
     },
+    "roles": {
+        "superUser": "Super utilisateur",
+        "projectCreator": "Créateur de projet",
+        "projectAdmin": "Administrateurs",
+        "projectManager": "Pilotes de projet",
+        "instructor": "Instructeurs",
+        "controller": "Contrôleurs"
+    },
     "settings": {
         "core": "Paramètres",
         "darkMode": "Thème sombre",
@@ -32,7 +40,8 @@
             "continue": "Continuer",
             "back": "Retour",
             "create": "Créer le projet",
-            "modify": "Modifier le projet"
+            "modify": "Modifier le projet",
+            "ready": "Je suis prêt"
         },
         "steps": {
             "informations": {
@@ -64,6 +73,9 @@
                     "whileAdding": "Une erreur est survenue lors de l'ajout de la bibliothèque",
                     "whileDeleting": "Une erreur est survenue lors de la suppression de la bibliothèque"
                 }
+            },
+            "roles": {
+                "title": "Rôles des utilisateurs"
             }
         },
         "requirements": {
@@ -205,6 +217,12 @@
             "tokenRejected": "Le jeton est expiré ou invalide",
             "accountCreated": "Votre compte a été créé avec succès, vous pouvez vous connecter",
             "fetchEmailFailed": "Impossible de récupérer l'adresse e-mail"
+        }
+    },
+    "utils": {
+        "searchUser": {
+            "inputPlaceholder": "Rechercher un utilisateur, ou entrer son adresse e-mail pour l'inviter",
+            "inviteText": "Inviter cet utilisateur avec cet email"
         }
     },
     "errors": {
