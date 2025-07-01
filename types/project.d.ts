@@ -17,6 +17,7 @@ interface ProjectI {
 
 interface Project extends ProjectI {
     initialState: ProjectI
+    isLoading: boolean
 }
 
 interface ProjectInvitation {

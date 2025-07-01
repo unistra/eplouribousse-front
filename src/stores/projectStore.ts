@@ -27,6 +27,7 @@ export const useProjectStore = defineStore('project', {
     state: (): Project => ({
         ...getInitialState(),
         initialState: getInitialState(),
+        isLoading: false,
     }),
     getters: {
         nameRequired: (state) => state.name.length > 0,
@@ -37,6 +38,7 @@ export const useProjectStore = defineStore('project', {
         async fetchProjectById(id: string) {
             try {
                 const response = await axiosI.get<ProjectI>(`/projects/${id}/`)
+                console.log(response.data)
                 this._replaceState(response.data)
             } catch {
                 Notify.create({
@@ -49,6 +51,7 @@ export const useProjectStore = defineStore('project', {
             this.$state = {
                 ...data,
                 initialState: { ...data },
+                isLoading: false,
             }
 
             if (!Array.isArray(this.invitations)) this.invitations = []
