@@ -49,6 +49,15 @@ export type UserRoleUser = {
 }
 
 export type ImportCSVResponse = Record<string, number>
+export type ImportCSVError =
+    | string
+    | {
+          row: string
+          errors: {
+              loc: string
+              msg: string
+          }[]
+      }[]
 
 export type Collection = {
     id: string
