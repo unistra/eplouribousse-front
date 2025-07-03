@@ -1,0 +1,44 @@
+<script lang="ts" setup>
+import { useI18n } from 'vue-i18n'
+import AtomicButton from '@/components/atomic/AtomicButton.vue'
+
+const { t } = useI18n()
+
+defineProps<{
+    confirmButtonColor?: 'red' | 'green'
+}>()
+const modal = defineModel<boolean>()
+const emit = defineEmits<{
+    (e: 'confirm'): void
+    (e: 'cancel'): void
+}>()
+
+const closeModal = (event: 'confirm' | 'cancel') => {
+    event === 'confirm' ? emit('confirm') : emit('cancel') // Ternary operation for typescript 🙃
+    modal.value = false
+}
+</script>
+
+<template>
+    <QDialog v-model="modal">
+        <QCard>
+            <slot name="confirmation-content">
+                <QCardSection>
+                    <p>{{ t('confirmDialogDefault.irreversible') }}</p>
+                    <p>{{ t('confirmDialogDefault.areYouSure') }}</p>
+                </QCardSection>
+            </slot>
+            <QCardActions align="right">
+                <AtomicButton
+                    :label="t('common.cancel')"
+                    @click="closeModal('cancel')"
+                />
+                <AtomicButton
+                    :color="confirmButtonColor"
+                    :label="t('common.confirm')"
+                    @click="closeModal('confirm')"
+                />
+            </QCardActions>
+        </QCard>
+    </QDialog>
+</template>
