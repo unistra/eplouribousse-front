@@ -31,14 +31,10 @@ onMounted(async () => {
 </script>
 
 <template>
-    <QLayout view="lhh lpR fff">
-        <!-- <LayoutHeader /> -->
+    <QLayout view="hHh lpR fFf">
         <LayoutDrawer />
         <QPageContainer>
-            <QPage padding>
-                <RouterView />
-            </QPage>
+            <RouterView />
         </QPageContainer>
-        <!-- <LayoutFooter /> -->
     </QLayout>
 </template>

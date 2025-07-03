@@ -12,10 +12,9 @@ const store = useProjectStore()
 
 watch(
     () => route.params.id,
-    async (newId) => {
+    async () => {
         const id = route.params.id as string
 
-        console.log(newId, 'watching id change')
         store.isLoading = true
         await store.fetchProjectById(id)
         store.isLoading = false
@@ -25,13 +24,14 @@ watch(
 </script>
 
 <template>
-    <main>
+    <QPage padding>
         <NewProjectStepper v-if="!store.isLoading" />
         <QSpinner
             v-else
             size="4rem"
         />
     </main>
+    </QPage>
 </template>
 
 <style lang="scss" scoped>

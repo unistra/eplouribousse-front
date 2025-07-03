@@ -10,12 +10,12 @@ const isRequirementValidated = ref<boolean>(false)
 </script>
 
 <template>
-    <main>
+    <QPage padding>
         <h1>{{ t('newProject.title') }}</h1>
         <NewProjectRequirements
             v-if="!isRequirementValidated"
             @validate="isRequirementValidated = true"
         />
         <NewProjectStepper v-else />
-    </main>
+    </QPage>
 </template>
