@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import NewProjectLibraryCollectionModal from '@/components/newProject/steps/newProjectLibraries/collections/NewProjectLibraryCollectionModal.vue'
-import type { Collection, ImportCSVResponse } from '#/project'
-import type { Pagination } from '#/pagination.ts'
+import { useNewProjectLibraryCollection } from '@/components/newProject/steps/newProjectLibraries/collections/useNewProjectLibraryCollection.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
+import AtomicButton from '@/components/atomic/AtomicButton.vue'
+import type { ImportCSVErrorObject } from '#/project'
 
 const props = defineProps<{
     libraryId: string
@@ -13,54 +13,37 @@ const props = defineProps<{
 
 const { t } = useI18n()
 const store = useProjectStore()
+const {
+    getCollection,
+    collection,
+    modalDeleteCollection,
+    modalImportCSVResponse,
+    importCSVResponse,
+    modalImportCSVError,
+    importCSVError,
+    fileInput,
+    onDrop,
+    onFileChange,
+    onModalImportCollectionClose,
+    isCollectionLoading,
+} = useNewProjectLibraryCollection(props.libraryId)
 
-const fileInput = ref<HTMLInputElement | null>(null)
-
-const modalImportCollection = ref(false)
-const modalDeleteCollection = ref(false)
-const importCSVResponse = ref<null | ImportCSVResponse>(null)
-const collection = ref<Pagination<Collection> | null>(null)
-
-const getCollection = async () => {
-    collection.value = (await store.getCollection(props.libraryId)) || null
-}
 onMounted(async () => await getCollection())
-
-const handleFileChange = async (file: File) => {
-    try {
-        importCSVResponse.value = await store.importCollection(file, props.libraryId)
-        modalImportCollection.value = true
-
-        await getCollection()
-    } catch (error) {
-        console.error('Import failed:', error)
-    }
-}
-
-const onDrop = (event: DragEvent) => {
-    event.preventDefault()
-    if (event.dataTransfer?.files?.length) {
-        const file = event.dataTransfer.files[0]
-        if (file.type === 'text/csv' || file.name.endsWith('.csv')) {
-            handleFileChange(file)
-        }
-    }
-}
-
-const onFileChange = (event: Event) => {
-    const target = event.target as HTMLInputElement
-    if (target.files?.length) {
-        const file = target.files[0]
-        handleFileChange(file)
-    }
-}
 </script>
 
 <template>
     <p>{{ t('newProject.steps.libraries.collection.title') }}</p>
-    <div
-        v-if="!collection || collection.results.length === 0"
-        class="csv-dropzone"
+    <QCard
+        v-if="isCollectionLoading"
+        class="container justify-center items-center csv-card"
+        flat
+    >
+        <QSpinner size="2rem" />
+    </QCard>
+    <QCard
+        v-else-if="!collection || collection.results.length === 0"
+        class="container column csv-card dropzone"
+        flat
         @click="fileInput?.click()"
         @dragover.prevent
         @drop="onDrop"
@@ -68,15 +51,14 @@ const onFileChange = (event: Event) => {
         <input
             ref="fileInput"
             accept=".csv,text/csv"
-            style="display: none"
             type="file"
             @change="onFileChange"
         />
-        <span>Drag & drop a CSV file here, or click to select</span>
-    </div>
+        <span>{{ t('newProject.steps.libraries.collection.dragAndDrop') }}</span>
+    </QCard>
     <QCard
         v-else
-        class="csv-present"
+        class="container column csv-card present"
         flat
     >
         <QCardActions align="right">
@@ -119,43 +101,117 @@ const onFileChange = (event: Event) => {
             <p>{{ t('newProject.steps.libraries.collection.present') }}</p>
         </QCardSection>
     </QCard>
-    <NewProjectLibraryCollectionModal
-        v-model="modalImportCollection"
-        :response="importCSVResponse"
-    />
+
+    <QDialog
+        v-model="modalImportCSVResponse"
+        persistent
+    >
+        <QCard>
+            <QCardSection>
+                <p>{{ t('newProject.steps.libraries.collection.importSuccess') }}</p>
+                <p>{{ t('newProject.steps.libraries.collection.weFound') }}:</p>
+            </QCardSection>
+            <QCardSection>
+                <ul>
+                    <li
+                        v-for="(count, key) in importCSVResponse"
+                        :key="key"
+                    >
+                        {{
+                            t('newProject.steps.libraries.collection.elementPresent', {
+                                count,
+                            })
+                        }}
+                        {{ key }} {{ t('newProject.steps.libraries.collection.times') }}
+                    </li>
+                </ul>
+            </QCardSection>
+
+            <QCardActions align="right">
+                <AtomicButton
+                    :label="t('common.continue')"
+                    @click="onModalImportCollectionClose"
+                />
+            </QCardActions>
+        </QCard>
+    </QDialog>
+
+    <QDialog
+        v-model="modalImportCSVError"
+        persistent
+    >
+        <QCard class="container column card">
+            <QCardSection>
+                <p>{{ t('newProject.steps.libraries.collection.errors.dialogTitle') }}:</p>
+            </QCardSection>
+            <QCardSection v-if="typeof importCSVError?.[0] === 'string' && !('row' in importCSVError)">
+                <ul>
+                    <li
+                        v-for="(string, index) in importCSVError"
+                        :key="index"
+                    >
+                        {{ string }}
+                    </li>
+                </ul>
+            </QCardSection>
+            <QCardSection v-else>
+                <ul>
+                    <li
+                        v-for="(row, index) in importCSVError as ImportCSVErrorObject[]"
+                        :key="index"
+                    >
+                        <p>{{ t('common.row') }} {{ row.row }}:</p>
+                        <p
+                            v-for="(error, indexError) in row.errors"
+                            :key="indexError"
+                        >
+                            {{ t('common.on') }} <span class="bold">{{ error.loc.join(', ') }}</span
+                            >: {{ error.msg }}
+                        </p>
+                    </li>
+                </ul>
+            </QCardSection>
+            <QCardActions align="right">
+                <AtomicButton
+                    :label="t('common.continue')"
+                    @click="onModalImportCollectionClose"
+                />
+            </QCardActions>
+        </QCard>
+    </QDialog>
 </template>
 
 <style lang="scss" scoped>
-.csv-dropzone {
-    border: 2px dashed #aaa;
-    padding: 24px;
+.csv-card {
+    min-height: 8rem;
+    border: 2px dashed var(--color-neutral-300);
+    border-radius: 2rem;
     text-align: center;
-    cursor: pointer;
-    border-radius: 8px;
-    background: #fafafa;
-    transition: border-color 0.2s;
-}
+    background-color: var(--color-neutral-50);
+    padding: 0.1rem;
 
-.csv-dropzone:hover {
-    border-color: #1976d2;
-}
+    p {
+        margin: 0;
+    }
 
-.csv-present {
-    border: 2px dashed $positive;
-    text-align: center;
-    border-radius: 8px;
-    background: #fafafa;
-    transition: border-color 0.2s;
+    &.dropzone {
+        cursor: pointer;
 
-    .q-card__section {
-        p {
-            margin: 0;
+        input {
+            display: none;
         }
+    }
 
+    .present {
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
+        border-color: var(--color-green);
     }
+}
+
+.bold {
+    font-weight: 700;
 }
 </style>
