@@ -4,13 +4,22 @@ import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import NewProjectLibraryCollection from '@/components/newProject/steps/newProjectLibraries/collections/NewProjectLibraryCollection.vue'
 import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
+import { ref } from 'vue'
+import AtomicButton from '@/components/atomic/AtomicButton.vue'
 
-defineProps<{
+const props = defineProps<{
     library: LibraryI
 }>()
 
 const { t } = useI18n()
 const store = useProjectStore()
+
+const isLoadingDelete = ref<boolean>(false)
+const onDelete = async () => {
+    isLoadingDelete.value = true
+    await store.removeLibrary(props.library)
+    isLoadingDelete.value = false
+}
 </script>
 
 <template>
@@ -50,13 +59,14 @@ const store = useProjectStore()
         </QCardSection>
 
         <QCardActions align="right">
-            <!--TODO: ADD DELETE CONFIRMATION-->
-            <QBtn
-                flat
-                @click="() => store.removeLibrary(library)"
-            >
-                <QIcon name="mdi-delete" />
-            </QBtn>
+            <AtomicButton
+                confirm-button-color="red"
+                icon="mdi-delete"
+                :loading="isLoadingDelete"
+                no-border
+                :require-confirmation="true"
+                @confirm="onDelete"
+            />
         </QCardActions>
     </QCard>
 </template>
