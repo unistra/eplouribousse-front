@@ -6,7 +6,6 @@ import { axiosI } from '@/plugins/axios/axios.ts'
 import type { ProjectI } from '#/project'
 import type { Pagination } from '#/pagination.ts'
 
-const { t } = useI18n()
 const globalStore = useGlobalStore()
 
 onMounted(() => {

@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { watch } from 'vue'
 import { useRoute } from 'vue-router'
-import type { ProjectI } from '#/project'
 import NewProjectStepper from '@/components/newProject/newProjectStepper/NewProjectStepper.vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
 

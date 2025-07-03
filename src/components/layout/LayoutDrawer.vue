@@ -20,7 +20,6 @@ const { tenantConfiguration } = storeToRefs(userStore)
 
 const drawer = ref<boolean>(true)
 const collapsed = ref<boolean>(false)
-const names = ['Projet 1', 'Projet 2', 'Projet 3']
 const projects = ref<ProjectI[]>([])
 
 watch(
@@ -40,7 +39,7 @@ watch(
 )
 
 async function onLogout() {
-    logout()
+    await logout()
     const { addNotify } = useGlobalStore()
     addNotify({
         message: t('logout.success'),
@@ -128,7 +127,7 @@ async function onLogout() {
                 <DrawerItem
                     icon="mdi-email"
                     :name="!collapsed ? t('navigation.contactAdmin') : ''"
-                    to="contactAdmin"
+                    :to="{ name: 'contactAdmin' }"
                     :tooltip="collapsed ? t('navigation.contactAdmin') : ''"
                 />
             </div>
