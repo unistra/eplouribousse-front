@@ -5,9 +5,8 @@ defineProps<{
     label?: string
     icon?: string
     iconRight?: string
-    noCaps?: boolean
-    outline?: boolean
-    flat?: boolean
+    caps?: boolean
+    noBorder?: boolean
     loading?: boolean
     disable?: boolean
     tooltip?: string
@@ -22,21 +21,20 @@ defineProps<{
 
 <template>
     <QBtn
-        :class="{ 'border-0': noBorder }"
+        :color
         :data-testid
         :disable
-        :flat="flat ? flat : !!color"
         :icon
         :iconRight
         :label
         :loading
-        :noCaps
-        :outline="outline ? outline : !color"
+        :noCaps="!caps"
+        :outline="!noBorder"
         rounded
         :size
-        :style="color ? `background-color:var(--color-${color});color:var(--color-white)` : ''"
         :to
         :type
+        unelevated
     >
         <QTooltip v-if="tooltip">{{ tooltip }}</QTooltip>
     </QBtn>
