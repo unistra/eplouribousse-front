@@ -60,14 +60,19 @@
                 "instructors": "Instructeurs",
                 "collection": {
                     "title": "Collection",
+                    "dragAndDrop": "Glissez-déposez un fichier CSV, ou cliquez pour en sélectionner un",
                     "importSuccess": "L'import du CSV s'est fait avec succès",
                     "weFound": "Nous avons trouvé",
-                    "elementPresent": "éléments présents",
+                    "elementPresent": "{count} élément présent | {count} éléments présents",
                     "times": "fois",
                     "present": "Collection présente",
                     "delete": {
                         "warning": "Vous êtes sur le point de supprimer la collection associée à cette bibliothèque",
                         "irreversible": "Cette action est irréversible"
+                    },
+                    "errors": {
+                        "wrongExtension": "Le fichier doit être au format CSV",
+                        "dialogTitle": "Nous avons détecté une ou des erreurs dans le fichier"
                     }
                 },
                 "errors": {
@@ -199,7 +204,7 @@
                 "sendEmail": "Envoyer l'email",
                 "emailSent": "Si un compte est trouvé à l'adresse \"{email}\", vous allez recevoir un email pour réinitialiser votre mot de passe",
                 "emailNotSent": "Problème lors de l'envoi de l'email",
-                "incorrectEmail": "L'adresse mail n'est associée à aucun compte existant",
+                "incorrectEmail": "L'adresse mail n'est     associée à aucun compte existant",
                 "token": "Jeton de validation",
                 "tokenRejected": "Le jeton est expiré ou invalide"
             }
@@ -219,6 +224,29 @@
             "accountCreated": "Votre compte a été créé avec succès, vous pouvez vous connecter",
             "fetchEmailFailed": "Impossible de récupérer l'adresse e-mail"
         }
+    },
+    "confirmDialogDefault": {
+        "irreversible": "Vous être sur le point d'effectuer une action irréversible",
+        "areYouSure": "Êtes-vous sûr de vouloir continuer ?"
+    },
+    "common": {
+        "yes": "Oui",
+        "no": "Non",
+        "cancel": "Annuler",
+        "confirm": "Confirmer",
+        "delete": "Supprimer",
+        "edit": "Modifier",
+        "save": "Enregistrer",
+        "close": "Fermer",
+        "search": "Rechercher",
+        "loading": "Chargement",
+        "success": "Succès",
+        "error": "Erreur",
+        "info": "Information",
+        "continue": "Continuer",
+        "back": "Retour",
+        "row": "Ligne",
+        "on": "Sur"
     },
     "utils": {
         "searchUser": {
