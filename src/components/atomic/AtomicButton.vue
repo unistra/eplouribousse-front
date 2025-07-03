@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import type { RouterLinkProps } from 'vue-router'
+import AtomicConfirmationDialog from '@/components/atomic/AtomicConfirmationDialog.vue'
+import { ref } from 'vue'
 
-defineProps<{
+const props = defineProps<{
     label?: string
     icon?: string
     iconRight?: string
@@ -15,7 +17,18 @@ defineProps<{
     type?: 'submit'
     dataTestid?: string
     size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-    noBorder?: boolean
+    requireConfirmation?: boolean
+    confirmButtonColor?: 'red' | 'green'
+}>()
+
+const modalConfirmation = ref<boolean>(false)
+const onClick = () => {
+    if (props.requireConfirmation) modalConfirmation.value = true
+}
+
+const emit = defineEmits<{
+    (e: 'confirm'): void
+    (e: 'cancel'): void
 }>()
 </script>
 
@@ -35,7 +48,19 @@ defineProps<{
         :to
         :type
         unelevated
+        @click="onClick"
     >
+        <AtomicConfirmationDialog
+            v-if="requireConfirmation"
+            v-model="modalConfirmation"
+            :confirm-button-color="confirmButtonColor"
+            @cancel="emit('cancel')"
+            @confirm="emit('confirm')"
+        >
+            <template #confirmation-content>
+                <slot name="confirmation-content" />
+            </template>
+        </AtomicConfirmationDialog>
         <QTooltip v-if="tooltip">{{ tooltip }}</QTooltip>
     </QBtn>
 </template>
