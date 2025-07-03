@@ -26,16 +26,24 @@ watch(
 <template>
     <QPage padding>
         <NewProjectStepper v-if="!store.isLoading" />
-        <QSpinner
+        <div
             v-else
-            size="4rem"
-        />
-    </main>
+            class="spinner"
+        >
+            <QSpinner size="4rem" />
+        </div>
     </QPage>
 </template>
 
 <style lang="scss" scoped>
-.q-spinner {
-    width: 100%;
+.q-page {
+    position: relative;
+}
+
+.spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 </style>
