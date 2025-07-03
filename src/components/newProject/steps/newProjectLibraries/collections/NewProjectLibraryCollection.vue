@@ -62,35 +62,14 @@ onMounted(async () => await getCollection())
         flat
     >
         <QCardActions align="right">
-            <QBtn
-                color="dark"
-                flat
+            <AtomicButton
+                confirm-button-color="red"
                 icon="mdi-close"
+                no-border
+                require-confirmation
                 size="xs"
-                @click="modalDeleteCollection = true"
+                @confirm="store.deleteCollection(libraryId)"
             />
-            <QDialog v-model="modalDeleteCollection">
-                <QCard>
-                    <QCardSection>
-                        <p>{{ t('newProject.steps.libraries.collection.delete.warning') }}</p>
-                        <p>{{ t('newProject.steps.libraries.collection.delete.irreversible') }}</p>
-                    </QCardSection>
-                    <QCardActions align="right">
-                        <QBtn
-                            color="primary"
-                            flat
-                            label="Cancel"
-                            @click="modalDeleteCollection = false"
-                        />
-                        <QBtn
-                            color="negative"
-                            flat
-                            label="Delete"
-                            @click="store.deleteCollection(libraryId)"
-                        />
-                    </QCardActions>
-                </QCard>
-            </QDialog>
         </QCardActions>
         <QCardSection class="content">
             <QIcon
