@@ -1,43 +1,25 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue'
-import { useSearchUser } from './useSearchUser'
+import { type SearchUserEmitActions, useSearchUser } from './useSearchUser'
 import { useI18n } from 'vue-i18n'
 import type { ProjectInvitation, UserRoleUser } from '#/project'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
+import SearchUserItem from '@/components/utils/searchUser/SearchUserItem.vue'
 
 defineProps<{
     usersSelected: UserRoleUser[]
     invitationsSelected: ProjectInvitation[]
+    isAddUserLoading: boolean
 }>()
 const { t } = useI18n()
-const emit = defineEmits<{
-    (e: 'addInvitation', email: string): void
-    (e: 'removeInvitation', invitation: ProjectInvitation): void
-    (e: 'addUser', userId: string): void
-    (e: 'removeUser', userId: string): void
-}>()
-const { username, matchingUsers, onLoad } = useSearchUser()
+
+const emit = defineEmits<SearchUserEmitActions>()
+const { username, matchingUsers, onLoad, sendAction, clear, isUserListLoading } = useSearchUser(emit)
 
 onMounted(() => {
     matchingUsers.value?.clear()
 })
-
-const sendAction = (
-    action: 'addInvitation' | 'removeInvitation' | 'addUser' | 'removeUser',
-    payload?: { invitation?: ProjectInvitation; userId?: string },
-) => {
-    if (action === 'addInvitation') emit('addInvitation', username.value)
-    else if (payload?.invitation && action === 'removeInvitation') emit('removeInvitation', payload.invitation)
-    else if (payload?.userId && action === 'addUser') emit('addUser', payload.userId)
-    else if (payload?.userId && action === 'removeUser') emit('removeUser', payload.userId)
-    username.value = ''
-}
-
-const clear = () => {
-    matchingUsers.value?.clear()
-    username.value = ''
-}
 </script>
 
 <template>
@@ -61,7 +43,7 @@ const clear = () => {
             data-testid="list"
             style="max-height: 10rem"
         >
-            <QItem v-if="matchingUsers?.size() === 0 && username.length > 0">
+            <QItem v-if="matchingUsers?.size() === 0 && username.length > 0 && isUserListLoading === false">
                 <QItemSection>{{ t('utils.searchUser.inviteText') }}: {{ username }}</QItemSection>
                 <AtomicButton
                     icon="mdi-plus"
@@ -83,42 +65,68 @@ const clear = () => {
                     @click="sendAction('addUser', { userId: user.id })"
                 >
                     <QItemSection>
-                        <!--{{ user.email || 'No email' }}-->
-                        {{ user.firstName || 'No firstName' }}
-                        {{ user.lastName || 'No lastName' }} - {{ 'No email' }}
+                        {{ user.firstName || '***' }}
+                        {{ user.lastName || `***` }} -
+                        {{ user.email || `${t('common.none')} ${t('common.email')}` }}
                     </QItemSection>
+                </QItem>
+                <QItem
+                    v-if="isUserListLoading"
+                    class="container justify-center items-center"
+                >
+                    <QSpinner size="1.5rem" />
                 </QItem>
             </QInfiniteScroll>
         </QList>
-        <template v-if="usersSelected.length > 0 || invitationsSelected.length > 0">
-            <QItem
-                v-for="(invitation, index) in invitationsSelected"
-                :key="index"
+        <QList
+            v-if="usersSelected.length > 0 || invitationsSelected.length > 0"
+            class="user-list"
+        >
+            <div
+                v-if="isAddUserLoading"
+                class="user-spinner"
             >
-                <QItemSection>
-                    <!--{{ user.email || 'No email' }}-->
-                    📨 {{ invitation.email }}
-                </QItemSection>
-                <AtomicButton
-                    icon="mdi-close"
-                    :no-border="true"
-                    @click="sendAction('removeInvitation', { invitation: invitation })"
-                />
-            </QItem>
-            <QItem
+                <QSpinner size="1.5rem" />
+            </div>
+            <SearchUserItem
+                v-for="invitation in invitationsSelected"
+                :key="invitation.email"
+                @delete="sendAction('removeInvitation', { invitation: invitation })"
+            >
+                <p>📨 {{ invitation.email }}</p>
+            </SearchUserItem>
+            <SearchUserItem
                 v-for="user in usersSelected"
                 :key="user.id"
+                @delete="sendAction('removeUser', { userId: user.id })"
             >
-                <QItemSection>
-                    {{ user.firstName || 'No firstName' }}
-                    {{ user.lastName || 'No lastName' }} - {{ 'No email' }}
-                </QItemSection>
-                <AtomicButton
-                    icon="mdi-close"
-                    :no-border="true"
-                    @click="sendAction('removeUser', { userId: user.id })"
-                />
-            </QItem>
-        </template>
+                <p>
+                    {{ user.firstName || '***' }} {{ user.lastName || `***` }} -
+                    {{ user.email || `${t('common.none')} ${t('common.email')}` }}
+                </p>
+            </SearchUserItem>
+        </QList>
     </div>
 </template>
+
+<style lang="scss" scoped>
+.user-list {
+    position: relative;
+
+    .user-spinner {
+        position: absolute;
+        z-index: 100;
+        background-color: var(--color-white);
+        opacity: 0.5;
+        width: 100%;
+        height: 100%;
+
+        .q-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+}
+</style>

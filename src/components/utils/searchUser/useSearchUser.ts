@@ -2,14 +2,22 @@ import { type UserI } from '#/user'
 import { type Comparator, UniqueSet } from '#/utils'
 import { axiosI } from '@/plugins/axios/axios'
 import { ref, watch } from 'vue'
+import type { ProjectInvitation } from '#/project'
 
-export function useSearchUser() {
+export type SearchUserEmitActions = {
+    (e: 'addInvitation', email: string): void
+    (e: 'removeInvitation', invitation: ProjectInvitation): void
+    (e: 'addUser', userId: string): void
+    (e: 'removeUser', userId: string): void
+}
+
+export function useSearchUser(emit: SearchUserEmitActions) {
     const username = ref<string>('')
     const users = ref<UserI[]>([])
     const matchingUsers = ref<UniqueSet<UserI>>()
 
     const userComparator: Comparator<UserI> = (a: UserI, b: UserI) => a.id === b.id
-    const isLoading = ref<boolean>(false)
+    const isUserListLoading = ref<boolean>(false)
     const nextPage = ref<number | null>(1)
     const filter = ref<Set<string>>(new Set<string>())
 
@@ -37,7 +45,7 @@ export function useSearchUser() {
     }
 
     async function fillUsers() {
-        isLoading.value = true
+        isUserListLoading.value = true
 
         try {
             const usersList = await axiosI.get('/users/?search=' + username.value + constructQueryWithExcludedIDs())
@@ -54,12 +62,12 @@ export function useSearchUser() {
                 )
             }
         } finally {
-            isLoading.value = false
+            isUserListLoading.value = false
         }
     }
 
     async function appendUsers() {
-        isLoading.value = true
+        isUserListLoading.value = true
         try {
             const usersList = await axiosI.get(
                 '/users/?page=' + nextPage.value + '&search=' + username.value + constructQueryWithExcludedIDs(),
@@ -76,13 +84,13 @@ export function useSearchUser() {
                 )
             }
         } finally {
-            isLoading.value = false
+            isUserListLoading.value = false
         }
     }
 
     async function onLoad(_index: number, done: () => void) {
         if (matchingUsers.value?.size && matchingUsers.value.size() >= 10 && nextPage.value !== null) {
-            isLoading.value = true
+            isUserListLoading.value = true
             await appendUsers()
             done()
         } else {
@@ -90,15 +98,31 @@ export function useSearchUser() {
         }
     }
 
+    const sendAction = (
+        action: 'addInvitation' | 'removeInvitation' | 'addUser' | 'removeUser',
+        payload?: { invitation?: ProjectInvitation; userId?: string },
+    ) => {
+        if (action === 'addInvitation') emit('addInvitation', username.value)
+        else if (payload?.invitation && action === 'removeInvitation') emit('removeInvitation', payload.invitation)
+        else if (payload?.userId && action === 'addUser') emit('addUser', payload.userId)
+        else if (payload?.userId && action === 'removeUser') emit('removeUser', payload.userId)
+        username.value = ''
+    }
+
+    const clear = () => {
+        matchingUsers.value?.clear()
+        username.value = ''
+    }
+
     return {
         username,
         users,
         matchingUsers,
-        isLoading,
+        isUserListLoading,
         nextPage,
         filter,
-        fillUsers,
-        appendUsers,
         onLoad,
+        sendAction,
+        clear,
     }
 }

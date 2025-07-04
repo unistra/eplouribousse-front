@@ -43,7 +43,7 @@ type UserRole = {
 
 export type UserRoleUser = {
     id: string
-    // email: string // NOT PRESENT YET BUT NEED TO BE ADDED !!!
+    email: string
     firstName: string
     lastName: string
 }
