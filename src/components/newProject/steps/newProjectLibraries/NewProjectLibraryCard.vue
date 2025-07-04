@@ -4,8 +4,8 @@ import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import NewProjectLibraryCollection from '@/components/newProject/steps/newProjectLibraries/collections/NewProjectLibraryCollection.vue'
 import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
-import { ref } from 'vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
+import { useNewProjectLibraryCard } from '@/components/newProject/steps/newProjectLibraries/useNewProjectLibraryCard.ts'
 
 const props = defineProps<{
     library: LibraryI
@@ -14,12 +14,9 @@ const props = defineProps<{
 const { t } = useI18n()
 const store = useProjectStore()
 
-const isLoadingDelete = ref<boolean>(false)
-const onDelete = async () => {
-    isLoadingDelete.value = true
-    await store.removeLibrary(props.library)
-    isLoadingDelete.value = false
-}
+const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading } = useNewProjectLibraryCard(
+    props.library,
+)
 </script>
 
 <template>
@@ -39,13 +36,14 @@ const onDelete = async () => {
                 :invitations-selected="
                     store.invitations.filter((el) => el.role === 'instructor' && el.libraryId === library.id)
                 "
+                :is-add-user-loading="isAddUserLoading"
                 :users-selected="
                     store.roles
                         .filter((el) => el.role === 'instructor' && el.libraryId === library.id)
                         .map((el) => el.user)
                 "
-                @add-invitation="async (email) => await store.addInvitation(email, 'instructor', library.id)"
-                @add-user="async (userId) => await store.addRole(userId, 'instructor', library.id)"
+                @add-invitation="onAddInvitation"
+                @add-user="onAddRole"
                 @remove-invitation="async ({ email, role }) => await store.removeInvitation(email, role, library.id)"
                 @remove-user="async (userId) => await store.removeRole(userId, 'instructor', library.id)"
             />

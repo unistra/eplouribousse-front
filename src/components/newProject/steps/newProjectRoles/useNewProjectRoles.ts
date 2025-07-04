@@ -1,44 +1,37 @@
-import { type User } from '#/user.ts'
-import { type Comparator, UniqueSet } from '#/utils.ts'
+import type { Roles } from '#/project'
+import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
+import { useProjectStore } from '@/stores/projectStore.ts'
 
-export function useCreateProjectForm() {
-    const userComparator: Comparator<User> = (a: User, b: User) => {
-        return a.id === b.id
+export const useNewProjectRoles = () => {
+    const { t } = useI18n()
+    const store = useProjectStore()
+
+    const roles: {
+        title: string
+        role: Roles
+    }[] = [
+        { title: t('roles.projectAdmin'), role: 'project_admin' },
+        { title: t('roles.projectManager'), role: 'project_manager' },
+        { title: t('roles.controller'), role: 'controller' },
+    ]
+
+    const isAddUserLoading = ref<boolean>(false)
+    const onAddInvitation = async (email: string, role: Roles) => {
+        isAddUserLoading.value = true
+        await store.addInvitation(email, role)
+        isAddUserLoading.value = false
     }
-    const projectUsers = ref<UniqueSet<User>>(new UniqueSet<User>(userComparator))
-    const userToExclude = ref<User | undefined>(undefined)
-    const userToInject = ref<User | undefined>(undefined)
-    const name = ref<string>('')
-
-    function addUser(value: { user: User; role: string }) {
-        value.user.role = value.role
-        projectUsers.value.add(value.user)
-        userToExclude.value = value.user
-    }
-
-    function removeUser(user: User) {
-        projectUsers.value.remove(user)
-        userToInject.value = user
-    }
-
-    function getUsersByRole(role: string) {
-        const users: User[] = []
-        projectUsers.value.values().forEach((user: User) => {
-            if (user !== undefined && user.role && user.role === role) {
-                users.push(user)
-            }
-        })
-        return users
+    const onAddRole = async (userId: string, role: Roles) => {
+        isAddUserLoading.value = true
+        await store.addRole(userId, role)
+        isAddUserLoading.value = false
     }
 
     return {
-        projectUsers,
-        userToExclude,
-        userToInject,
-        name,
-        addUser,
-        removeUser,
-        getUsersByRole,
+        roles,
+        onAddRole,
+        onAddInvitation,
+        isAddUserLoading,
     }
 }
