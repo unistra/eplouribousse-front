@@ -12,8 +12,6 @@ export const useNewProjectLibraryCollection = (libraryId: string) => {
 
     const fileInput = ref<HTMLInputElement | null>(null)
 
-    const modalDeleteCollection = ref(false)
-
     const modalImportCSVResponse = ref(false)
     const importCSVResponse = ref<ImportCSVResponse | undefined>(undefined)
     const modalImportCSVError = ref(false)
@@ -42,13 +40,11 @@ export const useNewProjectLibraryCollection = (libraryId: string) => {
 
             if (Array.isArray(response)) {
                 // It's of type ImportCSVError
-                console.log('INTO ImportCSVError', response)
                 importCSVError.value = response
                 modalImportCSVError.value = true
                 if (fileInput.value) fileInput.value.value = ''
             } else {
                 // It's of type ImportCSVResponse
-                console.log('INTO ImportCSVResponse', response)
                 importCSVResponse.value = response
                 modalImportCSVResponse.value = true
                 await getCollection()
@@ -67,7 +63,6 @@ export const useNewProjectLibraryCollection = (libraryId: string) => {
     }
 
     const onFileChange = async (event: Event) => {
-        console.log('inOnFileChange')
         const target = event.target as HTMLInputElement
         await handleFileUpload(target.files?.[0] || null)
     }
@@ -85,7 +80,6 @@ export const useNewProjectLibraryCollection = (libraryId: string) => {
         importCSVResponse,
         modalImportCSVError,
         importCSVError,
-        modalDeleteCollection,
         collection,
         getCollection,
         onDrop,

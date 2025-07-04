@@ -16,7 +16,6 @@ const store = useProjectStore()
 const {
     getCollection,
     collection,
-    modalDeleteCollection,
     modalImportCSVResponse,
     importCSVResponse,
     modalImportCSVError,
@@ -42,7 +41,7 @@ onMounted(async () => await getCollection())
     </QCard>
     <QCard
         v-else-if="!collection || collection.results.length === 0"
-        class="container column csv-card dropzone"
+        class="container items-center csv-card dropzone"
         flat
         @click="fileInput?.click()"
         @dragover.prevent
@@ -61,23 +60,21 @@ onMounted(async () => await getCollection())
         class="container column csv-card present"
         flat
     >
-        <QCardActions align="right">
-            <AtomicButton
-                confirm-button-color="red"
-                icon="mdi-close"
-                no-border
-                require-confirmation
-                size="xs"
-                @confirm="store.deleteCollection(libraryId)"
-            />
-        </QCardActions>
+        <AtomicButton
+            confirm-button-color="red"
+            icon="mdi-close"
+            no-border
+            require-confirmation
+            size="xs"
+            @confirm="store.deleteCollection(libraryId)"
+        />
         <QCardSection class="content">
             <QIcon
                 color="positive"
                 name="mdi-check-circle-outline"
                 size="sm"
             />
-            <p>{{ t('newProject.steps.libraries.collection.present') }}</p>
+            <p>{{ t('newProject.steps.libraries.collection.present', { count: collection.count }) }}</p>
         </QCardSection>
     </QCard>
 
@@ -181,12 +178,20 @@ onMounted(async () => await getCollection())
         }
     }
 
-    .present {
+    &.present {
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
+        border-style: solid;
         border-color: var(--color-green);
+        position: relative;
+
+        .q-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+        }
     }
 }
 

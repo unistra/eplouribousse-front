@@ -65,7 +65,7 @@
                     "weFound": "Nous avons trouvé",
                     "elementPresent": "{count} élément présent | {count} éléments présents",
                     "times": "fois",
-                    "present": "Collection présente",
+                    "present": "Collection présente avec {count} élément | Collection présente avec {count} éléments",
                     "delete": {
                         "warning": "Vous êtes sur le point de supprimer la collection associée à cette bibliothèque",
                         "irreversible": "Cette action est irréversible"
@@ -246,7 +246,11 @@
         "continue": "Continuer",
         "back": "Retour",
         "row": "Ligne",
-        "on": "Sur"
+        "on": "Sur",
+        "none": "Aucun",
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "email": "Email"
     },
     "utils": {
         "searchUser": {
