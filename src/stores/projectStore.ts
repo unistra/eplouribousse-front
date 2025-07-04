@@ -137,6 +137,8 @@ export const useProjectStore = defineStore('project', {
                     })
 
                     this.libraries = this.libraries.filter((lib) => lib.id !== library.id)
+                    this.roles = this.roles.filter((role) => role.libraryId !== library.id)
+                    this.invitations = this.invitations.filter((inv) => inv.libraryId !== library.id)
                 } catch {
                     Notify.create({
                         type: 'negative',
