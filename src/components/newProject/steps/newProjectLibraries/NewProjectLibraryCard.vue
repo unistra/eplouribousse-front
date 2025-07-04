@@ -37,11 +37,11 @@ const onDelete = async () => {
             <p>{{ t('newProject.steps.libraries.instructors') }}</p>
             <SearchUser
                 :invitations-selected="
-                    store.invitations.filter((el) => el.role === 'instructor' && el.library === library.id)
+                    store.invitations.filter((el) => el.role === 'instructor' && el.libraryId === library.id)
                 "
                 :users-selected="
                     store.roles
-                        .filter((el) => el.role === 'instructor' && el.library === library.id)
+                        .filter((el) => el.role === 'instructor' && el.libraryId === library.id)
                         .map((el) => el.user)
                 "
                 @add-invitation="async (email) => await store.addInvitation(email, 'instructor', library.id)"
