@@ -175,7 +175,7 @@ export const useProjectStore = defineStore('project', {
                     params: data,
                 })
                 this.roles = this.roles.filter(
-                    (el) => !(el.role === role && el.library === (libraryId || null) && el.user.id === userId),
+                    (el) => !(el.role === role && el.libraryId === (libraryId || null) && el.user.id === userId),
                 )
             } catch {
                 Notify.create({
@@ -230,7 +230,7 @@ export const useProjectStore = defineStore('project', {
                 await axiosI.post(`/projects/${this.id}/invitations/`, {
                     email,
                     role,
-                    ...(libraryId && { library: libraryId }),
+                    ...(libraryId && { library_id: libraryId }),
                 })
 
                 await this.fetchProjectById(this.id) // TEMPORARY SOLUTION WAITING FOR THE ENDPOINT TO RETURN THE WELL ORGANISED OBJECT TO INSERT IN this.roles
@@ -247,11 +247,11 @@ export const useProjectStore = defineStore('project', {
                     params: {
                         email,
                         role,
-                        ...(libraryId && { library: libraryId }),
+                        ...(libraryId && { library_id: libraryId }),
                     },
                 })
                 this.invitations = this.invitations.filter(
-                    (el) => !(el.role === 'instructor' && el.library === libraryId && el.email === email),
+                    (el) => !(el.role === 'instructor' && el.libraryId === libraryId && el.email === email),
                 )
             } catch {
                 Notify.create({

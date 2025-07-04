@@ -23,7 +23,7 @@ interface Project extends ProjectI {
 interface ProjectInvitation {
     email: string
     role: Roles
-    library: string | undefined
+    libraryId: string | undefined
 }
 
 type Roles =
@@ -38,7 +38,7 @@ type Roles =
 type UserRole = {
     role: Roles
     user: UserRoleUser
-    library: string | undefined // SHOULD CHANGE NAME TO libraryId IN BACKEND
+    libraryId: string | undefined // SHOULD CHANGE NAME TO libraryId IN BACKEND
 }
 
 export type UserRoleUser = {
