@@ -1,6 +1,15 @@
 import { defineStore } from 'pinia'
 import type { LibraryI } from '#/library'
-import type { Collection, ImportCSVError, ImportCSVResponse, Project, ProjectI, Roles } from '#/project'
+import type {
+    Collection,
+    ImportCSVError,
+    ImportCSVResponse,
+    Project,
+    ProjectI,
+    ProjectInvitation,
+    Roles,
+    UserRole,
+} from '#/project'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { Notify } from 'quasar'
 import i18n from '@/plugins/i18n'
@@ -150,9 +159,8 @@ export const useProjectStore = defineStore('project', {
                 ...(libraryId && { library_id: libraryId }),
             }
             try {
-                await axiosI.post(`/projects/${this.id}/roles/`, data)
-
-                await this.fetchProjectById(this.id) // TEMPORARY SOLUTION WAITING FOR THE ENDPOINT TO RETURN THE WELL ORGANISED OBJECT TO INSERT IN this.roles
+                const response = await axiosI.post<UserRole>(`/projects/${this.id}/roles/`, data)
+                this.roles.push(response.data)
             } catch {
                 Notify.create({
                     type: 'negative',
@@ -227,13 +235,12 @@ export const useProjectStore = defineStore('project', {
         },
         async addInvitation(email: string, role: Roles, libraryId?: string) {
             try {
-                await axiosI.post(`/projects/${this.id}/invitations/`, {
+                const response = await axiosI.post<ProjectInvitation>(`/projects/${this.id}/invitations/`, {
                     email,
                     role,
                     ...(libraryId && { library_id: libraryId }),
                 })
-
-                await this.fetchProjectById(this.id) // TEMPORARY SOLUTION WAITING FOR THE ENDPOINT TO RETURN THE WELL ORGANISED OBJECT TO INSERT IN this.roles
+                this.invitations.push(response.data)
             } catch {
                 Notify.create({
                     type: 'negative',
