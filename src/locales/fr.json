@@ -17,7 +17,16 @@
         "needAuth": "Vous devez vous connecter pour accéder à cette page",
         "needLocal": "Vous devez avoir un compte local pour changer votre mot de passe",
         "collapse": "Masquer",
-        "expand": "Afficher"
+        "expand": "Afficher",
+        "noProject": "Aucun projet"
+    },
+    "roles": {
+        "superUser": "Super utilisateur",
+        "projectCreator": "Créateur de projet",
+        "projectAdmin": "Administrateurs",
+        "projectManager": "Pilotes de projet",
+        "instructor": "Instructeurs",
+        "controller": "Contrôleurs"
     },
     "settings": {
         "core": "Paramètres",
@@ -28,6 +37,13 @@
     "newProject": {
         "create": "Créer un projet",
         "title": "Création d'un nouveau projet",
+        "buttons": {
+            "continue": "Continuer",
+            "back": "Retour",
+            "create": "Créer le projet",
+            "modify": "Modifier le projet",
+            "ready": "Je suis prêt"
+        },
         "steps": {
             "informations": {
                 "title": "Informations sur le projet",
@@ -38,9 +54,34 @@
             },
             "libraries": {
                 "title": "Bibliothèques participantes",
-                "description": "Sélectionnez les bibliothèques qui participeront au projet",
+                "description": "Sélectionnez les bibliothèques participant au projet, puis renseignez leurs collections ainsi que leur instructeur",
                 "addLibrary": "Ajouter une bibliothèque",
-                "searchLibraries": "Rechercher des bibliothèques"
+                "searchLibraries": "Rechercher des bibliothèques",
+                "instructors": "Instructeurs",
+                "collection": {
+                    "title": "Collection",
+                    "dragAndDrop": "Glissez-déposez un fichier CSV, ou cliquez pour en sélectionner un",
+                    "importSuccess": "L'import du CSV s'est fait avec succès",
+                    "weFound": "Nous avons trouvé",
+                    "elementPresent": "{count} élément présent | {count} éléments présents",
+                    "times": "fois",
+                    "present": "Collection présente avec {count} élément | Collection présente avec {count} éléments",
+                    "delete": {
+                        "warning": "Vous êtes sur le point de supprimer la collection associée à cette bibliothèque",
+                        "irreversible": "Cette action est irréversible"
+                    },
+                    "errors": {
+                        "wrongExtension": "Le fichier doit être au format CSV",
+                        "dialogTitle": "Nous avons détecté une ou des erreurs dans le fichier"
+                    }
+                },
+                "errors": {
+                    "whileAdding": "Une erreur est survenue lors de l'ajout de la bibliothèque",
+                    "whileDeleting": "Une erreur est survenue lors de la suppression de la bibliothèque"
+                }
+            },
+            "roles": {
+                "title": "Rôles des utilisateurs"
             }
         },
         "requirements": {
@@ -111,7 +152,8 @@
     },
     "forms": {
         "validation": {
-            "fieldIsRequired": "Ce champ est requis"
+            "fieldIsRequired": "Ce champ est requis",
+            "fieldLessThan255": "Ce champ doit être inférieur à 255 caractères"
         },
         "fieldIsRequired": "Ce champ est requis",
         "login": {
@@ -162,7 +204,7 @@
                 "sendEmail": "Envoyer l'email",
                 "emailSent": "Si un compte est trouvé à l'adresse \"{email}\", vous allez recevoir un email pour réinitialiser votre mot de passe",
                 "emailNotSent": "Problème lors de l'envoi de l'email",
-                "incorrectEmail": "L'adresse mail n'est associée à aucun compte existant",
+                "incorrectEmail": "L'adresse mail n'est     associée à aucun compte existant",
                 "token": "Jeton de validation",
                 "tokenRejected": "Le jeton est expiré ou invalide"
             }
@@ -181,6 +223,39 @@
             "tokenRejected": "Le jeton est expiré ou invalide",
             "accountCreated": "Votre compte a été créé avec succès, vous pouvez vous connecter",
             "fetchEmailFailed": "Impossible de récupérer l'adresse e-mail"
+        }
+    },
+    "confirmDialogDefault": {
+        "irreversible": "Vous être sur le point d'effectuer une action irréversible",
+        "areYouSure": "Êtes-vous sûr de vouloir continuer ?"
+    },
+    "common": {
+        "yes": "Oui",
+        "no": "Non",
+        "cancel": "Annuler",
+        "confirm": "Confirmer",
+        "delete": "Supprimer",
+        "edit": "Modifier",
+        "save": "Enregistrer",
+        "close": "Fermer",
+        "search": "Rechercher",
+        "loading": "Chargement",
+        "success": "Succès",
+        "error": "Erreur",
+        "info": "Information",
+        "continue": "Continuer",
+        "back": "Retour",
+        "row": "Ligne",
+        "on": "Sur",
+        "none": "Aucun",
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "email": "Email"
+    },
+    "utils": {
+        "searchUser": {
+            "inputPlaceholder": "Rechercher un utilisateur, ou entrer son adresse e-mail pour l'inviter",
+            "inviteText": "Inviter cet utilisateur avec cet email"
         }
     },
     "errors": {

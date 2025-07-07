@@ -1,18 +1,19 @@
 <script lang="ts" setup>
-import NewProjectLibraryCard from '@/components/newProject/steps/newProjectLibraries/NewProjectLibraryCard.vue'
-import { storeToRefs } from 'pinia'
-import { useNewProjectStore } from '@/stores/newProjectStore.ts'
+import { useProjectStore } from '@/stores/projectStore.ts'
+import { useI18n } from 'vue-i18n'
 import NewProjectLibraryAdd from '@/components/newProject/steps/newProjectLibraries/NewProjectLibraryAdd.vue'
+import NewProjectLibraryCard from '@/components/newProject/steps/newProjectLibraries/NewProjectLibraryCard.vue'
 
-const { projectLibraries } = storeToRefs(useNewProjectStore())
+const { t } = useI18n()
+const store = useProjectStore()
 </script>
 
 <template>
-    <p>Inserer les bibliothèque participantes</p>
-    <div class="container row">
-        <template v-if="projectLibraries.length > 0">
+    <p>{{ t('newProject.steps.libraries.description') }}</p>
+    <div class="container">
+        <template v-if="store.libraries.length > 0">
             <NewProjectLibraryCard
-                v-for="library in projectLibraries"
+                v-for="library in store.libraries"
                 :key="library.id"
                 :library="library"
             />
@@ -21,3 +22,11 @@ const { projectLibraries } = storeToRefs(useNewProjectStore())
         <NewProjectLibraryAdd />
     </div>
 </template>
+
+<style scoped>
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+</style>

@@ -2,18 +2,15 @@
 import LibraryTable from '@/components/library/libraryTable/LibraryTable.vue'
 import { ref } from 'vue'
 import type { LibraryI } from '#/library'
-import { useNewProjectStore } from '@/stores/newProjectStore.ts'
-import { storeToRefs } from 'pinia'
+import { useProjectStore } from '@/stores/projectStore.ts'
 
-const { addLibrary } = useNewProjectStore()
+const store = useProjectStore()
 
 const dialog = ref(false)
 const onSelected = (library: LibraryI) => {
     dialog.value = false
-    addLibrary(library)
+    store.addLibrary(library)
 }
-
-const { projectLibraries } = storeToRefs(useNewProjectStore())
 </script>
 
 <template>
@@ -32,7 +29,7 @@ const { projectLibraries } = storeToRefs(useNewProjectStore())
             <QCardSection>
                 <p>Liste des bibliothèques</p>
                 <LibraryTable
-                    :library-selected="projectLibraries"
+                    :libraries-selected="store.libraries"
                     :with-add-btn="true"
                     @selected="onSelected"
                 />

@@ -1,15 +1,18 @@
 <script lang="ts" setup>
-import InviteForm from '@/components/forms/invite/InviteForm.vue'
-import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import AtomicButton from '@/components/atomic/AtomicButton.vue'
 
 const { t } = useI18n()
 const userStore = useUserStore()
 const { tenantColor } = storeToRefs(userStore)
 const open = ref<boolean>(false)
+
+const emit = defineEmits<{
+    (e: 'validate'): void
+}>()
 </script>
 
 <template>
@@ -39,49 +42,48 @@ const open = ref<boolean>(false)
             <li>{{ t('newProject.storageNames') }}</li>
             <li>{{ t('newProject.storageOperatorEmails') }}</li>
         </ul>
-        <QSeparator />
-        <p class="margin-t1 margin-b1">{{ t('newProject.searchUsers') }}</p>
-        <div class="container-center">
-            <QBtn
-                :label="t('newProject.requirements.invite')"
-                :style="tenantColor"
-                @click="open = true"
-            />
-        </div>
-        <SearchUser role="" />
+        <!--        <QSeparator />-->
+        <!--        <p class="margin-t1 margin-b1">{{ t('newProject.searchUsers') }}</p>-->
+        <!--        <div class="container-center">-->
+        <!--            <QBtn-->
+        <!--                :label="t('newProject.requirements.invite')"-->
+        <!--                :style="tenantColor"-->
+        <!--                @click="open = true"-->
+        <!--            />-->
+        <!--        </div>-->
+        <!--        <SearchUser role="" />-->
     </div>
     <div class="col-3 table-center">
         <div class="table-cell-vertical-align">
-            <QBtn
-                :style="tenantColor"
-                text-color="white"
-                :to="{ name: 'newProject' }"
+            <AtomicButton
+                :label="t('newProject.buttons.ready')"
+                @click="() => emit('validate')"
             >
                 {{ t('newProject.requirements.requirementsOk') }}
-            </QBtn>
+            </AtomicButton>
         </div>
     </div>
-    <QDialog v-model="open">
-        <QCard
-            bordered
-            style="min-width: 24rem; min-height: 20rem"
-        >
-            <QCardSection style="display: flex; align-items: baseline">
-                <h6>{{ t('newProject.requirements.inviteUser') }}</h6>
-                <QSpace />
-                <QBtn
-                    v-close-popup
-                    dense
-                    flat
-                    icon="mdi-close"
-                    round
-                />
-            </QCardSection>
+    <!--    <QDialog v-model="open">-->
+    <!--        <QCard-->
+    <!--            bordered-->
+    <!--            style="min-width: 24rem; min-height: 20rem"-->
+    <!--        >-->
+    <!--            <QCardSection style="display: flex; align-items: baseline">-->
+    <!--                <h6>{{ t('newProject.requirements.inviteUser') }}</h6>-->
+    <!--                <QSpace />-->
+    <!--                <QBtn-->
+    <!--                    v-close-popup-->
+    <!--                    dense-->
+    <!--                    flat-->
+    <!--                    icon="mdi-close"-->
+    <!--                    round-->
+    <!--                />-->
+    <!--            </QCardSection>-->
 
-            <QSeparator />
-            <QCardSection>
-                <InviteForm />
-            </QCardSection>
-        </QCard>
-    </QDialog>
+    <!--            <QSeparator />-->
+    <!--            <QCardSection>-->
+    <!--                <InviteForm />-->
+    <!--            </QCardSection>-->
+    <!--        </QCard>-->
+    <!--    </QDialog>-->
 </template>

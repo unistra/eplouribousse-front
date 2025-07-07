@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import { useLoginForm } from './useLoginForm.ts'
 import OrDividerUtils from '@/components/utils/OrDividerUtils.vue'
@@ -32,12 +32,11 @@ onMounted(() => {
         @submit.prevent="onLogin"
     >
         <AtomicInput
+            v-model="email"
             :label="t('forms.login.email')"
-            :model="email"
             reactive-rules
             :rules="[(val: string) => !!val || t('forms.fieldIsRequired')]"
             type="email"
-            @update:model="email = $event as string"
         />
         <PasswordField
             v-model="password"

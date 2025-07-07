@@ -1,8 +1,9 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import AtomicIcon from './AtomicIcon.vue'
 
+const model = defineModel<string | number | undefined>()
+
 defineProps<{
-    model: string | number | undefined
     autofocus?: boolean
     hideBottomSpace?: boolean
     type?: 'text' | 'textarea' | 'email' | 'search' | 'number' | 'url' | 'password'
@@ -17,13 +18,13 @@ defineProps<{
 }>()
 
 const emit = defineEmits<{
-    (_e: 'update:model', _value: string | number | null): void
-    (_e: 'clear'): void
+    (e: 'clear'): void
 }>()
 </script>
 
 <template>
     <QInput
+        v-model="model"
         :autofocus
         :clearable
         color="grey-100"
@@ -31,12 +32,10 @@ const emit = defineEmits<{
         :disable
         :hide-bottom-space
         :label="`${label}${required ? ' *' : ''}`"
-        :model-value="model"
         outlined
         rounded
         :type="type ?? 'text'"
         @clear="emit('clear')"
-        @update:model-value="emit('update:model', $event)"
     >
         <QTooltip v-if="tooltip">{{ tooltip }}</QTooltip>
         <template

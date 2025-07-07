@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import LoginForm from '@/components/forms/auth/loginForm/LoginForm.vue'
 import { onMounted } from 'vue'
 import { useGlobalStore } from '@/stores/globalStore.ts'
@@ -11,7 +11,10 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="container column content-center">
+    <QPage
+        class="container column content-center"
+        padding
+    >
         <LoginForm />
-    </div>
+    </QPage>
 </template>

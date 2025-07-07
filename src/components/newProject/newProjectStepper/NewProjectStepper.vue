@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-import { ref, useTemplateRef } from 'vue'
 import { QStepper } from 'quasar'
 import { useI18n } from 'vue-i18n'
 import NewProjectLibraries from '@/components/newProject/steps/newProjectLibraries/NewProjectLibraries.vue'
 import NewProjectInformations from '@/components/newProject/steps/newProjectInformations/NewProjectInformations.vue'
-import NewProjectUsers from '../newProjectUsers/NewProjectUsers.vue'
+import { useNewProjectStepper } from '@/components/newProject/newProjectStepper/useNewProjectStepper.ts'
+import NewProjectRoles from '@/components/newProject/steps/newProjectRoles/NewProjectRoles.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 
 const { t } = useI18n()
-const step = ref(1)
-const stepper = useTemplateRef<QStepper>('stepper')
+
+const { step, nextStep, previousStep, buttonLabel } = useNewProjectStepper()
 </script>
 
 <template>
@@ -40,30 +40,24 @@ const stepper = useTemplateRef<QStepper>('stepper')
         </QStep>
 
         <QStep
-            icon="assignment"
+            icon="mdi-account"
             :name="3"
-            title="Ad template"
+            :title="t('newProject.steps.roles.title')"
         >
-            <NewProjectUsers />
+            <NewProjectRoles />
         </QStep>
 
         <template #navigation>
             <QStepperNavigation>
-                <div class="container">
-                    <AtomicButton
-                        :label="
-                            step === 4
-                                ? t('newProject.steps.informations.back')
-                                : t('newProject.steps.informations.continue')
-                        "
-                        @click="stepper?.next"
-                    />
-                    <AtomicButton
-                        v-if="step > 1"
-                        :label="t('newProject.steps.informations.back')"
-                        @click="stepper?.previous"
-                    />
-                </div>
+                <AtomicButton
+                    :label="buttonLabel"
+                    @click="nextStep"
+                />
+                <AtomicButton
+                    v-if="step > 1"
+                    :label="t('newProject.steps.informations.back')"
+                    @click="previousStep"
+                />
             </QStepperNavigation>
         </template>
     </QStepper>

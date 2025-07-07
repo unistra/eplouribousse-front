@@ -37,10 +37,10 @@ function submitEmailForm() {
                 rounded
             />
             <AtomicInput
+                v-model="subject"
                 counter
                 :hint="t('contactAdmin.message')"
                 :label="t('contactAdmin.placeholder')"
-                :model="subject"
                 outlined
                 reactive-rules
                 :rules="[(val: string) => !!val || t('forms.fieldIsRequired')]"

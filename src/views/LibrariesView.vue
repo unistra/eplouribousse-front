@@ -6,6 +6,8 @@ const { t } = useI18n()
 </script>
 
 <template>
-    <h1>{{ t('libraries.title') }}</h1>
-    <LibraryTable />
+    <QPage padding>
+        <h1>{{ t('libraries.title') }}</h1>
+        <LibraryTable />
+    </QPage>
 </template>

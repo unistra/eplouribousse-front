@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import { useCreateAccountForm } from '@/components/forms/auth/createAccount/useCreateAccountForm.ts'
 import PasswordField from '@/components/utils/form/passwordField/PasswordField.vue'
@@ -26,9 +26,9 @@ fetchEmailFromToken()
         @submit="createAccount"
     >
         <AtomicInput
+            v-model="email"
             disable
             :label="t('forms.login.email')"
-            :model="email"
             type="email"
         />
         <PasswordField

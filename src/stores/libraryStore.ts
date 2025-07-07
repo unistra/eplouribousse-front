@@ -35,7 +35,12 @@ export const useLibraryStore = defineStore('library', () => {
             if (params?.pageSize) queryParams.append('page_size', `${params.pageSize}`)
             if (params?.sortBy) queryParams.append('ordering', `${params.descending ? '-' : ''}${params.sortBy}`)
             if (params?.filter) queryParams.append('search', params.filter)
-            if (params?.excludeId) queryParams.append('exclude_ids', params.excludeId.join(','))
+            if (params?.excludeId) {
+                params.excludeId.forEach((id) => {
+                    // With this method, we can exclude around 40 libraries before reaching the URL length limit
+                    queryParams.append('exclude', id)
+                })
+            }
 
             const url = `/libraries/${queryParams.toString() ? `?${queryParams}` : ''}`
             const response = await axiosI.get<Pagination<LibraryI>>(url)

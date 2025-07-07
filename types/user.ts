@@ -16,3 +16,11 @@ export interface ProjectUser {
     user: User
     role: string
 }
+
+export interface UserI {
+    id: string
+    email: string
+    username: string
+    firstName: string
+    lastName: string
+}

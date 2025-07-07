@@ -9,14 +9,14 @@ import type { LibraryI } from '#/library.d.ts'
 
 const props = defineProps<{
     withAddBtn?: boolean // Button to add library to a selection (e.g., on a project creation)
-    librarySelected?: LibraryI[] // Libraries that are already selected, that should not be listed in the table
+    librariesSelected?: LibraryI[] // Libraries that are already selected, that should not be listed in the table
 }>()
 const emit = defineEmits<{
     selected: LibraryI[]
 }>()
 
 const { defaultColumns, columnsWithActions, columnsWithAddBtn, loading, filter, onRequest, pagination, tableRef } =
-    useLibraryTable(props.librarySelected || [])
+    useLibraryTable(props.librariesSelected || [])
 const libraryStore = useLibraryStore()
 const { t } = useI18n()
 

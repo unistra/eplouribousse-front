@@ -71,3 +71,7 @@ h1 {
         background-color: var(--color-neutral-100);
     }
 }
+
+.border-0 {
+    border: 0 !important;
+}
