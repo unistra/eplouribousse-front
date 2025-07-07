@@ -1,15 +1,15 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { ProjectI, ProjectRole, ProjectSummarized } from '#/project'
+import { type User } from '#/user'
+import type { ProjectI, ProjectSummarized } from '#/project'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import type { Pagination } from '#/pagination.ts'
 import { type User } from '#/user'
 
 export const useUserStore = defineStore('user', () => {
-    const user = ref<User | undefined>()
-    const userInProject = ref<ProjectRole | undefined>()
+    const user = ref<User>()
     const isAuth = ref<boolean>(false)
-    const tenant = ref<string>('')
+    const tenant = ref<string>('dev')
     const projects = ref<ProjectSummarized[]>([])
 
     const getProjects = async () => {
@@ -41,7 +41,6 @@ export const useUserStore = defineStore('user', () => {
 
     return {
         user,
-        userInProject,
         tenant,
         isAuth,
         projects,
