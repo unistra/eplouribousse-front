@@ -9,6 +9,7 @@ import type { ImportCSVErrorObject } from '#/project'
 const props = defineProps<{
     libraryId: string
     projectId: string
+    isSummary?: boolean
 }>()
 
 const { t } = useI18n()
@@ -39,122 +40,163 @@ onMounted(async () => await getCollection())
     >
         <QSpinner size="2rem" />
     </QCard>
-    <QCard
-        v-else-if="!collection || collection.results.length === 0"
-        class="container items-center csv-card dropzone"
-        flat
-        @click="fileInput?.click()"
-        @dragover.prevent
-        @drop="onDrop"
-    >
-        <input
-            ref="fileInput"
-            accept=".csv,text/csv"
-            type="file"
-            @change="onFileChange"
-        />
-        <span>{{ t('newProject.steps.libraries.collection.dragAndDrop') }}</span>
-    </QCard>
-    <QCard
-        v-else
-        class="container column csv-card present"
-        flat
-    >
-        <AtomicButton
-            confirm-button-color="red"
-            icon="mdi-close"
-            no-border
-            require-confirmation
-            size="xs"
-            @confirm="store.deleteCollection(libraryId)"
-        />
-        <QCardSection class="content">
-            <QIcon
-                color="positive"
-                name="mdi-check-circle-outline"
-                size="sm"
+    <template v-else-if="!isSummary">
+        <QCard
+            v-if="!collection?.results?.length"
+            class="container items-center csv-card dropzone"
+            flat
+            @click="fileInput?.click()"
+            @dragover.prevent
+            @drop="onDrop"
+        >
+            <input
+                ref="fileInput"
+                accept=".csv,text/csv"
+                type="file"
+                @change="onFileChange"
             />
-            <p>{{ t('newProject.steps.libraries.collection.present', { count: collection.count }) }}</p>
-        </QCardSection>
-    </QCard>
-
-    <QDialog
-        v-model="modalImportCSVResponse"
-        persistent
-    >
-        <QCard>
-            <QCardSection>
-                <p>{{ t('newProject.steps.libraries.collection.importSuccess') }}</p>
-                <p>{{ t('newProject.steps.libraries.collection.weFound') }}:</p>
-            </QCardSection>
-            <QCardSection>
-                <ul>
-                    <li
-                        v-for="(count, key) in importCSVResponse"
-                        :key="key"
-                    >
-                        {{
-                            t('newProject.steps.libraries.collection.elementPresent', {
-                                count,
-                            })
-                        }}
-                        {{ key }} {{ t('newProject.steps.libraries.collection.times') }}
-                    </li>
-                </ul>
-            </QCardSection>
-
-            <QCardActions align="right">
-                <AtomicButton
-                    :label="t('common.continue')"
-                    @click="onModalImportCollectionClose"
-                />
-            </QCardActions>
+            <span>{{ t('newProject.steps.libraries.collection.dragAndDrop') }}</span>
         </QCard>
-    </QDialog>
+        <QCard
+            v-else
+            class="container column justify-center items-center csv-card present"
+            flat
+        >
+            <AtomicButton
+                confirm-button-color="red"
+                icon="mdi-close"
+                no-border
+                require-confirmation
+                size="xs"
+                @confirm="store.deleteCollection(libraryId)"
+            />
+            <QCardSection class="content">
+                <QIcon
+                    color="positive"
+                    name="mdi-check-circle-outline"
+                    size="sm"
+                />
+                <p>
+                    {{ t('newProject.steps.libraries.collection.present', { count: collection?.count }) }}
+                </p>
+            </QCardSection>
+        </QCard>
 
-    <QDialog
-        v-model="modalImportCSVError"
-        persistent
-    >
-        <QCard class="container column card">
-            <QCardSection>
-                <p>{{ t('newProject.steps.libraries.collection.errors.dialogTitle') }}:</p>
-            </QCardSection>
-            <QCardSection v-if="typeof importCSVError?.[0] === 'string' && !('row' in importCSVError)">
-                <ul>
-                    <li
-                        v-for="(string, index) in importCSVError"
-                        :key="index"
-                    >
-                        {{ string }}
-                    </li>
-                </ul>
-            </QCardSection>
-            <QCardSection v-else>
-                <ul>
-                    <li
-                        v-for="(row, index) in importCSVError as ImportCSVErrorObject[]"
-                        :key="index"
-                    >
-                        <p>{{ t('common.row') }} {{ row.row }}:</p>
-                        <p
-                            v-for="(error, indexError) in row.errors"
-                            :key="indexError"
+        <QDialog
+            v-if="!isSummary"
+            v-model="modalImportCSVResponse"
+            persistent
+        >
+            <QCard>
+                <QCardSection>
+                    <p>{{ t('newProject.steps.libraries.collection.importSuccess') }}</p>
+                    <p>{{ t('newProject.steps.libraries.collection.weFound') }}:</p>
+                </QCardSection>
+                <QCardSection>
+                    <ul>
+                        <li
+                            v-for="(count, key) in importCSVResponse"
+                            :key="key"
                         >
-                            {{ t('common.on') }} <span class="bold">{{ error.loc.join(', ') }}</span
-                            >: {{ error.msg }}
-                        </p>
-                    </li>
-                </ul>
-            </QCardSection>
-            <QCardActions align="right">
-                <AtomicButton
-                    :label="t('common.continue')"
-                    @click="onModalImportCollectionClose"
+                            {{
+                                t('newProject.steps.libraries.collection.elementPresent', {
+                                    count,
+                                })
+                            }}
+                            {{ key }} {{ t('newProject.steps.libraries.collection.times') }}
+                        </li>
+                    </ul>
+                </QCardSection>
+
+                <QCardActions align="right">
+                    <AtomicButton
+                        :label="t('common.continue')"
+                        @click="onModalImportCollectionClose"
+                    />
+                </QCardActions>
+            </QCard>
+        </QDialog>
+
+        <QDialog
+            v-if="!isSummary"
+            v-model="modalImportCSVError"
+            persistent
+        >
+            <QCard class="container column card">
+                <QCardSection>
+                    <p>{{ t('newProject.steps.libraries.collection.errors.dialogTitle') }}:</p>
+                </QCardSection>
+                <QCardSection v-if="typeof importCSVError?.[0] === 'string' && !('row' in importCSVError)">
+                    <ul>
+                        <li
+                            v-for="(string, index) in importCSVError"
+                            :key="index"
+                        >
+                            {{ string }}
+                        </li>
+                    </ul>
+                </QCardSection>
+                <QCardSection v-else>
+                    <ul>
+                        <li
+                            v-for="(row, index) in importCSVError as ImportCSVErrorObject[]"
+                            :key="index"
+                        >
+                            <p>{{ t('common.row') }} {{ row.row }}:</p>
+                            <p
+                                v-for="(error, indexError) in row.errors"
+                                :key="indexError"
+                            >
+                                {{ t('common.on') }} <span class="bold">{{ error.loc.join(', ') }}</span
+                                >: {{ error.msg }}
+                            </p>
+                        </li>
+                    </ul>
+                </QCardSection>
+                <QCardActions align="right">
+                    <AtomicButton
+                        :label="t('common.continue')"
+                        @click="onModalImportCollectionClose"
+                    />
+                </QCardActions>
+            </QCard>
+        </QDialog>
+    </template>
+
+    <template v-else>
+        <QCard
+            v-if="!!collection?.results?.length"
+            class="container column justify-center items-center csv-card present summary"
+            flat
+        >
+            <QCardSection class="content">
+                <QIcon
+                    color="positive"
+                    name="mdi-check-circle-outline"
+                    size="sm"
                 />
-            </QCardActions>
+                <p>
+                    {{ t('newProject.steps.libraries.collection.present', { count: collection?.count }) }}
+                </p>
+            </QCardSection>
         </QCard>
-    </QDialog>
+
+        <QCard
+            v-else
+            class="container column justify-center items-center csv-card missing summary"
+            flat
+        >
+            <QCardSection class="content">
+                <QIcon
+                    name="mdi-close-circle"
+                    size="sm"
+                />
+                <p>
+                    {{ t('newProject.steps.libraries.collection.missing') }}
+                </p>
+            </QCardSection>
+        </QCard>
+    </template>
 </template>
 
 <style lang="scss" scoped>
@@ -179,10 +221,6 @@ onMounted(async () => await getCollection())
     }
 
     &.present {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
         border-style: solid;
         border-color: var(--color-green);
         position: relative;
@@ -192,6 +230,15 @@ onMounted(async () => await getCollection())
             top: 0.5rem;
             right: 0.5rem;
         }
+    }
+
+    &.missing {
+        border-style: solid;
+        border-color: var(--color-neutral-500);
+    }
+
+    &.summary {
+        min-height: 0;
     }
 }
 

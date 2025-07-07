@@ -66,6 +66,7 @@
                     "elementPresent": "{count} élément présent | {count} éléments présents",
                     "times": "fois",
                     "present": "Collection présente avec {count} élément | Collection présente avec {count} éléments",
+                    "missing": "Collection absente",
                     "delete": {
                         "warning": "Vous êtes sur le point de supprimer la collection associée à cette bibliothèque",
                         "irreversible": "Cette action est irréversible"
@@ -82,6 +83,9 @@
             },
             "roles": {
                 "title": "Rôles des utilisateurs"
+            },
+            "summary": {
+                "title": "Récapitulatif"
             }
         },
         "requirements": {
