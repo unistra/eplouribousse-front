@@ -5,8 +5,6 @@ import NewProjectStepper from '@/components/newProject/newProjectStepper/NewProj
 import { useProjectStore } from '@/stores/projectStore.ts'
 
 const route = useRoute()
-const id = route.params.id as string
-const project = ref<ProjectI | null>(null)
 const store = useProjectStore()
 
 watch(
@@ -25,24 +23,15 @@ watch(
 <template>
     <QPage padding>
         <NewProjectStepper v-if="!store.isLoading" />
-        <div
+        <QSpinner
             v-else
-            class="spinner"
-        >
-            <QSpinner size="4rem" />
-        </div>
+            size="4rem"
+        />
     </QPage>
 </template>
 
 <style lang="scss" scoped>
-.q-page {
-    position: relative;
-}
-
-.spinner {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.q-spinner {
+    width: 100%;
 }
 </style>

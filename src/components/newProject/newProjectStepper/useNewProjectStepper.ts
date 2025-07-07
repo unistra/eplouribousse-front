@@ -26,7 +26,7 @@ export const useNewProjectStepper = () => {
                     return t('newProject.buttons.continue')
                 }
             case 3:
-                return t('newProject.steps.finish')
+                return t('newProject.buttons.continue')
             default:
                 return t('newProject.buttons.continue')
         }
