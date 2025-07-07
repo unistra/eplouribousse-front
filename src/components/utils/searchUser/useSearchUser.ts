@@ -2,7 +2,8 @@ import { type UserI } from '#/user'
 import { type Comparator, UniqueSet } from '#/utils'
 import { axiosI } from '@/plugins/axios/axios'
 import { ref, watch } from 'vue'
-import type { ProjectInvitation } from '#/project'
+import type { ProjectInvitation, UserRoleUser } from '#/project'
+import type { Pagination } from '#/pagination.ts'
 
 export type SearchUserEmitActions = {
     (e: 'addInvitation', email: string): void
@@ -16,10 +17,11 @@ export function useSearchUser(emit: SearchUserEmitActions) {
     const users = ref<UserI[]>([])
     const matchingUsers = ref<UniqueSet<UserI>>()
 
+    const userAlreadySelected = ref<UserRoleUser[]>([])
+
     const userComparator: Comparator<UserI> = (a: UserI, b: UserI) => a.id === b.id
     const isUserListLoading = ref<boolean>(false)
     const nextPage = ref<number | null>(1)
-    const filter = ref<Set<string>>(new Set<string>())
 
     watch(username, async (newValue) => {
         if (newValue === '') {
@@ -31,26 +33,22 @@ export function useSearchUser(emit: SearchUserEmitActions) {
         }
     })
 
-    function constructQueryWithExcludedIDs() {
-        if (filter.value.size === 0) {
-            return ''
-        } else {
-            let filterQuery = '&exclude='
-            filter.value.forEach((element) => {
-                filterQuery += element
-                filterQuery += ','
-            })
-            return filterQuery
-        }
-    }
-
     async function fillUsers() {
         isUserListLoading.value = true
 
         try {
-            const usersList = await axiosI.get('/users/?search=' + username.value + constructQueryWithExcludedIDs())
-            users.value = usersList.data.results
-            nextPage.value = usersList.data.next
+            const excludeString = `?exclude=${userAlreadySelected.value.map((user) => user.id).join('&exclude=')}`
+            const response = await axiosI.get<Pagination<UserI>>(
+                `/users/${userAlreadySelected.value.length > 0 ? excludeString : ''}`,
+                {
+                    params: {
+                        search: username.value,
+                    },
+                },
+            )
+            console.log(response)
+            users.value = response.data.results
+            nextPage.value = response.data.next
 
             if (username.value === '') {
                 matchingUsers.value?.clear()
@@ -69,11 +67,17 @@ export function useSearchUser(emit: SearchUserEmitActions) {
     async function appendUsers() {
         isUserListLoading.value = true
         try {
-            const usersList = await axiosI.get(
-                '/users/?page=' + nextPage.value + '&search=' + username.value + constructQueryWithExcludedIDs(),
+            const response = await axiosI.get<Pagination<UserI>>(
+                `/users/?exclude=${userAlreadySelected.value.map((user) => user.id).join('&exclude=')}`,
+                {
+                    params: {
+                        page: nextPage.value,
+                        search: username.value,
+                    },
+                },
             )
-            nextPage.value = usersList.data.next
-            users.value.push(...usersList.data.results)
+            nextPage.value = response.data.next
+            users.value.push(...response.data.results)
             if (username.value === '') {
                 matchingUsers.value?.clear()
                 nextPage.value = null
@@ -120,9 +124,9 @@ export function useSearchUser(emit: SearchUserEmitActions) {
         matchingUsers,
         isUserListLoading,
         nextPage,
-        filter,
         onLoad,
         sendAction,
         clear,
+        userAlreadySelected,
     }
 }

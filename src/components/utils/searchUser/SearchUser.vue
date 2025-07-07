@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 import { type SearchUserEmitActions, useSearchUser } from './useSearchUser'
 import { useI18n } from 'vue-i18n'
 import type { ProjectInvitation, UserRoleUser } from '#/project'
@@ -7,7 +7,7 @@ import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import SearchUserItem from '@/components/utils/searchUser/SearchUserItem.vue'
 
-defineProps<{
+const props = defineProps<{
     usersSelected: UserRoleUser[]
     invitationsSelected: ProjectInvitation[]
     isAddUserLoading: boolean
@@ -15,10 +15,19 @@ defineProps<{
 const { t } = useI18n()
 
 const emit = defineEmits<SearchUserEmitActions>()
-const { username, matchingUsers, onLoad, sendAction, clear, isUserListLoading } = useSearchUser(emit)
+const { username, matchingUsers, onLoad, sendAction, clear, isUserListLoading, userAlreadySelected } =
+    useSearchUser(emit)
+
+watch(
+    () => props.usersSelected,
+    () => {
+        userAlreadySelected.value = props.usersSelected
+    },
+)
 
 onMounted(() => {
     matchingUsers.value?.clear()
+    userAlreadySelected.value = props.usersSelected
 })
 </script>
 
