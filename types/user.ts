@@ -1,5 +1,6 @@
-export interface UserPreferences {
-    darkMode: boolean
+export interface UserSettings {
+    theme: string
+    locale: string
 }
 
 export interface User {
@@ -7,8 +8,11 @@ export interface User {
     username: string
     email: string
     canAuthenticateLocally: boolean
-    firstname?: string
-    lastname?: string
+    isProjectCreator: boolean
+    projects: string
+    settings: UserSettings
+    firstName?: string
+    lastName?: string
     role?: string
 }
 

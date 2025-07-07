@@ -13,7 +13,7 @@ const { t } = useI18n()
 const { logout } = useAuthentication()
 const userStore = useUserStore()
 const router = useRouter()
-const { tenantConfiguration } = storeToRefs(userStore)
+const { tenant } = storeToRefs(userStore)
 
 const drawer = ref<boolean>(true)
 const collapsed = ref<boolean>(false)
@@ -58,7 +58,7 @@ async function onLogout() {
                 :to="{ name: 'Home' }"
             >
                 <h1>Eplouribousse</h1>
-                <p>{{ tenantConfiguration?.name }}</p>
+                <p>{{ tenant }}</p>
             </QItem>
             <DrawerItem
                 v-else

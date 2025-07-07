@@ -1,15 +1,8 @@
 <script lang="ts" setup>
-import { useUserStore } from '@/stores/userStore'
-import { storeToRefs } from 'pinia'
-import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 
 const { t } = useI18n()
-const userStore = useUserStore()
-const { tenantColor } = storeToRefs(userStore)
-const open = ref<boolean>(false)
-
 const emit = defineEmits<{
     (e: 'validate'): void
 }>()

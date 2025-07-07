@@ -12,7 +12,7 @@ const userStore = useUserStore()
             <h1>{{ t('settings.core') }}</h1>
         </div>
         <div
-            v-if="userStore.isAuth && userStore.isLocal"
+            v-if="userStore.isAuth && userStore?.user?.canAuthenticateLocally"
             class="row"
         >
             <div class="col-4">

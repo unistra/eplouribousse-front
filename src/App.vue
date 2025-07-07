@@ -14,18 +14,13 @@ onMounted(async () => {
     const tenantInfo = await axiosI.get('/consortium/')
     const token = localStorage.getItem('JWT__access__token')
     if (tenantInfo.data.settings.color !== '') {
-        userStore.tenantConfiguration = tenantInfo.data
+        userStore.tenant = tenantInfo.data.name
     }
     if (token !== null && !isExpired(token)) {
         userStore.isAuth = true
         const user = await axiosI.get('/users/profile/')
         userStore.user = user.data
-        userStore.isLocal = userStore.user.canAuthenticateLocally
-        userStore.user.role = 'manager'
-    }
-    if (localStorage.getItem('darkMode') !== null && localStorage.getItem('darkMode') === 'true') {
-        userStore.userPreferences.darkMode = true
-        dark.set(true)
+        if (userStore.user?.settings.theme === 'dark') dark.set(true)
     }
 })
 </script>
