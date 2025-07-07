@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
-import type { QInput } from 'quasar'
+import AtomicInput from '@/components/atomic/AtomicInput.vue'
 
 const { t } = useI18n()
 const store = useProjectStore()
@@ -9,9 +9,8 @@ const store = useProjectStore()
 
 <template>
     <QForm class="container column align-center">
-        <QInput
+        <AtomicInput
             v-model="store.name"
-            class="container-item"
             :label="t('newProject.steps.informations.name')"
             required
             :rules="[
@@ -20,9 +19,8 @@ const store = useProjectStore()
             ]"
             type="text"
         />
-        <QInput
+        <AtomicInput
             v-model="store.description"
-            class="container-item"
             :label="t('newProject.steps.informations.description')"
             type="textarea"
         />

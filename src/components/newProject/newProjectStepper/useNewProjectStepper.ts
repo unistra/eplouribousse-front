@@ -13,23 +13,15 @@ export const useNewProjectStepper = () => {
     const stepper = useTemplateRef<QStepper>('stepper')
 
     const buttonLabel = computed(() => {
-        switch (step.value) {
-            case 1:
-                if (!store.id) {
-                    return t('newProject.buttons.create')
-                } else if (
-                    store.id &&
-                    (store.name !== store.initialState.name || store.description !== store.initialState.description)
-                ) {
-                    return t('newProject.buttons.modify')
-                } else {
-                    return t('newProject.buttons.continue')
-                }
-            case 3:
-                return t('newProject.buttons.continue')
-            default:
-                return t('newProject.buttons.continue')
+        if (step.value === 1) {
+            if (!store.id) return t('newProject.buttons.create')
+            if (
+                store.id &&
+                (store.name !== store.initialState.name || store.description !== store.initialState.description)
+            )
+                return t('newProject.buttons.modify')
         }
+        return t('newProject.buttons.continue')
     })
 
     const nextStep = async () => {
@@ -47,12 +39,8 @@ export const useNewProjectStepper = () => {
                     })
                 }
                 break
-            case 2:
+            default:
                 stepper.value.next()
-                break
-            case 3:
-                stepper.value.next()
-                break
         }
     }
 
