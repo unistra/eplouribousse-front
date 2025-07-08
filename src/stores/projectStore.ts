@@ -269,5 +269,8 @@ export const useProjectStore = defineStore('project', {
                 })
             }
         },
+        async passToReview() {
+            console.log('Pass to review')
+        },
     },
 })
