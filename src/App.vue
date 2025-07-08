@@ -38,3 +38,11 @@ onMounted(async () => {
         </QPageContainer>
     </QLayout>
 </template>
+
+<style scoped>
+.q-page-container {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100vh;
+}
+</style>
