@@ -42,7 +42,8 @@
             "back": "Retour",
             "create": "Créer le projet",
             "modify": "Modifier le projet",
-            "ready": "Je suis prêt"
+            "ready": "Je suis prêt",
+            "passToReview": "Passer le projet en review"
         },
         "steps": {
             "informations": {
@@ -85,7 +86,9 @@
                 "title": "Rôles des utilisateurs"
             },
             "summary": {
-                "title": "Récapitulatif"
+                "title": "Récapitulatif",
+                "noUser": "Aucun utilisateur n'a été assigné ce rôle",
+                "whenConfirm": "En confirmant, les invitations seront envoyés aux emails renseignés, ainsi que les notifications aux utilisateurs participants au projet"
             }
         },
         "requirements": {
