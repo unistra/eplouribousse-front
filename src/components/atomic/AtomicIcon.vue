@@ -9,7 +9,6 @@ defineProps<{
 
 <template>
     <QIcon
-        :left="iconRight ? false : true"
         :name="name"
         :right="iconRight"
         size="1.7rem"
