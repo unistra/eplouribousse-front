@@ -20,6 +20,15 @@ interface Project extends ProjectI {
     isLoading: boolean
 }
 
+interface ProjectSummarized {
+    id: string
+    name: string
+    description: string
+    isPrivate: boolean
+    activeAfter: string
+    status: number
+}
+
 interface ProjectInvitation {
     email: string
     role: Roles
