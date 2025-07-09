@@ -10,8 +10,6 @@ import { storeToRefs } from 'pinia'
 export const useNewProjectStepper = () => {
     const { t } = useI18n()
     const store = useProjectStore()
-    const userStore = useUserStore()
-    const { user } = storeToRefs(userStore)
     const { notify } = useComposableQuasar()
 
     const step = ref(1)

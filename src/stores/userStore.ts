@@ -6,7 +6,7 @@ import type { Pagination } from '#/pagination.ts'
 import { type User } from '#/user'
 
 export const useUserStore = defineStore('user', () => {
-    const user = ref<User>()
+    const user = ref<User | undefined>()
     const userInProject = ref<UserInProject>()
     const isAuth = ref<boolean>(false)
     const tenant = ref<string>('dev')
