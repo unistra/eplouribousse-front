@@ -20,9 +20,6 @@ import quasarIconSet from 'quasar/icon-set/mdi-v7'
 // Import icon libraries
 import '@quasar/extras/mdi-v7/mdi-v7.css'
 
-// Import Quasar css
-import 'quasar/src/css/index.sass'
-
 const app = createApp(App)
 
 if (import.meta.env.VITE_ENV !== 'prod') {
