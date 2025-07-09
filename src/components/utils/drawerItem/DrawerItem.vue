@@ -14,14 +14,12 @@ const emit = defineEmits(['click'])
 
 <template>
     <QItem
-        :class="'item-content'"
         clickable
         dense
         :to
         @click="emit('click')"
     >
         <AtomicIcon
-            class="icon"
             :name="icon ?? ''"
             :tooltip="tooltip ? tooltip : undefined"
         />
@@ -30,7 +28,11 @@ const emit = defineEmits(['click'])
 </template>
 
 <style lang="sass" scoped>
-.item-content
+.q-item
     display: flex
     align-items: center
+    justify-content: center
+    gap: 0.5rem
+    padding-bottom: 0.5rem
+    padding-top: 0.5rem
 </style>
