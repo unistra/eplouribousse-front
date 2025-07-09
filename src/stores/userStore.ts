@@ -6,17 +6,18 @@ import type { Pagination } from '#/pagination.ts'
 import { type User, type UserInProject } from '#/user'
 
 export const useUserStore = defineStore('user', () => {
-    const user = ref<User>()
+    const user = ref<User | undefined>()
     const userInProject = ref<UserInProject>()
     const isAuth = ref<boolean>(false)
     const tenant = ref<string>('dev')
     const projects = ref<ProjectSummarized[]>([])
 
     const getProjects = async () => {
-        if (isAuth.value) {
+        if (isAuth.value && user.value) {
             const dataProjects = await axiosI.get<Pagination<ProjectI>>('/projects/', {
                 params: {
                     page_size: 100,
+                    user_id: user.value.id,
                 },
             })
             projects.value = dataProjects.data.results.sort(
@@ -26,7 +27,9 @@ export const useUserStore = defineStore('user', () => {
             projects.value = []
         }
     }
+
     function clean() {
+        isAuth.value = false
         user.value = undefined
         userInProject.value = undefined
         tenant.value = ''

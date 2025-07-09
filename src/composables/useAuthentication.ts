@@ -7,7 +7,6 @@ export function useAuthentication() {
     const userStore = useUserStore()
 
     async function logout() {
-        userStore.isAuth = false
         userStore.clean()
         localStorage.removeItem('JWT__access__token')
         localStorage.removeItem('JWT__refresh__token')
