@@ -1,12 +1,13 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { type User } from '#/user'
 import type { ProjectI, ProjectSummarized } from '#/project'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import type { Pagination } from '#/pagination.ts'
+import { type User, type UserInProject } from '#/user'
 
 export const useUserStore = defineStore('user', () => {
     const user = ref<User>()
+    const userInProject = ref<UserInProject>()
     const isAuth = ref<boolean>(false)
     const tenant = ref<string>('dev')
     const projects = ref<ProjectSummarized[]>([])
@@ -27,6 +28,7 @@ export const useUserStore = defineStore('user', () => {
     }
     function clean() {
         user.value = undefined
+        userInProject.value = undefined
         tenant.value = ''
     }
 

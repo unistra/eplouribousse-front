@@ -2,7 +2,7 @@ import { type UserI } from '#/user'
 import { type Comparator, UniqueSet } from '#/utils'
 import { axiosI } from '@/plugins/axios/axios'
 import { ref, watch } from 'vue'
-import type { ProjectInvitation, UserRoleUser } from '#/project'
+import type { ProjectInvitation, ProjectUser } from '#/project'
 import type { Pagination } from '#/pagination.ts'
 
 export type SearchUserEmitActions = {
@@ -17,7 +17,7 @@ export function useSearchUser(emit: SearchUserEmitActions) {
     const users = ref<UserI[]>([])
     const matchingUsers = ref<UniqueSet<UserI>>()
 
-    const userAlreadySelected = ref<UserRoleUser[]>([])
+    const userAlreadySelected = ref<ProjectUser[]>([])
 
     const userComparator: Comparator<UserI> = (a: UserI, b: UserI) => a.id === b.id
     const isUserListLoading = ref<boolean>(false)

@@ -1,24 +1,25 @@
-export interface UserSettings {
+import { type ProjectUser, type Roles } from '#/project'
+
+interface UserSettings {
     theme: string
     locale: string
 }
 
 export interface User {
     id: string
-    username: string
     email: string
+    firstName: string
+    lastName: string
+    username: string
     canAuthenticateLocally: boolean
     isProjectCreator: boolean
     projects: string[]
     settings: UserSettings
-    firstName?: string
-    lastName?: string
-    role?: string
 }
 
-export interface ProjectUser {
-    user: User
-    role: string
+export interface UserInProject extends ProjectUser {
+    role: Roles
+    libraryId: string | undefined
 }
 
 export interface UserI {

@@ -3,10 +3,14 @@ import { QStepper } from 'quasar'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
+import { useUserStore } from '@/stores/userStore'
+import { storeToRefs } from 'pinia'
 
 export const useNewProjectStepper = () => {
     const { t } = useI18n()
     const store = useProjectStore()
+    const userStore = useUserStore()
+    const { user } = storeToRefs(userStore)
     const { notify } = useComposableQuasar()
 
     const step = ref(1)

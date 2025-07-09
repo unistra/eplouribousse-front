@@ -8,7 +8,7 @@ import type {
     ProjectI,
     ProjectInvitation,
     Roles,
-    UserRole,
+    ProjectRole,
 } from '#/project'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { Notify } from 'quasar'
@@ -162,7 +162,7 @@ export const useProjectStore = defineStore('project', {
                 ...(libraryId && { library_id: libraryId }),
             }
             try {
-                const response = await axiosI.post<UserRole>(`/projects/${this.id}/roles/`, data)
+                const response = await axiosI.post<ProjectRole>(`/projects/${this.id}/roles/`, data)
                 this.roles.push(response.data)
             } catch {
                 Notify.create({
