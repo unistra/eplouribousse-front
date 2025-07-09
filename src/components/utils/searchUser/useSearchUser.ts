@@ -37,16 +37,12 @@ export function useSearchUser(emit: SearchUserEmitActions) {
         isUserListLoading.value = true
 
         try {
-            const excludeString = `?exclude=${userAlreadySelected.value.map((user) => user.id).join('&exclude=')}`
-            const response = await axiosI.get<Pagination<UserI>>(
-                `/users/${userAlreadySelected.value.length > 0 ? excludeString : ''}`,
-                {
-                    params: {
-                        search: username.value,
-                    },
+            const response = await axiosI.get<Pagination<UserI>>(`/users/`, {
+                params: {
+                    search: username.value,
+                    exclude: userAlreadySelected.value.map((user) => user.id),
                 },
-            )
-            console.log(response)
+            })
             users.value = response.data.results
             nextPage.value = response.data.next
 

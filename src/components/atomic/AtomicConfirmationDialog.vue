@@ -34,8 +34,9 @@ const closeModal = (event: 'confirm' | 'cancel') => {
                     @click="closeModal('cancel')"
                 />
                 <AtomicButton
-                    :color="confirmButtonColor"
+                    :color="confirmButtonColor || 'primary'"
                     :label="t('common.confirm')"
+                    :no-border="!confirmButtonColor"
                     @click="closeModal('confirm')"
                 />
             </QCardActions>
