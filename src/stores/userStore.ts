@@ -25,6 +25,10 @@ export const useUserStore = defineStore('user', () => {
             projects.value = []
         }
     }
+    function clean() {
+        user.value = undefined
+        tenant.value = ''
+    }
 
     return {
         user,
@@ -32,5 +36,6 @@ export const useUserStore = defineStore('user', () => {
         isAuth,
         projects,
         getProjects,
+        clean,
     }
 })

@@ -1,4 +1,5 @@
 import { LibraryI } from './library'
+import { type ProjectPermissions } from '#/permissions'
 
 interface ProjectI {
     id: string
@@ -13,6 +14,7 @@ interface ProjectI {
     libraries: LibraryI[]
     createdAt: string
     updatedAt: string
+    acl: ProjectPermissions
 }
 
 interface Project extends ProjectI {

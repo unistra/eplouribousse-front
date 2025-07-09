@@ -31,6 +31,7 @@ const getInitialState = (): ProjectI => ({
     libraries: [],
     createdAt: '',
     updatedAt: '',
+    acl: {},
 })
 
 export const useProjectStore = defineStore('project', {

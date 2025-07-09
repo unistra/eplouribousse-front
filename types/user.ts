@@ -9,7 +9,7 @@ export interface User {
     email: string
     canAuthenticateLocally: boolean
     isProjectCreator: boolean
-    projects: string
+    projects: string[]
     settings: UserSettings
     firstName?: string
     lastName?: string

@@ -2,12 +2,13 @@ import { useUserStore } from '@/stores/userStore'
 import { useRoute, useRouter } from 'vue-router'
 
 export function useAuthentication() {
-    async function logout() {
-        const router = useRouter()
-        const route = useRoute()
-        const userStore = useUserStore()
+    const router = useRouter()
+    const route = useRoute()
+    const userStore = useUserStore()
 
+    async function logout() {
         userStore.isAuth = false
+        userStore.clean()
         localStorage.removeItem('JWT__access__token')
         localStorage.removeItem('JWT__refresh__token')
 
