@@ -1,17 +1,16 @@
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n'
 import NewProjectStepper from '@/components/newProject/newProjectStepper/NewProjectStepper.vue'
 import NewProjectRequirements from '@/components/newProject/newProjectRequirements/newProjectRequirements.vue'
 import { ref } from 'vue'
-
-const { t } = useI18n()
+import { useProjectStore } from '@/stores/projectStore.ts'
 
 const isRequirementValidated = ref<boolean>(false)
+const store = useProjectStore()
+store.$reset()
 </script>
 
 <template>
     <QPage padding>
-        <h1>{{ t('newProject.title') }}</h1>
         <NewProjectRequirements
             v-if="!isRequirementValidated"
             @validate="isRequirementValidated = true"
@@ -19,3 +18,8 @@ const isRequirementValidated = ref<boolean>(false)
         <NewProjectStepper v-else />
     </QPage>
 </template>
+
+<style lang="sass" scoped>
+.q-page
+    display: flex
+</style>

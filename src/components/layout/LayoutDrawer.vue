@@ -77,7 +77,6 @@ async function onLogout() {
                             <DrawerItem
                                 v-for="project in userStore.projects"
                                 :key="project.id"
-                                active-class="font-semibold"
                                 icon="mdi-book-multiple"
                                 :name="!collapsed ? project.name : ''"
                                 :to="{ name: 'project', params: { id: project.id } }"

@@ -1,3 +1,6 @@
 @import 'quasar/src/css/index.sass';
 @import './base.css';
-@import 'epl-variables.scss';
+
+.q-router-link--exact-active {
+    opacity: 0.6;
+}
