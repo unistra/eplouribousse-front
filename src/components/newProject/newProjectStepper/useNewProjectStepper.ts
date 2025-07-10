@@ -3,6 +3,8 @@ import { QStepper } from 'quasar'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
+import router from '@/router/index'
+import { useUserStore } from '@/stores/userStore.ts'
 
 export const useNewProjectStepper = () => {
     const { t } = useI18n()
@@ -40,6 +42,13 @@ export const useNewProjectStepper = () => {
             case 1:
                 const isValid = await store.validateAndProceedTitleAndDescription()
                 if (isValid) {
+                    if (router.currentRoute.value.name === 'newProject') {
+                        const userStore = useUserStore()
+                        await userStore.getProjects()
+                        await router.push({ name: 'project', params: { id: store.id }, query: { page: 2 } })
+                        return
+                    }
+
                     stepper.value.next()
                 } else {
                     notify({

@@ -7,10 +7,17 @@ import { useNewProjectStepper } from '@/components/newProject/newProjectStepper/
 import NewProjectRoles from '@/components/newProject/steps/newProjectRoles/NewProjectRoles.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import NewProjectSummary from '@/components/newProject/steps/newProjectSummary/NewProjectSummary.vue'
+import { useRoute } from 'vue-router'
+import { onMounted } from 'vue'
 
 const { t } = useI18n()
 
 const { step, nextStep, previousStep, buttonLabel, passToReviewLoading, passToReview } = useNewProjectStepper()
+
+onMounted(async () => {
+    const route = useRoute()
+    if (route.query.page && route.query.page === '2') await nextStep()
+})
 </script>
 
 <template>
