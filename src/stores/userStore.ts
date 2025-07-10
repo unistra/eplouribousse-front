@@ -9,7 +9,7 @@ export const useUserStore = defineStore('user', () => {
     const user = ref<User | undefined>()
     const userInProject = ref<ProjectRole>()
     const isAuth = ref<boolean>(false)
-    const tenant = ref<string>('dev')
+    const tenant = ref<string>('')
     const projects = ref<ProjectSummarized[]>([])
 
     const getProjects = async () => {

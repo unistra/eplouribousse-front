@@ -13,6 +13,7 @@ router.beforeEach(async (to) => {
     const userStore = useUserStore()
     const { notify } = useComposableQuasar()
 
+<<<<<<< HEAD
     document.title = `${to.name === 'project' ? 'Projet' : to.meta.title} | ${import.meta.env.VITE_SITE_NAME}`
     if (to.meta.needProjectCreator && userStore?.user?.isProjectCreator) {
         notify({
@@ -20,6 +21,15 @@ router.beforeEach(async (to) => {
         })
         await router.replace({ name: 'login' })
     }
+=======
+    document.title = `${to.name === 'project' ? i18n.global.t('navigation.project') : to.meta.title} | ${import.meta.env.VITE_SITE_NAME}`
+    // if (to.meta.require && userStore?.user?.role && !to.meta.require.includes(userStore.user.role)) {
+    //     notify({
+    //         message: i18n.global.t('navigation.hasNoPerm'),
+    //     })
+    //     await router.replace({ name: 'login' })
+    // }
+>>>>>>> d896459 (Added permission checks in the NewProject module)
     if (to.meta.needAuth && !userStore.isAuth) {
         notify({
             message: i18n.global.t('navigation.needAuth'),
