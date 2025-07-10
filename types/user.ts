@@ -1,3 +1,5 @@
+import type { ProjectRole } from './project'
+
 interface UserSettings {
     theme: string
     locale: string
@@ -11,9 +13,8 @@ export interface User {
     username: string
     canAuthenticateLocally: boolean
     isProjectCreator: boolean
-    projects: string[]
+    projects: ProjectRole[]
     settings: UserSettings
-    roles?: string[]
 }
 
 export interface UserI {

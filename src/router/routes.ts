@@ -23,7 +23,6 @@ const routes: RouteRecordRaw[] = [
         name: 'contactAdmin',
         component: () => import('@/views/ContactAdminView.vue'),
         meta: {
-            // require: ['test'],
             title: 'Contact',
         },
     },
@@ -107,6 +106,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/NewProjectView.vue'),
         meta: {
             title: 'Nouveau Projet',
+            needProjectCreator: true,
         },
     },
     {
