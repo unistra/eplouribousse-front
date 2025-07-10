@@ -30,8 +30,10 @@ watch(
     </QPage>
 </template>
 
-<style lang="scss" scoped>
-.q-spinner {
-    width: 100%;
-}
+<style lang="sass" scoped>
+.q-spinner
+    width: 100%
+
+.q-page
+    display: flex
 </style>
