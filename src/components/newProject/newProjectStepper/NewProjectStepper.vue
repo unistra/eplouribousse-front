@@ -75,6 +75,7 @@ onMounted(async () => {
                 <AtomicButton
                     v-if="step === 4"
                     color="primary"
+                    confirm-button-color="red"
                     :label="t('newProject.buttons.passToReview')"
                     :loading="passToReviewLoading"
                     no-border

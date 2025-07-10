@@ -5,6 +5,7 @@ import NewProjectStepper from '@/components/newProject/newProjectStepper/NewProj
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
+import ProjectReview from '@/components/project/projectReview/ProjectReview.vue'
 
 const route = useRoute()
 const store = useProjectStore()
@@ -36,7 +37,10 @@ watch(
 
 <template>
     <QPage padding>
-        <NewProjectStepper v-if="!store.isLoading" />
+        <template v-if="!store.isLoading">
+            <NewProjectStepper v-if="store.status < 20" />
+            <ProjectReview v-else-if="store.status < 30" />
+        </template>
         <QSpinner
             v-else
             size="4rem"

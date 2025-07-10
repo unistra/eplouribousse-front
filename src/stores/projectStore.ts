@@ -281,7 +281,17 @@ export const useProjectStore = defineStore('project', {
             }
         },
         async passToReview() {
-            console.log('Pass to review')
+            try {
+                const response = await axiosI.patch(`/projects/${this.id}/status/`, {
+                    status: 20,
+                })
+                this.status = response.data.status
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
         },
     },
 })
