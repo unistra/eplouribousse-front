@@ -5,7 +5,6 @@ import { useI18n } from 'vue-i18n'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import router from '@/router/index'
 import { useUserStore } from '@/stores/userStore.ts'
-import { storeToRefs } from 'pinia'
 
 export const useNewProjectStepper = () => {
     const { t } = useI18n()
