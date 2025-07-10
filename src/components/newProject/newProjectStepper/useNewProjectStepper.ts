@@ -18,9 +18,7 @@ export const useNewProjectStepper = () => {
     const passToReview = async () => {
         passToReviewLoading.value = true
         await store.passToReview()
-        setTimeout(() => {
-            passToReviewLoading.value = false
-        }, 1000)
+        passToReviewLoading.value = false
     }
 
     const buttonLabel = computed(() => {
