@@ -16,6 +16,7 @@ const store = useProjectStore()
         >
             <p>{{ role.title }}</p>
             <SearchUser
+                :has-perm="store.acl.update"
                 :invitations-selected="store.invitations.filter((el) => el.role === role.role)"
                 :is-add-user-loading="isAddUserLoading"
                 :users-selected="store.roles.filter((el) => el.role === role.role).map((el) => el.user)"

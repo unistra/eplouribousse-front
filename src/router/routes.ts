@@ -107,7 +107,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/NewProjectView.vue'),
         meta: {
             title: 'Nouveau Projet',
-            require: [],
         },
     },
     {

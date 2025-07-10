@@ -31,7 +31,17 @@ const getInitialState = (): ProjectI => ({
     libraries: [],
     createdAt: '',
     updatedAt: '',
-    acl: {},
+    acl: {
+        destroy: false,
+        update: false,
+        partialUpdate: false,
+        retrieve: false,
+        addLibrary: false,
+        updateStatus: false,
+        exclusionReason: false,
+        removeExclusionReason: false,
+        status: false,
+    },
 })
 
 export const useProjectStore = defineStore('project', {

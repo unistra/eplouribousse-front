@@ -13,7 +13,7 @@ router.beforeEach(async (to) => {
     const userStore = useUserStore()
     const { notify } = useComposableQuasar()
 
-    document.title = `${to.name === 'Home' ? i18n.global.t('homePage') : to.meta.title} | ${import.meta.env.VITE_SITE_NAME}`
+    document.title = `${to.name === 'project' ? i18n.global.t('navigation.project') : to.meta.title} | ${import.meta.env.VITE_SITE_NAME}`
     // if (to.meta.require && userStore?.user?.role && !to.meta.require.includes(userStore.user.role)) {
     //     notify({
     //         message: i18n.global.t('navigation.hasNoPerm'),

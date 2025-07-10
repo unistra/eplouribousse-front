@@ -1,11 +1,11 @@
-export interface ProjectPermissionss {
+export type ProjectPermissions = {
     destroy: boolean
     update: boolean
     partialUpdate: boolean
     retrieve: boolean
-    add_library: boolean
-    update_status: boolean
-    exclusion_reason: boolean
-    remove_exclusion_reason: boolean
+    addLibrary: boolean
+    updateStatus: boolean
+    exclusionReason: boolean
+    removeExclusionReason: boolean
     status: boolean
 }

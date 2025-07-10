@@ -1,5 +1,3 @@
-import { type ProjectUser, type Roles } from '#/project'
-
 interface UserSettings {
     theme: string
     locale: string
@@ -15,11 +13,7 @@ export interface User {
     isProjectCreator: boolean
     projects: string[]
     settings: UserSettings
-}
-
-export interface UserInProject extends ProjectUser {
-    role: Roles
-    libraryId: string | undefined
+    roles?: string[]
 }
 
 export interface UserI {
