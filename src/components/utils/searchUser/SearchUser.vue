@@ -27,7 +27,6 @@ watch(
 )
 
 onMounted(() => {
-    console.log(props.hasPerm)
     matchingUsers.value?.clear()
     userAlreadySelected.value = props.usersSelected
 })
