@@ -4,10 +4,12 @@ import { useRoute } from 'vue-router'
 import NewProjectStepper from '@/components/newProject/newProjectStepper/NewProjectStepper.vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useUserStore } from '@/stores/userStore'
+import { storeToRefs } from 'pinia'
 
 const route = useRoute()
 const store = useProjectStore()
 const userStore = useUserStore()
+const { userInProject } = storeToRefs(userStore)
 
 watch(
     () => route.params.id,
@@ -22,9 +24,9 @@ watch(
 )
 
 watch(
-    () => userStore.userInProject,
+    userInProject,
     () => {
-        if (userStore.userInProject === undefined) {
+        if (userInProject.value === undefined) {
             userStore.fillProjectUser(store.roles)
         }
     },
