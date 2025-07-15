@@ -39,6 +39,8 @@
     --font-size-4xl: 2.25rem;
     --font-size-5xl: 3rem;
     --font-size-6xl: 3.75rem;
+
+    --border-radius: 2rem;
 }
 
 /*
@@ -96,6 +98,7 @@ html {
 body {
     margin: 0; /* 1 */
     line-height: inherit; /* 2 */
+    font-size: inherit;
 }
 
 /*

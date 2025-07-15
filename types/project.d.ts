@@ -7,7 +7,7 @@ interface ProjectI {
     isPrivate: boolean
     activeAfter: string
     status: number
-    settings: []
+    settings: ProjectSettings
     invitations: ProjectInvitation[]
     roles: UserRole[]
     libraries: LibraryI[]
@@ -80,4 +80,8 @@ export type Collection = {
     publication_history: string
     numbering: string
     notes: string
+}
+
+export interface ProjectSettings {
+    exclusionReasons: string[]
 }
