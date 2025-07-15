@@ -10,43 +10,91 @@ const { t } = useI18n()
 </script>
 
 <template>
-    <p class="text-2xl">{{ store.name }}</p>
-    <p>{{ store.description }}</p>
-    <div class="container">
-        <NewProjectLibraryCard
-            v-for="library in store.libraries"
-            :key="library.id"
-            is-summary
-            :library="library"
-        />
-    </div>
-    <QList
-        v-for="role in roles"
-        :key="role.role"
-    >
-        <p>{{ role.title }}</p>
-        <template
-            v-if="
-                store.roles.filter((userRole) => role.role === userRole.role).length &&
-                store.invitations.filter((invitation) => role.role === invitation.role).length
-            "
+    <div class="summary">
+        <hgroup>
+            <p class="label">{{ t('newProject.steps.informations.name') }}</p>
+            <h2>{{ store.name }}</h2>
+        </hgroup>
+        <div class="description">
+            <p class="label">{{ t('newProject.steps.informations.description') }}</p>
+            <p :class="{ 'no-description': !store.description }">
+                {{ store.description || t('newProject.steps.informations.noDescription') }}
+            </p>
+        </div>
+        <div class="libraries">
+            <p class="label">{{ t('newProject.steps.libraries.title') }}</p>
+            <div class="cards">
+                <NewProjectLibraryCard
+                    v-for="library in store.libraries"
+                    :key="library.id"
+                    is-summary
+                    :library="library"
+                />
+            </div>
+        </div>
+        <QList
+            v-for="role in roles"
+            :key="role.role"
         >
-            <QItem
-                v-for="invitation in store.invitations.filter((invitation) => role.role === invitation.role)"
-                :key="invitation.email"
+            <p>{{ role.title }}</p>
+            <template
+                v-if="
+                    store.roles.filter((userRole) => role.role === userRole.role).length ||
+                    store.invitations.filter((invitation) => role.role === invitation.role).length
+                "
             >
-                <span>📨 {{ invitation.email }}</span>
-            </QItem>
-            <QItem
-                v-for="userRole in store.roles.filter((userRole) => role.role === userRole.role)"
-                :key="userRole.user.id"
-            >
-                <span
-                    >{{ userRole.user.firstName || '***' }} {{ userRole.user.lastName || `***` }} -
-                    {{ userRole.user.email || `${t('common.none')} ${t('common.email')}` }}</span
+                <QItem
+                    v-for="invitation in store.invitations.filter((invitation) => role.role === invitation.role)"
+                    :key="invitation.email"
                 >
-            </QItem>
-        </template>
-        <QItem v-else>{{ t('newProject.steps.summary.noUser') }}</QItem>
-    </QList>
+                    <span>📨 {{ invitation.email }}</span>
+                </QItem>
+                <QItem
+                    v-for="userRole in store.roles.filter((userRole) => role.role === userRole.role)"
+                    :key="userRole.user.id"
+                >
+                    <span
+                        >{{ userRole.user.firstName || '***' }} {{ userRole.user.lastName || `***` }} -
+                        {{ userRole.user.email || `${t('common.none')} ${t('common.email')}` }}</span
+                    >
+                </QItem>
+            </template>
+            <QItem v-else>{{ t('newProject.steps.summary.noUser') }}</QItem>
+        </QList>
+    </div>
 </template>
+
+<style lang="sass" scoped>
+.summary
+    display: flex
+    flex-flow: column nowrap
+    gap: 1rem
+    width: 100%
+
+    p.label
+        font-size: var(--font-size-sm)
+        color: var(--color-neutral-500)
+
+    hgroup
+        h2
+            font-size: var(--font-size-3xl)
+            margin-left: 2rem
+
+    .description
+        > :last-child
+            margin-left: 2rem
+            padding: 1rem
+            background-color: var(--color-neutral-100)
+            border-radius: var(--border-radius)
+
+        .no-description
+            font-style: italic
+            color: var(--color-neutral-500)
+
+    .libraries
+        .cards
+            display: flex
+            flex-flow: row wrap
+            justify-content: space-evenly
+            gap: 1rem
+</style>
