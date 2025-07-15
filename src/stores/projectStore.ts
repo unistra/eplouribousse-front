@@ -18,14 +18,16 @@ import axios from 'axios'
 
 const { t } = i18n.global
 
-const getInitialState = (): ProjectI => ({
+const initialState: ProjectI = {
     id: '',
     name: '',
     description: '',
     isPrivate: false,
     activeAfter: '',
     status: 10,
-    settings: [],
+    settings: {
+        exclusionReasons: [],
+    },
     invitations: [],
     roles: [],
     libraries: [],
@@ -42,12 +44,12 @@ const getInitialState = (): ProjectI => ({
         removeExclusionReason: false,
         status: false,
     },
-})
+}
 
 export const useProjectStore = defineStore('project', {
     state: (): Project => ({
-        ...getInitialState(),
-        initialState: getInitialState(),
+        ...structuredClone(initialState),
+        initialState: structuredClone(initialState),
         isLoading: false,
     }),
     getters: {
@@ -59,22 +61,18 @@ export const useProjectStore = defineStore('project', {
         async fetchProjectById(id: string) {
             try {
                 const response = await axiosI.get<ProjectI>(`/projects/${id}/`)
-                this._replaceState(response.data)
+
+                this.$state = {
+                    ...structuredClone(response.data),
+                    initialState: structuredClone(response.data),
+                    isLoading: false,
+                }
             } catch {
                 Notify.create({
                     type: 'negative',
                     message: t('errors.unknownRetry'),
                 })
             }
-        },
-        _replaceState(data: ProjectI) {
-            this.$state = {
-                ...data,
-                initialState: { ...data },
-                isLoading: false,
-            }
-
-            if (!Array.isArray(this.invitations)) this.invitations = []
         },
 
         // TITLE & DESCRIPTION
@@ -83,10 +81,12 @@ export const useProjectStore = defineStore('project', {
                 const response = await axiosI.post<ProjectI>('/projects/', {
                     name: this.name,
                     description: this.description,
-                    status: this.status,
                 })
 
-                this._replaceState(response.data)
+                this.id = response.data.id
+                this.initialState.id = response.data.id
+                this.initialState.name = this.name
+                this.initialState.description = this.description
             } catch {
                 Notify.create({
                     type: 'negative',
@@ -96,12 +96,13 @@ export const useProjectStore = defineStore('project', {
         },
         async _patchTitleAndDescription() {
             try {
-                const response = await axiosI.patch<ProjectI>(`/projects/${this.id}/`, {
+                await axiosI.patch(`/projects/${this.id}/`, {
                     name: this.name,
                     description: this.description,
                 })
 
-                this._replaceState(response.data)
+                this.initialState.name = this.name
+                this.initialState.description = this.description
             } catch {
                 Notify.create({
                     type: 'negative',
@@ -123,43 +124,38 @@ export const useProjectStore = defineStore('project', {
 
         // LIBRARIES
         async addLibrary(library: LibraryI) {
-            if (!this.libraries.some((lib) => lib.id === library.id)) {
-                try {
-                    await axiosI.post<ProjectI>(`/projects/${this.id}/libraries/`, {
-                        library_id: library.id,
-                    })
-                    this.libraries.push(library)
-                } catch {
-                    Notify.create({
-                        type: 'negative',
-                        message: t('newProject.steps.libraries.errors.whileAdding'),
-                    })
-                    return
-                }
+            if (this.libraries.some((lib) => lib.id === library.id)) return
+            try {
+                await axiosI.post(`/projects/${this.id}/libraries/`, { library_id: library.id })
+
+                this.libraries.push(library)
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('newProject.steps.libraries.errors.whileAdding'),
+                })
+                return
             }
         },
         async removeLibrary(library: LibraryI) {
-            if (this.libraries.some((lib) => lib.id === library.id)) {
-                try {
-                    await axiosI.delete<ProjectI>(`/projects/${this.id}/libraries/`, {
-                        params: {
-                            library_id: library.id,
-                        },
-                    })
+            if (!this.libraries.some((lib) => lib.id === library.id)) return
+            try {
+                await axiosI.delete<ProjectI>(`/projects/${this.id}/libraries/`, {
+                    params: {
+                        library_id: library.id,
+                    },
+                })
 
-                    this.libraries = this.libraries.filter((lib) => lib.id !== library.id)
-                    this.roles = this.roles.filter((role) => role.libraryId !== library.id)
-                    this.invitations = this.invitations.filter((inv) => inv.libraryId !== library.id)
-                } catch {
-                    Notify.create({
-                        type: 'negative',
-                        message: t('newProject.steps.libraries.errors.whileDeleting'),
-                    })
-                    return
-                }
+                this.libraries = this.libraries.filter((lib) => lib.id !== library.id)
+                this.roles = this.roles.filter((role) => role.libraryId !== library.id)
+                this.invitations = this.invitations.filter((inv) => inv.libraryId !== library.id)
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('newProject.steps.libraries.errors.whileDeleting'),
+                })
+                return
             }
-
-            this.libraries = this.libraries.filter((lib) => lib.id !== library.id)
         },
         async addRole(userId: string, role: Roles, libraryId?: string) {
             const data: {
@@ -291,6 +287,34 @@ export const useProjectStore = defineStore('project', {
                     type: 'negative',
                     message: t('errors.unknown'),
                 })
+            }
+        },
+        async addExclusionReason(exclusionReason: string) {
+            try {
+                await axiosI.post(`/projects/${this.id}/exclusion_reason/`, {
+                    exclusion_reason: exclusionReason,
+                })
+
+                this.settings.exclusionReasons.push(exclusionReason)
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async removeExclusionReason(exclusionReason: string) {
+            try {
+                await axiosI.delete(`/projects/${this.id}/exclusion_reason/`, {
+                    params: {
+                        exclusion_reason: exclusionReason,
+                    },
+                })
+
+                this.settings.exclusionReasons =
+                    this.settings.exclusionReasons?.filter((reason) => reason !== exclusionReason) || []
+            } catch (e) {
+                console.log(e)
             }
         },
     },
