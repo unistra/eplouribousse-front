@@ -14,6 +14,11 @@ export const useNewProjectStepper = () => {
     const step = ref(1)
     const stepper = useTemplateRef<QStepper>('stepper')
     const passToReviewLoading = ref<boolean>(false)
+    const passToReview = async () => {
+        passToReviewLoading.value = true
+        await store.passToReview()
+        passToReviewLoading.value = false
+    }
 
     const buttonLabel = computed(() => {
         if (step.value === 1) {
