@@ -35,6 +35,14 @@ const routes: RouteRecordRaw[] = [
         },
     },
     {
+        path: '/403',
+        name: '403',
+        component: () => import('@/views/Auth/403View.vue'),
+        meta: {
+            title: 'Page non accessible',
+        },
+    },
+    {
         path: '/change-password',
         name: 'changePassword',
         component: () => import('@/views/Auth/ChangePasswordView.vue'),
@@ -113,6 +121,14 @@ const routes: RouteRecordRaw[] = [
         path: '/projects/:id',
         name: 'project',
         component: () => import('@/views/ProjectView.vue'),
+    },
+    {
+        path: '/public-projects',
+        name: 'publicProjects',
+        component: () => import('@/views/PublicProjects.vue'),
+        meta: {
+            title: 'Projets',
+        },
     },
 ]
 

@@ -1,6 +1,6 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest'
 import { baseConfigAxios } from '~/fixtures/axios.ts'
-import { axiosRequestInterceptor } from '@/plugins/axios/axios.ts'
+import { axiosRequestInterceptor } from '@/plugins/axios/axios'
 
 const mocks = vi.hoisted(() => ({
     location: {

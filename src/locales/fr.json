@@ -6,7 +6,8 @@
         "login": "Connexion",
         "logout": "Déconnexion",
         "supervision": "Supervision",
-        "projects": "Projets",
+        "projects": "Mes projets",
+        "publicProjects": "Tous les projets",
         "project": "Projet",
         "userGuide": "Documentation",
         "contactAdmin": "Contact",
@@ -19,7 +20,8 @@
         "needLocal": "Vous devez avoir un compte local pour changer votre mot de passe",
         "collapse": "Masquer",
         "expand": "Afficher",
-        "noProject": "Aucun projet"
+        "noProject": "Aucun projet",
+        "403": "La page que vous avez demandé n'est pas accessible"
     },
     "roles": {
         "superUser": "Super utilisateur",
@@ -34,6 +36,9 @@
         "darkMode": "Thème sombre",
         "account": "Mon compte",
         "changePassword": "Changer mon mot de passe"
+    },
+    "publicProjects": {
+        "title": "Projets publics"
     },
     "newProject": {
         "create": "Créer un projet",

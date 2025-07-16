@@ -87,6 +87,12 @@ async function onLogout() {
                             {{ t('navigation.noProject') }}
                         </p>
                     </div>
+                    <DrawerItem
+                        icon="mdi-folder-move-outline"
+                        :name="!collapsed ? t('navigation.publicProjects') : ''"
+                        :to="{ name: 'publicProjects' }"
+                        :tooltip="collapsed ? t('navigation.publicProjects') : undefined"
+                    />
                 </div>
                 <div
                     v-if="user && user.isProjectCreator"
@@ -96,7 +102,7 @@ async function onLogout() {
                         v-if="!collapsed"
                         icon="mdi-plus"
                         :label="t('newProject.create')"
-                        :no-border="userStore.projects.length > 0"
+                        :no-border="userStore.projects.length < 0"
                         :to="{ name: 'newProject' }"
                     />
                     <DrawerItem
