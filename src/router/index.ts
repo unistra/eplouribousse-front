@@ -14,12 +14,6 @@ router.beforeEach(async (to) => {
     const { notify } = useComposableQuasar()
 
     document.title = `${to.name === 'project' ? 'Projet' : to.meta.title} | ${import.meta.env.VITE_SITE_NAME}`
-    if (to.meta.needProjectCreator && userStore?.user?.isProjectCreator) {
-        notify({
-            message: i18n.global.t('navigation.hasNoPerm'),
-        })
-        await router.replace({ name: 'login' })
-    }
     if (to.meta.needAuth && !userStore.isAuth) {
         notify({
             message: i18n.global.t('navigation.needAuth'),
