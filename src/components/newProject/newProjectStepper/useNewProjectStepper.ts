@@ -32,14 +32,6 @@ export const useNewProjectStepper = () => {
         return t('newProject.buttons.continue')
     })
 
-    const passToReview = async () => {
-        passToReviewLoading.value = true
-        await store.passToReview()
-        setTimeout(() => {
-            passToReviewLoading.value = false
-        }, 1000)
-    }
-
     const nextStep = async () => {
         if (!stepper.value) throw new Error()
 
