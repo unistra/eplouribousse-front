@@ -4,8 +4,9 @@ import { useI18n } from 'vue-i18n'
 import { ref, useTemplateRef, watch } from 'vue'
 import { useLibraryStore } from '@/stores/libraryStore.ts'
 import { storeToRefs } from 'pinia'
+import type { ProjectLibrary } from '#/project'
 
-export const useLibraryTable = (librariesSelected: LibraryI[]) => {
+export const useLibraryTable = (librariesSelected: ProjectLibrary[]) => {
     const { t } = useI18n()
     const { libraries } = storeToRefs(useLibraryStore())
     const { fetchLibraries } = useLibraryStore()

@@ -38,7 +38,7 @@ export const useLibraryStore = defineStore('library', () => {
             if (params?.excludeId) {
                 params.excludeId.forEach((id) => {
                     // With this method, we can exclude around 40 libraries before reaching the URL length limit
-                    queryParams.append('exclude', id)
+                    queryParams.append('exclude[]', id)
                 })
             }
 

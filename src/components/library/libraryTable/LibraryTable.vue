@@ -6,10 +6,11 @@ import { useI18n } from 'vue-i18n'
 import LibraryCreateAndEditBtn from '@/components/library/libraryCreateAndEditBtn/LibraryCreateAndEditBtn.vue'
 import LibraryDeleteBtn from '@/components/library/libraryDeleteBtn/LibraryDeleteBtn.vue'
 import type { LibraryI } from '#/library.d.ts'
+import type { ProjectLibrary } from '#/project'
 
 const props = defineProps<{
     withAddBtn?: boolean // Button to add library to a selection (e.g., on a project creation)
-    librariesSelected?: LibraryI[] // Libraries that are already selected, that should not be listed in the table
+    librariesSelected?: ProjectLibrary[] // Libraries that are already selected, that should not be listed in the table
 }>()
 const emit = defineEmits<{
     selected: LibraryI[]
