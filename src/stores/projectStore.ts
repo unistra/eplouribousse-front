@@ -7,6 +7,7 @@ import type {
     Project,
     ProjectI,
     ProjectInvitation,
+    ProjectLibrary,
     Roles,
     UserRole,
 } from '#/project'
@@ -117,7 +118,8 @@ export const useProjectStore = defineStore('project', {
             try {
                 await axiosI.post(`/projects/${this.id}/libraries/`, { library_id: library.id })
 
-                this.libraries.push(library)
+                const newLibrary: ProjectLibrary = { ...library, isAlternativeStorageSite: false }
+                this.libraries.push(newLibrary)
             } catch {
                 Notify.create({
                     type: 'negative',
@@ -304,6 +306,21 @@ export const useProjectStore = defineStore('project', {
                     this.settings.exclusionReasons?.filter((reason) => reason !== exclusionReason) || []
             } catch (e) {
                 console.log(e)
+            }
+        },
+
+        async toggleIsAlternativeStorageSite(library: ProjectLibrary) {
+            try {
+                await axiosI.patch(`/projects/${this.id}/libraries/${library.id}/`, {
+                    is_alternative_storage_site: !library.isAlternativeStorageSite,
+                })
+                const libraryToUpdate = this.libraries.find((el) => el.id === library.id)
+                if (libraryToUpdate) libraryToUpdate.isAlternativeStorageSite = !library.isAlternativeStorageSite
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
             }
         },
     },

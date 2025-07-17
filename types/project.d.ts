@@ -10,7 +10,7 @@ interface ProjectI {
     settings: ProjectSettings
     invitations: ProjectInvitation[]
     roles: UserRole[]
-    libraries: LibraryI[]
+    libraries: ProjectLibrary[]
     createdAt: string
     updatedAt: string
 }
@@ -84,4 +84,8 @@ export type Collection = {
 
 export interface ProjectSettings {
     exclusionReasons: string[]
+}
+
+export interface ProjectLibrary extends LibraryI {
+    isAlternativeStorageSite: boolean
 }

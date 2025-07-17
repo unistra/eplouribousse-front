@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import type { LibraryI } from '#/library'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import NewProjectLibraryCollection from '@/components/newProject/steps/newProjectLibraries/collections/NewProjectLibraryCollection.vue'
 import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useNewProjectLibraryCard } from '@/components/newProject/steps/newProjectLibraries/useNewProjectLibraryCard.ts'
+import type { ProjectLibrary } from '#/project'
 
 const props = defineProps<{
-    library: LibraryI
+    library: ProjectLibrary
     isSummary?: boolean
 }>()
 

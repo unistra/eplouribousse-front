@@ -1,8 +1,8 @@
 import { ref } from 'vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
-import type { LibraryI } from '#/library'
+import type { ProjectLibrary } from '#/project'
 
-export const useNewProjectLibraryCard = (library: LibraryI) => {
+export const useNewProjectLibraryCard = (library: ProjectLibrary) => {
     const store = useProjectStore()
 
     const isLoadingDelete = ref<boolean>(false)
