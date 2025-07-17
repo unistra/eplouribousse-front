@@ -138,7 +138,8 @@
             "defaultStorageLocation": "Lieu de conservation par défaut",
             "transferTracking": "Suivi des transferts",
             "treatmentTracking": "Suivi des traitements",
-            "exclusionReason": "Raison d'exclusion"
+            "exclusionReason": "Raison d'exclusion",
+            "alternativeStorageSite": "Lieu de stockage alternatif"
         }
     },
     "libraries": {

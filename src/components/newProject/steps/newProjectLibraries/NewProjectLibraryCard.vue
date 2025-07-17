@@ -15,9 +15,8 @@ const props = defineProps<{
 const { t } = useI18n()
 const store = useProjectStore()
 
-const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading } = useNewProjectLibraryCard(
-    props.library,
-)
+const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading, borderColorIsAlternativeStorageSite } =
+    useNewProjectLibraryCard(props.library)
 </script>
 
 <template>
@@ -77,6 +76,7 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading 
 
         <QCardSection>
             <NewProjectLibraryCollection
+                v-if="!library.isAlternativeStorageSite"
                 :is-summary="isSummary"
                 :library-id="library.id"
                 :project-id="store.id"
@@ -85,8 +85,13 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading 
 
         <QCardActions
             v-if="!isSummary"
-            align="right"
+            align="between"
         >
+            <QCheckbox
+                :label="t('project.settings.alternativeStorageSite')"
+                :model-value="library.isAlternativeStorageSite"
+                @update:model-value="store.toggleIsAlternativeStorageSite(props.library)"
+            />
             <AtomicButton
                 confirm-button-color="red"
                 icon="mdi-delete"
@@ -106,7 +111,7 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    border: 4px solid #e4e4e4;
+    border: 4px solid v-bind(borderColorIsAlternativeStorageSite);
 }
 
 .less-important {
