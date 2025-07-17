@@ -13,15 +13,15 @@ const { t } = useI18n()
 const { logout } = useAuthentication()
 const userStore = useUserStore()
 const router = useRouter()
-const { tenantConfiguration } = storeToRefs(userStore)
+const { tenant, isAuth, user } = storeToRefs(userStore)
 
 const drawer = ref<boolean>(true)
 const collapsed = ref<boolean>(false)
 
 watch(
-    () => userStore.isAuth,
+    () => user.value,
     async () => {
-        if (userStore.isAuth) {
+        if (isAuth.value && user.value) {
             await userStore.getProjects()
         } else {
             userStore.projects = []
@@ -58,7 +58,7 @@ async function onLogout() {
                 :to="{ name: 'Home' }"
             >
                 <h1>Eplouribousse</h1>
-                <p>{{ tenantConfiguration?.name }}</p>
+                <p>{{ tenant }}</p>
             </QItem>
             <DrawerItem
                 v-else
@@ -87,20 +87,31 @@ async function onLogout() {
                             {{ t('navigation.noProject') }}
                         </p>
                     </div>
+                    <DrawerItem
+                        icon="mdi-folder-move-outline"
+                        :name="!collapsed ? t('navigation.publicProjects') : ''"
+                        :to="{ name: 'publicProjects' }"
+                        :tooltip="collapsed ? t('navigation.publicProjects') : undefined"
+                    />
                 </div>
-                <AtomicButton
-                    v-if="!collapsed"
-                    icon="mdi-plus"
-                    :label="t('newProject.create')"
-                    :no-border="userStore.projects.length > 0"
-                    :to="{ name: 'newProject' }"
-                />
-                <DrawerItem
-                    v-else
-                    icon="mdi-plus"
-                    :to="{ name: 'newProject' }"
-                    :tooltip="t('newProject.create')"
-                />
+                <div
+                    v-if="user && user.isProjectCreator"
+                    class="create-btn"
+                >
+                    <AtomicButton
+                        v-if="!collapsed"
+                        icon="mdi-plus"
+                        :label="t('newProject.create')"
+                        :no-border="userStore.projects.length < 0"
+                        :to="{ name: 'newProject' }"
+                    />
+                    <DrawerItem
+                        v-else
+                        icon="mdi-plus"
+                        :to="{ name: 'newProject' }"
+                        :tooltip="t('newProject.create')"
+                    />
+                </div>
             </QItem>
         </QList>
 
@@ -179,6 +190,10 @@ async function onLogout() {
 
             p
                 font-size: 1.25rem
+
+        .create-btn
+            display: flex
+            flex-direction: column
 
         .projects
             display: flex

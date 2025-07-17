@@ -1,42 +1,23 @@
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { TenantConfiguration } from '#/utils'
-import { type User, type UserPreferences } from '#/user'
-import type { ProjectI, ProjectSummarized } from '#/project'
+import type { ProjectI, ProjectRole, ProjectSummarized } from '#/project'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import type { Pagination } from '#/pagination.ts'
+import { type User } from '#/user'
 
 export const useUserStore = defineStore('user', () => {
-    const user = ref<User>({
-        id: '0',
-        username: 'test',
-        email: 'test@test.fr',
-        canAuthenticateLocally: true,
-        role: 'manager',
-    })
+    const user = ref<User | undefined>()
+    const userInProject = ref<ProjectRole>()
     const isAuth = ref<boolean>(false)
-    const isLocal = ref<boolean>(false)
-
-    const tenantConfiguration = ref<TenantConfiguration>({
-        id: '0',
-        name: 'dev',
-        settings: {
-            color: '#676767',
-        },
-    })
-
-    const userPreferences = ref<UserPreferences>({
-        darkMode: false,
-    })
-
-    const tenantColor = computed(() => 'background-color: ' + tenantConfiguration.value.settings.color)
-
+    const tenant = ref<string>('')
     const projects = ref<ProjectSummarized[]>([])
+
     const getProjects = async () => {
-        if (isAuth.value) {
+        if (isAuth.value && user.value) {
             const dataProjects = await axiosI.get<Pagination<ProjectI>>('/projects/', {
                 params: {
                     page_size: 100,
+                    user_id: user.value.id,
                 },
             })
             projects.value = dataProjects.data.results.sort(
@@ -47,14 +28,25 @@ export const useUserStore = defineStore('user', () => {
         }
     }
 
+    function fillProjectUser(roles: ProjectRole[]) {
+        userInProject.value = roles.find((projectUser) => projectUser.user.id === user.value?.id)
+    }
+
+    function clean() {
+        isAuth.value = false
+        user.value = undefined
+        userInProject.value = undefined
+        tenant.value = ''
+    }
+
     return {
         user,
+        userInProject,
+        tenant,
         isAuth,
-        isLocal,
-        tenantConfiguration,
-        userPreferences,
-        tenantColor,
         projects,
         getProjects,
+        fillProjectUser,
+        clean,
     }
 })

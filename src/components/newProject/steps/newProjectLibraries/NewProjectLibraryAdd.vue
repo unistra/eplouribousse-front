@@ -7,6 +7,7 @@ import { useProjectStore } from '@/stores/projectStore.ts'
 const store = useProjectStore()
 
 const dialog = ref(false)
+const cursor = store.acl.addLibrary ? 'can-add-cursor' : 'cannot-add-cursor'
 const onSelected = (library: LibraryI) => {
     dialog.value = false
     store.addLibrary(library)
@@ -15,9 +16,9 @@ const onSelected = (library: LibraryI) => {
 
 <template>
     <QCard
-        class="placeholder-card"
+        :class="'placeholder-card ' + cursor"
         flat
-        @click="() => (dialog = true)"
+        @click="() => (dialog = store.acl.addLibrary)"
     >
         <QIcon name="mdi-plus-circle-outline" />
     </QCard>
@@ -38,8 +39,8 @@ const onSelected = (library: LibraryI) => {
     </QDialog>
 </template>
 
-<style scoped>
-.placeholder-card {
+<style scoped lang="sass">
+.placeholder-card
     width: 100%;
     max-width: 400px;
     height: 200px;
@@ -48,11 +49,14 @@ const onSelected = (library: LibraryI) => {
     border-radius: 8px;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
 
-    .q-icon {
+    .q-icon
         font-size: 36px;
         color: lightgray;
-    }
-}
+
+.can-add-cursor
+    cursor: pointer;
+
+.cannot-add-cursor
+    cursor: not-allowed;
 </style>

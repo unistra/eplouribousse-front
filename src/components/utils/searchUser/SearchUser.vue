@@ -2,15 +2,16 @@
 import { onMounted, watch } from 'vue'
 import { type SearchUserEmitActions, useSearchUser } from './useSearchUser'
 import { useI18n } from 'vue-i18n'
-import type { ProjectInvitation, UserRoleUser } from '#/project'
+import type { ProjectInvitation, ProjectUser } from '#/project'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import SearchUserItem from '@/components/utils/searchUser/SearchUserItem.vue'
 
 const props = defineProps<{
-    usersSelected: UserRoleUser[]
+    usersSelected: ProjectUser[]
     invitationsSelected: ProjectInvitation[]
     isAddUserLoading: boolean
+    hasPerm?: boolean
 }>()
 const { t } = useI18n()
 
@@ -38,6 +39,7 @@ onMounted(() => {
             clearable
             data-testid="search"
             dense
+            :disable="!hasPerm"
             icon="mdi-magnify"
             :label="t('utils.searchUser.inputPlaceholder')"
             :tooltip="t('utils.searchUser.inputPlaceholder')"

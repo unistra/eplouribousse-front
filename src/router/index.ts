@@ -13,20 +13,14 @@ router.beforeEach(async (to) => {
     const userStore = useUserStore()
     const { notify } = useComposableQuasar()
 
-    document.title = `${to.name === 'Home' ? i18n.global.t('homePage') : to.meta.title} | ${import.meta.env.VITE_SITE_NAME}`
-    if (to.meta.require && userStore.user.role && !to.meta.require.includes(userStore.user.role)) {
-        notify({
-            message: i18n.global.t('navigation.hasNoPerm'),
-        })
-        await router.replace({ name: 'login' })
-    }
+    document.title = `${to.name === 'project' ? 'Projet' : to.meta.title} | ${import.meta.env.VITE_SITE_NAME}`
     if (to.meta.needAuth && !userStore.isAuth) {
         notify({
             message: i18n.global.t('navigation.needAuth'),
         })
         await router.replace({ name: 'login' })
     }
-    if (to.meta.needLocal && !userStore.isLocal) {
+    if (to.meta.needLocal && !userStore?.user?.canAuthenticateLocally) {
         notify({
             message: i18n.global.t('navigation.needLocal'),
         })

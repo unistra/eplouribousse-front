@@ -1,6 +1,6 @@
-import axios, { type InternalAxiosRequestConfig } from 'axios'
-import { redirectToLogin, refreshToken, skippedRoutes } from '@/plugins/axios/axiosUtils.ts'
-import { isExpired } from '@/utils/jwt.ts'
+import axios, { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios'
+import { redirectTo403, redirectToLogin, refreshToken, skippedRoutes } from './axiosUtils'
+import { isExpired } from '@/utils/jwt'
 
 const configAuth = {
     baseURL: import.meta.env.VITE_APP_BASE_URL,
@@ -41,8 +41,18 @@ export const axiosRequestInterceptor = async (
     return config
 }
 
+export const axios403Interceptor = async (response: AxiosError): Promise<void> => {
+    if (response.status === 403) {
+        await redirectTo403()
+    }
+}
+
 axiosI.interceptors.request.use(axiosRequestInterceptor, (error: unknown) => {
     return Promise.reject(error)
 })
+
+axiosI.interceptors.response.use((response: AxiosResponse): AxiosResponse => {
+    return response
+}, axios403Interceptor)
 
 export { axiosI, axiosAuth }

@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { UserRoleUser } from '#/project'
+import type { ProjectUser } from '#/project'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 
 defineProps<{
-    user: UserRoleUser
+    user: ProjectUser
     dataTestid?: string
     action?: 'add' | 'remove'
 }>()
