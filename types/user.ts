@@ -1,20 +1,20 @@
-export interface UserPreferences {
-    darkMode: boolean
+import type { ProjectRole } from './project'
+
+interface UserSettings {
+    theme: string
+    locale: string
 }
 
 export interface User {
     id: string
-    username: string
     email: string
+    firstName: string
+    lastName: string
+    username: string
     canAuthenticateLocally: boolean
-    firstname?: string
-    lastname?: string
-    role?: string
-}
-
-export interface ProjectUser {
-    user: User
-    role: string
+    isProjectCreator: boolean
+    projects: ProjectRole[]
+    settings: UserSettings
 }
 
 export interface UserI {

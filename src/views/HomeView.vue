@@ -11,6 +11,8 @@ onMounted(async () => {
 
 <template>
     <QPage padding>
-        <p>Eplouribousse</p>
+        <div class="container column items-center">
+            <h1>Eplouribousse</h1>
+        </div>
     </QPage>
 </template>

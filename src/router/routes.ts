@@ -23,7 +23,6 @@ const routes: RouteRecordRaw[] = [
         name: 'contactAdmin',
         component: () => import('@/views/ContactAdminView.vue'),
         meta: {
-            // require: ['test'],
             title: 'Contact',
         },
     },
@@ -33,6 +32,14 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/Auth/LoginView.vue'),
         meta: {
             title: 'Connexion',
+        },
+    },
+    {
+        path: '/403',
+        name: '403',
+        component: () => import('@/views/Auth/403View.vue'),
+        meta: {
+            title: 'Page non accessible',
         },
     },
     {
@@ -107,13 +114,21 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/NewProjectView.vue'),
         meta: {
             title: 'Nouveau Projet',
-            require: ['manager'],
+            needProjectCreator: true,
         },
     },
     {
         path: '/projects/:id',
         name: 'project',
         component: () => import('@/views/ProjectView.vue'),
+    },
+    {
+        path: '/public-projects',
+        name: 'publicProjects',
+        component: () => import('@/views/PublicProjects.vue'),
+        meta: {
+            title: 'Projets',
+        },
     },
 ]
 

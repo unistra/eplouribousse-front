@@ -19,6 +19,10 @@ export const redirectToLogin = async () => {
     window.location.replace(`/login?redirect=${window.location.pathname}`)
 }
 
+export const redirectTo403 = async () => {
+    window.location.replace('/403')
+}
+
 export const refreshToken = async (): Promise<void> => {
     const response = await axiosI.post(`/token/refresh/`, { refresh: localStorage.getItem('JWT__refresh__token') })
     localStorage.setItem('JWT__access__token', response.data.access)

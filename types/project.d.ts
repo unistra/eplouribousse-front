@@ -1,6 +1,7 @@
 import { LibraryI } from './library'
+import { type ProjectPermissions } from '#/permissions'
 
-interface ProjectI {
+export interface ProjectI {
     id: string
     name: string
     description: string
@@ -9,13 +10,14 @@ interface ProjectI {
     status: number
     settings: ProjectSettings
     invitations: ProjectInvitation[]
-    roles: UserRole[]
+    roles: ProjectRole[]
     libraries: LibraryI[]
     createdAt: string
     updatedAt: string
+    acl: ProjectPermissions
 }
 
-interface Project extends ProjectI {
+export interface Project extends ProjectI {
     initialState: ProjectI
     isLoading: boolean
 }
@@ -29,13 +31,26 @@ interface ProjectSummarized {
     status: number
 }
 
-interface ProjectInvitation {
+export interface ProjectUser {
+    id: string
+    email: string
+    firstName: string
+    lastName: string
+}
+
+export interface ProjectRole {
+    user: ProjectUser
+    role: Roles
+    libraryId: string | undefined
+}
+
+export interface ProjectInvitation {
     email: string
     role: Roles
     libraryId: string | undefined
 }
 
-type Roles =
+export type Roles =
     | 'tenant_super_user'
     | 'project_creator'
     | 'project_admin'
@@ -43,19 +58,6 @@ type Roles =
     | 'instructor'
     | 'controller'
     | 'guest'
-
-type UserRole = {
-    role: Roles
-    user: UserRoleUser
-    libraryId: string | undefined // SHOULD CHANGE NAME TO libraryId IN BACKEND
-}
-
-export type UserRoleUser = {
-    id: string
-    email: string
-    firstName: string
-    lastName: string
-}
 
 export type ImportCSVResponse = Record<string, number>
 export type ImportCSVErrorObject = {

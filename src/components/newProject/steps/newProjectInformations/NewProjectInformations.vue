@@ -11,6 +11,7 @@ const store = useProjectStore()
     <QForm class="container column align-center">
         <AtomicInput
             v-model="store.name"
+            :disable="!store.acl.update"
             :label="t('newProject.steps.informations.name')"
             required
             :rules="[
@@ -21,6 +22,7 @@ const store = useProjectStore()
         />
         <AtomicInput
             v-model="store.description"
+            :disable="!store.acl.update"
             :label="t('newProject.steps.informations.description')"
             type="textarea"
         />
