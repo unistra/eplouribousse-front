@@ -21,7 +21,7 @@ const store = useProjectStore()
                 :users-selected="store.roles.filter((el) => el.role === role.role).map((el) => el.user)"
                 @add-invitation="async (email) => await onAddInvitation(email, role.role)"
                 @add-user="async (userId) => await onAddRole(userId, role.role)"
-                @remove-invitation="async ({ email }) => await store.removeInvitation(email, role.role)"
+                @remove-invitation="async ({ email }) => await store.removeInvitation(email, role.role, null)"
                 @remove-user="async (userId) => await store.removeRole(userId, role.role)"
             />
         </div>

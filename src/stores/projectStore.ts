@@ -246,7 +246,7 @@ export const useProjectStore = defineStore('project', {
                 })
             }
         },
-        async removeInvitation(email: string, role: Roles, libraryId?: string) {
+        async removeInvitation(email: string, role: Roles, libraryId: string | null) {
             try {
                 await axiosI.delete(`/projects/${this.id}/invitations/`, {
                     params: {
@@ -256,7 +256,7 @@ export const useProjectStore = defineStore('project', {
                     },
                 })
                 this.invitations = this.invitations.filter(
-                    (el) => !(el.role === 'instructor' && el.libraryId === libraryId && el.email === email),
+                    (el) => !(el.role === role && el.libraryId === libraryId && el.email === email),
                 )
             } catch {
                 Notify.create({
