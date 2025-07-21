@@ -259,7 +259,7 @@ export const useProjectStore = defineStore('project', {
                 })
             }
         },
-        async removeInvitation(email: string, role: Roles, libraryId: string | null) {
+        async removeInvitation(email: string, role: Roles, libraryId: string | null = null) {
             try {
                 await axiosI.delete(`/projects/${this.id}/invitations/`, {
                     params: {
