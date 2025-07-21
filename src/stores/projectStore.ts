@@ -334,5 +334,28 @@ export const useProjectStore = defineStore('project', {
                 })
             }
         },
+        async passToReady() {
+            try {
+                const response = await axiosI.patch(`/projects/${this.id}/status/`, {
+                    status: 30,
+                })
+                this.status = response.data.status
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async startTheProject() {
+            try {
+                console.log('starting project')
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
     },
 })
