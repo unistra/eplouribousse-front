@@ -39,7 +39,7 @@ watch(
     <QPage padding>
         <template v-if="!store.isLoading">
             <NewProjectStepper v-if="store.status < 20" />
-            <ProjectReview v-else-if="store.status < 30" />
+            <ProjectReview v-else-if="store.status < 30 || store.status < 40" />
         </template>
         <QSpinner
             v-else
