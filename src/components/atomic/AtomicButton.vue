@@ -18,7 +18,7 @@ const props = defineProps<{
     dataTestid?: string
     size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
     requireConfirmation?: boolean
-    confirmButtonColor?: 'red' | 'green'
+    confirmButtonColor?: 'red' | 'green' | 'primary'
 }>()
 
 const modalConfirmation = ref<boolean>(false)

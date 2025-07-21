@@ -5,7 +5,7 @@ import AtomicButton from '@/components/atomic/AtomicButton.vue'
 const { t } = useI18n()
 
 defineProps<{
-    confirmButtonColor?: 'red' | 'green'
+    confirmButtonColor?: 'red' | 'green' | 'primary'
 }>()
 const modal = defineModel<boolean>()
 const emit = defineEmits<{

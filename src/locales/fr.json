@@ -129,7 +129,16 @@
         "searchUsers": "Vous pouvez utiliser l'outil de recherche ci-dessous pour vérifier si les utilisateurs ont déjà un compte, si ce n'est pas le cas, contactez-les pour qu'ils se connectent au site :"
     },
     "project": {
-        "review": "Vérification du projet",
+        "review": {
+            "title": "Vérification du projet",
+            "passToReady": "Marquer comme prêt",
+            "confirmPassToReview": "En confirmant, le projet sera démareable par un pilote de projet."
+        },
+        "ready": {
+            "startTheProject": "Plannifier le démarrage du projet",
+            "defineStartDate": "Définir une date de démarrage",
+            "confirmStart": "En confirmant, le projet commencera le:"
+        },
         "settings": {
             "title": "Paramètres du projet",
             "privateMode": "Mode privé",
@@ -261,7 +270,7 @@
         }
     },
     "confirmDialogDefault": {
-        "irreversible": "Vous être sur le point d'effectuer une action irréversible",
+        "irreversible": "Cette action est irréversible",
         "areYouSure": "Êtes-vous sûr de vouloir continuer ?"
     },
     "common": {

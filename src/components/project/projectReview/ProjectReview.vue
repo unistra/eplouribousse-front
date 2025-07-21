@@ -2,46 +2,21 @@
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
-import { ref } from 'vue'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
-import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import NewProjectSummary from '@/components/newProject/steps/newProjectSummary/NewProjectSummary.vue'
 import ProjectSettings from '@/components/project/projectSettings/ProjectSettings.vue'
+import { useProjectReview } from '@/components/project/projectReview/useProjectReview.ts'
 
 const { t } = useI18n()
 const store = useProjectStore()
-const { notify } = useComposableQuasar()
-
-const settingsMode = ref<boolean>(false)
-
-// const nameEditMode = ref<boolean>(false)
-// const onNameOrDescriptionEnter = async () => {
-//     const isValid = await store.validateAndProceedTitleAndDescription()
-//
-//     if (isValid) {
-//         notify({
-//             type: 'positive',
-//             message: t('newProject.steps.informations.updateNameSucceed'),
-//         })
-//         nameEditMode.value = false
-//     } else {
-//         notify({
-//             type: 'negative',
-//             multiLine: true,
-//             message: `${t('forms.validation.fieldIsRequired')} ${t('common.or')} ${t('forms.validation.fieldLessThan255').toLowerCase()}`,
-//         })
-//         store.name = store.initialState.name
-//     }
-// }
-//
-// const descriptionEditMode = ref<boolean>(false)
+const { settingsMode, dateModal, onConfirm, dateStringFR, date, todayStringEN } = useProjectReview()
 </script>
 
 <template>
-    <div>
+    <div class="project-review">
         <hgroup>
             <template v-if="!settingsMode">
-                <h2>{{ t('project.review') }}</h2>
+                <h2>{{ t('project.review.title') }}</h2>
                 <AtomicButton
                     icon="mdi-cog"
                     no-border
@@ -62,50 +37,77 @@ const settingsMode = ref<boolean>(false)
             <NewProjectSummary v-if="!settingsMode" />
             <ProjectSettings v-else />
         </KeepAlive>
+
+        <AtomicButton
+            v-if="store.status < 30"
+            color="primary"
+            confirm-button-color="primary"
+            :label="t('project.review.passToReady')"
+            no-border
+            require-confirmation
+            @confirm="store.passToReady"
+        >
+            <template #confirmation-content>
+                <QCardSection>
+                    <p>{{ t('project.review.confirmPassToReview') }}</p>
+                    <p>{{ t('confirmDialogDefault.irreversible') }}</p>
+                </QCardSection>
+            </template>
+        </AtomicButton>
+        <AtomicButton
+            v-else-if="store.status < 40"
+            color="primary"
+            :label="t('project.ready.startTheProject')"
+            no-border
+            @click="dateModal = true"
+        />
+        <QDialog
+            v-model="dateModal"
+            persistent
+        >
+            <QCard>
+                <QCardSection>
+                    <p>{{ t('project.ready.defineStartDate') }}</p>
+                    <AtomicInput
+                        v-model="date"
+                        :min="todayStringEN"
+                        outlined
+                        rounded
+                        type="date"
+                        :value="todayStringEN"
+                    >
+                    </AtomicInput>
+                </QCardSection>
+                <QCardActions align="right">
+                    <AtomicButton
+                        :label="t('common.cancel')"
+                        @click="dateModal = false"
+                    />
+                    <AtomicButton
+                        color="primary"
+                        confirm-button-color="primary"
+                        :label="t('common.confirm')"
+                        no-border
+                        require-confirmation
+                        @confirm="onConfirm"
+                    >
+                        <template #confirmation-content>
+                            <QCardSection>
+                                <p>
+                                    {{ t('project.ready.confirmStart') }} <strong>{{ dateStringFR }}</strong>
+                                </p>
+                                <p>{{ t('confirmDialogDefault.irreversible') }}</p>
+                            </QCardSection>
+                        </template>
+                    </AtomicButton>
+                </QCardActions>
+            </QCard>
+        </QDialog>
     </div>
-    <!--    <div class="review">-->
-    <!--        <hgroup>-->
-    <!--            <p class="label">{{ t('project.review') }}</p>-->
-    <!--            <h2 v-if="!nameEditMode">-->
-    <!--                {{ store.name }}-->
-    <!--                <AtomicButton-->
-    <!--                    icon="mdi-pencil"-->
-    <!--                    no-border-->
-    <!--                    @click="nameEditMode = true"-->
-    <!--                />-->
-    <!--            </h2>-->
-    <!--            <AtomicInput-->
-    <!--                v-else-->
-    <!--                v-model="store.name"-->
-    <!--                :label="t('newProject.steps.informations.name')"-->
-    <!--                @keyup.enter="onNameOrDescriptionEnter"-->
-    <!--            />-->
-    <!--        </hgroup>-->
-    <!--        <div class="description">-->
-    <!--            <p class="label">{{ t('newProject.steps.informations.description') }}</p>-->
-    <!--            <div v-if="!descriptionEditMode">-->
-    <!--                <p :class="{ 'no-description': !store.description }">-->
-    <!--                    {{ store.description || t('newProject.steps.informations.noDescription') }}-->
-    <!--                </p>-->
-    <!--                <AtomicButton-->
-    <!--                    icon="mdi-pencil"-->
-    <!--                    no-border-->
-    <!--                    @click="descriptionEditMode = true"-->
-    <!--                />-->
-    <!--            </div>-->
-    <!--            <AtomicInput-->
-    <!--                v-else-->
-    <!--                v-model="store.description"-->
-    <!--                :label="t('newProject.steps.informations.description')"-->
-    <!--                type="textarea"-->
-    <!--                @keyup.enter="onNameOrDescriptionEnter"-->
-    <!--            />-->
-    <!--        </div>-->
-    <!--    </div>-->
 </template>
 
 <style lang="sass" scoped>
-div
+.project-review
     display: flex
     flex-direction: column
     gap: 1rem
@@ -118,21 +120,10 @@ div
         h2
             font-size: var(--font-size-3xl)
 
-//.review
-//    display: flex
-//    flex-flow: column nowrap
-//    flex-direction: column
-//
-//    h2
-//        font-size: var(--font-size-3xl)
-//        margin-left: 2rem
-//        display: flex
-//        gap: 1rem
-//
-//    .description
-//        > :last-child
-//            margin-left: 2rem
-//            padding: 1rem
-//            background-color: var(--color-neutral-100)
-//            border-radius: var(--border-radius)
+    > .q-btn
+        align-self: end
+
+    .q-card__section
+        strong
+            font-weight: bold
 </style>

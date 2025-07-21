@@ -259,7 +259,7 @@ export const useProjectStore = defineStore('project', {
                 })
             }
         },
-        async removeInvitation(email: string, role: Roles, libraryId: string | null) {
+        async removeInvitation(email: string, role: Roles, libraryId: string | null = null) {
             try {
                 await axiosI.delete(`/projects/${this.id}/invitations/`, {
                     params: {
@@ -327,6 +327,29 @@ export const useProjectStore = defineStore('project', {
                 })
                 const libraryToUpdate = this.libraries.find((el) => el.id === library.id)
                 if (libraryToUpdate) libraryToUpdate.isAlternativeStorageSite = !library.isAlternativeStorageSite
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async passToReady() {
+            try {
+                const response = await axiosI.patch(`/projects/${this.id}/status/`, {
+                    status: 30,
+                })
+                this.status = response.data.status
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async startTheProject() {
+            try {
+                console.log('starting project')
             } catch {
                 Notify.create({
                     type: 'negative',
