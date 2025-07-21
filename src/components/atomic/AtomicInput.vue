@@ -1,15 +1,15 @@
 <script lang="ts" setup>
 import AtomicIcon from './AtomicIcon.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
-import { onMounted, useTemplateRef } from 'vue'
-import type { QInput } from 'quasar'
+import { computed, onMounted, useTemplateRef } from 'vue'
+import { type QInput } from 'quasar'
 
 const model = defineModel<string | number | undefined>()
 
 const props = defineProps<{
     autofocus?: boolean
     hideBottomSpace?: boolean
-    type?: 'text' | 'textarea' | 'email' | 'search' | 'number' | 'url' | 'password'
+    type?: 'text' | 'textarea' | 'email' | 'search' | 'number' | 'url' | 'password' | 'date'
     label?: string
     clearable?: boolean
     counter?: boolean
@@ -28,6 +28,7 @@ const emit = defineEmits<{
 }>()
 const input = useTemplateRef<QInput>('input')
 
+const computedLabel = computed(() => (props.label ? `${props.label}${props.required ? ' *' : ''}` : undefined))
 onMounted(() => {
     if (props.quickInput && input.value) {
         input.value.focus()
@@ -45,7 +46,7 @@ onMounted(() => {
         :data-testid
         :disable
         :hide-bottom-space
-        :label="`${label}${required ? ' *' : ''}`"
+        :label="computedLabel"
         outlined
         rounded
         :type="type ?? 'text'"
