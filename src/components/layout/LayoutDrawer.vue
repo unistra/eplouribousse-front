@@ -12,8 +12,9 @@ import { useRouter } from 'vue-router'
 const { t } = useI18n()
 const { logout } = useAuthentication()
 const userStore = useUserStore()
+const globalStore = useGlobalStore()
 const router = useRouter()
-const { tenant, isAuth, user } = storeToRefs(userStore)
+const { isAuth, user } = storeToRefs(userStore)
 
 const drawer = ref<boolean>(true)
 const collapsed = ref<boolean>(false)
@@ -58,7 +59,7 @@ async function onLogout() {
                 :to="{ name: 'Home' }"
             >
                 <h1>Eplouribousse</h1>
-                <p>{{ tenant }}</p>
+                <p>{{ globalStore.tenant?.name || '' }}</p>
             </QItem>
             <DrawerItem
                 v-else
