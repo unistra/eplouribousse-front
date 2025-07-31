@@ -12,6 +12,7 @@ export const useUserStore = defineStore('user', () => {
     const userInProject = ref<ProjectRole>()
     const isAuth = ref<boolean>(false)
     const projects = ref<ProjectSummarized[]>([])
+    const projectsLoading = ref<boolean>(false)
 
     const fetchUser = async () => {
         const token = localStorage.getItem('JWT__access__token')
@@ -28,18 +29,22 @@ export const useUserStore = defineStore('user', () => {
     }
 
     const getProjects = async () => {
-        if (isAuth.value && user.value) {
-            const dataProjects = await axiosI.get<Pagination<ProjectI>>('/projects/', {
+        try {
+            projectsLoading.value = true
+            const response = await axiosI.get<Pagination<ProjectI>>('/projects/', {
                 params: {
-                    page_size: 100,
-                    user_id: user.value.id,
+                    page_size: 5,
+                    ordering: 'created_at',
+                    user_id: user.value?.id ? user.value.id : '',
                 },
             })
-            projects.value = dataProjects.data.results.sort(
+            projects.value = response.data.results.sort(
                 (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(), // More recent to less recent
             )
-        } else {
+        } catch {
             projects.value = []
+        } finally {
+            projectsLoading.value = false
         }
     }
 
@@ -59,6 +64,7 @@ export const useUserStore = defineStore('user', () => {
         isAuth,
         fetchUser,
         projects,
+        projectsLoading,
         getProjects,
         fillProjectUser,
         clean,

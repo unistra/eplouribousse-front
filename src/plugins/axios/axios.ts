@@ -1,6 +1,5 @@
 import axios, { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios'
-import { redirectTo403, redirectToLogin, refreshToken, skippedRoutes } from './axiosUtils'
-import { isExpired } from '@/utils/jwt'
+import { redirectTo403, isRouteAllowed, redirectionOrAddAuth } from './axiosUtils'
 
 const configAuth = {
     baseURL: import.meta.env.VITE_APP_BASE_URL,
@@ -16,29 +15,9 @@ const axiosI = axios.create(configAPI) // WITH INTERCEPTORS
 export const axiosRequestInterceptor = async (
     config: InternalAxiosRequestConfig,
 ): Promise<InternalAxiosRequestConfig> => {
-    if (config.url && skippedRoutes.some((route) => config.url?.includes(route))) {
-        return config
-    }
+    if (isRouteAllowed('anon', config.url)) return config
 
-    if (localStorage.getItem('JWT__access__token') !== null) {
-        if (isExpired(localStorage.getItem('JWT__access__token') as string)) {
-            if (localStorage.getItem('JWT__refresh__token') !== null) {
-                if (isExpired(localStorage.getItem('JWT__refresh__token') as string)) {
-                    await redirectToLogin()
-                } else {
-                    await refreshToken()
-                }
-            } else {
-                await redirectToLogin()
-            }
-        }
-
-        config.headers.Authorization = `Bearer ${localStorage.getItem('JWT__access__token')}`
-    } else {
-        await redirectToLogin()
-    }
-
-    return config
+    return await redirectionOrAddAuth(config, isRouteAllowed('anonAndAuth', config.url))
 }
 
 export const axios403Interceptor = async (response: AxiosError): Promise<void> => {
