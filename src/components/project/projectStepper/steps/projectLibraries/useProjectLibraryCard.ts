@@ -2,7 +2,7 @@ import { computed, ref } from 'vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import type { ProjectLibrary } from '#/project'
 
-export const useNewProjectLibraryCard = (library: ProjectLibrary) => {
+export const useProjectLibraryCard = (library: ProjectLibrary) => {
     const store = useProjectStore()
 
     const borderColorIsAlternativeStorageSite = computed(() => {

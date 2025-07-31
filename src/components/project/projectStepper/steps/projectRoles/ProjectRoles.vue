@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
-import { useNewProjectRoles } from '@/components/newProject/steps/newProjectRoles/useNewProjectRoles.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
+import { useProjectRoles } from '@/components/project/projectStepper/steps/projectRoles/useProjectRoles.ts'
 
-const { roles, isAddUserLoading, onAddInvitation, onAddRole } = useNewProjectRoles()
+const { roles, isAddUserLoading, onAddInvitation, onAddRole } = useProjectRoles()
 const store = useProjectStore()
 </script>
 

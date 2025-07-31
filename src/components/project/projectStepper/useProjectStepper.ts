@@ -3,10 +3,10 @@ import { QStepper } from 'quasar'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
-import router from '@/router/index'
+import router from '@/router'
 import { useUserStore } from '@/stores/userStore.ts'
 
-export const useNewProjectStepper = () => {
+export const useProjectStepper = () => {
     const { t } = useI18n()
     const store = useProjectStore()
     const { notify } = useComposableQuasar()

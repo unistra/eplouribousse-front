@@ -1,18 +1,18 @@
 <script lang="ts" setup>
 import { QStepper } from 'quasar'
 import { useI18n } from 'vue-i18n'
-import NewProjectLibraries from '@/components/newProject/steps/newProjectLibraries/NewProjectLibraries.vue'
-import NewProjectInformations from '@/components/newProject/steps/newProjectInformations/NewProjectInformations.vue'
-import { useNewProjectStepper } from '@/components/newProject/newProjectStepper/useNewProjectStepper.ts'
-import NewProjectRoles from '@/components/newProject/steps/newProjectRoles/NewProjectRoles.vue'
+import { useProjectStepper } from '@/components/project/projectStepper/useProjectStepper'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
-import NewProjectSummary from '@/components/newProject/steps/newProjectSummary/NewProjectSummary.vue'
 import { useRoute } from 'vue-router'
 import { onMounted } from 'vue'
+import ProjectInformations from '@/components/project/projectStepper/steps/projectInformations/ProjectInformations.vue'
+import ProjectRoles from '@/components/project/projectStepper/steps/projectRoles/ProjectRoles.vue'
+import ProjectLibraries from '@/components/project/projectStepper/steps/projectLibraries/ProjectLibraries.vue'
+import ProjectSummary from '@/components/project/projectStepper/steps/projectSummary/ProjectSummary.vue'
 
 const { t } = useI18n()
 
-const { step, nextStep, previousStep, buttonLabel, passToReviewLoading, passToReview } = useNewProjectStepper()
+const { step, nextStep, previousStep, buttonLabel, passToReviewLoading, passToReview } = useProjectStepper()
 
 onMounted(async () => {
     const route = useRoute()
@@ -35,7 +35,7 @@ onMounted(async () => {
             :name="1"
             :title="t('newProject.steps.informations.title')"
         >
-            <NewProjectInformations />
+            <ProjectInformations />
         </QStep>
 
         <QStep
@@ -44,7 +44,7 @@ onMounted(async () => {
             :name="2"
             :title="t('newProject.steps.libraries.title')"
         >
-            <NewProjectLibraries />
+            <ProjectLibraries />
         </QStep>
 
         <QStep
@@ -53,7 +53,7 @@ onMounted(async () => {
             :name="3"
             :title="t('newProject.steps.roles.title')"
         >
-            <NewProjectRoles />
+            <ProjectRoles />
         </QStep>
 
         <QStep
@@ -62,7 +62,7 @@ onMounted(async () => {
             :name="4"
             :title="t('newProject.steps.summary.title')"
         >
-            <NewProjectSummary />
+            <ProjectSummary />
         </QStep>
 
         <template #navigation>

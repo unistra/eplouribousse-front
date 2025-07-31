@@ -3,7 +3,7 @@ import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
 
-export const useNewProjectRoles = () => {
+export const useProjectRoles = () => {
     const { t } = useI18n()
     const store = useProjectStore()
 

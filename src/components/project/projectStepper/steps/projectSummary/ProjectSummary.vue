@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { useProjectStore } from '@/stores/projectStore.ts'
-import NewProjectLibraryCard from '@/components/newProject/steps/newProjectLibraries/NewProjectLibraryCard.vue'
-import { useNewProjectRoles } from '@/components/newProject/steps/newProjectRoles/useNewProjectRoles.ts'
 import { useI18n } from 'vue-i18n'
+import ProjectLibraryCard from '@/components/project/projectStepper/steps/projectLibraries/ProjectLibraryCard.vue'
+import { useProjectRoles } from '@/components/project/projectStepper/steps/projectRoles/useProjectRoles.ts'
 
 const store = useProjectStore()
-const { roles } = useNewProjectRoles()
+const { roles } = useProjectRoles()
 const { t } = useI18n()
 </script>
 
@@ -24,7 +24,7 @@ const { t } = useI18n()
         <div class="libraries">
             <p class="label">{{ t('newProject.steps.libraries.title') }}</p>
             <div class="cards">
-                <NewProjectLibraryCard
+                <ProjectLibraryCard
                     v-for="library in store.libraries"
                     :key="library.id"
                     is-summary

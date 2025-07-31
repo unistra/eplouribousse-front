@@ -3,9 +3,9 @@ import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
-import NewProjectSummary from '@/components/newProject/steps/newProjectSummary/NewProjectSummary.vue'
 import ProjectSettings from '@/components/project/projectSettings/ProjectSettings.vue'
 import { useProjectReview } from '@/components/project/projectReview/useProjectReview.ts'
+import ProjectSummary from '@/components/project/projectStepper/steps/projectSummary/ProjectSummary.vue'
 
 const { t } = useI18n()
 const store = useProjectStore()
@@ -34,7 +34,7 @@ const { settingsMode, dateModal, onConfirm, dateStringFR, date, todayStringEN } 
         </hgroup>
 
         <KeepAlive>
-            <NewProjectSummary v-if="!settingsMode" />
+            <ProjectSummary v-if="!settingsMode" />
             <ProjectSettings v-else />
         </KeepAlive>
 
