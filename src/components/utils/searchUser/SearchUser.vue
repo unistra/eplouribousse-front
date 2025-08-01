@@ -11,7 +11,6 @@ const props = defineProps<{
     usersSelected: ProjectUser[]
     invitationsSelected: ProjectInvitation[]
     isAddUserLoading: boolean
-    hasPerm?: boolean
 }>()
 const { t } = useI18n()
 
@@ -39,7 +38,6 @@ onMounted(() => {
             clearable
             data-testid="search"
             dense
-            :disable="!hasPerm"
             icon="mdi-magnify"
             :label="t('utils.searchUser.inputPlaceholder')"
             :tooltip="t('utils.searchUser.inputPlaceholder')"
