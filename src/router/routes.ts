@@ -1,4 +1,9 @@
 import type { RouteRecordRaw } from 'vue-router'
+import { useUserStore } from '@/stores/userStore.ts'
+import i18n from '@/plugins/i18n'
+import { redirectTo403 } from '@/plugins/axios/axiosUtils.ts'
+
+const { t } = i18n.global
 
 declare module 'vue-router' {
     interface RouteMeta {
@@ -113,8 +118,11 @@ const routes: RouteRecordRaw[] = [
         name: 'newProject',
         component: () => import('@/views/NewProjectView.vue'),
         meta: {
-            title: 'Nouveau Projet',
-            needProjectCreator: true,
+            title: t('navigation.newProject'),
+        },
+        beforeEnter: async () => {
+            const userStore = useUserStore()
+            if (!userStore.user?.isProjectCreator) await redirectTo403()
         },
     },
     {

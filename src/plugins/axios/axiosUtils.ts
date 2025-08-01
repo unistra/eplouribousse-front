@@ -1,6 +1,7 @@
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { isExpired } from '@/utils/jwt.ts'
 import type { InternalAxiosRequestConfig } from 'axios'
+import router from '@/router/index'
 
 export const allowedRoutesToAnon: Readonly<string[]> = [
     '/token/',
@@ -76,7 +77,7 @@ export const redirectToLogin = async () => {
 }
 
 export const redirectTo403 = async () => {
-    window.location.replace('/403')
+    await router.push({ name: '403' })
 }
 
 export const refreshToken = async (): Promise<string> => {
