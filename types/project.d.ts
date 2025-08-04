@@ -7,6 +7,7 @@ export interface ProjectI {
     description: string
     isPrivate: boolean
     activeAfter: string
+    isActive: boolean
     status: number
     settings: ProjectSettings
     invitations: ProjectInvitation[]

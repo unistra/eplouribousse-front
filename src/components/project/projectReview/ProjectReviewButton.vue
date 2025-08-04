@@ -9,7 +9,7 @@ import { computed } from 'vue'
 const { t } = useI18n()
 
 const store = useProjectStore()
-const { dateModal, onConfirm, dateStringFR, date, todayStringEN, userIsAdmin, userIsManager } = useProjectReview()
+const { dateModal, onConfirm, dateString, date, userIsAdmin, userIsManager, nowString } = useProjectReview()
 
 const waitingMessage = computed(() => {
     if (store.status === 20) return t('project.review.waitingForAdminToReview')
@@ -51,11 +51,11 @@ const waitingMessage = computed(() => {
                     <p>{{ t('project.ready.defineStartDate') }}</p>
                     <AtomicInput
                         v-model="date"
-                        :min="todayStringEN"
+                        :min="nowString"
                         outlined
                         rounded
-                        type="date"
-                        :value="todayStringEN"
+                        type="datetime-local"
+                        :value="nowString"
                     >
                     </AtomicInput>
                 </QCardSection>
@@ -75,7 +75,7 @@ const waitingMessage = computed(() => {
                         <template #confirmation-content>
                             <QCardSection>
                                 <p>
-                                    {{ t('project.ready.confirmStart') }} <strong>{{ dateStringFR }}</strong>
+                                    {{ t('project.ready.confirmStart') }} <strong>{{ dateString }}</strong>
                                 </p>
                                 <p>{{ t('confirmDialogDefault.irreversible') }}</p>
                             </QCardSection>

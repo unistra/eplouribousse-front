@@ -25,6 +25,7 @@ const initialState: ProjectI = {
     description: '',
     isPrivate: false,
     activeAfter: '',
+    isActive: false,
     status: 10,
     settings: {
         exclusionReasons: [],
@@ -347,9 +348,12 @@ export const useProjectStore = defineStore('project', {
                 })
             }
         },
-        async startTheProject() {
+        async startTheProject(active_after: string) {
             try {
-                console.log('starting project')
+                await axiosI.patch<{ activeAfter: string }>(`/projects/${this.id}/launch/`, {
+                    active_after,
+                })
+                await this.fetchProjectById(this.id)
             } catch {
                 Notify.create({
                     type: 'negative',
