@@ -142,6 +142,17 @@
             "confirmStart": "En confirmant, le projet commencera le:",
             "waitingForManagerToStart": "En attente de démarrage par les pilotes de projet"
         },
+        "resources": {
+            "title": "Titre",
+            "code": "Code",
+            "count": "Nombre de collections",
+            "status": "Status",
+            "callNumber": "Cote",
+            "noCallNumber": "Aucune cote",
+            "holdStatement": "État de la collection",
+            "noHoldStatement": "Aucun état de la collection",
+            "position": "Position"
+        },
         "settings": {
             "title": "Paramètres du projet",
             "privateMode": "Mode privé",
@@ -299,7 +310,8 @@
         "lastName": "Nom",
         "email": "Email",
         "or": "ou",
-        "waiting": "En attente"
+        "waiting": "En attente",
+        "all": "Tous"
     },
     "utils": {
         "searchUser": {

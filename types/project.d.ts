@@ -92,3 +92,30 @@ export interface ProjectSettings {
 export interface ProjectLibrary extends LibraryI {
     isAlternativeStorageSite: boolean
 }
+
+export type Resource = {
+    id: string
+    title: string
+    code: string
+    count: number
+    callNumbers: string
+    shouldInstruct: boolean
+    status: number
+    arbitration: number
+}
+
+export type CollectionsInResource = {
+    id: string
+    library: string
+    callNumber: string
+    holdStatement: string
+    position: number
+    isExcluded: boolean
+    exclusionReason: string
+    commentPositioning: string
+}
+
+export type CollectionsWithResource = {
+    resource: Omit<Resource, 'is_excluded'>
+    collections: CollectionsInResource[]
+}

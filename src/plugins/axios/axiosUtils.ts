@@ -14,6 +14,7 @@ export const allowedRoutesToAnon: Readonly<string[]> = [
     '/consortium/',
     '/cas/login/',
     '/saml2/login/',
+    '/resources/',
 ]
 
 export const allowedRoutesToAnonAndAuth: Readonly<string[]> = ['/projects/']
