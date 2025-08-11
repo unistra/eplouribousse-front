@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { useProjectResources } from '@/components/project/projectResources/useProjectResources.ts'
+import { useProjectResources } from '@/components/project/projectLaunched/useProjectResources.ts'
 import { useI18n } from 'vue-i18n'
 import type { QTable } from 'quasar'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
-import ProjectPositioning from '@/components/project/projectResources/ProjectPositioning.vue'
+import ProjectPositioning from '@/components/project/projectLaunched/projectPositioning/ProjectPositioning.vue'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 
 const resourceStore = useResourceStore()

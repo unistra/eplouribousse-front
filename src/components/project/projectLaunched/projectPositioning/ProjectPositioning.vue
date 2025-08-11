@@ -1,0 +1,69 @@
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import { useResourceStore } from '@/stores/resourceStore.ts'
+import ProjectPositioningCollectionCard from '@/components/project/projectLaunched/projectPositioning/ProjectPositioningCollectionCard.vue'
+
+const props = defineProps<{
+    resourceId: string
+    libraryIdSelected: string
+}>()
+
+const resourceStore = useResourceStore()
+const loading = ref<boolean>(false)
+
+onMounted(async () => {
+    loading.value = true
+    await resourceStore.fetchResourceAndCollections(props.resourceId, props.libraryIdSelected)
+    loading.value = false
+})
+</script>
+
+<template>
+    <div
+        v-if="loading"
+        class="spinner"
+    >
+        <QSpinner size="2rem" />
+    </div>
+    <div
+        v-else
+        class="project-positioning"
+    >
+        <hgroup>
+            <h2>{{ resourceStore.title }}</h2>
+            <p>{{ resourceStore.code }}</p>
+        </hgroup>
+        <QCard
+            v-for="library in resourceStore.librariesAssociated"
+            :key="library.id"
+        >
+            <QCardSection>
+                <p>{{ library.name }}</p>
+            </QCardSection>
+            <QCardSection>
+                <ProjectPositioningCollectionCard
+                    v-for="collection in resourceStore.collections.filter((el) => el.library === library.id)"
+                    :key="collection.id"
+                    :collection="collection"
+                    :library-id="library.id"
+                />
+            </QCardSection>
+        </QCard>
+    </div>
+</template>
+
+<style scoped lang="sass">
+.spinner
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-grow: 1
+.project-positioning
+    display: flex
+    flex-direction: column
+    gap: 1rem
+
+    .button-section
+        display: flex
+        gap: 1rem
+</style>
