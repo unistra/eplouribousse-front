@@ -11,14 +11,7 @@ export interface TableProjectResources {
     rows: Ref<Resource[]>
     filter: Ref<string>
     loading: Ref<boolean>
-    columns: {
-        name: string
-        required?: boolean
-        label: string
-        align: string
-        field: string
-        sortable?: boolean
-    }[]
+    columns: QTable['columns']
     pagination: Ref<{
         sortBy: string
         descending: boolean
@@ -69,9 +62,16 @@ export const useProjectResources = () => {
             },
             {
                 name: 'status',
-                label: t('project.resources.status'),
+                label: t('project.resources.status.title'),
                 align: 'left',
                 field: 'status',
+                format: (val: number) => {
+                    if (val === 10) return t('project.resources.status.positioning')
+                    if (val === 20) return t('project.resources.status.instructionBound')
+                    if (val === 30) return t('project.resources.status.controlBound')
+                    if (val === 40) return t('project.resources.status.instructionUnbound')
+                    else return t('project.resources.status.controlUnbound')
+                },
             },
         ],
         pagination: ref({

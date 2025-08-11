@@ -146,12 +146,19 @@
             "title": "Titre",
             "code": "Code",
             "count": "Nombre de collections",
-            "status": "Status",
             "callNumber": "Cote",
             "noCallNumber": "Aucune cote",
             "holdStatement": "État de la collection",
             "noHoldStatement": "Aucun état de la collection",
-            "position": "Position"
+            "position": "Position",
+            "status": {
+                "title": "Status",
+                "positioning": "Positionnement",
+                "instructionBound": "Instruction des exemplaires reliés",
+                "controlBound": "Contrôle des exemplaires reliés",
+                "instructionUnbound": "Instruction des exemplaires non reliés",
+                "controlUnbound": "Contrôle des exemplaires non reliés"
+            }
         },
         "settings": {
             "title": "Paramètres du projet",
