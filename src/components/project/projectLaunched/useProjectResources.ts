@@ -1,4 +1,4 @@
-import { computed, reactive, type Ref, ref, type ShallowRef, useTemplateRef } from 'vue'
+import { computed, type Ref, ref, type ShallowRef, useTemplateRef } from 'vue'
 import type { Resource } from '#/project'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
@@ -19,13 +19,13 @@ export interface TableProjectResources {
         field: string
         sortable?: boolean
     }[]
-    pagination: {
+    pagination: Ref<{
         sortBy: string
         descending: boolean
         page: number
         rowsPerPage: number
         rowsNumber: number
-    }
+    }>
     onRequest: (props: Parameters<NonNullable<QTableProps['onRequest']>>[0]) => Promise<void>
 }
 
@@ -65,6 +65,7 @@ export const useProjectResources = () => {
                 label: t('project.resources.count'),
                 align: 'left',
                 field: 'count',
+                sortable: true,
             },
             {
                 name: 'status',
@@ -73,7 +74,7 @@ export const useProjectResources = () => {
                 field: 'status',
             },
         ],
-        pagination: reactive({
+        pagination: ref({
             sortBy: 'name',
             descending: false,
             page: 1,

@@ -102,6 +102,7 @@ export type Resource = {
     shouldInstruct: boolean
     status: number
     arbitration: number
+    acl: Record<string, boolean>
 }
 
 export type CollectionsInResource = {
@@ -109,13 +110,20 @@ export type CollectionsInResource = {
     library: string
     callNumber: string
     holdStatement: string
-    position: number
+    position: CollectionPosition
     isExcluded: boolean
     exclusionReason: string
     commentPositioning: string
+    acl: ACLCollection
 }
 
 export type CollectionsWithResource = {
     resource: Omit<Resource, 'is_excluded'>
     collections: CollectionsInResource[]
+}
+
+export type CollectionPosition = 1 | 2 | 3 | 4 | null
+
+export type ACLCollection = {
+    position: boolean
 }

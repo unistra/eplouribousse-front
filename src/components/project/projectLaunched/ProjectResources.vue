@@ -21,7 +21,10 @@ const {
 const { t } = useI18n()
 onMounted(async () => {
     selectDefaultLibrary()
-    await resourceStore.fetchResources(libraryIdSelected.value)
+    await resourceStore.fetchResources(libraryIdSelected.value, {
+        table,
+        props: { pagination: table.pagination.value, filter: table.filter.value },
+    })
 })
 </script>
 
@@ -34,11 +37,16 @@ onMounted(async () => {
             option-label="name"
             option-value="id"
             :options="librariesOptions"
-            @update:model-value="resourceStore.fetchResources"
+            @update:model-value="
+                resourceStore.fetchResources(libraryIdSelected, {
+                    table,
+                    props: { pagination: table.pagination.value, filter: table.filter.value },
+                })
+            "
         />
         <QTable
             ref="qTable"
-            v-model:pagination="table.pagination"
+            v-model:pagination="table.pagination.value"
             binary-state-sort
             :columns="table.columns as QTable['columns']"
             :filter="table.filter"
@@ -64,6 +72,7 @@ onMounted(async () => {
         </QTable>
         <QDialog
             v-model="resourceDialog"
+            class="dialog"
             full-height
             full-width
         >
@@ -89,10 +98,21 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="sass">
+.dialog
+    .q-card
+        display: flex
+        flex-direction: column
+
+        .q-card__section
+            flex-grow: 1
+            display: flex
+            flex-direction: column
+
 .project-resources
     display: flex
     flex-direction: column
     width: 100%
+
 
     .q-list
         width: 100%

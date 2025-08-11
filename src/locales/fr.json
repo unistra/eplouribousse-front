@@ -311,7 +311,8 @@
         "email": "Email",
         "or": "ou",
         "waiting": "En attente",
-        "all": "Tous"
+        "all": "Tous",
+        "undefined": "Non renseigné"
     },
     "utils": {
         "searchUser": {
