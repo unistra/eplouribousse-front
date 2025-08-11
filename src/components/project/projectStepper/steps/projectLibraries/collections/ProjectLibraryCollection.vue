@@ -35,7 +35,7 @@ onMounted(async () => await getCollection())
     <p>{{ t('newProject.steps.libraries.collection.title') }}</p>
     <QCard
         v-if="isCollectionLoading"
-        class="container justify-center items-center csv-card"
+        class="csv-card"
         flat
     >
         <QSpinner size="2rem" />
@@ -43,7 +43,7 @@ onMounted(async () => await getCollection())
     <template v-else-if="!isSummary">
         <QCard
             v-if="!collection?.results?.length"
-            class="container items-center csv-card dropzone"
+            class="csv-card dropzone"
             flat
             @click="fileInput?.click()"
             @dragover.prevent
@@ -59,7 +59,7 @@ onMounted(async () => await getCollection())
         </QCard>
         <QCard
             v-else
-            class="container column justify-center items-center csv-card present"
+            class="csv-card present"
             flat
         >
             <AtomicButton
@@ -70,7 +70,7 @@ onMounted(async () => await getCollection())
                 size="xs"
                 @confirm="store.deleteCollection(libraryId)"
             />
-            <QCardSection class="content">
+            <QCardSection>
                 <QIcon
                     color="positive"
                     name="mdi-check-circle-outline"
@@ -122,36 +122,34 @@ onMounted(async () => await getCollection())
             v-model="modalImportCSVError"
             persistent
         >
-            <QCard class="container column card">
-                <QCardSection>
+            <QCard>
+                <QCardSection class="errors-dialog">
                     <p>{{ t('newProject.steps.libraries.collection.errors.dialogTitle') }}:</p>
-                </QCardSection>
-                <QCardSection v-if="typeof importCSVError?.[0] === 'string' && !('row' in importCSVError)">
-                    <ul>
-                        <li
-                            v-for="(string, index) in importCSVError"
-                            :key="index"
-                        >
-                            {{ string }}
-                        </li>
-                    </ul>
-                </QCardSection>
-                <QCardSection v-else>
-                    <ul>
-                        <li
-                            v-for="(row, index) in importCSVError as ImportCSVErrorObject[]"
-                            :key="index"
-                        >
-                            <p>{{ t('common.row') }} {{ row.row }}:</p>
-                            <p
-                                v-for="(error, indexError) in row.errors"
-                                :key="indexError"
+                    <div>
+                        <ul v-if="typeof importCSVError?.[0] === 'string' && !('row' in importCSVError)">
+                            <li
+                                v-for="(string, index) in importCSVError"
+                                :key="index"
                             >
-                                {{ t('common.on') }} <span class="bold">{{ error.loc.join(', ') }}</span
-                                >: {{ error.msg }}
-                            </p>
-                        </li>
-                    </ul>
+                                {{ string }}
+                            </li>
+                        </ul>
+                        <ul v-else>
+                            <li
+                                v-for="(row, index) in importCSVError as ImportCSVErrorObject[]"
+                                :key="index"
+                            >
+                                <p>{{ t('common.row') }} {{ row.row }}:</p>
+                                <p
+                                    v-for="(error, indexError) in row.errors"
+                                    :key="indexError"
+                                >
+                                    {{ t('common.on') }} <span class="bold">{{ error.loc.join(', ') }}</span
+                                    >: {{ error.msg }}
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
                 </QCardSection>
                 <QCardActions align="right">
                     <AtomicButton
@@ -166,10 +164,10 @@ onMounted(async () => await getCollection())
     <template v-else>
         <QCard
             v-if="!!collection?.results?.length"
-            class="container column justify-center items-center csv-card present summary"
+            class="csv-card present summary"
             flat
         >
-            <QCardSection class="content">
+            <QCardSection>
                 <QIcon
                     color="positive"
                     name="mdi-check-circle-outline"
@@ -183,10 +181,10 @@ onMounted(async () => await getCollection())
 
         <QCard
             v-else
-            class="container column justify-center items-center csv-card missing summary"
+            class="csv-card missing summary"
             flat
         >
-            <QCardSection class="content">
+            <QCardSection>
                 <QIcon
                     name="mdi-close-circle"
                     size="sm"
@@ -199,50 +197,41 @@ onMounted(async () => await getCollection())
     </template>
 </template>
 
-<style lang="scss" scoped>
-.csv-card {
-    min-height: 8rem;
-    border: 2px dashed var(--color-neutral-300);
-    border-radius: 2rem;
-    text-align: center;
-    background-color: var(--color-neutral-50);
-    padding: 0.1rem;
+<style lang="sass" scoped>
+.csv-card
+    min-height: 8rem
+    border: 2px dashed var(--color-neutral-300)
+    border-radius: 2rem
+    text-align: center
+    background-color: var(--color-neutral-50)
+    padding: 0.1rem
 
-    p {
-        margin: 0;
-    }
+    p
+        margin: 0
 
-    &.dropzone {
-        cursor: pointer;
+    &.dropzone
+        cursor: pointer
 
-        input {
-            display: none;
-        }
-    }
+        input
+            display: none
 
-    &.present {
-        border-style: solid;
-        border-color: var(--color-green);
-        position: relative;
+    &.present
+        border-style: solid
+        border-color: var(--color-green)
+        position: relative
 
-        .q-btn {
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-        }
-    }
+        .q-btn
+            position: absolute
+            top: 0.5rem
+            right: 0.5rem
 
-    &.missing {
-        border-style: solid;
-        border-color: var(--color-neutral-500);
-    }
+    &.missing
+        border-style: solid
+        border-color: var(--color-neutral-500)
 
-    &.summary {
-        min-height: 0;
-    }
-}
+    &.summary
+        min-height: 0
 
-.bold {
-    font-weight: 700;
-}
+.bold
+    font-weight: bold
 </style>
