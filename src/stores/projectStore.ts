@@ -16,6 +16,7 @@ import { Notify } from 'quasar'
 import i18n from '@/plugins/i18n'
 import type { Pagination } from '#/pagination.ts'
 import axios from 'axios'
+import { useUserStore } from '@/stores/userStore.ts'
 
 const { t } = i18n.global
 
@@ -360,6 +361,15 @@ export const useProjectStore = defineStore('project', {
                     message: t('errors.unknown'),
                 })
             }
+        },
+        isRole(role: Roles, libraryId?: string) {
+            const userStore = useUserStore()
+            return this.roles.some(
+                (el) =>
+                    el.role === role &&
+                    userStore.user?.id === el.user.id &&
+                    ((!libraryId && role !== 'instructor') || el.libraryId === libraryId),
+            )
         },
     },
 })

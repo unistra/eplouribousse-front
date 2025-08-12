@@ -14,6 +14,8 @@ interface ResourceStoreState extends Resource {
     collections: CollectionsInResource[]
     resources: Resource[]
     initialState: Resource
+    libraryIdSelected: string
+    libraryIdComparedSelected: string
 }
 
 const initialState = {
@@ -34,6 +36,8 @@ export const useResourceStore = defineStore('resource', {
         initialState: structuredClone(initialState),
         collections: [],
         resources: [],
+        libraryIdSelected: '',
+        libraryIdComparedSelected: '',
     }),
     getters: {
         librariesAssociated(this: ResourceStoreState) {
@@ -44,7 +48,7 @@ export const useResourceStore = defineStore('resource', {
         },
     },
     actions: {
-        async fetchResourceAndCollections(resourceId: string, libraryIdSelected: string) {
+        async fetchResourceAndCollections(resourceId: string) {
             const projectStore = useProjectStore()
             const { notify } = useComposableQuasar()
 
@@ -68,9 +72,9 @@ export const useResourceStore = defineStore('resource', {
 
                 this.collections = response.data.collections.sort(
                     (a: CollectionsInResource, b: CollectionsInResource) => {
-                        if (!libraryIdSelected) return 0
-                        const aMatch = a.library === libraryIdSelected
-                        const bMatch = b.library === libraryIdSelected
+                        if (!this.libraryIdSelected) return 0
+                        const aMatch = a.library === this.libraryIdSelected
+                        const bMatch = b.library === this.libraryIdSelected
                         return bMatch ? (aMatch ? 0 : 1) : aMatch ? -1 : 0
                     },
                 )
@@ -81,13 +85,10 @@ export const useResourceStore = defineStore('resource', {
                 })
             }
         },
-        async fetchResources(
-            libraryIdSelected: string,
-            options?: {
-                props: Omit<Parameters<NonNullable<QTableProps['onRequest']>>[0], 'getCellValue'>
-                table: TableProjectResources
-            },
-        ) {
+        async fetchResources(options?: {
+            props: Omit<Parameters<NonNullable<QTableProps['onRequest']>>[0], 'getCellValue'>
+            table: TableProjectResources
+        }) {
             const projectStore = useProjectStore()
 
             try {
@@ -95,13 +96,17 @@ export const useResourceStore = defineStore('resource', {
 
                 const params: Record<string, string | number> = {
                     project: projectStore.id,
-                    library: libraryIdSelected,
+                    library: this.libraryIdSelected,
                 }
+
+                if (this.libraryIdComparedSelected && this.libraryIdSelected)
+                    params.against = this.libraryIdComparedSelected
 
                 if (options?.props) {
                     const { pagination, filter } = options.props
                     params.page = pagination?.page
-                    params.page_size = pagination?.rowsPerPage
+                    params.page_size =
+                        pagination?.rowsPerPage === 0 ? pagination.rowsNumber || 0 : pagination?.rowsPerPage
                     params.search = filter.value
 
                     if (pagination) {

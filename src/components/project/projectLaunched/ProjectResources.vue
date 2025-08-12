@@ -6,22 +6,47 @@ import type { QTable } from 'quasar'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import ProjectPositioning from '@/components/project/projectLaunched/projectPositioning/ProjectPositioning.vue'
 import { useResourceStore } from '@/stores/resourceStore.ts'
+import { useProjectStore } from '@/stores/projectStore.ts'
+import { storeToRefs } from 'pinia'
 
 const resourceStore = useResourceStore()
+const { libraryIdSelected, libraryIdComparedSelected } = storeToRefs(useResourceStore())
+const projectStore = useProjectStore()
 
 const {
-    libraryIdSelected,
     librariesOptions,
     selectDefaultLibrary,
     table,
     onRowClick,
     resourceDialog,
     resourceIdSelected,
+    librariesComparedOptions,
 } = useProjectResources()
 const { t } = useI18n()
+
+const fetchResources = () =>
+    resourceStore.fetchResources({
+        table,
+        props: { pagination: table.pagination.value, filter: table.filter.value },
+    })
+const selects = [
+    {
+        model: libraryIdSelected,
+        label: t('project.resources.showResources'),
+        options: librariesOptions.value,
+        callback: fetchResources,
+    },
+    {
+        model: libraryIdComparedSelected,
+        label: t('project.resources.compareWith'),
+        options: librariesComparedOptions.value,
+        callback: fetchResources,
+    },
+]
+
 onMounted(async () => {
     selectDefaultLibrary()
-    await resourceStore.fetchResources(libraryIdSelected.value, {
+    await resourceStore.fetchResources({
         table,
         props: { pagination: table.pagination.value, filter: table.filter.value },
     })
@@ -30,20 +55,23 @@ onMounted(async () => {
 
 <template>
     <div class="project-resources">
-        <QSelect
-            v-model="libraryIdSelected"
-            emit-value
-            map-options
-            option-label="name"
-            option-value="id"
-            :options="librariesOptions"
-            @update:model-value="
-                resourceStore.fetchResources(libraryIdSelected, {
-                    table,
-                    props: { pagination: table.pagination.value, filter: table.filter.value },
-                })
-            "
-        />
+        <div class="header">
+            <QSelect
+                v-for="(select, index) in selects"
+                :key="index"
+                v-model="select.model.value"
+                emit-value
+                :label="select.label"
+                map-options
+                :option-label="
+                    (el) =>
+                        `${el.name}${projectStore.isRole('instructor', el.id) ? ' - ' + t('project.resources.youAreInstructor') : ''}`
+                "
+                option-value="id"
+                :options="select.options"
+                @update:model-value="select.callback"
+            />
+        </div>
         <QTable
             ref="qTable"
             v-model:pagination="table.pagination.value"
@@ -69,6 +97,18 @@ onMounted(async () => {
                     </template>
                 </QInput>
             </template>
+
+            <template v-slot:body-cell-title="props">
+                <QTd
+                    :auto-width="false"
+                    class="title-qtd"
+                    :props="props"
+                >
+                    <p class="title-p">
+                        {{ props.row.title }}
+                    </p>
+                </QTd>
+            </template>
         </QTable>
         <QDialog
             v-model="resourceDialog"
@@ -87,7 +127,7 @@ onMounted(async () => {
                 <QCardSection>
                     <ProjectPositioning
                         v-if="resourceIdSelected"
-                        :library-id-selected="libraryIdSelected || ''"
+                        :library-id-selected="resourceStore.libraryIdSelected || ''"
                         :resource-id="resourceIdSelected"
                     />
                     <p v-else>{{ t('errors.unknown') }}</p>
@@ -116,4 +156,9 @@ onMounted(async () => {
 
     .q-list
         width: 100%
+
+
+.title-qtd
+    .title-p
+        white-space: wrap
 </style>

@@ -5,7 +5,6 @@ import ProjectPositioningCollectionCard from '@/components/project/projectLaunch
 
 const props = defineProps<{
     resourceId: string
-    libraryIdSelected: string
 }>()
 
 const resourceStore = useResourceStore()
@@ -13,7 +12,7 @@ const loading = ref<boolean>(false)
 
 onMounted(async () => {
     loading.value = true
-    await resourceStore.fetchResourceAndCollections(props.resourceId, props.libraryIdSelected)
+    await resourceStore.fetchResourceAndCollections(props.resourceId)
     loading.value = false
 })
 </script>
@@ -46,6 +45,7 @@ onMounted(async () => {
                     :key="collection.id"
                     :collection="collection"
                     :library-id="library.id"
+                    :library-id-selected="resourceStore.libraryIdSelected"
                 />
             </QCardSection>
         </QCard>

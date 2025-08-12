@@ -158,7 +158,10 @@
                 "controlBound": "Contrôle des exemplaires reliés",
                 "instructionUnbound": "Instruction des exemplaires non reliés",
                 "controlUnbound": "Contrôle des exemplaires non reliés"
-            }
+            },
+            "youAreInstructor": "Vous êtes instructeur pour cette bibliothèque",
+            "showResources": "Voir les ressources de:",
+            "compareWith": "Comparer les ressources avec:"
         },
         "settings": {
             "title": "Paramètres du projet",

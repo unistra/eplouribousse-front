@@ -24,12 +24,19 @@ export interface TableProjectResources {
 
 export const useProjectResources = () => {
     const projectStore = useProjectStore()
+    const resourceStore = useResourceStore()
     const userStore = useUserStore()
     const { t } = useI18n()
 
-    const libraryIdSelected = ref<string>('')
     const librariesOptions = computed(() => {
         return [...projectStore.libraries, { name: t('common.all'), id: '' }]
+    })
+
+    const librariesComparedOptions = computed(() => {
+        return [
+            { name: t('common.none'), id: '' },
+            ...projectStore.libraries.filter((lib) => lib.id !== resourceStore.libraryIdSelected),
+        ]
     })
 
     const table: TableProjectResources = {
@@ -65,6 +72,7 @@ export const useProjectResources = () => {
                 label: t('project.resources.status.title'),
                 align: 'left',
                 field: 'status',
+                sortable: true,
                 format: (val: number) => {
                     if (val === 10) return t('project.resources.status.positioning')
                     if (val === 20) return t('project.resources.status.instructionBound')
@@ -83,13 +91,13 @@ export const useProjectResources = () => {
         }),
         onRequest: async (props: Parameters<NonNullable<QTableProps['onRequest']>>[0]) => {
             const resourceStore = useResourceStore()
-            await resourceStore.fetchResources(libraryIdSelected.value, { props, table })
+            await resourceStore.fetchResources({ props, table })
         },
     }
 
     const selectDefaultLibrary = () => {
         if (!userStore.user?.id) {
-            libraryIdSelected.value = ''
+            resourceStore.libraryIdSelected = ''
             return
         }
 
@@ -97,7 +105,7 @@ export const useProjectResources = () => {
             .filter((el) => el.user.id === userStore.user?.id && el.role === 'instructor')
             .map((el) => el.libraryId)
 
-        libraryIdSelected.value = librariesIdWhereUserIsInstructor[0] || ''
+        resourceStore.libraryIdSelected = librariesIdWhereUserIsInstructor[0] || ''
     }
 
     const resourceDialog = ref<boolean>(false)
@@ -109,9 +117,9 @@ export const useProjectResources = () => {
     }
 
     return {
-        libraryIdSelected,
         librariesOptions,
         selectDefaultLibrary,
+        librariesComparedOptions,
         table,
         resourceDialog,
         resourceIdSelected,

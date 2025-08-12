@@ -6,6 +6,7 @@ import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 const props = defineProps<{
     libraryId: string
+    libraryIdSelected: string
     collection: CollectionsInResource
 }>()
 
@@ -43,7 +44,7 @@ const onSave = async () => {
                 </p>
             </QCardSection>
             <QCardSection
-                v-if="collection.acl.position"
+                v-if="collection.acl.position && libraryIdSelected === libraryId"
                 class="button-section"
             >
                 <QRadio
