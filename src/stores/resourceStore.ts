@@ -1,5 +1,14 @@
 import { defineStore } from 'pinia'
-import type { Resource, CollectionsInResource, CollectionsWithResource, CollectionPosition } from '#/project'
+import type {
+    Resource,
+    CollectionsInResource,
+    CollectionsWithResource,
+    CollectionPosition,
+    ProjectLibrary,
+    Arbitration,
+    ResourceStatus,
+    CommentPositioning,
+} from '#/project'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { Notify, type QTableProps } from 'quasar'
 import i18n from '@/plugins/i18n'
@@ -25,6 +34,7 @@ const initialState = {
     count: 0,
     callNumbers: '',
     shouldInstruct: false,
+    shouldPosition: false,
     status: 10,
     arbitration: 2,
     acl: {},
@@ -42,12 +52,23 @@ export const useResourceStore = defineStore('resource', {
     getters: {
         librariesAssociated(this: ResourceStoreState) {
             const projectStore = useProjectStore()
-            return projectStore.libraries.filter((lib) =>
-                this.collections.some((el: CollectionsInResource) => el.library === lib.id),
-            )
+            return projectStore.libraries
+                .filter((lib) => this.collections.some((el: CollectionsInResource) => el.library === lib.id))
+                .sort((a: ProjectLibrary, b: ProjectLibrary) => {
+                    const aIsSelected = a.id === this.libraryIdSelected
+                    const bIsSelected = b.id === this.libraryIdSelected
+
+                    if (aIsSelected === bIsSelected) return 0
+                    return aIsSelected ? -1 : 1
+                })
         },
     },
     actions: {
+        _findCollection(collectionId: string) {
+            const collection = this.collections.find((col) => col.id === collectionId)
+            if (!collection) throw new Error('collection does not exist')
+            return collection
+        },
         async fetchResourceAndCollections(resourceId: string) {
             const projectStore = useProjectStore()
             const { notify } = useComposableQuasar()
@@ -140,17 +161,58 @@ export const useResourceStore = defineStore('resource', {
         },
         async updatePosition(collectionId: string, newPosition: CollectionPosition) {
             try {
-                const response = await axiosI.patch<{ position: CollectionPosition }>(
-                    `collections/${collectionId}/position/`,
+                const response = await axiosI.patch<{
+                    position: CollectionPosition
+                    arbitration: Arbitration
+                    status: ResourceStatus
+                }>(`collections/${collectionId}/position/`, {
+                    position: newPosition,
+                })
+
+                const collection = this._findCollection(collectionId)
+                collection.position = response.data.position
+                collection.exclusionReason = ''
+
+                this.arbitration = response.data.arbitration
+                this.status = response.data.status
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async excludeCollection(collectionId: string, exclusionReason: string) {
+            try {
+                const response = await axiosI.patch<{ exclusionReason: string; arbitration: Arbitration }>(
+                    `collections/${collectionId}/exclude/`,
                     {
-                        position: newPosition,
+                        exclusion_reason: exclusionReason,
                     },
                 )
 
-                const collection = this.collections.find((col) => col.id === collectionId)
-                if (!collection) throw new Error('collection does not exist')
+                const collection = this._findCollection(collectionId)
+                collection.position = 0
+                collection.exclusionReason = response.data.exclusionReason
+                this.arbitration = response.data.arbitration
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async commentPositioning(collectionId: string, content: string) {
+            try {
+                const collection = this._findCollection(collectionId)
 
-                collection.position = response.data.position
+                const method = collection.commentPositioning?.id ? 'patch' : 'post'
+                const response = await axiosI[method]<CommentPositioning>(
+                    `collections/${collectionId}/comment-positioning/`,
+                    { content },
+                )
+
+                collection.commentPositioning = response.data
             } catch {
                 Notify.create({
                     type: 'negative',
