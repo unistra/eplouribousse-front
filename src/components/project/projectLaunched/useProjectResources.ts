@@ -39,6 +39,21 @@ export const useProjectResources = () => {
         ]
     })
 
+    const computeStatusLabel = (val: number, row: Resource) => {
+        if (val === 10) {
+            if (row.shouldPosition) return t('project.resources.status.positioningRequired')
+            if (projectStore.isRole('instructor', resourceStore.libraryIdSelected))
+                return t('project.resources.status.waitingPositioning')
+
+            return t('project.resources.status.positioning')
+        }
+
+        if (val === 20) return t('project.resources.status.instructionBound')
+        if (val === 30) return t('project.resources.status.controlBound')
+        if (val === 40) return t('project.resources.status.instructionUnbound')
+        else return t('project.resources.status.controlUnbound')
+    }
+
     const table: TableProjectResources = {
         ref: useTemplateRef<QTable>('qTable'),
         rows: ref<Resource[]>([]),
@@ -73,13 +88,7 @@ export const useProjectResources = () => {
                 align: 'left',
                 field: 'status',
                 sortable: true,
-                format: (val: number) => {
-                    if (val === 10) return t('project.resources.status.positioning')
-                    if (val === 20) return t('project.resources.status.instructionBound')
-                    if (val === 30) return t('project.resources.status.controlBound')
-                    if (val === 40) return t('project.resources.status.instructionUnbound')
-                    else return t('project.resources.status.controlUnbound')
-                },
+                format: computeStatusLabel,
             },
         ],
         pagination: ref({
