@@ -153,7 +153,9 @@
             "position": "Position",
             "status": {
                 "title": "Status",
-                "positioning": "Positionnement",
+                "positioning": "Positionnement en cours",
+                "positioningRequired": "Positionnement requis",
+                "waitingPositioning": "En attente des autres bibliothèques",
                 "instructionBound": "Instruction des exemplaires reliés",
                 "controlBound": "Contrôle des exemplaires reliés",
                 "instructionUnbound": "Instruction des exemplaires non reliés",
@@ -161,7 +163,12 @@
             },
             "youAreInstructor": "Vous êtes instructeur pour cette bibliothèque",
             "showResources": "Voir les ressources de:",
-            "compareWith": "Comparer les ressources avec:"
+            "compareWith": "Comparer les ressources avec:",
+            "exclusion": {
+                "exclude": "Exclure la collection",
+                "exclusionReason": "Motif d'exclusion"
+            },
+            "comment": "Commentaire"
         },
         "settings": {
             "title": "Paramètres du projet",

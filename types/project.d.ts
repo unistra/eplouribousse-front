@@ -100,6 +100,7 @@ export type Resource = {
     count: number
     callNumbers: string
     shouldInstruct: boolean
+    shouldPosition: boolean
     status: number
     arbitration: number
     acl: Record<string, boolean>
@@ -113,7 +114,7 @@ export type CollectionsInResource = {
     position: CollectionPosition
     isExcluded: boolean
     exclusionReason: string
-    commentPositioning: string
+    commentPositioning: CommentPositioning | null
     acl: ACLCollection
 }
 
@@ -122,8 +123,22 @@ export type CollectionsWithResource = {
     collections: CollectionsInResource[]
 }
 
-export type CollectionPosition = 1 | 2 | 3 | 4 | null
+export type CollectionPosition = 1 | 2 | 3 | 4 | 0 | null
 
 export type ACLCollection = {
     position: boolean
+}
+
+export type Arbitration =
+    | 0 // Everybody is positioned but nobody in 1
+    | 1 // At least 2 collections in position 1
+    | 2 // No arbitration
+
+export type ResourceStatus = 10 | 20 | 30 | 40 | 50
+
+export type CommentPositioning = {
+    id: string
+    content: string
+    author: string
+    createdAt: string
 }
