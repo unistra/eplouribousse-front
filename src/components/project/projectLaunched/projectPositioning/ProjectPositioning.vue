@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useResourceStore } from '@/stores/resourceStore.ts'
-import ProjectPositioningCollectionCard from '@/components/project/projectLaunched/projectPositioning/ProjectPositioningCollectionCard.vue'
+import ProjectPositioningCollectionCard from '@/components/project/projectLaunched/projectPositioning/projectPositioningCollectionCard/ProjectPositioningCollectionCard.vue'
 
 const props = defineProps<{
     resourceId: string
@@ -31,6 +31,20 @@ onMounted(async () => {
         <hgroup>
             <h2>{{ resourceStore.title }}</h2>
             <p>{{ resourceStore.code }}</p>
+
+            <QCard
+                v-if="resourceStore.arbitration !== 2"
+                class="arbitration-card"
+                dark
+                flat
+            >
+                <QCardSection>
+                    <p>Arbitrage</p>
+                </QCardSection>
+                <QCardSection>
+                    <p>Cette ressource est en cours d'arbitrage</p>
+                </QCardSection>
+            </QCard>
         </hgroup>
         <QCard
             v-for="library in resourceStore.librariesAssociated"
