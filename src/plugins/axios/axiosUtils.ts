@@ -1,3 +1,4 @@
+// Based on https://git.unistra.fr/vue-unistra/cas-authentication/-/blob/main/src/
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { isExpired } from '@/utils/jwt.ts'
 import type { InternalAxiosRequestConfig } from 'axios'
@@ -16,7 +17,7 @@ export const allowedRoutesToAnon: Readonly<string[]> = [
     '/saml2/login/',
 ]
 
-export const allowedRoutesToAnonAndAuth: Readonly<string[]> = ['/projects/']
+export const allowedRoutesToAnonAndAuth: Readonly<string[]> = ['/projects/', '/resources/']
 
 export const isRouteAllowed = (to: 'anon' | 'anonAndAuth', url: string | undefined) => {
     if (!url) return false

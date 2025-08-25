@@ -92,3 +92,53 @@ export interface ProjectSettings {
 export interface ProjectLibrary extends LibraryI {
     isAlternativeStorageSite: boolean
 }
+
+export type Resource = {
+    id: string
+    title: string
+    code: string
+    count: number
+    callNumbers: string
+    shouldInstruct: boolean
+    shouldPosition: boolean
+    status: number
+    arbitration: number
+    acl: Record<string, boolean>
+}
+
+export type CollectionsInResource = {
+    id: string
+    library: string
+    callNumber: string
+    holdStatement: string
+    position: CollectionPosition
+    isExcluded: boolean
+    exclusionReason: string
+    commentPositioning: CommentPositioning | null
+    acl: ACLCollection
+}
+
+export type CollectionsWithResource = {
+    resource: Omit<Resource, 'is_excluded'>
+    collections: CollectionsInResource[]
+}
+
+export type CollectionPosition = 1 | 2 | 3 | 4 | 0 | null
+
+export type ACLCollection = {
+    position: boolean
+}
+
+export type Arbitration =
+    | 0 // Everybody is positioned but nobody in 1
+    | 1 // At least 2 collections in position 1
+    | 2 // No arbitration
+
+export type ResourceStatus = 10 | 20 | 30 | 40 | 50
+
+export type CommentPositioning = {
+    id: string
+    content: string
+    author: string
+    createdAt: string
+}

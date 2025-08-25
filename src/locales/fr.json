@@ -142,6 +142,34 @@
             "confirmStart": "En confirmant, le projet commencera le:",
             "waitingForManagerToStart": "En attente de démarrage par les pilotes de projet"
         },
+        "resources": {
+            "title": "Titre",
+            "code": "Code",
+            "count": "Nombre de collections",
+            "callNumber": "Cote",
+            "noCallNumber": "Aucune cote",
+            "holdStatement": "État de la collection",
+            "noHoldStatement": "Aucun état de la collection",
+            "position": "Position",
+            "status": {
+                "title": "Status",
+                "positioning": "Positionnement en cours",
+                "positioningRequired": "Positionnement requis",
+                "waitingPositioning": "En attente des autres bibliothèques",
+                "instructionBound": "Instruction des exemplaires reliés",
+                "controlBound": "Contrôle des exemplaires reliés",
+                "instructionUnbound": "Instruction des exemplaires non reliés",
+                "controlUnbound": "Contrôle des exemplaires non reliés"
+            },
+            "youAreInstructor": "Vous êtes instructeur pour cette bibliothèque",
+            "showResources": "Voir les ressources de:",
+            "compareWith": "Comparer les ressources avec:",
+            "exclusion": {
+                "exclude": "Exclure la collection",
+                "exclusionReason": "Motif d'exclusion"
+            },
+            "comment": "Commentaire"
+        },
         "settings": {
             "title": "Paramètres du projet",
             "privateMode": "Mode privé",
@@ -299,7 +327,9 @@
         "lastName": "Nom",
         "email": "Email",
         "or": "ou",
-        "waiting": "En attente"
+        "waiting": "En attente",
+        "all": "Tous",
+        "undefined": "Non renseigné"
     },
     "utils": {
         "searchUser": {

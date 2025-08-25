@@ -6,6 +6,7 @@ import { useProjectStore } from '@/stores/projectStore.ts'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
 import ProjectReview from '@/components/project/projectReview/ProjectReview.vue'
+import ProjectResources from '@/components/project/projectLaunched/ProjectResources.vue'
 
 const route = useRoute()
 const store = useProjectStore()
@@ -40,6 +41,7 @@ watch(
         <template v-if="!store.isLoading">
             <ProjectStepper v-if="store.status < 20" />
             <ProjectReview v-else-if="store.status < 30 || store.status < 40" />
+            <ProjectResources v-else-if="store.status < 100" />
         </template>
         <QSpinner
             v-else

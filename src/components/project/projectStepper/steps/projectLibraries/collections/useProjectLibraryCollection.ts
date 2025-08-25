@@ -58,13 +58,17 @@ export const useProjectLibraryCollection = (libraryId: string) => {
     }
 
     const onDrop = async (event: DragEvent) => {
+        isCollectionLoading.value = true
         event.preventDefault()
         await handleFileUpload(event.dataTransfer?.files?.[0] || null)
+        isCollectionLoading.value = false
     }
 
     const onFileChange = async (event: Event) => {
+        isCollectionLoading.value = true
         const target = event.target as HTMLInputElement
         await handleFileUpload(target.files?.[0] || null)
+        isCollectionLoading.value = false
     }
 
     const onModalImportCollectionClose = () => {
