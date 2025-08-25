@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
-import { useNewProjectRoles } from '@/components/newProject/steps/newProjectRoles/useNewProjectRoles.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
+import { useProjectRoles } from '@/components/project/projectStepper/steps/projectRoles/useProjectRoles.ts'
 
-const { roles, isAddUserLoading, onAddInvitation, onAddRole } = useNewProjectRoles()
+const { roles, isAddUserLoading, onAddInvitation, onAddRole } = useProjectRoles()
 const store = useProjectStore()
 </script>
 
@@ -16,7 +16,6 @@ const store = useProjectStore()
         >
             <p>{{ role.title }}</p>
             <SearchUser
-                :has-perm="store.acl.update"
                 :invitations-selected="store.invitations.filter((el) => el.role === role.role)"
                 :is-add-user-loading="isAddUserLoading"
                 :users-selected="store.roles.filter((el) => el.role === role.role).map((el) => el.user)"

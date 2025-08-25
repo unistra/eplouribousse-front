@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import NewProjectStepper from '@/components/newProject/newProjectStepper/NewProjectStepper.vue'
-import NewProjectRequirements from '@/components/newProject/newProjectRequirements/newProjectRequirements.vue'
+import ProjectStepper from '@/components/project/projectStepper/ProjectStepper.vue'
+import ProjectRequirements from '@/components/project/projectRequirements/ProjectRequirements.vue'
 import { ref } from 'vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
 
@@ -11,11 +11,11 @@ store.$reset()
 
 <template>
     <QPage padding>
-        <NewProjectRequirements
+        <ProjectRequirements
             v-if="!isRequirementValidated"
             @validate="isRequirementValidated = true"
         />
-        <NewProjectStepper v-else />
+        <ProjectStepper v-else />
     </QPage>
 </template>
 

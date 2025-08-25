@@ -14,6 +14,7 @@
         "diffusionList": "Liste de diffusion",
         "projectAdministration": "Administration du projet",
         "newProjectRequirements": "Création d'un nouveau projet",
+        "newProject": "Nouveau projet",
         "generalAdministration": "Administration générale",
         "hasNoPerm": "Vous avez été redirigé car vous n'avez pas accès à cette page",
         "needAuth": "Vous devez vous connecter pour accéder à cette page",
@@ -132,12 +133,14 @@
         "review": {
             "title": "Vérification du projet",
             "passToReady": "Marquer comme prêt",
-            "confirmPassToReview": "En confirmant, le projet sera démareable par un pilote de projet."
+            "confirmPassToReview": "En confirmant, le projet sera démareable par un pilote de projet.",
+            "waitingForAdminToReview": "En attente de validation par les administrateurs"
         },
         "ready": {
             "startTheProject": "Plannifier le démarrage du projet",
             "defineStartDate": "Définir une date de démarrage",
-            "confirmStart": "En confirmant, le projet commencera le:"
+            "confirmStart": "En confirmant, le projet commencera le:",
+            "waitingForManagerToStart": "En attente de démarrage par les pilotes de projet"
         },
         "settings": {
             "title": "Paramètres du projet",
@@ -295,7 +298,8 @@
         "firstName": "Prénom",
         "lastName": "Nom",
         "email": "Email",
-        "or": "ou"
+        "or": "ou",
+        "waiting": "En attente"
     },
     "utils": {
         "searchUser": {

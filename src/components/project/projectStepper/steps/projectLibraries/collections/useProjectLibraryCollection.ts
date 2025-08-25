@@ -5,7 +5,7 @@ import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 
-export const useNewProjectLibraryCollection = (libraryId: string) => {
+export const useProjectLibraryCollection = (libraryId: string) => {
     const store = useProjectStore()
     const { t } = useI18n()
     const { notify } = useComposableQuasar()

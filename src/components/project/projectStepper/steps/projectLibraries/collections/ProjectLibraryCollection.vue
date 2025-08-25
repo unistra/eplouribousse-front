@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useNewProjectLibraryCollection } from '@/components/newProject/steps/newProjectLibraries/collections/useNewProjectLibraryCollection.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import type { ImportCSVErrorObject } from '#/project'
+import { useProjectLibraryCollection } from '@/components/project/projectStepper/steps/projectLibraries/collections/useProjectLibraryCollection.ts'
 
 const props = defineProps<{
     libraryId: string
@@ -26,7 +26,7 @@ const {
     onFileChange,
     onModalImportCollectionClose,
     isCollectionLoading,
-} = useNewProjectLibraryCollection(props.libraryId)
+} = useProjectLibraryCollection(props.libraryId)
 
 onMounted(async () => await getCollection())
 </script>

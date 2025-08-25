@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
-import NewProjectLibraryCollection from '@/components/newProject/steps/newProjectLibraries/collections/NewProjectLibraryCollection.vue'
 import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
-import { useNewProjectLibraryCard } from '@/components/newProject/steps/newProjectLibraries/useNewProjectLibraryCard.ts'
 import type { ProjectLibrary } from '#/project'
+import { useProjectLibraryCard } from '@/components/project/projectStepper/steps/projectLibraries/useProjectLibraryCard.ts'
+import ProjectLibraryCollection from '@/components/project/projectStepper/steps/projectLibraries/collections/ProjectLibraryCollection.vue'
 
 const props = defineProps<{
     library: ProjectLibrary
@@ -16,7 +16,7 @@ const { t } = useI18n()
 const store = useProjectStore()
 
 const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading, borderColorIsAlternativeStorageSite } =
-    useNewProjectLibraryCard(props.library)
+    useProjectLibraryCard(props.library)
 </script>
 
 <template>
@@ -75,7 +75,7 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading,
         </QCardSection>
 
         <QCardSection>
-            <NewProjectLibraryCollection
+            <ProjectLibraryCollection
                 v-if="!library.isAlternativeStorageSite"
                 :is-summary="isSummary"
                 :library-id="library.id"

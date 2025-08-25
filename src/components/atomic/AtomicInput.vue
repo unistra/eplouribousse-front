@@ -9,7 +9,7 @@ const model = defineModel<string | number | undefined>()
 const props = defineProps<{
     autofocus?: boolean
     hideBottomSpace?: boolean
-    type?: 'text' | 'textarea' | 'email' | 'search' | 'number' | 'url' | 'password' | 'date'
+    type?: 'text' | 'textarea' | 'email' | 'search' | 'number' | 'url' | 'password' | 'date' | 'datetime-local'
     label?: string
     clearable?: boolean
     counter?: boolean

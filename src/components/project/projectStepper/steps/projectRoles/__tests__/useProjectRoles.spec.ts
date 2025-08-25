@@ -4,7 +4,7 @@ const mock = vi.hoisted(() => {
     return {
         notify: vi.fn(),
         t: vi.fn((key) => key),
-        useNewProjectRoles: {
+        useProjectRoles: {
             roles: [],
             isAddUserLoading: false,
             onAddRole: vi.fn(),
@@ -25,8 +25,8 @@ vi.mock('@/composables/useComposableQuasar.ts', () => ({
     }),
 }))
 
-vi.mock('@/components/newProject/steps/newProjectRoles/useNewProjectRoles.ts', () => ({
-    useNewProjectRole: () => ({}),
+vi.mock('@/components/newProject/steps/projectRoles/useProjectRoles.ts', () => ({
+    useProjectRole: () => ({}),
 }))
 
 describe('useNewProjectRoles', () => {
