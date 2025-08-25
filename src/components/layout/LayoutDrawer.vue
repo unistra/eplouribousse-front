@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
@@ -12,8 +12,9 @@ import { useRouter } from 'vue-router'
 const { t } = useI18n()
 const { logout } = useAuthentication()
 const userStore = useUserStore()
+const globalStore = useGlobalStore()
 const router = useRouter()
-const { tenant, isAuth, user } = storeToRefs(userStore)
+const { user } = storeToRefs(userStore)
 
 const drawer = ref<boolean>(true)
 const collapsed = ref<boolean>(false)
@@ -21,13 +22,13 @@ const collapsed = ref<boolean>(false)
 watch(
     () => user.value,
     async () => {
-        if (isAuth.value && user.value) {
-            await userStore.getProjects()
-        } else {
-            userStore.projects = []
-        }
+        await userStore.getProjects()
     },
 )
+
+onMounted(async () => {
+    await userStore.getProjects()
+})
 
 async function onLogout() {
     await logout()
@@ -53,12 +54,12 @@ async function onLogout() {
         <QList dense>
             <QItem
                 v-if="!collapsed"
-                active-class=""
                 class="logo"
+                exact-active-class=""
                 :to="{ name: 'Home' }"
             >
                 <h1>Eplouribousse</h1>
-                <p>{{ tenant }}</p>
+                <p>{{ globalStore.tenant?.name || '' }}</p>
             </QItem>
             <DrawerItem
                 v-else
@@ -73,7 +74,13 @@ async function onLogout() {
                         {{ t('navigation.projects') }}
                     </p>
                     <div :class="['scrollable-projects', { 'min-height': userStore.projects.length > 3 }]">
-                        <QList v-if="userStore.projects.length > 0">
+                        <QItem
+                            v-if="userStore.projectsLoading"
+                            class="q-spinner-container"
+                        >
+                            <QSpinner />
+                        </QItem>
+                        <QList v-else-if="userStore.projects.length > 0">
                             <DrawerItem
                                 v-for="project in userStore.projects"
                                 :key="project.id"
@@ -83,7 +90,7 @@ async function onLogout() {
                                 :tooltip="collapsed ? project.name : undefined"
                             />
                         </QList>
-                        <p v-if="!collapsed && !userStore.projects.length">
+                        <p v-else-if="!collapsed && !userStore.projects.length">
                             {{ t('navigation.noProject') }}
                         </p>
                     </div>
@@ -212,6 +219,12 @@ async function onLogout() {
 
                 .min-height
                     min-height: 8rem
+
+                .q-spinner-container
+                    font-size: 1.5rem
+                    display: flex
+                    justify-content: center
+                    align-items: center
 
 
                 p
