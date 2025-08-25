@@ -9,7 +9,7 @@ import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { storeToRefs } from 'pinia'
 import ProjectInstruction from '@/components/project/projectLaunched/projectInstruction/ProjectInstruction.vue'
-import { Roles } from '#/project.ts'
+import { ResourceStatus, Roles } from '#/project.ts'
 
 const resourceStore = useResourceStore()
 const { libraryIdSelected, libraryIdComparedSelected } = storeToRefs(useResourceStore())
@@ -128,7 +128,7 @@ onMounted(async () => {
                 </QCardActions>
                 <QCardSection>
                     <ProjectPositioning
-                        v-if="resourceStore.status === 10"
+                        v-if="resourceStore.status === ResourceStatus.Positioning"
                         :resource-id="resourceIdSelected"
                     />
                     <ProjectInstruction

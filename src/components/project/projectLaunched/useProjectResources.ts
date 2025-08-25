@@ -1,11 +1,11 @@
 import { computed, type Ref, ref, type ShallowRef, useTemplateRef } from 'vue'
 import type { Resource } from '#/project.ts'
+import { ResourceStatus, Roles } from '#/project.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/userStore.ts'
 import type { QTable, QTableProps } from 'quasar'
 import { useResourceStore } from '@/stores/resourceStore.ts'
-import { Roles } from '#/project.ts'
 
 export interface TableProjectResources {
     ref: Readonly<ShallowRef<QTable | null>>
@@ -40,8 +40,8 @@ export const useProjectResources = () => {
         ]
     })
 
-    const computeStatusLabel = (val: number, row: Resource) => {
-        if (val === 10) {
+    const computeStatusLabel = (val: ResourceStatus, row: Resource) => {
+        if (val === ResourceStatus.Positioning) {
             if (row.shouldPosition) return t('project.resources.status.positioningRequired')
             if (projectStore.isRole(Roles.Instructor, resourceStore.libraryIdSelected))
                 return t('project.resources.status.waitingPositioning')
@@ -49,9 +49,9 @@ export const useProjectResources = () => {
             return t('project.resources.status.positioning')
         }
 
-        if (val === 20) return t('project.resources.status.instructionBound')
-        if (val === 30) return t('project.resources.status.controlBound')
-        if (val === 40) return t('project.resources.status.instructionUnbound')
+        if (val === ResourceStatus.InstructionBound) return t('project.resources.status.instructionBound')
+        if (val === ResourceStatus.ControlBound) return t('project.resources.status.controlBound')
+        if (val === ResourceStatus.InstructionUnbound) return t('project.resources.status.instructionUnbound')
         else return t('project.resources.status.controlUnbound')
     }
 

@@ -145,7 +145,13 @@ export enum Arbitration {
     NoArbitration = 2,
 }
 
-export type ResourceStatus = 10 | 20 | 30 | 40 | 50
+export enum ResourceStatus {
+    Positioning = 10,
+    InstructionBound = 20,
+    ControlBound = 30,
+    InstructionUnbound = 40,
+    ControlUnbound = 50,
+}
 
 export type CommentPositioning = {
     id: string
