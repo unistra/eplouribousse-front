@@ -1,4 +1,4 @@
-import { LibraryI } from './library'
+import type { LibraryI } from './library'
 import { type ProjectPermissions } from '#/permissions'
 
 export interface ProjectI {
@@ -23,7 +23,7 @@ export interface Project extends ProjectI {
     isLoading: boolean
 }
 
-interface ProjectSummarized {
+export interface ProjectSummarized {
     id: string
     name: string
     description: string
@@ -51,14 +51,15 @@ export interface ProjectInvitation {
     libraryId: string | undefined
 }
 
-export type Roles =
-    | 'tenant_super_user'
-    | 'project_creator'
-    | 'project_admin'
-    | 'project_manager'
-    | 'instructor'
-    | 'controller'
-    | 'guest'
+export enum Roles {
+    TenantSuperUser = 'tenant_super_user',
+    ProjectCreator = 'project_creator',
+    ProjectAdmin = 'project_admin',
+    ProjectManager = 'project_manager',
+    Instructor = 'instructor',
+    Controller = 'controller',
+    Guest = 'guest',
+}
 
 export type ImportCSVResponse = Record<string, number>
 export type ImportCSVErrorObject = {

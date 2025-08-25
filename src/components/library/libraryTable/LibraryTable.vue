@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n'
 import LibraryCreateAndEditBtn from '@/components/library/libraryCreateAndEditBtn/LibraryCreateAndEditBtn.vue'
 import LibraryDeleteBtn from '@/components/library/libraryDeleteBtn/LibraryDeleteBtn.vue'
 import type { LibraryI } from '#/library.d.ts'
-import type { ProjectLibrary } from '#/project'
+import type { ProjectLibrary } from '#/project.ts'
 
 const props = defineProps<{
     withAddBtn?: boolean // Button to add library to a selection (e.g., on a project creation)

@@ -8,7 +8,7 @@ import type {
     Arbitration,
     ResourceStatus,
     CommentPositioning,
-} from '#/project'
+} from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { Notify, type QTableProps } from 'quasar'
 import i18n from '@/plugins/i18n'

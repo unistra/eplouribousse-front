@@ -3,7 +3,7 @@ import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
-import type { ProjectLibrary } from '#/project'
+import { type ProjectLibrary, Roles } from '#/project.ts'
 import { useProjectLibraryCard } from '@/components/project/projectStepper/steps/projectLibraries/useProjectLibraryCard.ts'
 import ProjectLibraryCollection from '@/components/project/projectStepper/steps/projectLibraries/collections/ProjectLibraryCollection.vue'
 
@@ -37,18 +37,18 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading,
             <SearchUser
                 v-if="!isSummary"
                 :invitations-selected="
-                    store.invitations.filter((el) => el.role === 'instructor' && el.libraryId === library.id)
+                    store.invitations.filter((el) => el.role === Roles.Instructor && el.libraryId === library.id)
                 "
                 :is-add-user-loading="isAddUserLoading"
                 :users-selected="
                     store.roles
-                        .filter((el) => el.role === 'instructor' && el.libraryId === library.id)
+                        .filter((el) => el.role === Roles.Instructor && el.libraryId === library.id)
                         .map((el) => el.user)
                 "
                 @add-invitation="onAddInvitation"
                 @add-user="onAddRole"
                 @remove-invitation="async ({ email, role }) => await store.removeInvitation(email, role, library.id)"
-                @remove-user="async (userId) => await store.removeRole(userId, 'instructor', library.id)"
+                @remove-user="async (userId) => await store.removeRole(userId, Roles.Instructor, library.id)"
             />
             <QList
                 v-else
@@ -56,7 +56,7 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading,
             >
                 <QItem
                     v-for="invitation in store.invitations.filter(
-                        (el) => el.role === 'instructor' && el.libraryId === library.id,
+                        (el) => el.role === Roles.Instructor && el.libraryId === library.id,
                     )"
                     :key="invitation.email"
                 >
@@ -64,7 +64,7 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading,
                 </QItem>
                 <QItem
                     v-for="user in store.roles
-                        .filter((el) => el.role === 'instructor' && el.libraryId === library.id)
+                        .filter((el) => el.role === Roles.Instructor && el.libraryId === library.id)
                         .map((el) => el.user)"
                     :key="user.id"
                 >

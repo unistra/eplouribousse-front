@@ -1,6 +1,7 @@
 import { computed, ref } from 'vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
-import type { ProjectLibrary } from '#/project'
+import type { ProjectLibrary } from '#/project.ts'
+import { Roles } from '#/project.ts'
 
 export const useProjectLibraryCard = (library: ProjectLibrary) => {
     const store = useProjectStore()
@@ -19,12 +20,12 @@ export const useProjectLibraryCard = (library: ProjectLibrary) => {
     const isAddUserLoading = ref<boolean>(false)
     const onAddInvitation = async (email: string) => {
         isAddUserLoading.value = true
-        await store.addInvitation(email, 'instructor', library.id)
+        await store.addInvitation(email, Roles.Instructor, library.id)
         isAddUserLoading.value = false
     }
     const onAddRole = async (userId: string) => {
         isAddUserLoading.value = true
-        await store.addRole(userId, 'instructor', library.id)
+        await store.addRole(userId, Roles.Instructor, library.id)
         isAddUserLoading.value = false
     }
 

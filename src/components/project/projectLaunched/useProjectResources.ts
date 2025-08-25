@@ -1,10 +1,11 @@
 import { computed, type Ref, ref, type ShallowRef, useTemplateRef } from 'vue'
-import type { Resource } from '#/project'
+import type { Resource } from '#/project.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/userStore.ts'
 import type { QTable, QTableProps } from 'quasar'
 import { useResourceStore } from '@/stores/resourceStore.ts'
+import { Roles } from '#/project.ts'
 
 export interface TableProjectResources {
     ref: Readonly<ShallowRef<QTable | null>>
@@ -42,7 +43,7 @@ export const useProjectResources = () => {
     const computeStatusLabel = (val: number, row: Resource) => {
         if (val === 10) {
             if (row.shouldPosition) return t('project.resources.status.positioningRequired')
-            if (projectStore.isRole('instructor', resourceStore.libraryIdSelected))
+            if (projectStore.isRole(Roles.Instructor, resourceStore.libraryIdSelected))
                 return t('project.resources.status.waitingPositioning')
 
             return t('project.resources.status.positioning')
@@ -111,7 +112,7 @@ export const useProjectResources = () => {
         }
 
         const librariesIdWhereUserIsInstructor = projectStore.roles
-            .filter((el) => el.user.id === userStore.user?.id && el.role === 'instructor')
+            .filter((el) => el.user.id === userStore.user?.id && el.role === Roles.Instructor)
             .map((el) => el.libraryId)
 
         resourceStore.libraryIdSelected = librariesIdWhereUserIsInstructor[0] || ''

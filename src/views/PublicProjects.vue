@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Pagination } from '#/pagination'
 import type { QTable, QTableProps } from 'quasar'
-import type { ProjectI } from '#/project'
+import type { ProjectI } from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'

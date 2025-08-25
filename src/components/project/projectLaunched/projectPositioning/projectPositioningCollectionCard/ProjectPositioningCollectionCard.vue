@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import type { CollectionsInResource } from '#/project'
+import type { CollectionsInResource } from '#/project.ts'
 import { onMounted, watch } from 'vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useProjectStore } from '@/stores/projectStore.ts'

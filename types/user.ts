@@ -1,4 +1,4 @@
-import type { ProjectRole } from './project'
+import type { ProjectRole } from './project.ts'
 
 interface UserSettings {
     theme: string

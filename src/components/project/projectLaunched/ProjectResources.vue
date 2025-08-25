@@ -9,6 +9,7 @@ import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { storeToRefs } from 'pinia'
 import ProjectInstruction from '@/components/project/projectLaunched/projectInstruction/ProjectInstruction.vue'
+import { Roles } from '#/project.ts'
 
 const resourceStore = useResourceStore()
 const { libraryIdSelected, libraryIdComparedSelected } = storeToRefs(useResourceStore())
@@ -66,7 +67,7 @@ onMounted(async () => {
                 map-options
                 :option-label="
                     (el) =>
-                        `${el.name}${projectStore.isRole('instructor', el.id) ? ' - ' + t('project.resources.youAreInstructor') : ''}`
+                        `${el.name}${projectStore.isRole(Roles.Instructor, el.id) ? ' - ' + t('project.resources.youAreInstructor') : ''}`
                 "
                 option-value="id"
                 :options="select.options"

@@ -8,9 +8,9 @@ import type {
     ProjectI,
     ProjectInvitation,
     ProjectLibrary,
-    Roles,
     ProjectRole,
-} from '#/project'
+} from '#/project.ts'
+import { Roles } from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { Notify } from 'quasar'
 import i18n from '@/plugins/i18n'
@@ -368,7 +368,7 @@ export const useProjectStore = defineStore('project', {
                 (el) =>
                     el.role === role &&
                     userStore.user?.id === el.user.id &&
-                    ((!libraryId && role !== 'instructor') || el.libraryId === libraryId),
+                    ((!libraryId && role !== Roles.Instructor) || el.libraryId === libraryId),
             )
         },
     },

@@ -1,6 +1,7 @@
 import { computed, type ComputedRef, ref } from 'vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useUserStore } from '@/stores/userStore.ts'
+import { Roles } from '#/project.ts'
 
 export const useProjectReview = () => {
     const projectStore = useProjectStore()
@@ -10,10 +11,10 @@ export const useProjectReview = () => {
     const dateModal = ref<boolean>(false)
 
     const userIsAdmin: ComputedRef<boolean> = computed(() =>
-        projectStore.roles.some((el) => el.user.id === userStore.user?.id && el.role === 'project_admin'),
+        projectStore.roles.some((el) => el.user.id === userStore.user?.id && el.role === Roles.ProjectAdmin),
     )
     const userIsManager: ComputedRef<boolean> = computed(() =>
-        projectStore.roles.some((el) => el.user.id === userStore.user?.id && el.role === 'project_manager'),
+        projectStore.roles.some((el) => el.user.id === userStore.user?.id && el.role === Roles.ProjectManager),
     )
 
     const nowString = new Date().toLocaleString('sv-SE', { timeZone: 'Europe/Paris' }).replace(' ', 'T').slice(0, -3) // 'sv-SE' match the format for the input + the datetime of Paris
