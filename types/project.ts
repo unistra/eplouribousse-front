@@ -139,10 +139,11 @@ export type ACLCollection = {
     position: boolean
 }
 
-export type Arbitration =
-    | 0 // Everybody is positioned but nobody in 1
-    | 1 // At least 2 collections in position 1
-    | 2 // No arbitration
+export enum Arbitration {
+    NoPosition1 = 0,
+    MultiplePosition1 = 1,
+    NoArbitration = 2,
+}
 
 export type ResourceStatus = 10 | 20 | 30 | 40 | 50
 
