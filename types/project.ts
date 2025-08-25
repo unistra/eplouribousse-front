@@ -8,7 +8,7 @@ export interface ProjectI {
     isPrivate: boolean
     activeAfter: string
     isActive: boolean
-    status: number
+    status: ProjectStatus
     settings: ProjectSettings
     invitations: ProjectInvitation[]
     roles: ProjectRole[]
@@ -23,13 +23,21 @@ export interface Project extends ProjectI {
     isLoading: boolean
 }
 
+export enum ProjectStatus {
+    Draft = 10,
+    Review = 20,
+    Ready = 30,
+    Launched = 40,
+    Archived = 100,
+}
+
 export interface ProjectSummarized {
     id: string
     name: string
     description: string
     isPrivate: boolean
     activeAfter: string
-    status: number
+    status: ProjectStatus
 }
 
 export interface ProjectUser {
@@ -102,7 +110,7 @@ export type Resource = {
     callNumbers: string
     shouldInstruct: boolean
     shouldPosition: boolean
-    status: number
+    status: ResourceStatus
     arbitration: number
     acl: Record<string, boolean>
 }

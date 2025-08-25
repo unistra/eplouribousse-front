@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useProjectReview } from '@/components/project/projectReview/useProjectReview.ts'
 import { computed } from 'vue'
+import { ProjectStatus } from '#/project.ts'
 
 const { t } = useI18n()
 
@@ -12,15 +13,15 @@ const store = useProjectStore()
 const { dateModal, onConfirm, dateString, date, userIsAdmin, userIsManager, nowString } = useProjectReview()
 
 const waitingMessage = computed(() => {
-    if (store.status === 20) return t('project.review.waitingForAdminToReview')
-    if (store.status === 30) return t('project.ready.waitingForManagerToStart')
+    if (store.status === ProjectStatus.Review) return t('project.review.waitingForAdminToReview')
+    if (store.status === ProjectStatus.Ready) return t('project.ready.waitingForManagerToStart')
     return t('common.waiting')
 })
 </script>
 
 <template>
     <AtomicButton
-        v-if="store.status === 20 && userIsAdmin"
+        v-if="store.status === ProjectStatus.Review && userIsAdmin"
         color="primary"
         confirm-button-color="primary"
         :label="t('project.review.passToReady')"
@@ -35,7 +36,7 @@ const waitingMessage = computed(() => {
             </QCardSection>
         </template>
     </AtomicButton>
-    <template v-else-if="store.status === 30 && userIsManager">
+    <template v-else-if="store.status === ProjectStatus.Ready && userIsManager">
         <AtomicButton
             color="primary"
             :label="t('project.ready.startTheProject')"

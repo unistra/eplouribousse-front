@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia'
-import type {
-    Resource,
-    CollectionsInResource,
-    CollectionsWithResource,
-    ProjectLibrary,
-    Arbitration,
+import {
+    type Resource,
+    type CollectionsInResource,
+    type CollectionsWithResource,
+    type ProjectLibrary,
+    type Arbitration,
     ResourceStatus,
-    CommentPositioning,
+    type CommentPositioning,
 } from '#/project.ts'
 import { CollectionPosition } from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
@@ -35,7 +35,7 @@ const initialState = {
     callNumbers: '',
     shouldInstruct: false,
     shouldPosition: false,
-    status: 10,
+    status: ResourceStatus.Positioning,
     arbitration: 2,
     acl: {},
 }
