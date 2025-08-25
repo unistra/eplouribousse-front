@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue'
-import type { CollectionPosition } from '#/project.ts'
+import { CollectionPosition } from '#/project.ts'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useI18n } from 'vue-i18n'
@@ -9,7 +9,7 @@ export const useProjectPositioningCollectionCard = (collectionId: string) => {
     const { t } = useI18n()
 
     const collection = resourceStore.collections.find((col) => col.id === collectionId)
-    const newPosition = ref<CollectionPosition>(collection?.position || null)
+    const newPosition = ref<CollectionPosition>(collection?.position || CollectionPosition.Undefined)
 
     const exclude = ref<boolean>(false)
     const exclusionReason = ref<string>('')

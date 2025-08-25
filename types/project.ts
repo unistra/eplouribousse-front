@@ -124,7 +124,16 @@ export type CollectionsWithResource = {
     collections: CollectionsInResource[]
 }
 
-export type CollectionPosition = 1 | 2 | 3 | 4 | 0 | null
+export const CollectionPosition = {
+    Excluded: 0,
+    Position1: 1,
+    Position2: 2,
+    Position3: 3,
+    Position4: 4,
+    Undefined: null,
+}
+
+export type CollectionPosition = (typeof CollectionPosition)[keyof typeof CollectionPosition]
 
 export type ACLCollection = {
     position: boolean

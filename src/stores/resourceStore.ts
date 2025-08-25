@@ -3,12 +3,12 @@ import type {
     Resource,
     CollectionsInResource,
     CollectionsWithResource,
-    CollectionPosition,
     ProjectLibrary,
     Arbitration,
     ResourceStatus,
     CommentPositioning,
 } from '#/project.ts'
+import { CollectionPosition } from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { Notify, type QTableProps } from 'quasar'
 import i18n from '@/plugins/i18n'
@@ -192,7 +192,7 @@ export const useResourceStore = defineStore('resource', {
                 )
 
                 const collection = this._findCollection(collectionId)
-                collection.position = 0
+                collection.position = CollectionPosition.Excluded
                 collection.exclusionReason = response.data.exclusionReason
                 this.arbitration = response.data.arbitration
             } catch {
