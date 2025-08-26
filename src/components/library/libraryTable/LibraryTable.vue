@@ -53,7 +53,7 @@ onMounted(async () => {
         <template #top-right>
             <QInput
                 v-model="filter"
-                debounce="300"
+                debounce="3000"
                 dense
                 :placeholder="t('libraries.table.search')"
             >
