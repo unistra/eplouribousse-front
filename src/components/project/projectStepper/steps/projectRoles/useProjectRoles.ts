@@ -1,4 +1,4 @@
-import type { Roles } from '#/project'
+import { Roles } from '#/project.ts'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
@@ -11,9 +11,9 @@ export const useProjectRoles = () => {
         title: string
         role: Roles
     }[] = [
-        { title: t('roles.projectAdmin'), role: 'project_admin' },
-        { title: t('roles.projectManager'), role: 'project_manager' },
-        { title: t('roles.controller'), role: 'controller' },
+        { title: t('roles.projectAdmin'), role: Roles.ProjectAdmin },
+        { title: t('roles.projectManager'), role: Roles.ProjectManager },
+        { title: t('roles.controller'), role: Roles.Controller },
     ]
 
     const isAddUserLoading = ref<boolean>(false)

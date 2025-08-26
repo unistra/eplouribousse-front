@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { ProjectUser } from '#/project'
+import type { ProjectUser } from '#/project.ts'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 
 defineProps<{

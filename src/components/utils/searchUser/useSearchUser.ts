@@ -2,7 +2,7 @@ import { type UserI } from '#/user'
 import { type Comparator, UniqueSet } from '#/utils'
 import { axiosI } from '@/plugins/axios/axios'
 import { ref, watch } from 'vue'
-import type { ProjectInvitation, ProjectUser } from '#/project'
+import type { ProjectInvitation, ProjectUser } from '#/project.ts'
 import type { Pagination } from '#/pagination.ts'
 
 export type SearchUserEmitActions = {

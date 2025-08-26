@@ -9,6 +9,7 @@ import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { storeToRefs } from 'pinia'
 import ProjectInstruction from '@/components/project/projectLaunched/projectInstruction/ProjectInstruction.vue'
+import { ResourceStatus, Roles } from '#/project.ts'
 
 const resourceStore = useResourceStore()
 const { libraryIdSelected, libraryIdComparedSelected } = storeToRefs(useResourceStore())
@@ -66,7 +67,7 @@ onMounted(async () => {
                 map-options
                 :option-label="
                     (el) =>
-                        `${el.name}${projectStore.isRole('instructor', el.id) ? ' - ' + t('project.resources.youAreInstructor') : ''}`
+                        `${el.name}${projectStore.isRole(Roles.Instructor, el.id) ? ' - ' + t('project.resources.youAreInstructor') : ''}`
                 "
                 option-value="id"
                 :options="select.options"
@@ -83,13 +84,14 @@ onMounted(async () => {
             :loading="table.loading.value"
             row-key="id"
             :rows="resourceStore.resources"
+            :rows-per-page-options="[5, 10, 20, 50, 100]"
             @request="table.onRequest"
             @row-click="onRowClick"
         >
             <template #top-right>
                 <QInput
                     v-model="table.filter.value"
-                    debounce="300"
+                    debounce="3000"
                     dense
                     :placeholder="t('common.search')"
                 >
@@ -127,7 +129,7 @@ onMounted(async () => {
                 </QCardActions>
                 <QCardSection>
                     <ProjectPositioning
-                        v-if="resourceStore.status === 10"
+                        v-if="resourceStore.status === ResourceStatus.Positioning"
                         :resource-id="resourceIdSelected"
                     />
                     <ProjectInstruction

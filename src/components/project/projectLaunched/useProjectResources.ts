@@ -1,5 +1,6 @@
 import { computed, type Ref, ref, type ShallowRef, useTemplateRef } from 'vue'
-import type { Resource } from '#/project'
+import type { Resource } from '#/project.ts'
+import { ResourceStatus, Roles } from '#/project.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/userStore.ts'
@@ -39,18 +40,18 @@ export const useProjectResources = () => {
         ]
     })
 
-    const computeStatusLabel = (val: number, row: Resource) => {
-        if (val === 10) {
+    const computeStatusLabel = (val: ResourceStatus, row: Resource) => {
+        if (val === ResourceStatus.Positioning) {
             if (row.shouldPosition) return t('project.resources.status.positioningRequired')
-            if (projectStore.isRole('instructor', resourceStore.libraryIdSelected))
+            if (projectStore.isRole(Roles.Instructor, resourceStore.libraryIdSelected))
                 return t('project.resources.status.waitingPositioning')
 
             return t('project.resources.status.positioning')
         }
 
-        if (val === 20) return t('project.resources.status.instructionBound')
-        if (val === 30) return t('project.resources.status.controlBound')
-        if (val === 40) return t('project.resources.status.instructionUnbound')
+        if (val === ResourceStatus.InstructionBound) return t('project.resources.status.instructionBound')
+        if (val === ResourceStatus.ControlBound) return t('project.resources.status.controlBound')
+        if (val === ResourceStatus.InstructionUnbound) return t('project.resources.status.instructionUnbound')
         else return t('project.resources.status.controlUnbound')
     }
 
@@ -111,7 +112,7 @@ export const useProjectResources = () => {
         }
 
         const librariesIdWhereUserIsInstructor = projectStore.roles
-            .filter((el) => el.user.id === userStore.user?.id && el.role === 'instructor')
+            .filter((el) => el.user.id === userStore.user?.id && el.role === Roles.Instructor)
             .map((el) => el.libraryId)
 
         resourceStore.libraryIdSelected = librariesIdWhereUserIsInstructor[0] || ''

@@ -1,4 +1,4 @@
-import { LibraryI } from './library'
+import type { LibraryI } from './library'
 import { type ProjectPermissions } from '#/permissions'
 
 export interface ProjectI {
@@ -8,7 +8,7 @@ export interface ProjectI {
     isPrivate: boolean
     activeAfter: string
     isActive: boolean
-    status: number
+    status: ProjectStatus
     settings: ProjectSettings
     invitations: ProjectInvitation[]
     roles: ProjectRole[]
@@ -23,13 +23,21 @@ export interface Project extends ProjectI {
     isLoading: boolean
 }
 
-interface ProjectSummarized {
+export enum ProjectStatus {
+    Draft = 10,
+    Review = 20,
+    Ready = 30,
+    Launched = 40,
+    Archived = 100,
+}
+
+export interface ProjectSummarized {
     id: string
     name: string
     description: string
     isPrivate: boolean
     activeAfter: string
-    status: number
+    status: ProjectStatus
 }
 
 export interface ProjectUser {
@@ -51,14 +59,15 @@ export interface ProjectInvitation {
     libraryId: string | undefined
 }
 
-export type Roles =
-    | 'tenant_super_user'
-    | 'project_creator'
-    | 'project_admin'
-    | 'project_manager'
-    | 'instructor'
-    | 'controller'
-    | 'guest'
+export enum Roles {
+    TenantSuperUser = 'tenant_super_user',
+    ProjectCreator = 'project_creator',
+    ProjectAdmin = 'project_admin',
+    ProjectManager = 'project_manager',
+    Instructor = 'instructor',
+    Controller = 'controller',
+    Guest = 'guest',
+}
 
 export type ImportCSVResponse = Record<string, number>
 export type ImportCSVErrorObject = {
@@ -101,7 +110,7 @@ export type Resource = {
     callNumbers: string
     shouldInstruct: boolean
     shouldPosition: boolean
-    status: number
+    status: ResourceStatus
     arbitration: number
     acl: Record<string, boolean>
 }
@@ -123,18 +132,34 @@ export type CollectionsWithResource = {
     collections: CollectionsInResource[]
 }
 
-export type CollectionPosition = 1 | 2 | 3 | 4 | 0 | null
+export const CollectionPosition = {
+    Excluded: 0,
+    Position1: 1,
+    Position2: 2,
+    Position3: 3,
+    Position4: 4,
+    Undefined: null,
+}
+
+export type CollectionPosition = (typeof CollectionPosition)[keyof typeof CollectionPosition]
 
 export type ACLCollection = {
     position: boolean
 }
 
-export type Arbitration =
-    | 0 // Everybody is positioned but nobody in 1
-    | 1 // At least 2 collections in position 1
-    | 2 // No arbitration
+export enum Arbitration {
+    NoPosition1 = 0,
+    MultiplePosition1 = 1,
+    NoArbitration = 2,
+}
 
-export type ResourceStatus = 10 | 20 | 30 | 40 | 50
+export enum ResourceStatus {
+    Positioning = 10,
+    InstructionBound = 20,
+    ControlBound = 30,
+    InstructionUnbound = 40,
+    ControlUnbound = 50,
+}
 
 export type CommentPositioning = {
     id: string

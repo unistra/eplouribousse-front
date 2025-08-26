@@ -1,14 +1,14 @@
 import { defineStore } from 'pinia'
-import type {
-    Resource,
-    CollectionsInResource,
-    CollectionsWithResource,
-    CollectionPosition,
-    ProjectLibrary,
-    Arbitration,
+import {
+    type Resource,
+    type CollectionsInResource,
+    type CollectionsWithResource,
+    type ProjectLibrary,
+    type Arbitration,
     ResourceStatus,
-    CommentPositioning,
-} from '#/project'
+    type CommentPositioning,
+} from '#/project.ts'
+import { CollectionPosition } from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { Notify, type QTableProps } from 'quasar'
 import i18n from '@/plugins/i18n'
@@ -35,7 +35,7 @@ const initialState = {
     callNumbers: '',
     shouldInstruct: false,
     shouldPosition: false,
-    status: 10,
+    status: ResourceStatus.Positioning,
     arbitration: 2,
     acl: {},
 }
@@ -192,7 +192,7 @@ export const useResourceStore = defineStore('resource', {
                 )
 
                 const collection = this._findCollection(collectionId)
-                collection.position = 0
+                collection.position = CollectionPosition.Excluded
                 collection.exclusionReason = response.data.exclusionReason
                 this.arbitration = response.data.arbitration
             } catch {

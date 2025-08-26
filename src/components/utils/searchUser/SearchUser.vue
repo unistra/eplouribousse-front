@@ -2,7 +2,7 @@
 import { onMounted, watch } from 'vue'
 import { type SearchUserEmitActions, useSearchUser } from './useSearchUser'
 import { useI18n } from 'vue-i18n'
-import type { ProjectInvitation, ProjectUser } from '#/project'
+import type { ProjectInvitation, ProjectUser } from '#/project.ts'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import SearchUserItem from '@/components/utils/searchUser/SearchUserItem.vue'

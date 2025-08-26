@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import type { CollectionsInResource } from '#/project'
+import { CollectionPosition, type CollectionsInResource } from '#/project.ts'
 import { onMounted, watch } from 'vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
@@ -19,8 +19,8 @@ const { collection, exclude, comment, exclusionReason, newPosition, onSave, show
     useProjectPositioningCollectionCard(props.collection.id)
 
 watch(exclude, () => {
-    if (exclude.value) newPosition.value = null
-    else newPosition.value = collection?.position || 4
+    if (exclude.value) newPosition.value = CollectionPosition.Undefined
+    else newPosition.value = collection?.position || CollectionPosition.Position4
 })
 
 onMounted(() => {
@@ -50,7 +50,12 @@ onMounted(() => {
                 <QForm @submit.prevent>
                     <div class="button-section">
                         <QRadio
-                            v-for="position in [1, 2, 3, 4]"
+                            v-for="position in [
+                                CollectionPosition.Position1,
+                                CollectionPosition.Position2,
+                                CollectionPosition.Position3,
+                                CollectionPosition.Position4,
+                            ]"
                             :key="position"
                             v-model="newPosition"
                             color="primary"

@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { ProjectI, ProjectRole, ProjectSummarized } from '#/project'
+import type { ProjectI, ProjectRole, ProjectSummarized } from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import type { Pagination } from '#/pagination.ts'
 import { type User } from '#/user'

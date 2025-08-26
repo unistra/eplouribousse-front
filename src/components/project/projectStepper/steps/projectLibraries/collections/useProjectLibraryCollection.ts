@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import type { Collection, ImportCSVError, ImportCSVResponse } from '#/project'
+import type { Collection, ImportCSVError, ImportCSVResponse } from '#/project.ts'
 import type { Pagination } from '#/pagination.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'

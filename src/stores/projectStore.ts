@@ -1,16 +1,17 @@
 import { defineStore } from 'pinia'
 import type { LibraryI } from '#/library'
-import type {
-    Collection,
-    ImportCSVError,
-    ImportCSVResponse,
-    Project,
-    ProjectI,
-    ProjectInvitation,
-    ProjectLibrary,
+import {
+    type Collection,
+    type ImportCSVError,
+    type ImportCSVResponse,
+    type Project,
+    type ProjectI,
+    type ProjectInvitation,
+    type ProjectLibrary,
+    type ProjectRole,
+    ProjectStatus,
     Roles,
-    ProjectRole,
-} from '#/project'
+} from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { Notify } from 'quasar'
 import i18n from '@/plugins/i18n'
@@ -27,7 +28,7 @@ const initialState: ProjectI = {
     isPrivate: false,
     activeAfter: '',
     isActive: false,
-    status: 10,
+    status: ProjectStatus.Draft,
     settings: {
         exclusionReasons: [],
     },
@@ -283,7 +284,7 @@ export const useProjectStore = defineStore('project', {
         async passToReview() {
             try {
                 const response = await axiosI.patch(`/projects/${this.id}/status/`, {
-                    status: 20,
+                    status: ProjectStatus.Review,
                 })
                 this.status = response.data.status
             } catch {
@@ -339,7 +340,7 @@ export const useProjectStore = defineStore('project', {
         async passToReady() {
             try {
                 const response = await axiosI.patch(`/projects/${this.id}/status/`, {
-                    status: 30,
+                    status: ProjectStatus.Ready,
                 })
                 this.status = response.data.status
             } catch {
@@ -368,7 +369,7 @@ export const useProjectStore = defineStore('project', {
                 (el) =>
                     el.role === role &&
                     userStore.user?.id === el.user.id &&
-                    ((!libraryId && role !== 'instructor') || el.libraryId === libraryId),
+                    ((!libraryId && role !== Roles.Instructor) || el.libraryId === libraryId),
             )
         },
     },
