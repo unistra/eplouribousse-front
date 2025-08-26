@@ -84,6 +84,7 @@ onMounted(async () => {
             :loading="table.loading.value"
             row-key="id"
             :rows="resourceStore.resources"
+            :rows-per-page-options="[5, 10, 20, 50, 100]"
             @request="table.onRequest"
             @row-click="onRowClick"
         >
