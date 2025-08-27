@@ -1,6 +1,6 @@
 import { computed, type Ref, ref, type ShallowRef, useTemplateRef } from 'vue'
 import type { Resource } from '#/project.ts'
-import { ResourceStatus, Roles } from '#/project.ts'
+import { ResourceStatus, Roles } from '&/project.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/userStore.ts'

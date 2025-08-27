@@ -4,11 +4,9 @@ import {
     type CollectionsInResource,
     type CollectionsWithResource,
     type ProjectLibrary,
-    type Arbitration,
-    ResourceStatus,
     type CommentPositioning,
 } from '#/project.ts'
-import { CollectionPosition } from '#/project.ts'
+import { CollectionPosition, Arbitration, ResourceStatus } from '&/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { Notify, type QTableProps } from 'quasar'
 import i18n from '@/plugins/i18n'

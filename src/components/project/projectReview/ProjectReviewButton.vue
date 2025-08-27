@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useProjectReview } from '@/components/project/projectReview/useProjectReview.ts'
 import { computed } from 'vue'
-import { ProjectStatus } from '#/project.ts'
+import { ProjectStatus } from '&/project.ts'
 
 const { t } = useI18n()
 

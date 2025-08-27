@@ -1,7 +1,7 @@
 import { computed, type ComputedRef, ref } from 'vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useUserStore } from '@/stores/userStore.ts'
-import { Roles } from '#/project.ts'
+import { Roles } from '&/project.ts'
 
 export const useProjectReview = () => {
     const projectStore = useProjectStore()

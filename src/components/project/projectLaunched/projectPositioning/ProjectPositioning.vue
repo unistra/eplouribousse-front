@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import ProjectPositioningCollectionCard from '@/components/project/projectLaunched/projectPositioning/projectPositioningCollectionCard/ProjectPositioningCollectionCard.vue'
-import { Arbitration } from '#/project.ts'
+import { Arbitration } from '&/project.ts'
 
 const props = defineProps<{
     resourceId: string

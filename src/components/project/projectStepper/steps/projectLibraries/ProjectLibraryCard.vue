@@ -3,9 +3,10 @@ import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
-import { type ProjectLibrary, Roles } from '#/project.ts'
+import { type ProjectLibrary } from '#/project.ts'
 import { useProjectLibraryCard } from '@/components/project/projectStepper/steps/projectLibraries/useProjectLibraryCard.ts'
 import ProjectLibraryCollection from '@/components/project/projectStepper/steps/projectLibraries/collections/ProjectLibraryCollection.vue'
+import { Roles } from '&/project.ts'
 
 const props = defineProps<{
     library: ProjectLibrary

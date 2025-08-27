@@ -9,7 +9,7 @@ import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { storeToRefs } from 'pinia'
 import ProjectInstruction from '@/components/project/projectLaunched/projectInstruction/ProjectInstruction.vue'
-import { ResourceStatus, Roles } from '#/project.ts'
+import { ResourceStatus, Roles } from '&/project.ts'
 
 const resourceStore = useResourceStore()
 const { libraryIdSelected, libraryIdComparedSelected } = storeToRefs(useResourceStore())

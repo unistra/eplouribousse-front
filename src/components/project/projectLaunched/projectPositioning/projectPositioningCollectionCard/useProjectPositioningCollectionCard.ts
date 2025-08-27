@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue'
-import { CollectionPosition } from '#/project.ts'
+import { CollectionPosition } from '&/project.ts'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useI18n } from 'vue-i18n'

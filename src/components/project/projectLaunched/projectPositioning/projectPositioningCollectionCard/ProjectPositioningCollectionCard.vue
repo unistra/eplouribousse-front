@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { CollectionPosition, type CollectionsInResource } from '#/project.ts'
+import { type CollectionsInResource } from '#/project.ts'
 import { onMounted, watch } from 'vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import { useProjectPositioningCollectionCard } from '@/components/project/projectLaunched/projectPositioning/projectPositioningCollectionCard/useProjectPositioningCollectionCard.ts'
+import { CollectionPosition } from '&/project.ts'
 const props = defineProps<{
     libraryId: string
     libraryIdSelected: string
