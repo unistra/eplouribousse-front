@@ -85,13 +85,13 @@ onMounted(() => {
             </QCardSection>
             <QCardSection v-else>
                 <p v-if="!collection.exclusionReason">
-                    Position:
+                    {{ t('project.resources.position') }}:
                     <span :class="['position', { italic: !collection.position }]">{{
                         collection.position || t('common.undefined')
                     }}</span>
                 </p>
                 <p v-else>
-                    No position:
+                    {{ t('project.resources.exclusion.excluded') }}:
                     <span :class="['position', { italic: !collection.position }]">{{
                         collection.exclusionReason
                     }}</span>

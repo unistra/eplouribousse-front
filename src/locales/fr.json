@@ -166,7 +166,8 @@
             "compareWith": "Comparer les ressources avec:",
             "exclusion": {
                 "exclude": "Exclure la collection",
-                "exclusionReason": "Motif d'exclusion"
+                "exclusionReason": "Motif d'exclusion",
+                "excluded": "Collection exclue"
             },
             "comment": "Commentaire"
         },
