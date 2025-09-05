@@ -29,6 +29,15 @@ export const useProjectInstruction = () => {
             },
         },
         {
+            name: 'collection',
+            label: t('project.instruction.tableFields.collection'),
+            field: 'collection',
+            format(_val: unknown, row: Segment) {
+                const collection = resourceStore.collections.find((el) => el.id === row.collection)
+                return `${t('project.resources.position')}: ${collection?.position} | ${t('project.resources.callNumber')}: ${collection?.callNumber}`
+            },
+        },
+        {
             name: 'content',
             label: t('project.instruction.tableFields.segment'),
             field: 'content',
@@ -49,9 +58,17 @@ export const useProjectInstruction = () => {
             field: 'exception',
         },
         {
-            name: 'reorder',
-            label: t('project.instruction.tableFields.reorder'),
-            field: 'reorder',
+            name: 'resolve',
+            label: t('project.instruction.tableFields.resolve'),
+            field: 'resolve',
+            format(_val: unknown, row: Segment) {
+                return resourceStore.segments.find((el) => el.id === row.improvedSegment)?.order.toString() || '-'
+            },
+        },
+        {
+            name: 'options',
+            label: t('project.instruction.tableFields.options'),
+            field: 'options',
         },
     ]
 
@@ -63,10 +80,15 @@ export const useProjectInstruction = () => {
         tableLoading.value = false
     }
 
+    const dialogUpdateSegment = ref<boolean>(false)
+    const dialogCreateSegment = ref<boolean>(false)
+
     return {
         tableLoading,
         columns,
         orderedRows,
         orderSegment,
+        dialogUpdateSegment,
+        dialogCreateSegment,
     }
 }
