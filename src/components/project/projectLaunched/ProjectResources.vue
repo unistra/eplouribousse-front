@@ -5,14 +5,12 @@ import { useProjectResources } from '@/components/project/projectLaunched/usePro
 import { useI18n } from 'vue-i18n'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
-import { storeToRefs } from 'pinia'
 import ProjectInstruction from '@/components/project/projectLaunched/projectInstruction/ProjectInstruction.vue'
 import ProjectPositioning from '@/components/project/projectLaunched/projectPositioning/ProjectPositioning.vue'
 import { ResourceStatus, Roles } from '&/project.ts'
 import type { QTable } from 'quasar'
 
 const resourceStore = useResourceStore()
-const { libraryIdSelected, libraryIdComparedSelected } = storeToRefs(useResourceStore())
 const projectStore = useProjectStore()
 
 const {
@@ -76,6 +74,7 @@ onMounted(async () => {
                 emit-value
                 :label="select.label"
                 map-options
+                :name="select.name"
                 :option-label="
                     (el) =>
                         `${el.name}${projectStore.isRole(Roles.Instructor, el.id) ? ' - ' + t('project.resources.youAreInstructor') : ''}`
@@ -192,6 +191,12 @@ onMounted(async () => {
             flex-grow: 1
             display: flex
             flex-direction: column
+
+            .spinner
+                display: flex
+                align-items: center
+                justify-content: center
+                height: 100%
 
 .project-resources
     display: flex

@@ -123,12 +123,44 @@ export const useProjectResources = () => {
     }
 
     const resourceDialog = ref<boolean>(false)
-    const resourceIdSelected = ref<string>('')
+    const dialogLoading = ref<boolean>(false)
 
-    const onRowClick = (_: Event, row: Resource) => {
-        resourceIdSelected.value = row.id
+    const onRowClick = async (_: Event, row: Resource) => {
         resourceDialog.value = true
+        dialogLoading.value = true
+
+        if (resourceStore.resourceSelected?.id !== row.id) {
+            resourceStore.collections = []
+            resourceStore.segments = []
+            await resourceStore.fetchResourceAndCollections(row.id)
+        }
+        resourceStore.resourceSelected = row
+        dialogLoading.value = false
     }
+
+    const fetchResources = () =>
+        resourceStore.fetchResources({
+            table,
+            props: { pagination: table.pagination.value, filter: table.filter.value },
+        })
+
+    const { libraryIdSelected, libraryIdComparedSelected } = storeToRefs(useResourceStore())
+    const selects = [
+        {
+            model: libraryIdSelected,
+            label: t('project.resources.showResources'),
+            options: librariesOptions.value,
+            callback: fetchResources,
+            name: 'librariesSelection',
+        },
+        {
+            model: libraryIdComparedSelected,
+            label: t('project.resources.compareWith'),
+            options: librariesComparedOptions.value,
+            callback: fetchResources,
+            name: 'librariesComparison',
+        },
+    ]
 
     return {
         tab,
@@ -141,5 +173,7 @@ export const useProjectResources = () => {
         resourceIdSelected,
         selectDefaultLibrary,
         onRowClick,
+        selects,
+        dialogLoading,
     }
 }
