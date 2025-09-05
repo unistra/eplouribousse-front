@@ -20,6 +20,7 @@ const { t } = i18n.global
 interface ResourceStoreState extends Resource {
     collections: CollectionsInResource[]
     resources: Resource[]
+    resourcesNumber: number
     initialState: Resource
     libraryIdSelected: string
     libraryIdComparedSelected: string
@@ -46,6 +47,7 @@ export const useResourceStore = defineStore('resource', {
         initialState: structuredClone(initialState),
         collections: [],
         resources: [],
+        resourcesNumber: 0,
         libraryIdSelected: '',
         libraryIdComparedSelected: '',
         page: 1,
