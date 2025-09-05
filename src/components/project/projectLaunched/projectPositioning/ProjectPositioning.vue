@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import ProjectPositioningCollectionCard from '@/components/project/projectLaunched/projectPositioning/projectPositioningCollectionCard/ProjectPositioningCollectionCard.vue'
+import { useI18n } from 'vue-i18n'
 import { Arbitration } from '&/project.ts'
 
-import { useI18n } from 'vue-i18n'
 
 const resourceStore = useResourceStore()
 const { t } = useI18n()
