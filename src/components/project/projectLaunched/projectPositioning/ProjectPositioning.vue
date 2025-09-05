@@ -3,9 +3,6 @@ import { useResourceStore } from '@/stores/resourceStore.ts'
 import ProjectPositioningCollectionCard from '@/components/project/projectLaunched/projectPositioning/projectPositioningCollectionCard/ProjectPositioningCollectionCard.vue'
 import { Arbitration } from '&/project.ts'
 
-const props = defineProps<{
-    resourceId: string
-}>()
 import { useI18n } from 'vue-i18n'
 
 const resourceStore = useResourceStore()

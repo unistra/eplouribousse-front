@@ -8,8 +8,7 @@ import ProjectInstructionSegmentDialog from '@/components/project/projectLaunche
 
 const { t } = useI18n()
 const resourceStore = useResourceStore()
-const { columns, orderedRows, orderSegment, deleteSegment, tableLoading, dialogUpdateSegment, dialogCreateSegment } =
-    useProjectInstruction()
+const { columns, orderedRows, orderSegment, deleteSegment, tableLoading, dialogUpdateSegment } = useProjectInstruction()
 
 onMounted(async () => {
     tableLoading.value = true

@@ -7,6 +7,7 @@ import { useUserStore } from '@/stores/userStore.ts'
 import type { QTable, QTableProps } from 'quasar'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import type { TableProjectResources } from '#/table.ts'
+import { storeToRefs } from 'pinia'
 
 export const useProjectResources = () => {
     const projectStore = useProjectStore()
@@ -139,7 +140,7 @@ export const useProjectResources = () => {
     }
 
     const fetchResources = () =>
-        resourceStore.fetchResources({
+        resourceStore.fetchResources(tabStatus.value, {
             table,
             props: { pagination: table.pagination.value, filter: table.filter.value },
         })
@@ -170,7 +171,6 @@ export const useProjectResources = () => {
         librariesComparedOptions,
         table,
         resourceDialog,
-        resourceIdSelected,
         selectDefaultLibrary,
         onRowClick,
         selects,

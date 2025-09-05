@@ -13,40 +13,8 @@ import type { QTable } from 'quasar'
 const resourceStore = useResourceStore()
 const projectStore = useProjectStore()
 
-const {
-    tab,
-    tabs,
-    tabStatus,
-    librariesOptions,
-    resourceDialog,
-    resourceIdSelected,
-    table,
-    librariesComparedOptions,
-    selectDefaultLibrary,
-    onRowClick,
-} = useProjectResources()
+const { tab, tabs, tabStatus, resourceDialog, table, selectDefaultLibrary, onRowClick, selects } = useProjectResources()
 const { t } = useI18n()
-
-const fetchResources = () =>
-    resourceStore.fetchResources(tabStatus.value, {
-        table,
-        props: { pagination: table.pagination.value, filter: table.filter.value },
-    })
-
-const selects = [
-    {
-        model: libraryIdSelected,
-        label: t('project.resources.showResources'),
-        options: librariesOptions.value,
-        callback: fetchResources,
-    },
-    {
-        model: libraryIdComparedSelected,
-        label: t('project.resources.compareWith'),
-        options: librariesComparedOptions.value,
-        callback: fetchResources,
-    },
-]
 
 async function reloadResources() {
     await resourceStore.fetchResources(tabStatus.value, {
@@ -163,13 +131,9 @@ onMounted(async () => {
                                 />
                             </QCardActions>
                             <QCardSection>
-                                <ProjectPositioning
-                                    v-if="resourceStore.status === ResourceStatus.Positioning"
-                                    :resource-id="resourceIdSelected"
-                                />
+                                <ProjectPositioning v-if="tab === 'positioning'" />
                                 <ProjectInstruction
-                                    v-else-if="resourceIdSelected"
-                                    :resource-id="resourceIdSelected"
+                                    v-else-if="tab === 'instructionBound' || tab === 'instructionUnbound'"
                                 />
                                 <p v-else>{{ t('errors.unknown') }}</p>
                             </QCardSection>
