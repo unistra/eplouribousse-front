@@ -132,3 +132,17 @@ export type CommentPositioning = {
     author: string
     createdAt: string
 }
+
+export interface Segment {
+    id: string
+    segmentType: 'bound' | 'unbound'
+    content: string
+    improvableElements: string
+    exception: string
+    improvedSegment?: string
+    collection: string
+    order: number
+    retained: boolean
+    createdBy: string | null
+    createdAt: string
+}

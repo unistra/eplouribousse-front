@@ -210,6 +210,29 @@
             "treatmentTracking": "Suivi des traitements",
             "exclusionReason": "Raisons d'exclusion",
             "alternativeStorageSite": "Lieu de stockage alternatif"
+        },
+        "positioning": {
+            "arbitration": {
+                "i": "Arbitrage",
+                "currently": "Cette ressource est en cours d'@.lower:project.positioning.arbitration.i",
+                "type0": "Au moins une collection doit être positionnée en 1",
+                "type1": "Une de vos collections est en concurence pour la position 1"
+            }
+        },
+        "instruction": {
+            "segment": {
+                "i": "segment",
+                "new": "@.capitalize:common.new @.lower:project.instruction.segment.i"
+            },
+            "tableFields": {
+                "order": "Ordre",
+                "library": "@.capitalize:libraries.title",
+                "segment": "@.capitalize:project.instruction.segment.i",
+                "boundOrUnbound": "Relié ou non relié",
+                "improvableElements": "Élément améliorable",
+                "exception": "Exception",
+                "reorder": "Réordonner"
+            }
         }
     },
     "libraries": {
@@ -353,7 +376,8 @@
         "or": "ou",
         "waiting": "En attente",
         "all": "Tous",
-        "undefined": "Non renseigné"
+        "undefined": "Non renseigné",
+        "new": "Nouveau"
     },
     "utils": {
         "searchUser": {
