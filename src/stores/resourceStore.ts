@@ -20,7 +20,6 @@ const { t } = i18n.global
 interface ResourceStoreState extends Resource {
     collections: CollectionsInResource[]
     resources: Resource[]
-    resourcesNumber: number
     initialState: Resource
     libraryIdSelected: string
     libraryIdComparedSelected: string
@@ -45,7 +44,6 @@ export const useResourceStore = defineStore('resource', {
         initialState: structuredClone(initialState),
         collections: [],
         resources: [],
-        resourcesNumber: 0,
         libraryIdSelected: '',
         libraryIdComparedSelected: '',
     }),
@@ -70,7 +68,7 @@ export const useResourceStore = defineStore('resource', {
             return collection
         },
         getAll(table: TableProjectResources) {
-            table.pagination.value.rowsNumber = this.resourcesNumber
+            table.pagination.value.rowsNumber = this.resources.length
             return this.resources
         },
         getResourcesWithStatus(table: TableProjectResources, status: ResourceStatus) {
@@ -155,9 +153,7 @@ export const useResourceStore = defineStore('resource', {
                 }
 
                 const response = await axiosI.get<Pagination<Resource>>('/resources/', { params })
-
                 this.resources = response.data.results
-                this.resourcesNumber = response.data.count
 
                 if (options?.props?.pagination) {
                     const { pagination } = options.props
