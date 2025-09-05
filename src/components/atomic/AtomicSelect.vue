@@ -1,17 +1,29 @@
 <script setup lang="ts">
+import type { QSelectProps } from 'quasar'
+
 const model = defineModel()
 
 defineProps<{
     label?: string
-    options: unknown[]
+    options: QSelectProps['options']
+    optionValue?: QSelectProps['optionValue']
+    optionLabel?: QSelectProps['optionLabel']
+    emitValue?: boolean
+    mapOptions?: boolean
 }>()
 </script>
 
 <template>
     <QSelect
         v-model="model"
+        color="grey-100"
+        :emit-value
         :label
+        :map-options
+        :option-label
+        :option-value
         :options
         outlined
+        rounded
     />
 </template>

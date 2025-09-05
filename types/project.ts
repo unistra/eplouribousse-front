@@ -133,16 +133,20 @@ export type CommentPositioning = {
     createdAt: string
 }
 
-export interface Segment {
-    id: string
-    segmentType: 'bound' | 'unbound'
+export interface SegmentI {
     content: string
     improvableElements: string
     exception: string
     improvedSegment?: string
     collection: string
+}
+
+export interface Segment extends SegmentI {
+    id: string
+    segmentType: 'bound' | 'unbound'
     order: number
     retained: boolean
     createdBy: string | null
     createdAt: string
+    acl: Record<string, boolean>
 }

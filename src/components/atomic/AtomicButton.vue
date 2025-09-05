@@ -55,6 +55,7 @@ const emit = defineEmits<{
         unelevated
         @click="onClick"
     >
+        <slot />
         <AtomicConfirmationDialog
             v-if="requireConfirmation"
             v-model="modalConfirmation"

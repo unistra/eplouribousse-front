@@ -141,6 +141,9 @@
             "errors": "Anomalies",
             "sucessUpdate": "Projet mis à jour avec succès"
         },
+        "collection": {
+            "i": "Collection"
+        },
         "review": {
             "title": "Vérification du projet",
             "passToReady": "Marquer comme prêt",
@@ -222,16 +225,19 @@
         "instruction": {
             "segment": {
                 "i": "segment",
-                "new": "@.capitalize:common.new @.lower:project.instruction.segment.i"
+                "new": "@.capitalize:common.new @.lower:project.instruction.segment.i",
+                "insertUnder": "Insérer en dessous"
             },
             "tableFields": {
                 "order": "Ordre",
                 "library": "@.capitalize:libraries.title",
+                "collection": "@.capitalize:project.collection.i",
                 "segment": "@.capitalize:project.instruction.segment.i",
                 "boundOrUnbound": "Relié ou non relié",
                 "improvableElements": "Élément améliorable",
                 "exception": "Exception",
-                "reorder": "Réordonner"
+                "options": "Options",
+                "resolve": "@.capitalize:project.instruction.segment.i remédié"
             }
         }
     },
@@ -377,7 +383,8 @@
         "waiting": "En attente",
         "all": "Tous",
         "undefined": "Non renseigné",
-        "new": "Nouveau"
+        "new": "Nouveau",
+        "update": "Modifier"
     },
     "utils": {
         "searchUser": {

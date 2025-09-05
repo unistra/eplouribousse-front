@@ -40,9 +40,7 @@ const emit = defineEmits<{
             :label="t('newProject.buttons.ready')"
             no-border
             @click="() => emit('validate')"
-        >
-            {{ t('newProject.requirements.requirementsOk') }}
-        </AtomicButton>
+        />
     </div>
 </template>
 
