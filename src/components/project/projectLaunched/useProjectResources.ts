@@ -29,6 +29,14 @@ export const useProjectResources = () => {
     const userStore = useUserStore()
     const { t } = useI18n()
 
+    const tabs = [
+        { name: 'all', label: 'Tous' },
+        { name: 'position', label: 'Positionnements' },
+        { name: 'arbitration', label: 'Arbitrages' },
+        { name: 'instruction', label: 'Instructions' },
+    ]
+    const tab = ref<string>('all')
+
     const librariesOptions = computed(() => {
         return [...projectStore.libraries, { name: t('common.all'), id: '' }]
     })
@@ -127,6 +135,8 @@ export const useProjectResources = () => {
     }
 
     return {
+        tab,
+        tabs,
         librariesOptions,
         selectDefaultLibrary,
         librariesComparedOptions,

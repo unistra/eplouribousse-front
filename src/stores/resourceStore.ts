@@ -20,6 +20,7 @@ const { t } = i18n.global
 interface ResourceStoreState extends Resource {
     collections: CollectionsInResource[]
     resources: Resource[]
+    resourcesNumber: number
     initialState: Resource
     libraryIdSelected: string
     libraryIdComparedSelected: string
@@ -44,6 +45,7 @@ export const useResourceStore = defineStore('resource', {
         initialState: structuredClone(initialState),
         collections: [],
         resources: [],
+        resourcesNumber: 0,
         libraryIdSelected: '',
         libraryIdComparedSelected: '',
     }),
@@ -66,6 +68,24 @@ export const useResourceStore = defineStore('resource', {
             const collection = this.collections.find((col) => col.id === collectionId)
             if (!collection) throw new Error('collection does not exist')
             return collection
+        },
+        getAll(table: TableProjectResources) {
+            table.pagination.value.rowsNumber = this.resourcesNumber
+            return this.resources
+        },
+        getResourcesWithStatus(table: TableProjectResources, status: ResourceStatus) {
+            const resources = this.resources.filter((resource: Resource) => resource.status === status)
+            table.pagination.value.rowsNumber = resources.length
+            return resources
+        },
+        getArbitrations(table: TableProjectResources) {
+            const resources = this.resources.filter(
+                (resource: Resource) =>
+                    resource.arbitration === Arbitration.MultiplePosition1 ||
+                    resource.arbitration === Arbitration.NoPosition1,
+            )
+            table.pagination.value.rowsNumber = resources.length
+            return resources
         },
         async fetchResourceAndCollections(resourceId: string) {
             const projectStore = useProjectStore()
@@ -107,6 +127,7 @@ export const useResourceStore = defineStore('resource', {
         async fetchResources(options?: {
             props: Omit<Parameters<NonNullable<QTableProps['onRequest']>>[0], 'getCellValue'>
             table: TableProjectResources
+            status?: ResourceStatus
         }) {
             const projectStore = useProjectStore()
 
@@ -136,6 +157,7 @@ export const useResourceStore = defineStore('resource', {
                 const response = await axiosI.get<Pagination<Resource>>('/resources/', { params })
 
                 this.resources = response.data.results
+                this.resourcesNumber = response.data.count
 
                 if (options?.props?.pagination) {
                     const { pagination } = options.props
