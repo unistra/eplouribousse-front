@@ -30,10 +30,10 @@ export const useProjectResources = () => {
     const { t } = useI18n()
 
     const tabs = [
-        { name: 'all', label: 'Tous' },
-        { name: 'position', label: 'Positionnements' },
-        { name: 'arbitration', label: 'Arbitrages' },
-        { name: 'instruction', label: 'Instructions' },
+        { name: 'all', label: t('project.resources.all') },
+        { name: 'position', label: t('project.resources.status.toPosition') },
+        { name: 'arbitration', label: t('project.resources.status.toArbitrate') },
+        { name: 'instruction', label: t('project.resources.status.toInstruct') },
     ]
     const tab = ref<string>('all')
 

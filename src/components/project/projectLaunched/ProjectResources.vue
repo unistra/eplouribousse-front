@@ -80,13 +80,16 @@ onMounted(async () => {
             <QTabs
                 v-model="tab"
                 align="left"
+                dense
+                no-caps
             >
                 <QTab
                     v-for="(value, index) in tabs"
                     :key="index"
-                    :name="value.name"
                     :label="value.label"
-                />
+                    :name="value.name"
+                >
+                </QTab>
             </QTabs>
         </div>
         <div>
