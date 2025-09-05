@@ -5,6 +5,7 @@ import {
     type CollectionsWithResource,
     type ProjectLibrary,
     type CommentPositioning,
+    type Segment,
 } from '#/project.ts'
 import { CollectionPosition, Arbitration, ResourceStatus } from '&/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
@@ -26,6 +27,8 @@ interface ResourceStoreState extends Resource {
     libraryIdComparedSelected: string
     page: number
     resourcesCount: number
+    segments: Segment[]
+    resourceSelected: Resource | null
 }
 
 const initialState = {
@@ -52,6 +55,8 @@ export const useResourceStore = defineStore('resource', {
         libraryIdComparedSelected: '',
         page: 1,
         resourcesCount: 0,
+        segments: [],
+        resourceSelected: null,
     }),
     getters: {
         librariesAssociated(this: ResourceStoreState) {
@@ -93,7 +98,6 @@ export const useResourceStore = defineStore('resource', {
         },
         async fetchResourceAndCollections(resourceId: string) {
             const projectStore = useProjectStore()
-            const { notify } = useComposableQuasar()
 
             try {
                 const response = await axiosI.get<CollectionsWithResource>(`/resources/${resourceId}/collections`, {
@@ -122,7 +126,7 @@ export const useResourceStore = defineStore('resource', {
                     },
                 )
             } catch {
-                notify({
+                Notify.create({
                     type: 'negative',
                     message: t('errors.unknown'),
                 })
@@ -240,6 +244,57 @@ export const useResourceStore = defineStore('resource', {
                 )
 
                 collection.commentPositioning = response.data
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async fetchSegments() {
+            try {
+                const response = await axiosI.get(`segments/`, { params: { resource_id: this.id } })
+
+                this.segments = response.data
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async orderSegment(segment: Segment, direction: 'up' | 'down') {
+            if (direction == 'up' && segment.order === 1) return
+            if (direction == 'down' && segment.order === this.segments.length) return
+
+            try {
+                const response = await axiosI.patch<{
+                    currentSegment: {
+                        id: string
+                        order: number
+                    }
+                    previousSegment: {
+                        id: string
+                        order: number
+                    }
+                    nextSegment: {
+                        id: string
+                        order: number
+                    }
+                }>(`segments/${segment.id}/${direction}/`)
+
+                const currentSegment = this.segments.find((el) => el.id === segment.id)
+                const targetSegment = this.segments.find(
+                    (el) =>
+                        el.id ===
+                        (direction === 'up' ? response.data.previousSegment.id : response.data.nextSegment.id),
+                )
+
+                if (currentSegment && targetSegment) {
+                    currentSegment.order = response.data.currentSegment.order
+                    targetSegment.order =
+                        direction === 'up' ? response.data.previousSegment.order : response.data.nextSegment.order
+                }
             } catch {
                 Notify.create({
                     type: 'negative',
