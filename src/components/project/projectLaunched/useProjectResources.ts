@@ -1,4 +1,4 @@
-import { computed, type Ref, ref, type ShallowRef, useTemplateRef } from 'vue'
+import { computed, ref, useTemplateRef } from 'vue'
 import type { Resource } from '#/project.ts'
 import { ResourceStatus, Roles } from '#/project.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
@@ -6,22 +6,7 @@ import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/userStore.ts'
 import type { QTable, QTableProps } from 'quasar'
 import { useResourceStore } from '@/stores/resourceStore.ts'
-
-export interface TableProjectResources {
-    ref: Readonly<ShallowRef<QTable | null>>
-    rows: Ref<Resource[]>
-    filter: Ref<string>
-    loading: Ref<boolean>
-    columns: QTable['columns']
-    pagination: Ref<{
-        sortBy: string
-        descending: boolean
-        page: number
-        rowsPerPage: number
-        rowsNumber: number
-    }>
-    onRequest: (props: Parameters<NonNullable<QTableProps['onRequest']>>[0]) => Promise<void>
-}
+import type { TableProjectResources } from '#/table.ts'
 
 export const useProjectResources = () => {
     const projectStore = useProjectStore()
@@ -138,11 +123,11 @@ export const useProjectResources = () => {
         tab,
         tabs,
         librariesOptions,
-        selectDefaultLibrary,
         librariesComparedOptions,
         table,
         resourceDialog,
         resourceIdSelected,
+        selectDefaultLibrary,
         onRowClick,
     }
 }
