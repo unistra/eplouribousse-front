@@ -13,7 +13,7 @@ import i18n from '@/plugins/i18n'
 import type { Pagination } from '#/pagination.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
-import type { TableProjectResources } from '@/components/project/projectLaunched/useProjectResources.ts'
+import type { TableProjectResources } from '#/table'
 
 const { t } = i18n.global
 
