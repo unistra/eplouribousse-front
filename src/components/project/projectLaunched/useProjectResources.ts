@@ -63,7 +63,6 @@ export const useProjectResources = () => {
     const table: TableProjectResources = {
         ref: useTemplateRef<QTable>('qTable'),
         rows: ref<Resource[]>([]),
-
         filter: ref<string>(''),
         loading: ref(false),
         columns: [
@@ -101,7 +100,7 @@ export const useProjectResources = () => {
             sortBy: 'name',
             descending: false,
             page: 1,
-            rowsPerPage: 10,
+            rowsPerPage: ref<number>(10),
             rowsNumber: 0,
         }),
         onRequest: async (props: Parameters<NonNullable<QTableProps['onRequest']>>[0]) => {
