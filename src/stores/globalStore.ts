@@ -36,17 +36,19 @@ export const useGlobalStore = defineStore('globalStore', () => {
 
     const defineBackendBaseURL = () => {
         const url = new URL(location.href)
-        const prefix = url.host.split('.', 1)[0]
 
         if (import.meta.env.VITE_ENV === 'dev') {
+            const prefix = url.host.split('.', 1)[0]
             axiosI.defaults.baseURL = url.protocol + '//' + prefix + '.epl-api.localhost:8000/api'
             axiosAuth.defaults.baseURL = url.protocol + '//' + prefix + '.epl-api.localhost:8000'
         } else if (import.meta.env.VITE_ENV === 'test') {
-            axiosI.defaults.baseURL = url.protocol + '//' + prefix + '-eplouribousse-api-test.app.unistra.fr/api'
-            axiosAuth.defaults.baseURL = url.protocol + '//' + prefix + '-eplouribousse-api-test.app.unistra.fr'
+            const prefix = url.host.split('-', 1)[0]
+            axiosI.defaults.baseURL = prefix + '-eplouribousse-api-test.app.unistra.fr/api'
+            axiosAuth.defaults.baseURL = prefix + '-eplouribousse-api-test.app.unistra.fr'
         } else if (import.meta.env.VITE_ENV === 'pprd') {
-            axiosI.defaults.baseURL = url.protocol + '//' + prefix + '-eplouribousse-api-pprd.app.unistra.fr/api'
-            axiosAuth.defaults.baseURL = url.protocol + '//' + prefix + '-eplouribousse-api-pprd.app.unistra.fr'
+            const prefix = 'https://t1-eplouribousse-pprd.app.unistra.fr/'.split('-', 1)[0]
+            axiosI.defaults.baseURL = prefix + '-eplouribousse-api-pprd.app.unistra.fr/api'
+            axiosAuth.defaults.baseURL = prefix + '-eplouribousse-api-pprd.app.unistra.fr'
         }
     }
 
