@@ -124,11 +124,14 @@ export const useResourceStore = defineStore('resource', {
                 })
             }
         },
-        async fetchResources(options?: {
-            props: Omit<Parameters<NonNullable<QTableProps['onRequest']>>[0], 'getCellValue'>
-            table: TableProjectResources
-            status?: ResourceStatus
-        }) {
+        async fetchResources(
+            status: ResourceStatus,
+            options?: {
+                props: Omit<Parameters<NonNullable<QTableProps['onRequest']>>[0], 'getCellValue'>
+                table: TableProjectResources
+                status?: ResourceStatus
+            },
+        ) {
             const projectStore = useProjectStore()
 
             try {
@@ -137,6 +140,7 @@ export const useResourceStore = defineStore('resource', {
                 const params: Record<string, string | number> = {
                     project: projectStore.id,
                     library: this.libraryIdSelected,
+                    status: status,
                 }
 
                 if (this.libraryIdComparedSelected && this.libraryIdSelected)

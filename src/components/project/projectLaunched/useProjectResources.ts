@@ -15,12 +15,25 @@ export const useProjectResources = () => {
     const { t } = useI18n()
 
     const tabs = [
-        { name: 'all', label: t('project.resources.all') },
-        { name: 'position', label: t('project.resources.status.toPosition') },
-        { name: 'arbitration', label: t('project.resources.status.toArbitrate') },
-        { name: 'instruction', label: t('project.resources.status.toInstruct') },
+        { name: 'position', label: t('project.resources.status.toPosition'), status: ResourceStatus.Positioning },
+        { name: 'arbitration', label: t('project.resources.status.toArbitrate'), status: ResourceStatus.Positioning },
+        {
+            name: 'instructionBound',
+            label: t('project.resources.status.toInstructBound'),
+            status: ResourceStatus.InstructionBound,
+        },
+        {
+            name: 'instructionUnbound',
+            label: t('project.resources.status.toInstructUnbound'),
+            status: ResourceStatus.InstructionUnbound,
+        },
+        { name: 'control', label: t('project.resources.status.toControl'), status: ResourceStatus.ControlBound },
     ]
-    const tab = ref<string>('all')
+    const tab = ref<string>('position')
+    const tabStatus = computed(() => {
+        const t = tabs.find((el) => el.name === tab.value)
+        return t ? t.status : ResourceStatus.Positioning
+    })
 
     const librariesOptions = computed(() => {
         return [...projectStore.libraries, { name: t('common.all'), id: '' }]
@@ -94,7 +107,7 @@ export const useProjectResources = () => {
         }),
         onRequest: async (props: Parameters<NonNullable<QTableProps['onRequest']>>[0]) => {
             const resourceStore = useResourceStore()
-            await resourceStore.fetchResources({ props, table })
+            await resourceStore.fetchResources(tabStatus.value, { props, table })
         },
     }
 
@@ -122,6 +135,7 @@ export const useProjectResources = () => {
     return {
         tab,
         tabs,
+        tabStatus,
         librariesOptions,
         librariesComparedOptions,
         table,
