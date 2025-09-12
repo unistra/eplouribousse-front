@@ -142,7 +142,7 @@ export const useResourceStore = defineStore('resource', {
 
                 const params: Record<string, string | number> = {
                     project: projectStore.id,
-                    // library: this.libraryIdSelected,
+                    library: this.libraryIdSelected,
                     status: status,
                 }
 
@@ -176,8 +176,6 @@ export const useResourceStore = defineStore('resource', {
                 }
                 if (options) {
                     options.table.pagination.value.rowsNumber = response.data.count
-                    console.log(response.data.count)
-                    console.log(options.table.pagination.value.rowsNumber)
                 }
             } catch {
                 Notify.create({

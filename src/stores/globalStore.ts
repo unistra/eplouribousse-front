@@ -41,11 +41,12 @@ export const useGlobalStore = defineStore('globalStore', () => {
         if (import.meta.env.VITE_ENV === 'dev') {
             axiosI.defaults.baseURL = url.protocol + '//' + prefix + '.epl-api.localhost:8000/api'
             axiosAuth.defaults.baseURL = url.protocol + '//' + prefix + '.epl-api.localhost:8000'
-        } else {
-            const end = url.host.split('eplouribousse')[1]
-
-            axiosI.defaults.baseURL = url.protocol + '//' + prefix + '-eplouribousse-api' + end + '/api'
-            axiosAuth.defaults.baseURL = url.protocol + '//' + prefix + '-eplouribousse-api' + end
+        } else if (import.meta.env.VITE_ENV === 'test') {
+            axiosI.defaults.baseURL = url.protocol + '//' + prefix + '-eplouribousse-api-test.app.unistra.fr/api'
+            axiosAuth.defaults.baseURL = url.protocol + '//' + prefix + '-eplouribousse-api-test.app.unistra.fr'
+        } else if (import.meta.env.VITE_ENV === 'pprd') {
+            axiosI.defaults.baseURL = url.protocol + '//' + prefix + '-eplouribousse-api-pprd.app.unistra.fr/api'
+            axiosAuth.defaults.baseURL = url.protocol + '//' + prefix + '-eplouribousse-api-pprd.app.unistra.fr'
         }
     }
 
