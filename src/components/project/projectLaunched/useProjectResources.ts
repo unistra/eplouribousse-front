@@ -16,7 +16,6 @@ export const useProjectResources = () => {
 
     const tabs = [
         { name: 'position', label: t('project.resources.status.toPosition'), status: ResourceStatus.Positioning },
-        { name: 'arbitration', label: t('project.resources.status.toArbitrate'), status: ResourceStatus.Positioning },
         {
             name: 'instructionBound',
             label: t('project.resources.status.toInstructBound'),

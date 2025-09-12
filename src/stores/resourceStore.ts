@@ -133,7 +133,6 @@ export const useResourceStore = defineStore('resource', {
             },
         ) {
             const projectStore = useProjectStore()
-
             try {
                 if (options) options.table.loading.value = true
 
@@ -160,6 +159,7 @@ export const useResourceStore = defineStore('resource', {
 
                 const response = await axiosI.get<Pagination<Resource>>('/resources/', { params })
                 this.resources = response.data.results
+                console.log(response.data.count)
 
                 if (options?.props?.pagination) {
                     const { pagination } = options.props

@@ -34,6 +34,7 @@ const fetchResources = () =>
         table,
         props: { pagination: table.pagination.value, filter: table.filter.value },
     })
+
 const selects = [
     {
         model: libraryIdSelected,
@@ -48,6 +49,13 @@ const selects = [
         callback: fetchResources,
     },
 ]
+
+async function reloadResources() {
+    await resourceStore.fetchResources(tabStatus.value, {
+        table,
+        props: { pagination: table.pagination.value, filter: table.filter.value },
+    })
+}
 
 onMounted(async () => {
     selectDefaultLibrary()
@@ -83,7 +91,7 @@ onMounted(async () => {
                 align="left"
                 dense
                 no-caps
-                @update:model-value="fetchResources"
+                @update:model-value="reloadResources()"
             >
                 <QTab
                     v-for="(value, index) in tabs"
@@ -137,9 +145,7 @@ onMounted(async () => {
                                 class="title-qtd"
                                 :props="props"
                             >
-                                <p class="title-p">
-                                    {{ props.row.title }}
-                                </p>
+                                <p class="title-p">{{ props.row.title }}</p>
                             </QTd>
                         </template>
                     </QTable>
