@@ -25,6 +25,8 @@ interface ResourceStoreState extends Resource {
     initialState: Resource
     libraryIdSelected: string
     libraryIdComparedSelected: string
+    page: number
+    resourcesCount: number
 }
 
 const initialState = {
@@ -48,6 +50,8 @@ export const useResourceStore = defineStore('resource', {
         resources: [],
         libraryIdSelected: '',
         libraryIdComparedSelected: '',
+        page: 1,
+        resourcesCount: 0,
     }),
     getters: {
         librariesAssociated(this: ResourceStoreState) {
@@ -138,7 +142,7 @@ export const useResourceStore = defineStore('resource', {
 
                 const params: Record<string, string | number> = {
                     project: projectStore.id,
-                    library: this.libraryIdSelected,
+                    // library: this.libraryIdSelected,
                     status: status,
                 }
 
@@ -159,7 +163,6 @@ export const useResourceStore = defineStore('resource', {
 
                 const response = await axiosI.get<Pagination<Resource>>('/resources/', { params })
                 this.resources = response.data.results
-                console.log(response.data.count)
 
                 if (options?.props?.pagination) {
                     const { pagination } = options.props
@@ -171,7 +174,11 @@ export const useResourceStore = defineStore('resource', {
                         rowsNumber: response.data.count,
                     }
                 }
-                if (options) options.table.pagination.value.rowsNumber = response.data.count
+                if (options) {
+                    options.table.pagination.value.rowsNumber = response.data.count
+                    console.log(response.data.count)
+                    console.log(options.table.pagination.value.rowsNumber)
+                }
             } catch {
                 Notify.create({
                     type: 'negative',
