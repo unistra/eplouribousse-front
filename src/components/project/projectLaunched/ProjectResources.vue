@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { onMounted } from 'vue'
 import { useProjectResources } from '@/components/project/projectLaunched/useProjectResources.ts'
 import { useI18n } from 'vue-i18n'
@@ -7,17 +8,29 @@ import { useProjectStore } from '@/stores/projectStore.ts'
 import { storeToRefs } from 'pinia'
 import ProjectInstruction from '@/components/project/projectLaunched/projectInstruction/ProjectInstruction.vue'
 import { ResourceStatus, Roles } from '&/project.ts'
+import ProjectPositioning from './projectPositioning/ProjectPositioning.vue'
+import type { QTable } from 'quasar'
 
 const resourceStore = useResourceStore()
 const { libraryIdSelected, libraryIdComparedSelected } = storeToRefs(useResourceStore())
 const projectStore = useProjectStore()
 
-const { tab, tabs, librariesOptions, table, librariesComparedOptions, selectDefaultLibrary, onRowClick } =
-    useProjectResources()
+const {
+    tab,
+    tabs,
+    tabStatus,
+    librariesOptions,
+    resourceDialog,
+    resourceIdSelected,
+    table,
+    librariesComparedOptions,
+    selectDefaultLibrary,
+    onRowClick,
+} = useProjectResources()
 const { t } = useI18n()
 
 const fetchResources = () =>
-    resourceStore.fetchResources({
+    resourceStore.fetchResources(tabStatus.value, {
         table,
         props: { pagination: table.pagination.value, filter: table.filter.value },
     })
@@ -38,7 +51,7 @@ const selects = [
 
 onMounted(async () => {
     selectDefaultLibrary()
-    await resourceStore.fetchResources({
+    await resourceStore.fetchResources(ResourceStatus.Positioning, {
         table,
         props: { pagination: table.pagination.value, filter: table.filter.value },
     })
@@ -70,6 +83,7 @@ onMounted(async () => {
                 align="left"
                 dense
                 no-caps
+                @update:model-value="fetchResources"
             >
                 <QTab
                     v-for="(value, index) in tabs"
@@ -85,12 +99,78 @@ onMounted(async () => {
                 v-model="tab"
                 animated
             >
-                <ProjectTabPanel
+                <QTabPanel
                     v-for="(value, index) in tabs"
                     :key="index"
-                    :tab-name="value.name"
-                    @on-row-click="onRowClick"
-                />
+                    :name="value.name"
+                >
+                    <QTable
+                        ref="qTable"
+                        v-model:pagination="table.pagination.value"
+                        binary-state-sort
+                        :columns="table.columns as QTable['columns']"
+                        :filter="table.filter"
+                        flat
+                        :loading="table.loading.value"
+                        row-key="id"
+                        :rows="resourceStore.getAll(table)"
+                        :rows-per-page-options="[5, 10, 20, 50, 100]"
+                        @request="table.onRequest"
+                        @row-click="onRowClick"
+                    >
+                        <template #top-right>
+                            <QInput
+                                v-model="table.filter.value"
+                                debounce="3000"
+                                dense
+                                :placeholder="t('common.search')"
+                            >
+                                <template v-slot:append>
+                                    <QIcon name="mdi-magnify" />
+                                </template>
+                            </QInput>
+                        </template>
+
+                        <template v-slot:body-cell-title="props">
+                            <QTd
+                                :auto-width="false"
+                                class="title-qtd"
+                                :props="props"
+                            >
+                                <p class="title-p">
+                                    {{ props.row.title }}
+                                </p>
+                            </QTd>
+                        </template>
+                    </QTable>
+                    <QDialog
+                        v-model="resourceDialog"
+                        class="dialog"
+                        full-height
+                        full-width
+                    >
+                        <QCard>
+                            <QCardActions>
+                                <AtomicButton
+                                    icon="mdi-arrow-left"
+                                    no-border
+                                    @click="resourceDialog = false"
+                                />
+                            </QCardActions>
+                            <QCardSection>
+                                <ProjectPositioning
+                                    v-if="resourceStore.status === ResourceStatus.Positioning"
+                                    :resource-id="resourceIdSelected"
+                                />
+                                <ProjectInstruction
+                                    v-else-if="resourceIdSelected"
+                                    :resource-id="resourceIdSelected"
+                                />
+                                <p v-else>{{ t('errors.unknown') }}</p>
+                            </QCardSection>
+                        </QCard>
+                    </QDialog>
+                </QTabPanel>
             </QTabPanels>
         </div>
     </div>
