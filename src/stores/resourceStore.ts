@@ -74,7 +74,7 @@ export const useResourceStore = defineStore('resource', {
             return collection
         },
         getAll(table: TableProjectResources) {
-            table.pagination.value.rowsNumber = this.resources.length
+            table.pagination.value.rowsNumber = this.resourcesCount
             return this.resources
         },
         getResourcesWithStatus(table: TableProjectResources, status: ResourceStatus) {
@@ -133,7 +133,6 @@ export const useResourceStore = defineStore('resource', {
             options?: {
                 props: Omit<Parameters<NonNullable<QTableProps['onRequest']>>[0], 'getCellValue'>
                 table: TableProjectResources
-                status?: ResourceStatus
             },
         ) {
             const projectStore = useProjectStore()
@@ -163,6 +162,7 @@ export const useResourceStore = defineStore('resource', {
 
                 const response = await axiosI.get<Pagination<Resource>>('/resources/', { params })
                 this.resources = response.data.results
+                this.resourcesCount = response.data.count
 
                 if (options?.props?.pagination) {
                     const { pagination } = options.props
