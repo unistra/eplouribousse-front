@@ -100,7 +100,7 @@ export const useProjectResources = () => {
             sortBy: 'name',
             descending: false,
             page: 1,
-            rowsPerPage: ref<number>(10),
+            rowsPerPage: 10,
             rowsNumber: 0,
         }),
         onRequest: async (props: Parameters<NonNullable<QTableProps['onRequest']>>[0]) => {
