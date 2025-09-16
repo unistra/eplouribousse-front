@@ -13,16 +13,19 @@ import i18n from '@/plugins/i18n'
 import type { Pagination } from '#/pagination.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
-import type { TableProjectResources } from '@/components/project/projectLaunched/useProjectResources.ts'
+import type { TableProjectResources } from '#/table'
 
 const { t } = i18n.global
 
 interface ResourceStoreState extends Resource {
     collections: CollectionsInResource[]
     resources: Resource[]
+    resourcesNumber: number
     initialState: Resource
     libraryIdSelected: string
     libraryIdComparedSelected: string
+    page: number
+    resourcesCount: number
 }
 
 const initialState = {
@@ -44,8 +47,11 @@ export const useResourceStore = defineStore('resource', {
         initialState: structuredClone(initialState),
         collections: [],
         resources: [],
+        resourcesNumber: 0,
         libraryIdSelected: '',
         libraryIdComparedSelected: '',
+        page: 1,
+        resourcesCount: 0,
     }),
     getters: {
         librariesAssociated(this: ResourceStoreState) {
@@ -66,6 +72,24 @@ export const useResourceStore = defineStore('resource', {
             const collection = this.collections.find((col) => col.id === collectionId)
             if (!collection) throw new Error('collection does not exist')
             return collection
+        },
+        getAll(table: TableProjectResources) {
+            table.pagination.value.rowsNumber = this.resourcesCount
+            return this.resources
+        },
+        getResourcesWithStatus(table: TableProjectResources, status: ResourceStatus) {
+            const resources = this.resources.filter((resource: Resource) => resource.status === status)
+            table.pagination.value.rowsNumber = resources.length
+            return resources
+        },
+        getArbitrations(table: TableProjectResources) {
+            const resources = this.resources.filter(
+                (resource: Resource) =>
+                    resource.arbitration === Arbitration.MultiplePosition1 ||
+                    resource.arbitration === Arbitration.NoPosition1,
+            )
+            table.pagination.value.rowsNumber = resources.length
+            return resources
         },
         async fetchResourceAndCollections(resourceId: string) {
             const projectStore = useProjectStore()
@@ -104,18 +128,21 @@ export const useResourceStore = defineStore('resource', {
                 })
             }
         },
-        async fetchResources(options?: {
-            props: Omit<Parameters<NonNullable<QTableProps['onRequest']>>[0], 'getCellValue'>
-            table: TableProjectResources
-        }) {
+        async fetchResources(
+            status: ResourceStatus,
+            options?: {
+                props: Omit<Parameters<NonNullable<QTableProps['onRequest']>>[0], 'getCellValue'>
+                table: TableProjectResources
+            },
+        ) {
             const projectStore = useProjectStore()
-
             try {
                 if (options) options.table.loading.value = true
 
                 const params: Record<string, string | number> = {
                     project: projectStore.id,
                     library: this.libraryIdSelected,
+                    status: status,
                 }
 
                 if (this.libraryIdComparedSelected && this.libraryIdSelected)
@@ -134,8 +161,8 @@ export const useResourceStore = defineStore('resource', {
                 }
 
                 const response = await axiosI.get<Pagination<Resource>>('/resources/', { params })
-
                 this.resources = response.data.results
+                this.resourcesCount = response.data.count
 
                 if (options?.props?.pagination) {
                     const { pagination } = options.props
@@ -147,7 +174,9 @@ export const useResourceStore = defineStore('resource', {
                         rowsNumber: response.data.count,
                     }
                 }
-                if (options) options.table.pagination.value.rowsNumber = response.data.count
+                if (options) {
+                    options.table.pagination.value.rowsNumber = response.data.count
+                }
             } catch {
                 Notify.create({
                     type: 'negative',

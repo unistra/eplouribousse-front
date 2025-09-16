@@ -144,6 +144,7 @@
         },
         "resources": {
             "title": "Titre",
+            "all": "Tout",
             "code": "Code",
             "count": "Nombre de collections",
             "callNumber": "Cote",
@@ -153,6 +154,12 @@
             "position": "Position",
             "status": {
                 "title": "Status",
+                "toPosition": "Positionnements",
+                "toArbitrate": "Arbitrages",
+                "toInstructBound": "Instruction reliés",
+                "toInstructUnbound": "Instruction non-reliés",
+                "toControl": "Contrôles",
+                "toControloUnbound": "Contrôles",
                 "positioning": "Positionnement en cours",
                 "positioningRequired": "Positionnement requis",
                 "waitingPositioning": "En attente des autres bibliothèques",
@@ -161,6 +168,7 @@
                 "instructionUnbound": "Instruction des exemplaires non reliés",
                 "controlUnbound": "Contrôle des exemplaires non reliés"
             },
+
             "youAreInstructor": "Vous êtes instructeur pour cette bibliothèque",
             "showResources": "Voir les ressources de:",
             "compareWith": "Comparer les ressources avec:",
