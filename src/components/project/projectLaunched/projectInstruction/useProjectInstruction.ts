@@ -1,9 +1,10 @@
 import { computed, ref } from 'vue'
-import type { QTableColumn } from 'quasar'
+import { Notify, type QTableColumn } from 'quasar'
 import type { Segment } from '#/project.ts'
 import { useI18n } from 'vue-i18n'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
+import { axiosI } from '@/plugins/axios/axios'
 
 export const useProjectInstruction = () => {
     const { t } = useI18n()
@@ -80,6 +81,20 @@ export const useProjectInstruction = () => {
         tableLoading.value = false
     }
 
+    const deleteSegment = async (row: Segment) => {
+        tableLoading.value = true
+        try {
+            await axiosI.delete(`segments/${row.id}/`)
+        } catch {
+            Notify.create({
+                type: 'negative',
+                message: t('errors.unknown'),
+            })
+        } finally {
+            tableLoading.value = false
+        }
+    }
+
     const dialogUpdateSegment = ref<boolean>(false)
     const dialogCreateSegment = ref<boolean>(false)
 
@@ -88,6 +103,7 @@ export const useProjectInstruction = () => {
         columns,
         orderedRows,
         orderSegment,
+        deleteSegment,
         dialogUpdateSegment,
         dialogCreateSegment,
     }

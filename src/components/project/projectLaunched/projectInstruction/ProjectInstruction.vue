@@ -8,7 +8,7 @@ import ProjectInstructionSegmentDialog from '@/components/project/projectLaunche
 
 const { t } = useI18n()
 const resourceStore = useResourceStore()
-const { columns, orderedRows, orderSegment, tableLoading, dialogUpdateSegment, dialogCreateSegment } =
+const { columns, orderedRows, orderSegment, deleteSegment, tableLoading, dialogUpdateSegment, dialogCreateSegment } =
     useProjectInstruction()
 
 onMounted(async () => {
@@ -43,6 +43,12 @@ onMounted(async () => {
                         no-border
                         size="sm"
                         @click="orderSegment(row, 'down')"
+                    />
+                    <AtomicButton
+                        icon="mdi-delete-forever"
+                        no-border
+                        size="sm"
+                        @click="deleteSegment(row)"
                     />
                 </div>
                 <AtomicButton
