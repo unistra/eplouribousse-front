@@ -7,8 +7,8 @@ import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { storeToRefs } from 'pinia'
 import ProjectInstruction from '@/components/project/projectLaunched/projectInstruction/ProjectInstruction.vue'
+import ProjectPositioning from '@/components/project/projectLaunched/projectPositioning/ProjectPositioning.vue'
 import { ResourceStatus, Roles } from '&/project.ts'
-import ProjectPositioning from './projectPositioning/ProjectPositioning.vue'
 import type { QTable } from 'quasar'
 
 const resourceStore = useResourceStore()
