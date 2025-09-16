@@ -58,15 +58,31 @@ async function onLogout() {
                 exact-active-class=""
                 :to="{ name: 'Home' }"
             >
-                <h1>Eplouribousse</h1>
+                <div class="heading-and-button">
+                    <h1>Eplouribousse</h1>
+                    <QIcon
+                        name="mdi-arrow-collapse-left"
+                        size="1.4rem"
+                        :tooltip="t('navigation.collapse')"
+                        @click.prevent="() => (collapsed = true)"
+                    />
+                </div>
                 <p>{{ globalStore.tenant?.name || '' }}</p>
             </QItem>
-            <DrawerItem
-                v-else
-                icon="mdi-home"
-                :to="{ name: 'Home' }"
-                :tooltip="t('homePage')"
-            />
+            <template v-else>
+                <div>
+                    <DrawerItem
+                        icon="mdi-home"
+                        :to="{ name: 'Home' }"
+                        :tooltip="t('homePage')"
+                    />
+                    <DrawerItem
+                        icon="mdi-arrow-collapse-right"
+                        :tooltip="t('navigation.expand')"
+                        @click="() => (collapsed = false)"
+                    />
+                </div>
+            </template>
 
             <QItem class="projects">
                 <div>
@@ -139,12 +155,6 @@ async function onLogout() {
 
             <div>
                 <DrawerItem
-                    :icon="collapsed ? 'mdi-arrow-collapse-right' : 'mdi-arrow-collapse-left'"
-                    :name="!collapsed ? t('navigation.collapse') : ''"
-                    :tooltip="collapsed ? t('navigation.expand') : ''"
-                    @click="() => (collapsed = !collapsed)"
-                />
-                <DrawerItem
                     icon="mdi-cog-outline"
                     :name="!collapsed ? t('settings.core') : ''"
                     :tooltip="collapsed ? t('settings.core') : ''"
@@ -190,6 +200,25 @@ async function onLogout() {
         .logo
             display: flex
             flex-direction: column
+
+            .heading-and-button
+                display: flex
+                align-items: center
+                gap: 2rem
+
+                .q-icon
+                    opacity: 0
+                    transition: opacity 0.2s ease-in-out
+                    padding: 0.2rem
+                    color: var(--color-neutral-500)
+                    &:hover
+                        color: var(--color-neutral-600)
+
+            &:hover
+                .q-icon
+                    opacity: 1
+
+
 
             h1
                 font-size: 2rem

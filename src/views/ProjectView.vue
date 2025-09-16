@@ -7,7 +7,7 @@ import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
 import ProjectReview from '@/components/project/projectReview/ProjectReview.vue'
 import ProjectResources from '@/components/project/projectLaunched/ProjectResources.vue'
-import { ProjectStatus } from '#/project.ts'
+import { ProjectStatus } from '&/project.ts'
 
 const route = useRoute()
 const store = useProjectStore()

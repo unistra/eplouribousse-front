@@ -9,8 +9,6 @@ import {
     type ProjectInvitation,
     type ProjectLibrary,
     type ProjectRole,
-    ProjectStatus,
-    Roles,
 } from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { Notify } from 'quasar'
@@ -18,6 +16,7 @@ import i18n from '@/plugins/i18n'
 import type { Pagination } from '#/pagination.ts'
 import axios from 'axios'
 import { useUserStore } from '@/stores/userStore.ts'
+import { ProjectStatus, Roles } from '&/project.ts'
 
 const { t } = i18n.global
 

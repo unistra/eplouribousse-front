@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import type { ProjectLibrary } from '#/project.ts'
-import { Roles } from '#/project.ts'
+import { Roles } from '&/project.ts'
 
 export const useProjectLibraryCard = (library: ProjectLibrary) => {
     const store = useProjectStore()

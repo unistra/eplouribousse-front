@@ -1,4 +1,4 @@
-import { Roles } from '#/project.ts'
+import { Roles } from '&/project.ts'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
