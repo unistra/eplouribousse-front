@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { watch } from 'vue'
+import { onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import ProjectStepper from '@/components/project/projectStepper/ProjectStepper.vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
@@ -8,10 +8,12 @@ import { storeToRefs } from 'pinia'
 import ProjectReview from '@/components/project/projectReview/ProjectReview.vue'
 import ProjectResources from '@/components/project/projectLaunched/ProjectResources.vue'
 import { ProjectStatus } from '&/project.ts'
+import ProjectAdministration from '@/components/project/projectSettings/ProjectAdministration.vue'
 
 const route = useRoute()
 const store = useProjectStore()
 const userStore = useUserStore()
+const { isInEditionMode } = storeToRefs(store)
 const { userInProject } = storeToRefs(userStore)
 
 watch(
@@ -35,6 +37,8 @@ watch(
     },
     { immediate: true },
 )
+
+watch(isInEditionMode, () => {}, { immediate: true })
 </script>
 
 <template>
@@ -42,6 +46,7 @@ watch(
         <template v-if="!store.isLoading">
             <ProjectStepper v-if="store.status < ProjectStatus.Review" />
             <ProjectReview v-else-if="store.status < ProjectStatus.Ready || store.status < ProjectStatus.Launched" />
+            <ProjectAdministration v-else-if="isInEditionMode" />
             <ProjectResources v-else-if="store.status < ProjectStatus.Archived" />
         </template>
         <QSpinner

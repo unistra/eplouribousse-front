@@ -29,22 +29,25 @@ export const useUserStore = defineStore('user', () => {
     }
 
     const getProjects = async () => {
-        try {
-            projectsLoading.value = true
-            const response = await axiosI.get<Pagination<ProjectI>>('/projects/', {
-                params: {
-                    page_size: 5,
-                    ordering: 'created_at',
-                    user_id: user.value?.id ? user.value.id : '',
-                },
-            })
-            projects.value = response.data.results.sort(
-                (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(), // More recent to less recent
-            )
-        } catch {
-            projects.value = []
-        } finally {
-            projectsLoading.value = false
+        console.log(user)
+        if (user.value !== undefined) {
+            try {
+                projectsLoading.value = true
+                const response = await axiosI.get<Pagination<ProjectI>>('/projects/', {
+                    params: {
+                        page_size: 5,
+                        ordering: 'created_at',
+                        user_id: user.value?.id ? user.value.id : '',
+                    },
+                })
+                projects.value = response.data.results.sort(
+                    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(), // More recent to less recent
+                )
+            } catch {
+                projects.value = []
+            } finally {
+                projectsLoading.value = false
+            }
         }
     }
 
@@ -56,15 +59,16 @@ export const useUserStore = defineStore('user', () => {
         isAuth.value = false
         user.value = undefined
         userInProject.value = undefined
+        projects.value = []
     }
 
     return {
         user,
         userInProject,
         isAuth,
-        fetchUser,
         projects,
         projectsLoading,
+        fetchUser,
         getProjects,
         fillProjectUser,
         clean,

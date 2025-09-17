@@ -22,6 +22,7 @@ export interface ProjectI {
 export interface Project extends ProjectI {
     initialState: ProjectI
     isLoading: boolean
+    isInEditionMode: boolean
 }
 
 export interface ProjectSummarized {

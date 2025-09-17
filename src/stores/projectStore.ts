@@ -54,6 +54,7 @@ export const useProjectStore = defineStore('project', {
         ...structuredClone(initialState),
         initialState: structuredClone(initialState),
         isLoading: false,
+        isInEditionMode: false,
     }),
     getters: {
         nameRequired: (state) => state.name.length > 0,
@@ -69,6 +70,7 @@ export const useProjectStore = defineStore('project', {
                     ...structuredClone(response.data),
                     initialState: structuredClone(response.data),
                     isLoading: false,
+                    isInEditionMode: false,
                 }
             } catch {
                 Notify.create({
@@ -370,6 +372,14 @@ export const useProjectStore = defineStore('project', {
                     userStore.user?.id === el.user.id &&
                     ((!libraryId && role !== Roles.Instructor) || el.libraryId === libraryId),
             )
+        },
+        hasRole(role: Roles) {
+            const userStore = useUserStore()
+            return this.roles.find(
+                (projectUser) => projectUser.user.id === userStore.user?.id && projectUser.role === role,
+            )
+                ? true
+                : false
         },
     },
 })
