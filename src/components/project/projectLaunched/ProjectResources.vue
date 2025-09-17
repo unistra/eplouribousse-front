@@ -13,7 +13,10 @@ import type { QTable } from 'quasar'
 const resourceStore = useResourceStore()
 const projectStore = useProjectStore()
 
-const { tab, tabs, tabStatus, resourceDialog, table, selectDefaultLibrary, onRowClick, selects } = useProjectResources()
+const { tab, tabs, tabStatus,
+    resourceDialog,
+    table,
+     selectDefaultLibrary, onRowClick, selects } = useProjectResources()
 const { t } = useI18n()
 
 async function reloadResources() {
