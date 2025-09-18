@@ -106,7 +106,9 @@ async function onLogout() {
                                 :name="!collapsed ? project.name : ''"
                                 :to="{ name: 'project', params: { id: project.id } }"
                                 :tooltip="collapsed ? project.name : undefined"
-                                @administrate="router.push({ name: project.id })"
+                                @administrate="
+                                    router.push({ name: 'projectAdministration', params: { id: project.id } })
+                                "
                             />
                         </QList>
                         <p v-else-if="!collapsed && !userStore.projects.length">

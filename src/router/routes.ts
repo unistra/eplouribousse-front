@@ -131,6 +131,14 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/ProjectView.vue'),
     },
     {
+        path: '/projects/:id/administration',
+        name: 'projectAdministration',
+        component: () => import('@/views/ProjectAdministrationView.vue'),
+        meta: {
+            title: t('navigation.projectAdministration'),
+        },
+    },
+    {
         path: '/public-projects',
         name: 'publicProjects',
         component: () => import('@/views/PublicProjects.vue'),
