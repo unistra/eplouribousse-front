@@ -130,6 +130,15 @@
         "searchUsers": "Vous pouvez utiliser l'outil de recherche ci-dessous pour vérifier si les utilisateurs ont déjà un compte, si ce n'est pas le cas, contactez-les pour qu'ils se connectent au site :"
     },
     "project": {
+        "administration": {
+            "title": "Administration",
+            "informations": "Informations générales",
+            "libraries": "Bibliothèques",
+            "users": "Utilisateurs",
+            "alerts": "Notifications",
+            "exclusions": "Motifs d'exclusion",
+            "errors": "Anomalies"
+        },
         "review": {
             "title": "Vérification du projet",
             "passToReady": "Marquer comme prêt",

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
-import ProjectAdministration from '@/components/project/projectSettings/ProjectAdministration.vue'
+import ProjectAdministration from '@/components/project/projectAdministration/ProjectAdministration.vue'
 import { useProjectReview } from '@/components/project/projectReview/useProjectReview.ts'
 import ProjectSummary from '@/components/project/projectStepper/steps/projectSummary/ProjectSummary.vue'
 import ProjectReviewButton from '@/components/project/projectReview/ProjectReviewButton.vue'

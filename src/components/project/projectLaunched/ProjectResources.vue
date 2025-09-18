@@ -68,7 +68,7 @@ onMounted(async () => {
 
 <template>
     <div class="project-resources">
-        <div class="header">
+        <div>
             <QSelect
                 v-for="(select, index) in selects"
                 :key="index"

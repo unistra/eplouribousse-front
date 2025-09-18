@@ -381,5 +381,8 @@ export const useProjectStore = defineStore('project', {
                 ? true
                 : false
         },
+        findUsersByRole(role: Roles) {
+            return this.roles.filter((projectUser) => projectUser.role === role)
+        },
     },
 })

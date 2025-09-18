@@ -1,43 +1,47 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import AtomicToggle from '@/components/atomic/AtomicToggle.vue'
-import { useProjectStore } from '@/stores/projectStore.ts'
-import { reactive, ref } from 'vue'
-import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
+import { useProjectAdministration } from './useProjectAdministration'
+import ProjectAdministrationDispatcher from './ProjectAdministrationDispatcher.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
-import AtomicInput from '@/components/atomic/AtomicInput.vue'
 
+const { tabs, tab } = useProjectAdministration()
 const { t } = useI18n()
-const store = useProjectStore()
-
-const emailAlerts = reactive({
-    positionning: false,
-    arbitrary0: false,
-    arbitrary1: false,
-    instructions: false,
-    results: false,
-})
-
-const storageOptions: string[] = []
-
-const transferTracking = ref<boolean>(false)
-const treatmentTracking = ref<boolean>(false)
-
-const addingExclusionReason = ref<boolean>(false)
-const newExclusionReason = ref<string>('')
-const onAddExclusionReason = async () => {
-    await store.addExclusionReason(newExclusionReason.value)
-    addingExclusionReason.value = false
-    newExclusionReason.value = ''
-}
-const onCancelAddExclusionReason = () => {
-    addingExclusionReason.value = false
-    newExclusionReason.value = ''
-}
 </script>
 
 <template>
-    <QList>
+    <div>
+        <QTabs
+            v-model="tab"
+            align="left"
+            dense
+            no-caps
+            @update:model-value="console.log('changement de tab')"
+        >
+            <QTab
+                v-for="(value, index) in tabs"
+                :key="index"
+                :label="value.label"
+                :name="value.name"
+            >
+            </QTab>
+        </QTabs>
+    </div>
+    <div>
+        <QTabPanels
+            v-model="tab"
+            animated
+        >
+            <QTabPanel
+                v-for="(value, index) in tabs"
+                :key="index"
+                :name="value.name"
+            >
+                <ProjectAdministrationDispatcher :tab-name="value.name" />
+            </QTabPanel>
+        </QTabPanels>
+        <AtomicButton label="Enregister" />
+    </div>
+    <!-- <QList>
         <QItem>
             <AtomicToggle
                 v-model="store.isPrivate"
@@ -114,10 +118,14 @@ const onCancelAddExclusionReason = () => {
                 </QItem>
             </QList>
         </QItem>
-    </QList>
+    </QList> -->
 </template>
 
 <style lang="sass" scoped>
+.tab
+    font-size: 20px
+    font-weight: 600
+
 .email-alerts, .storage, .exclusions
     display: flex
     flex-direction: column
