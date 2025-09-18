@@ -1,6 +1,6 @@
 import { type Ref, type ShallowRef } from 'vue'
 import type { QTable, QTableProps } from 'quasar'
-import type { Resource, ResourceStatus } from './project.ts'
+import type { Resource } from './project.ts'
 
 export interface TableProjectResources {
     ref: Readonly<ShallowRef<QTable | null>>

@@ -1,4 +1,4 @@
-import type { ProjectRole } from './project.ts'
+import type { ProjectSummarized } from './project.ts'
 
 interface UserSettings {
     theme: string
@@ -13,7 +13,7 @@ export interface User {
     username: string
     canAuthenticateLocally: boolean
     isProjectCreator: boolean
-    projects: ProjectRole[]
+    projects: ProjectSummarized[]
     settings: UserSettings
 }
 

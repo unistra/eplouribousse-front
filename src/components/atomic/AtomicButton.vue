@@ -9,6 +9,7 @@ const props = defineProps<{
     iconRight?: string
     caps?: boolean
     noBorder?: boolean
+    round?: boolean
     loading?: boolean
     disable?: boolean
     tooltip?: string
@@ -22,13 +23,16 @@ const props = defineProps<{
 }>()
 
 const modalConfirmation = ref<boolean>(false)
+
 const onClick = () => {
     if (props.requireConfirmation) modalConfirmation.value = true
+    else emit('click')
 }
 
 const emit = defineEmits<{
     (e: 'confirm'): void
     (e: 'cancel'): void
+    (e: 'click'): void
 }>()
 </script>
 
@@ -43,6 +47,7 @@ const emit = defineEmits<{
         :loading
         :noCaps="!caps"
         :outline="!noBorder"
+        :round
         rounded
         :size
         :to

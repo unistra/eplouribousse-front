@@ -28,10 +28,7 @@ export interface Project extends ProjectI {
 export interface ProjectSummarized {
     id: string
     name: string
-    description: string
-    isPrivate: boolean
-    activeAfter: string
-    status: ProjectStatus
+    roles: Roles[]
 }
 
 export interface ProjectUser {
