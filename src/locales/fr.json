@@ -223,10 +223,14 @@
             }
         },
         "instruction": {
+            "turns": "Ordre de passage",
             "segment": {
                 "i": "segment",
+                "ii": "le segment",
                 "new": "@.capitalize:common.new @.lower:project.instruction.segment.i",
-                "insertUnder": "Insérer en dessous"
+                "insertUnder": "Insérer en dessous",
+                "update": "@.capitalize:common.update @.lower:project.instruction.segment.ii",
+                "noSegment": "@.capitalize:common.none @.lower:project.instruction.segment.i"
             },
             "tableFields": {
                 "order": "Ordre",

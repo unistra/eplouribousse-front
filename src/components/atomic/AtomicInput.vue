@@ -19,6 +19,7 @@ const props = defineProps<{
     tooltip?: string
     dataTestid?: string
     quickInput?: boolean
+    rules?: QInput['rules']
 }>()
 
 const emit = defineEmits<{
@@ -49,6 +50,7 @@ onMounted(() => {
         :label="computedLabel"
         outlined
         rounded
+        :rules
         :type="type ?? 'text'"
         @clear="emit('clear')"
     >

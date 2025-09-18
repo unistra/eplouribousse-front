@@ -10,6 +10,7 @@ defineProps<{
     optionLabel?: QSelectProps['optionLabel']
     emitValue?: boolean
     mapOptions?: boolean
+    rules?: QSelectProps['rules']
 }>()
 </script>
 
@@ -25,5 +26,6 @@ defineProps<{
         :options
         outlined
         rounded
+        :rules
     />
 </template>
