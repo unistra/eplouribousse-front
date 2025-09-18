@@ -164,6 +164,15 @@
             "launched": "Démarré",
             "archived": "Archivé"
         },
+        "administration": {
+            "title": "Administration",
+            "informations": "Informations générales",
+            "libraries": "Bibliothèques",
+            "users": "Utilisateurs",
+            "alerts": "Notifications",
+            "exclusions": "Motifs d'exclusion",
+            "errors": "Anomalies"
+        },
         "review": {
             "title": "Vérification du projet",
             "passToReady": "Marquer comme prêt",
