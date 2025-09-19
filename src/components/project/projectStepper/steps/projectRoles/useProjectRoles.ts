@@ -14,6 +14,7 @@ export const useProjectRoles = () => {
         { title: t('roles.projectAdmin'), role: Roles.ProjectAdmin },
         { title: t('roles.projectManager'), role: Roles.ProjectManager },
         { title: t('roles.controller'), role: Roles.Controller },
+        { title: t('roles.guest'), role: Roles.Guest },
     ]
 
     const isAddUserLoading = ref<boolean>(false)

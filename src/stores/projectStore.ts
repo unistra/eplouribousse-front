@@ -62,7 +62,7 @@ export const useProjectStore = defineStore('project', {
     },
     actions: {
         // UTILS
-        async fetchProjectById(id: string) {
+        async fetchProjectById(id: string, edition?: boolean) {
             try {
                 const response = await axiosI.get<ProjectI>(`/projects/${id}/`)
 
@@ -70,7 +70,7 @@ export const useProjectStore = defineStore('project', {
                     ...structuredClone(response.data),
                     initialState: structuredClone(response.data),
                     isLoading: false,
-                    isInEditionMode: false,
+                    isInEditionMode: edition ? true : false,
                 }
             } catch {
                 Notify.create({

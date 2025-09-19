@@ -15,7 +15,6 @@ const { t } = useI18n()
             align="left"
             dense
             no-caps
-            @update:model-value="console.log('changement de tab')"
         >
             <QTab
                 v-for="(value, index) in tabs"
@@ -42,13 +41,6 @@ const { t } = useI18n()
         <AtomicButton label="Enregister" />
     </div>
     <!-- <QList>
-        <QItem>
-            <AtomicToggle
-                v-model="store.isPrivate"
-                :label="t('project.settings.privateMode')"
-                left-label
-            />
-        </QItem>
         <QItem class="email-alerts">
             <p>{{ t('project.settings.emailAlert.title') }}</p>
             <QList class="toggles">

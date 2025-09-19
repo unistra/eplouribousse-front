@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useProjectStore } from '@/stores/projectStore'
-import ProjectInformations from '../projectStepper/steps/projectInformations/ProjectInformations.vue'
-import { useProjectAdministration } from './useProjectAdministration'
+import ProjectInformations from '@/components/project/projectStepper/steps/projectInformations/ProjectInformations.vue'
+import ProjectLibraryCard from '@/components/project/projectStepper/steps/projectLibraries/ProjectLibraryCard.vue'
+import ProjectRoles from '@/components/project/projectStepper/steps/projectRoles/ProjectRoles.vue'
+import { useProjectAdministration } from '@/components/project/projectAdministration/useProjectAdministration'
 import AtomicIcon from '@/components/atomic/AtomicIcon.vue'
 import AtomicToggle from '@/components/atomic/AtomicToggle.vue'
 import { Roles } from '&/project'
@@ -13,6 +15,9 @@ const { tabs } = useProjectAdministration()
 defineProps<{
     tabName: string
 }>()
+
+// TODO: mettre la couleur noire uniquement sur le projet sélectionné, les autres en gris
+// Et ajouter cette page lors de l'étape "review/validation du projet"
 </script>
 
 <template>
@@ -33,13 +38,17 @@ defineProps<{
                 <p>
                     Crée par :
                     <AtomicIcon
+                        v-for="(_value, index) in [1, 2, 3]"
+                        :key="index"
                         color="grey-900"
-                        name="mdi-incognito"
+                        name="mdi-ghost"
                     />
-                    On sait pas encore (TODO: récupérer le monteur de projet)
+                    Le monteur de projet (TODO: récupérer le monteur de projet)
                     <AtomicIcon
+                        v-for="(_value, index) in [1, 2, 3]"
+                        :key="index"
                         color="grey-900"
-                        name="mdi-incognito"
+                        name="mdi-run-fast"
                     />
                 </p>
             </QCardSection>
@@ -74,12 +83,35 @@ defineProps<{
             </QCardSection>
         </QCard>
     </div>
+    <div
+        v-if="tabName === tabs[1].name"
+        class="libraries space"
+    >
+        <ProjectLibraryCard
+            v-for="library in store.libraries"
+            :key="library.id"
+            :library="library"
+        />
+    </div>
+    <div
+        v-if="tabName === tabs[2].name"
+        class="space"
+    >
+        <ProjectRoles />
+    </div>
 </template>
 
 <style lang="sass" scoped>
 .informations
     display: flex
     flex-direction: column
+
+.libraries
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row
+    justify-content: space-evenly
+    gap: 16px;
 
 .space
     padding-bottom: 30px

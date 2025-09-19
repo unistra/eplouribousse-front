@@ -30,7 +30,8 @@
         "projectAdmin": "Administrateurs",
         "projectManager": "Pilotes de projet",
         "instructor": "Instructeurs",
-        "controller": "Contrôleurs"
+        "controller": "Contrôleurs",
+        "guest": "Invités"
     },
     "settings": {
         "core": "Paramètres",
