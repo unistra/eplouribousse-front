@@ -94,11 +94,12 @@ defineProps<{
         />
     </div>
     <div
-        v-if="tabName === tabs[2].name"
         class="space"
+        v-if="tabName === tabs[2].name"
     >
         <ProjectRoles />
     </div>
+    <div class="space"></div>
 </template>
 
 <style lang="sass" scoped>
@@ -108,7 +109,6 @@ defineProps<{
 
 .libraries
     display: flex;
-    flex-wrap: wrap;
     flex-direction: row
     justify-content: space-evenly
     gap: 16px;

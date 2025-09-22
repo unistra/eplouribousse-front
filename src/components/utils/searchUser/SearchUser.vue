@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, watch } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { type SearchUserEmitActions, useSearchUser } from './useSearchUser'
 import { useI18n } from 'vue-i18n'
 import type { ProjectInvitation, ProjectUser } from '#/project.ts'
@@ -11,11 +11,12 @@ const props = defineProps<{
     usersSelected: ProjectUser[]
     invitationsSelected: ProjectInvitation[]
     isAddUserLoading: boolean
+    disable?: boolean
 }>()
 const { t } = useI18n()
 
 const emit = defineEmits<SearchUserEmitActions>()
-const { username, matchingUsers, onLoad, sendAction, clear, isUserListLoading, userAlreadySelected } =
+const { canRemove, username, matchingUsers, onLoad, sendAction, clear, isUserListLoading, userAlreadySelected } =
     useSearchUser(emit)
 
 watch(
@@ -74,8 +75,8 @@ onMounted(() => {
                     @click="sendAction('addUser', { userId: user.id })"
                 >
                     <QItemSection>
-                        {{ user.firstName || '***' }}
-                        {{ user.lastName || `***` }} -
+                        {{ user.firstName || 'non renseigné' }}
+                        {{ user.lastName || 'non renseigné' }} -
                         {{ user.email || `${t('common.none')} ${t('common.email')}` }}
                     </QItemSection>
                 </QItem>
@@ -107,10 +108,11 @@ onMounted(() => {
             <SearchUserItem
                 v-for="user in usersSelected"
                 :key="user.id"
+                :disable="canRemove"
                 @delete="sendAction('removeUser', { userId: user.id })"
             >
                 <p>
-                    {{ user.firstName || '***' }} {{ user.lastName || `***` }} -
+                    {{ user.firstName || 'non renseigné' }} {{ user.lastName || `non renseigné` }} -
                     {{ user.email || `${t('common.none')} ${t('common.email')}` }}
                 </p>
             </SearchUserItem>

@@ -10,6 +10,8 @@ const onDelete = () => {
     isLoading.value = true
     emit('delete')
 }
+
+defineProps<{ disable?: boolean }>()
 </script>
 
 <template>
@@ -21,6 +23,7 @@ const onDelete = () => {
             icon="mdi-close"
             :loading="isLoading"
             :no-border="true"
+            :disable="disable ?? false"
             size="xs"
             @click="onDelete"
         />
