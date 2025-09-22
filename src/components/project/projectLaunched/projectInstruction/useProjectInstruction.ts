@@ -19,6 +19,7 @@ export const useProjectInstruction = () => {
             name: 'order',
             label: t('project.instruction.tableFields.order'),
             field: 'order',
+            align: 'center',
         },
         {
             name: 'library',
@@ -29,6 +30,7 @@ export const useProjectInstruction = () => {
                 const library = projectStore.libraries.find((el) => el.id === libraryId) || null
                 return library?.name || t('common.error')
             },
+            align: 'center',
         },
         {
             name: 'collection',
@@ -38,26 +40,31 @@ export const useProjectInstruction = () => {
                 const collection = resourceStore.collections.find((el) => el.id === row.collection)
                 return `${t('project.resources.position')}: ${collection?.position} | ${t('project.resources.callNumber')}: ${collection?.callNumber}`
             },
+            align: 'center',
         },
         {
             name: 'content',
             label: t('project.instruction.tableFields.segment'),
             field: 'content',
+            align: 'center',
         },
         {
             name: 'segmentType',
             label: t('project.instruction.tableFields.boundOrUnbound'),
             field: 'segmentType',
+            align: 'center',
         },
         {
             name: 'improvableElements',
             label: t('project.instruction.tableFields.improvableElements'),
             field: 'improvableElements',
+            align: 'center',
         },
         {
             name: 'exception',
             label: t('project.instruction.tableFields.exception'),
             field: 'exception',
+            align: 'center',
         },
         {
             name: 'resolve',
@@ -66,11 +73,13 @@ export const useProjectInstruction = () => {
             format(_val: unknown, row: Segment) {
                 return resourceStore.segments.find((el) => el.id === row.improvedSegment)?.order.toString() || '-'
             },
+            align: 'center',
         },
         {
             name: 'options',
             label: t('project.instruction.tableFields.options'),
             field: 'options',
+            align: 'center',
         },
     ]
 

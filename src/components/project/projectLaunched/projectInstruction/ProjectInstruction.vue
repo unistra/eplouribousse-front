@@ -54,14 +54,6 @@ onMounted(async () => {
         :rows="orderedRows"
         :table-row-class-fn="(row: Segment) => (hoveredValue === row.order.toString() ? 'resolved' : '')"
     >
-        <template #body-cell-resolve="{ value }: { value: string }">
-            <QTd
-                @mouseenter="hoveredValue = value"
-                @mouseleave="hoveredValue = null"
-            >
-                {{ value }}
-            </QTd>
-        </template>
         <template #body-cell-options="{ row }: { row: Segment }">
             <QTd class="options">
                 <div class="order">
@@ -136,12 +128,45 @@ onMounted(async () => {
                 </AtomicButton>
             </QTd>
         </template>
+        <template #body-cell-resolve="{ value }: { value: string }">
+            <QTd
+                class="resolve"
+                @mouseenter="hoveredValue = value"
+                @mouseleave="hoveredValue = null"
+            >
+                {{ value }}
+            </QTd>
+        </template>
+        <template #bottom>
+            <QTr class="bottom">
+                <AtomicButton
+                    class="btn-segment"
+                    icon="mdi-plus"
+                    :label="t('project.instruction.segment.new')"
+                    no-border
+                    @click="openDialogCreateSegment()"
+                />
+            </QTr>
+        </template>
+        <template #no-data="{ message }">
+            <div class="no-data">
+                <p>
+                    <QIcon
+                        name="mdi-alert"
+                        size="1.4rem"
+                    />{{ message }}
+                </p>
+                <AtomicButton
+                    class="btn-segment"
+                    icon="mdi-plus"
+                    :label="t('project.instruction.segment.new')"
+                    no-border
+                    @click="openDialogCreateSegment()"
+                />
+            </div>
+        </template>
     </QTable>
-    <AtomicButton
-        class="btn-segment"
-        :label="t('project.instruction.segment.new')"
-        @click="openDialogCreateSegment()"
-    />
+
     <ProjectInstructionSegmentDialog
         v-model="dialogCreateSegment"
         :insert-after="insertAfter"
@@ -149,7 +174,7 @@ onMounted(async () => {
     />
 </template>
 
-<style scoped lang="sass">
+<style lang="sass" scoped>
 .spinner
     display: flex
     justify-content: center
@@ -177,10 +202,22 @@ onMounted(async () => {
             .q-btn
                 width: fit-content
 
+    .resolve
+        text-align: center
+
 :deep(.q-table tbody .resolved)
     background-color: var(--color-neutral-300)
 
 .turns
     display: flex
     gap: 0.5rem
+
+.no-data
+        display: flex
+        justify-content: space-between
+        align-items: center
+        width: 100%
+
+.bottom
+        margin-left: auto
 </style>
