@@ -92,6 +92,20 @@ export interface ProjectLibrary extends LibraryI {
     isAlternativeStorageSite: boolean
 }
 
+export type InstructionTurns = {
+    boundCopies: InstructionTurnGroup
+    unboundCopies: InstructionTurnGroup
+}
+
+export type InstructionTurnGroup = {
+    turns: InstructionTurn[]
+}
+
+export type InstructionTurn = {
+    library: string
+    collection: string
+}
+
 export type Resource = {
     id: string
     title: string
@@ -103,6 +117,7 @@ export type Resource = {
     status: ResourceStatus
     arbitration: number
     acl: Record<string, boolean>
+    instructionTurns: InstructionTurns | undefined
 }
 
 export type CollectionsInResource = {
@@ -118,7 +133,7 @@ export type CollectionsInResource = {
 }
 
 export type CollectionsWithResource = {
-    resource: Omit<Resource, 'is_excluded'>
+    resource: Resource
     collections: CollectionsInResource[]
 }
 
@@ -140,6 +155,8 @@ export interface SegmentI {
     improvedSegment?: string
     collection: string
 }
+
+export type SegmentNoCollection = Omit<SegmentI, 'collection'>
 
 export interface Segment extends SegmentI {
     id: string

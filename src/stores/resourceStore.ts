@@ -1,13 +1,14 @@
 import { defineStore } from 'pinia'
 import {
-    type Resource,
     type CollectionsInResource,
     type CollectionsWithResource,
-    type ProjectLibrary,
     type CommentPositioning,
+    type ProjectLibrary,
+    type Resource,
     type Segment,
+    type SegmentNoCollection,
 } from '#/project.ts'
-import { CollectionPosition, Arbitration, ResourceStatus } from '&/project.ts'
+import { Arbitration, CollectionPosition, ResourceStatus } from '&/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { Notify, type QTableProps } from 'quasar'
 import i18n from '@/plugins/i18n'
@@ -31,7 +32,7 @@ interface ResourceStoreState extends Resource {
     resourceSelected: Resource | null
 }
 
-const initialState = {
+const initialState: Resource = {
     id: '',
     title: '',
     code: '',
@@ -42,6 +43,7 @@ const initialState = {
     status: ResourceStatus.Positioning,
     arbitration: 2,
     acl: {},
+    instructionTurns: undefined,
 }
 
 export const useResourceStore = defineStore('resource', {
@@ -70,6 +72,9 @@ export const useResourceStore = defineStore('resource', {
                     if (aIsSelected === bIsSelected) return 0
                     return aIsSelected ? -1 : 1
                 })
+        },
+        statusName(this: ResourceStoreState): 'boundCopies' | 'unboundCopies' {
+            return this.status === ResourceStatus.InstructionBound ? 'boundCopies' : 'unboundCopies'
         },
     },
     actions: {
@@ -116,6 +121,7 @@ export const useResourceStore = defineStore('resource', {
                 this.arbitration = response.data.resource.arbitration
                 this.acl = response.data.resource.acl
                 this.collections = response.data.collections
+                this.instructionTurns = response.data.resource.instructionTurns
 
                 this.collections = response.data.collections.sort(
                     (a: CollectionsInResource, b: CollectionsInResource) => {
@@ -294,6 +300,53 @@ export const useResourceStore = defineStore('resource', {
                     currentSegment.order = response.data.currentSegment.order
                     targetSegment.order =
                         direction === 'up' ? response.data.previousSegment.order : response.data.nextSegment.order
+                }
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async deleteSegment(segmentId: string) {
+            try {
+                await axiosI.delete(`/segments/${segmentId}/`)
+                await this.fetchSegments()
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async createSegment(segment: SegmentNoCollection, afterSegment?: string) {
+            try {
+                const response = await axiosI.post<Segment>('/segments/', {
+                    content: segment.content,
+                    ...(segment.improvableElements && { improvable_elements: segment.improvableElements }),
+                    ...(segment.exception && { exception: segment.exception }),
+                    ...(segment.improvedSegment && { improved_segment: segment.improvedSegment }),
+                    collection: this.instructionTurns?.[this.statusName].turns[0].collection,
+                    ...(afterSegment && { after_segment: afterSegment }),
+                })
+                if (afterSegment) {
+                    await this.fetchSegments()
+                } else {
+                    this.segments.push(response.data)
+                }
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async updateSegment(segmentId: string, updatedFields: Partial<SegmentNoCollection>) {
+            try {
+                const response = await axiosI.patch<Segment>(`/segments/${segmentId}/`, updatedFields)
+                const index = this.segments.findIndex((seg) => seg.id === segmentId)
+                if (index !== -1) {
+                    this.segments[index] = response.data
                 }
             } catch {
                 Notify.create({
