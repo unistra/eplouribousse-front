@@ -6,12 +6,23 @@ import ProjectRoles from '@/components/project/projectStepper/steps/projectRoles
 import { useProjectAdministration } from '@/components/project/projectAdministration/useProjectAdministration'
 import AtomicIcon from '@/components/atomic/AtomicIcon.vue'
 import AtomicToggle from '@/components/atomic/AtomicToggle.vue'
+import AtomicButton from '@/components/atomic/AtomicButton.vue'
+import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import { Roles } from '&/project'
 import { useI18n } from 'vue-i18n'
 
 const store = useProjectStore()
 const { t } = useI18n()
 const { tabs } = useProjectAdministration()
+const {
+    addingExclusionReason,
+    newExclusionReason,
+    emailAlerts,
+    transferTracking,
+    treatmentTracking,
+    onAddExclusionReason,
+    onCancelAddExclusionReason,
+} = useProjectAdministration()
 defineProps<{
     tabName: string
 }>()
@@ -94,12 +105,93 @@ defineProps<{
         />
     </div>
     <div
-        class="space"
         v-if="tabName === tabs[2].name"
+        class="space"
     >
         <ProjectRoles />
     </div>
-    <div class="space"></div>
+    <div
+        v-if="tabName === tabs[3].name"
+        class="space"
+    >
+        <QCard
+            bordered
+            flat
+        >
+            <QCardSection>
+                <b>{{ t('project.settings.emailAlert.resourcesAlterts') }}</b>
+                <QList class="toggles">
+                    <QItem
+                        v-for="key in Object.keys(emailAlerts)"
+                        :key="key"
+                    >
+                        <AtomicToggle
+                            v-model="emailAlerts[key as keyof typeof emailAlerts]"
+                            :label="t(`project.settings.emailAlert.${key}`)"
+                            left-label
+                        />
+                    </QItem>
+                </QList>
+            </QCardSection>
+            <QSeparator />
+            <QCardSection>
+                <b>{{ t('project.settings.emailAlert.tracking') }}</b>
+                <QList>
+                    <QItem>
+                        <AtomicToggle
+                            v-model="transferTracking"
+                            :label="t('project.settings.transferTracking')"
+                            left-label
+                        />
+                    </QItem>
+                    <QItem>
+                        <AtomicToggle
+                            v-model="treatmentTracking"
+                            :label="t('project.settings.treatmentTracking')"
+                            left-label
+                        />
+                    </QItem>
+                </QList>
+            </QCardSection>
+        </QCard>
+    </div>
+    <div
+        v-if="tabName === tabs[4].name"
+        class="space"
+    >
+        <b>{{ t('project.settings.exclusionReason') }}</b>
+        <QList>
+            <QItem
+                v-for="exclusionReason in store.settings.exclusionReasons"
+                :key="exclusionReason"
+            >
+                <p>{{ exclusionReason }}</p>
+                <AtomicButton
+                    v-if="!store.isInEditionMode"
+                    icon="mdi-close"
+                    no-border
+                    size="xs"
+                    @click="store.removeExclusionReason(exclusionReason)"
+                />
+            </QItem>
+            <QItem>
+                <AtomicButton
+                    v-if="!addingExclusionReason"
+                    icon="mdi-plus"
+                    size="xs"
+                    @click="addingExclusionReason = true"
+                />
+                <AtomicInput
+                    v-else
+                    v-model="newExclusionReason"
+                    :label="t('project.settings.exclusionReason')"
+                    quick-input
+                    @cancel="onCancelAddExclusionReason"
+                    @done="onAddExclusionReason"
+                />
+            </QItem>
+        </QList>
+    </div>
 </template>
 
 <style lang="sass" scoped>

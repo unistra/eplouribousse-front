@@ -136,7 +136,7 @@
             "informations": "Informations générales",
             "libraries": "Bibliothèques",
             "users": "Utilisateurs",
-            "alerts": "Notifications",
+            "alerts": "Alertes email",
             "exclusions": "Motifs d'exclusion",
             "errors": "Anomalies"
         },
@@ -194,6 +194,8 @@
             "privateMode": "Mode privé",
             "emailAlert": {
                 "title": "Alertes email",
+                "resourcesAlterts": "Opérations sur les ressources",
+                "tracking": "Suivi",
                 "positionning": "Positionnement",
                 "arbitrary0": "Arbitrage type 0",
                 "arbitrary1": "Arbitrage type 1",
@@ -203,7 +205,7 @@
             "defaultStorageLocation": "Lieu de conservation par défaut",
             "transferTracking": "Suivi des transferts",
             "treatmentTracking": "Suivi des traitements",
-            "exclusionReason": "Raison d'exclusion",
+            "exclusionReason": "Raisons d'exclusion",
             "alternativeStorageSite": "Lieu de stockage alternatif"
         }
     },

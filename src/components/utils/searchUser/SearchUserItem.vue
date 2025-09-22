@@ -20,10 +20,10 @@ defineProps<{ disable?: boolean }>()
             <slot />
         </QItemSection>
         <AtomicButton
+            :disable="disable ?? false"
             icon="mdi-close"
             :loading="isLoading"
             :no-border="true"
-            :disable="disable ?? false"
             size="xs"
             @click="onDelete"
         />
