@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { onMounted } from 'vue'
 import { useProjectResources } from '@/components/project/projectLaunched/useProjectResources.ts'
 import { useI18n } from 'vue-i18n'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
-import ProjectInstruction from '@/components/project/projectLaunched/projectInstruction/ProjectInstruction.vue'
-import ProjectPositioning from '@/components/project/projectLaunched/projectPositioning/ProjectPositioning.vue'
 import { ResourceStatus, Roles } from '&/project.ts'
 import type { QTable } from 'quasar'
+import { storeToRefs } from 'pinia'
+import ProjectResource from '@/components/project/projectLaunched/ProjectResource/ProjectResource.vue'
 
 const resourceStore = useResourceStore()
 const projectStore = useProjectStore()
@@ -119,29 +118,10 @@ onMounted(async () => {
                             </QTd>
                         </template>
                     </QTable>
-                    <QDialog
+                    <ProjectResource
                         v-model="resourceDialog"
-                        class="dialog"
-                        full-height
-                        full-width
-                    >
-                        <QCard>
-                            <QCardActions>
-                                <AtomicButton
-                                    icon="mdi-arrow-left"
-                                    no-border
-                                    @click="resourceDialog = false"
-                                />
-                            </QCardActions>
-                            <QCardSection>
-                                <ProjectPositioning v-if="tab === 'positioning'" />
-                                <ProjectInstruction
-                                    v-else-if="tab === 'instructionBound' || tab === 'instructionUnbound'"
-                                />
-                                <p v-else>{{ t('errors.unknown') }}</p>
-                            </QCardSection>
-                        </QCard>
-                    </QDialog>
+                        :tab="tab"
+                    />
                 </QTabPanel>
             </QTabPanels>
         </div>

@@ -1,5 +1,5 @@
 import { computed, ref, useTemplateRef } from 'vue'
-import type { Resource } from '#/project.ts'
+import type { Resource, Tab } from '#/project.ts'
 import { ResourceStatus, Roles } from '&/project.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
@@ -29,7 +29,7 @@ export const useProjectResources = () => {
         },
         { name: 'control', label: t('project.resources.status.toControl'), status: ResourceStatus.ControlBound },
     ]
-    const tab = ref<string>('positioning')
+    const tab = ref<Tab>('positioning')
     const tabStatus = computed(() => {
         const t = tabs.find((el) => el.name === tab.value)
         return t ? t.status : ResourceStatus.Positioning

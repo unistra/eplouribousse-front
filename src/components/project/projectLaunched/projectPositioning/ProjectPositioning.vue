@@ -11,31 +11,26 @@ const { t } = useI18n()
 
 <template>
     <div class="project-positioning">
-        <hgroup>
-            <h2>{{ resourceStore.title }}</h2>
-            <p>{{ resourceStore.code }}</p>
-
-            <QCard
-                v-if="resourceStore.arbitration !== Arbitration.NoArbitration"
-                class="arbitration-card"
-                dark
-                flat
-            >
-                <QCardSection>
-                    <p>{{ t('project.positioning.arbitration.i') }}</p>
-                </QCardSection>
-                <QCardSection>
-                    <p>{{ t('project.positioning.arbitration.currently') }}</p>
-                    <p>
-                        {{
-                            resourceStore.arbitration == Arbitration.NoPosition1
-                                ? t('project.positioning.arbitration.type0')
-                                : t('project.positioning.arbitration.type1')
-                        }}
-                    </p>
-                </QCardSection>
-            </QCard>
-        </hgroup>
+        <QCard
+            v-if="resourceStore.arbitration !== Arbitration.NoArbitration"
+            class="arbitration-card"
+            dark
+            flat
+        >
+            <QCardSection>
+                <p>{{ t('project.positioning.arbitration.i') }}</p>
+            </QCardSection>
+            <QCardSection>
+                <p>{{ t('project.positioning.arbitration.currently') }}</p>
+                <p>
+                    {{
+                        resourceStore.arbitration == Arbitration.NoPosition1
+                            ? t('project.positioning.arbitration.type0')
+                            : t('project.positioning.arbitration.type1')
+                    }}
+                </p>
+            </QCardSection>
+        </QCard>
         <QCard
             v-for="library in resourceStore.librariesAssociated"
             :key="library.id"
