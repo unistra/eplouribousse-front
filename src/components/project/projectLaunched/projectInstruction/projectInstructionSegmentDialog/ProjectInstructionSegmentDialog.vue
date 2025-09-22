@@ -1,48 +1,49 @@
 <script setup lang="ts">
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useI18n } from 'vue-i18n'
-import type { Segment, SegmentI } from '#/project.ts'
+import type { Segment } from '#/project.ts'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
-import { onMounted, reactive } from 'vue'
+import { onMounted } from 'vue'
 import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
 import { useResourceStore } from '@/stores/resourceStore.ts'
+import { useProjectInstructionSegmentDialog } from '@/components/project/projectLaunched/projectInstruction/projectInstructionSegmentDialog/useProjectInstructionSegmentDialog.ts'
 
-const model = defineModel<boolean>()
 const { t } = useI18n()
 const resourceStore = useResourceStore()
-
+const model = defineModel<boolean>({ required: true })
 const props = defineProps<{
-    segment: Segment
+    segment?: Segment
+    isNew: boolean
+    insertAfter?: string
 }>()
 
-const workSegment = reactive<SegmentI>({
-    content: '',
-    improvableElements: '',
-    exception: '',
-    improvedSegment: '',
-    collection: '',
-})
+const { workSegment, segmentLabel, onHide, onSave } = useProjectInstructionSegmentDialog(props, model)
 
-onMounted(async () => {
+onMounted(() => {
     if (props.segment) {
         workSegment.content = props.segment.content
         workSegment.improvableElements = props.segment.improvableElements
         workSegment.exception = props.segment.exception
         workSegment.improvedSegment = props.segment.improvedSegment
-        workSegment.collection = props.segment.collection
     }
 })
 </script>
 
 <template>
-    <QDialog v-model="model">
+    <QDialog
+        v-model="model"
+        @before-hide="onHide"
+    >
         <QCard>
-            <QCardSection>Edit or create</QCardSection>
+            <QCardSection>{{
+                isNew ? t('project.instruction.segment.new') : t('project.instruction.segment.update')
+            }}</QCardSection>
             <QCardSection>
-                <QForm>
+                <QForm @submit.prevent="onSave">
                     <AtomicInput
                         v-model="workSegment.content"
                         :label="t('project.instruction.tableFields.segment')"
+                        :rules="[(val: string) => !!val || t('forms.validation.fieldIsRequired')]"
                         type="text"
                     />
                     <AtomicInput
@@ -56,37 +57,30 @@ onMounted(async () => {
                         type="text"
                     />
                     <AtomicSelect
+                        v-if="(resourceStore.segments.length === 1 && isNew) || resourceStore.segments.length > 1"
                         v-model="workSegment.improvedSegment"
+                        clearable
                         emit-value
                         :label="t('project.instruction.tableFields.resolve')"
                         map-options
-                        :option-label="
-                            (el: Segment) =>
-                                `${t('project.instruction.tableFields.order')}: ${el.order} | ${t('project.instruction.tableFields.segment')}: ${el.content || t('common.none')} | ${t('project.instruction.tableFields.exception')}: ${el.exception || t('common.none')} | ${t('project.instruction.tableFields.improvableElements')}: ${el.improvableElements || t('common.none')}`
-                        "
-                        option-value="id"
-                        :options="resourceStore.segments.filter((el) => el.id !== segment.id)"
-                    />
-                    <AtomicSelect
-                        v-model="workSegment.collection"
-                        emit-value
-                        :label="t('project.collection.i')"
-                        map-options
-                        option-label="id"
+                        :option-label="(optionSegment: Segment) => segmentLabel(optionSegment)"
                         option-value="id"
                         :options="
-                            resourceStore.collections.filter((el) => el.library === resourceStore.libraryIdSelected)
+                            resourceStore.segments.filter((el) => (isNew && !segment ? true : el.id !== segment?.id))
                         "
                     />
+                    <QCardActions align="right">
+                        <AtomicButton
+                            :label="t('common.cancel')"
+                            @click="model = false"
+                        />
+                        <AtomicButton
+                            :label="t('common.save')"
+                            type="submit"
+                        />
+                    </QCardActions>
                 </QForm>
             </QCardSection>
-            <QCardActions align="right">
-                <AtomicButton
-                    :label="t('common.cancel')"
-                    @click="model = false"
-                />
-                <AtomicButton :label="t('common.save')" />
-            </QCardActions>
         </QCard>
     </QDialog>
 </template>
