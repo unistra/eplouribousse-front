@@ -16,7 +16,7 @@ export const useProjectResources = () => {
     const { t } = useI18n()
 
     const tabs = [
-        { name: 'position', label: t('project.resources.status.toPosition'), status: ResourceStatus.Positioning },
+        { name: 'positioning', label: t('project.resources.status.toPosition'), status: ResourceStatus.Positioning },
         {
             name: 'instructionBound',
             label: t('project.resources.status.toInstructBound'),
@@ -29,7 +29,7 @@ export const useProjectResources = () => {
         },
         { name: 'control', label: t('project.resources.status.toControl'), status: ResourceStatus.ControlBound },
     ]
-    const tab = ref<string>('position')
+    const tab = ref<string>('positioning')
     const tabStatus = computed(() => {
         const t = tabs.find((el) => el.name === tab.value)
         return t ? t.status : ResourceStatus.Positioning
