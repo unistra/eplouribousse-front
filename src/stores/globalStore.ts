@@ -41,7 +41,12 @@ export const useGlobalStore = defineStore('globalStore', () => {
             axiosI.defaults.baseURL = url.protocol + '//' + prefix + '.epl-api.localhost:8000/api'
             axiosAuth.defaults.baseURL = url.protocol + '//' + prefix + '.epl-api.localhost:8000'
         } else {
-            const url = new URL(location.href, 'https://' + location.href)
+            let url
+            try {
+                url = new URL(location.href)
+            } catch {
+                url = new URL('https://' + location.href)
+            }
             if (import.meta.env.VITE_ENV === 'test') {
                 const prefix = url.host.split('-', 1)[0]
                 axiosI.defaults.baseURL = prefix + '-eplouribousse-api-test.app.unistra.fr/api'
