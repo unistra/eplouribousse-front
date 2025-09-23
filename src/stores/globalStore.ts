@@ -35,20 +35,22 @@ export const useGlobalStore = defineStore('globalStore', () => {
     }
 
     const defineBackendBaseURL = () => {
-        const url = new URL(location.href)
-
         if (import.meta.env.VITE_ENV === 'dev') {
+            const url = new URL(location.href)
             const prefix = url.host.split('.', 1)[0]
             axiosI.defaults.baseURL = url.protocol + '//' + prefix + '.epl-api.localhost:8000/api'
             axiosAuth.defaults.baseURL = url.protocol + '//' + prefix + '.epl-api.localhost:8000'
-        } else if (import.meta.env.VITE_ENV === 'test') {
-            const prefix = url.host.split('-', 1)[0]
-            axiosI.defaults.baseURL = prefix + '-eplouribousse-api-test.app.unistra.fr/api'
-            axiosAuth.defaults.baseURL = prefix + '-eplouribousse-api-test.app.unistra.fr'
-        } else if (import.meta.env.VITE_ENV === 'pprd') {
-            const prefix = url.host.split('-', 1)[0]
-            axiosI.defaults.baseURL = prefix + '-eplouribousse-api-pprd.app.unistra.fr/api'
-            axiosAuth.defaults.baseURL = prefix + '-eplouribousse-api-pprd.app.unistra.fr'
+        } else {
+            const url = new URL(location.href, 'https://' + location.href)
+            if (import.meta.env.VITE_ENV === 'test') {
+                const prefix = url.host.split('-', 1)[0]
+                axiosI.defaults.baseURL = prefix + '-eplouribousse-api-test.app.unistra.fr/api'
+                axiosAuth.defaults.baseURL = prefix + '-eplouribousse-api-test.app.unistra.fr'
+            } else if (import.meta.env.VITE_ENV === 'pprd') {
+                const prefix = url.host.split('-', 1)[0]
+                axiosI.defaults.baseURL = prefix + '-eplouribousse-api-pprd.app.unistra.fr/api'
+                axiosAuth.defaults.baseURL = prefix + '-eplouribousse-api-pprd.app.unistra.fr'
+            }
         }
     }
 
