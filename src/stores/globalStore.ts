@@ -50,8 +50,10 @@ export const useGlobalStore = defineStore('globalStore', () => {
             if (import.meta.env.VITE_ENV === 'test') {
                 console.log(url)
                 const prefix = url.host.split('-', 1)[0]
+                console.log(prefix)
                 axiosI.defaults.baseURL = prefix + '-eplouribousse-api-test.app.unistra.fr/api'
                 axiosAuth.defaults.baseURL = prefix + '-eplouribousse-api-test.app.unistra.fr'
+                console.log(axiosI.defaults.baseURL)
             } else if (import.meta.env.VITE_ENV === 'pprd') {
                 const prefix = url.host.split('-', 1)[0]
                 axiosI.defaults.baseURL = prefix + '-eplouribousse-api-pprd.app.unistra.fr/api'
