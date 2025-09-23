@@ -14,15 +14,8 @@ import { useI18n } from 'vue-i18n'
 const store = useProjectStore()
 const { t } = useI18n()
 const { tabs } = useProjectAdministration()
-const {
-    addingExclusionReason,
-    newExclusionReason,
-    emailAlerts,
-    transferTracking,
-    treatmentTracking,
-    onAddExclusionReason,
-    onCancelAddExclusionReason,
-} = useProjectAdministration()
+const { addingExclusionReason, newExclusionReason, onAddExclusionReason, onCancelAddExclusionReason } =
+    useProjectAdministration()
 defineProps<{
     tabName: string
 }>()
@@ -96,19 +89,33 @@ defineProps<{
     </div>
     <div
         v-if="tabName === tabs[1].name"
-        class="libraries space"
+        class="space"
     >
-        <ProjectLibraryCard
-            v-for="library in store.libraries"
-            :key="library.id"
-            :library="library"
-        />
+        <QCard
+            bordered
+            flat
+        >
+            <QCardSection class="libraries">
+                <ProjectLibraryCard
+                    v-for="library in store.libraries"
+                    :key="library.id"
+                    :library="library"
+                />
+            </QCardSection>
+        </QCard>
     </div>
     <div
         v-if="tabName === tabs[2].name"
         class="space"
     >
-        <ProjectRoles />
+        <QCard
+            bordered
+            flat
+        >
+            <QCardSection>
+                <ProjectRoles />
+            </QCardSection>
+        </QCard>
     </div>
     <div
         v-if="tabName === tabs[3].name"
@@ -120,34 +127,17 @@ defineProps<{
         >
             <QCardSection>
                 <b>{{ t('project.settings.emailAlert.resourcesAlterts') }}</b>
-                <QList class="toggles">
+                <QList>
                     <QItem
-                        v-for="key in Object.keys(emailAlerts)"
+                        v-for="key in Object.keys(store.settings.alerts)"
                         :key="key"
                     >
                         <AtomicToggle
-                            v-model="emailAlerts[key as keyof typeof emailAlerts]"
+                            v-model="
+                                //@ts-ignore
+                                store.settings.alerts[key as keyof typeof store.settings.alerts]
+                            "
                             :label="t(`project.settings.emailAlert.${key}`)"
-                            left-label
-                        />
-                    </QItem>
-                </QList>
-            </QCardSection>
-            <QSeparator />
-            <QCardSection>
-                <b>{{ t('project.settings.emailAlert.tracking') }}</b>
-                <QList>
-                    <QItem>
-                        <AtomicToggle
-                            v-model="transferTracking"
-                            :label="t('project.settings.transferTracking')"
-                            left-label
-                        />
-                    </QItem>
-                    <QItem>
-                        <AtomicToggle
-                            v-model="treatmentTracking"
-                            :label="t('project.settings.treatmentTracking')"
                             left-label
                         />
                     </QItem>
@@ -159,38 +149,46 @@ defineProps<{
         v-if="tabName === tabs[4].name"
         class="space"
     >
-        <b>{{ t('project.settings.exclusionReason') }}</b>
-        <QList>
-            <QItem
-                v-for="exclusionReason in store.settings.exclusionReasons"
-                :key="exclusionReason"
-            >
-                <p>{{ exclusionReason }}</p>
-                <AtomicButton
-                    v-if="!store.isInEditionMode"
-                    icon="mdi-close"
-                    no-border
-                    size="xs"
-                    @click="store.removeExclusionReason(exclusionReason)"
-                />
-            </QItem>
-            <QItem>
-                <AtomicButton
-                    v-if="!addingExclusionReason"
-                    icon="mdi-plus"
-                    size="xs"
-                    @click="addingExclusionReason = true"
-                />
-                <AtomicInput
-                    v-else
-                    v-model="newExclusionReason"
-                    :label="t('project.settings.exclusionReason')"
-                    quick-input
-                    @cancel="onCancelAddExclusionReason"
-                    @done="onAddExclusionReason"
-                />
-            </QItem>
-        </QList>
+        <QCard
+            bordered
+            flat
+        >
+            <QCardSection>
+                <b class="space">{{ t('project.settings.exclusionReason') }}</b>
+                <QSeparator />
+                <QList>
+                    <QItem
+                        v-for="exclusionReason in store.settings.exclusionReasons"
+                        :key="exclusionReason"
+                    >
+                        <p>{{ exclusionReason }}</p>
+                        <AtomicButton
+                            v-if="!store.isInEditionMode"
+                            icon="mdi-close"
+                            no-border
+                            size="xs"
+                            @click="store.removeExclusionReason(exclusionReason)"
+                        />
+                    </QItem>
+                    <QItem>
+                        <AtomicButton
+                            v-if="!addingExclusionReason"
+                            icon="mdi-plus"
+                            size="xs"
+                            @click="addingExclusionReason = true"
+                        />
+                        <AtomicInput
+                            v-else
+                            v-model="newExclusionReason"
+                            :label="t('project.settings.exclusionReason')"
+                            quick-input
+                            @cancel="onCancelAddExclusionReason"
+                            @done="onAddExclusionReason"
+                        />
+                    </QItem>
+                </QList>
+            </QCardSection>
+        </QCard>
     </div>
 </template>
 
@@ -206,5 +204,6 @@ defineProps<{
     gap: 16px;
 
 .space
-    padding-bottom: 30px
+    padding-top: 2.5vh
+    padding-bottom: 2.5vh
 </style>

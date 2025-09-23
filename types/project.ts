@@ -77,6 +77,15 @@ export type Collection = {
 
 export interface ProjectSettings {
     exclusionReasons: string[]
+    alerts: {
+        positioning: boolean
+        arbitration0: boolean
+        arbitration1: boolean
+        instructions: boolean
+        results: boolean
+        transferTracking: boolean
+        treatmentTracking: boolean
+    }
 }
 
 export interface ProjectLibrary extends LibraryI {

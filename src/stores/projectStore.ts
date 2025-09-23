@@ -30,6 +30,15 @@ const initialState: ProjectI = {
     status: ProjectStatus.Draft,
     settings: {
         exclusionReasons: [],
+        alerts: {
+            positioning: false,
+            arbitration0: false,
+            arbitration1: false,
+            instructions: false,
+            results: false,
+            transferTracking: false,
+            treatmentTracking: false,
+        },
     },
     invitations: [],
     roles: [],
@@ -82,6 +91,7 @@ export const useProjectStore = defineStore('project', {
 
         // TITLE & DESCRIPTION
         async _postNewProject() {
+            this.isLoading = true
             try {
                 const response = await axiosI.post<ProjectI>('/projects/', {
                     name: this.name,
@@ -97,6 +107,38 @@ export const useProjectStore = defineStore('project', {
                     type: 'negative',
                     message: t('errors.unknown'),
                 })
+            } finally {
+                this.isLoading = false
+            }
+        },
+        async updateProject() {
+            this.isLoading = true
+            try {
+                await axiosI.patch(`/projects/${this.id}/`, {
+                    name: this.name,
+                    description: this.description,
+                    roles: this.roles,
+                    settings: this.settings,
+                    isPrivate: this.isPrivate,
+                })
+
+                this.initialState.name = this.name
+                this.initialState.description = this.description
+                this.initialState.roles = this.roles
+                this.initialState.settings = this.settings
+                this.initialState.isPrivate = this.isPrivate
+
+                Notify.create({
+                    type: 'positive',
+                    message: t('project.administration.sucessUpdate'),
+                })
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            } finally {
+                this.isLoading = false
             }
         },
         async _patchTitleAndDescription() {

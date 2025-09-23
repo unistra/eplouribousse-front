@@ -17,7 +17,6 @@ export function useSearchUser(emit: SearchUserEmitActions) {
     const users = ref<UserI[]>([])
     const matchingUsers = ref<UniqueSet<UserI>>()
     const userAlreadySelected = ref<ProjectUser[]>([])
-    const canRemove = ref<boolean>(true)
 
     const userComparator: Comparator<UserI> = (a: UserI, b: UserI) => a.id === b.id
     const isUserListLoading = ref<boolean>(false)
@@ -31,10 +30,6 @@ export function useSearchUser(emit: SearchUserEmitActions) {
         } else {
             await fillUsers()
         }
-    })
-
-    watch(users.value, (newValue) => {
-        console.log(newValue)
     })
 
     async function fillUsers() {
@@ -120,14 +115,14 @@ export function useSearchUser(emit: SearchUserEmitActions) {
 
     return {
         username,
-        canRemove,
         users,
         matchingUsers,
         isUserListLoading,
         nextPage,
+        userAlreadySelected,
         onLoad,
         sendAction,
         clear,
-        userAlreadySelected,
+        fillUsers,
     }
 }
