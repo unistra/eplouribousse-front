@@ -35,29 +35,13 @@ export const useGlobalStore = defineStore('globalStore', () => {
     }
 
     const defineBackendBaseURL = () => {
-        if (import.meta.env.VITE_ENV === 'dev') {
-            const url = new URL(location.href)
-            const prefix = url.host.split('.', 1)[0]
-            axiosI.defaults.baseURL = url.protocol + '//' + prefix + '.epl-api.localhost:8000/api'
-            axiosAuth.defaults.baseURL = url.protocol + '//' + prefix + '.epl-api.localhost:8000'
-        } else {
-            let url
-            try {
-                url = new URL(location.href)
-            } catch {
-                url = new URL('https://' + location.href)
-            }
-            if (import.meta.env.VITE_ENV === 'test') {
-                const prefix = url.host.split('-', 1)[0]
-                axiosI.defaults.baseURL = prefix + '-eplouribousse-api-test.app.unistra.fr/api'
-                axiosAuth.defaults.baseURL = prefix + '-eplouribousse-api-test.app.unistra.fr'
-                console.log(axiosI.defaults.baseURL)
-            } else if (import.meta.env.VITE_ENV === 'pprd') {
-                const prefix = url.host.split('-', 1)[0]
-                axiosI.defaults.baseURL = prefix + '-eplouribousse-api-pprd.app.unistra.fr/api'
-                axiosAuth.defaults.baseURL = prefix + '-eplouribousse-api-pprd.app.unistra.fr'
-            }
-        }
+        let prefix = import.meta.env.DEV
+            ? new URL(location.href).host.split('.', 1)[0]
+            : new URL(location.href).host.split('-', 1)[0]
+
+        const url = import.meta.env.VITE_BACK_URL.replace('[tenant]', prefix)
+        axiosI.defaults.baseURL = `${url}/api`
+        axiosAuth.defaults.baseURL = url
     }
 
     return {
