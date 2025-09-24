@@ -173,6 +173,13 @@
             "exclusions": "Motifs d'exclusion",
             "errors": "Anomalies"
         },
+        "status": {
+            "draft": "Brouillon",
+            "review": "En revue",
+            "ready": "Prêt",
+            "launched": "Démarré",
+            "archived": "Archivé"
+        },
         "review": {
             "title": "Vérification du projet",
             "passToReady": "Marquer comme prêt",
