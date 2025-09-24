@@ -43,14 +43,12 @@ export const useGlobalStore = defineStore('globalStore', () => {
         } else {
             let url
             try {
-                url = new URL('t1-eplouribousse-test.app.unistra.fr/')
+                url = new URL(location.href)
             } catch {
-                url = new URL('https://' + 't1-eplouribousse-test.app.unistra.fr/')
+                url = new URL('https://' + location.href)
             }
             if (import.meta.env.VITE_ENV === 'test') {
-                console.log(url)
                 const prefix = url.host.split('-', 1)[0]
-                console.log(prefix)
                 axiosI.defaults.baseURL = prefix + '-eplouribousse-api-test.app.unistra.fr/api'
                 axiosAuth.defaults.baseURL = prefix + '-eplouribousse-api-test.app.unistra.fr'
                 console.log(axiosI.defaults.baseURL)
