@@ -158,6 +158,14 @@ const routes: RouteRecordRaw[] = [
             // TODO: tester que l'utilisateur est le superuser du tenant, le rediriger vers une 403 sinon
         },
     },
+    {
+        path: '/account',
+        name: 'account',
+        component: () => import('@/views/AccountView.vue'),
+        meta: {
+            title: t('navigation.myAccount'),
+        },
+    },
 ]
 
 export default routes
