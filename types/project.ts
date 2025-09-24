@@ -22,15 +22,13 @@ export interface ProjectI {
 export interface Project extends ProjectI {
     initialState: ProjectI
     isLoading: boolean
+    isInEditionMode: boolean
 }
 
 export interface ProjectSummarized {
     id: string
     name: string
-    description: string
-    isPrivate: boolean
-    activeAfter: string
-    status: ProjectStatus
+    roles: Roles[]
 }
 
 export interface ProjectUser {
@@ -79,6 +77,15 @@ export type Collection = {
 
 export interface ProjectSettings {
     exclusionReasons: string[]
+    alerts: {
+        positioning: boolean
+        arbitration0: boolean
+        arbitration1: boolean
+        instructions: boolean
+        results: boolean
+        transferTracking: boolean
+        treatmentTracking: boolean
+    }
 }
 
 export interface ProjectLibrary extends LibraryI {

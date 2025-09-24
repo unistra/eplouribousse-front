@@ -1,22 +1,30 @@
 <script lang="ts" setup>
-import { onMounted, watch } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { type SearchUserEmitActions, useSearchUser } from './useSearchUser'
 import { useI18n } from 'vue-i18n'
 import type { ProjectInvitation, ProjectUser } from '#/project.ts'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import SearchUserItem from '@/components/utils/searchUser/SearchUserItem.vue'
+import type { Roles } from '&/project'
+import { useProjectStore } from '@/stores/projectStore'
 
 const props = defineProps<{
+    role?: Roles
     usersSelected: ProjectUser[]
     invitationsSelected: ProjectInvitation[]
     isAddUserLoading: boolean
 }>()
 const { t } = useI18n()
-
+const store = useProjectStore()
 const emit = defineEmits<SearchUserEmitActions>()
 const { username, matchingUsers, onLoad, sendAction, clear, isUserListLoading, userAlreadySelected } =
     useSearchUser(emit)
+
+const disable = computed((): boolean => {
+    if (props.role) return store.findUsersByRole(props.role).length <= 1
+    else return false
+})
 
 watch(
     () => props.usersSelected,
@@ -74,8 +82,8 @@ onMounted(() => {
                     @click="sendAction('addUser', { userId: user.id })"
                 >
                     <QItemSection>
-                        {{ user.firstName || '***' }}
-                        {{ user.lastName || `***` }} -
+                        {{ user.firstName || 'non renseigné' }}
+                        {{ user.lastName || 'non renseigné' }} -
                         {{ user.email || `${t('common.none')} ${t('common.email')}` }}
                     </QItemSection>
                 </QItem>
@@ -107,10 +115,11 @@ onMounted(() => {
             <SearchUserItem
                 v-for="user in usersSelected"
                 :key="user.id"
+                :disable
                 @delete="sendAction('removeUser', { userId: user.id })"
             >
                 <p>
-                    {{ user.firstName || '***' }} {{ user.lastName || `***` }} -
+                    {{ user.firstName || 'non renseigné' }} {{ user.lastName || `non renseigné` }} -
                     {{ user.email || `${t('common.none')} ${t('common.email')}` }}
                 </p>
             </SearchUserItem>

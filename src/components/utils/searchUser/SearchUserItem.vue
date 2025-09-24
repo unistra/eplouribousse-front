@@ -10,6 +10,8 @@ const onDelete = () => {
     isLoading.value = true
     emit('delete')
 }
+
+const props = defineProps<{ disable?: boolean }>()
 </script>
 
 <template>
@@ -18,6 +20,7 @@ const onDelete = () => {
             <slot />
         </QItemSection>
         <AtomicButton
+            :disable
             icon="mdi-close"
             :loading="isLoading"
             :no-border="true"

@@ -16,7 +16,6 @@ export function useSearchUser(emit: SearchUserEmitActions) {
     const username = ref<string>('')
     const users = ref<UserI[]>([])
     const matchingUsers = ref<UniqueSet<UserI>>()
-
     const userAlreadySelected = ref<ProjectUser[]>([])
 
     const userComparator: Comparator<UserI> = (a: UserI, b: UserI) => a.id === b.id
@@ -120,9 +119,10 @@ export function useSearchUser(emit: SearchUserEmitActions) {
         matchingUsers,
         isUserListLoading,
         nextPage,
+        userAlreadySelected,
         onLoad,
         sendAction,
         clear,
-        userAlreadySelected,
+        fillUsers,
     }
 }

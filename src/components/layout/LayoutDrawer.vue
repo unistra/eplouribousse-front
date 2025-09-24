@@ -8,6 +8,7 @@ import DrawerItem from '../utils/drawerItem/DrawerItem.vue'
 import AtomicButton from '../atomic/AtomicButton.vue'
 import { useAuthentication } from '@/composables/useAuthentication'
 import { useRouter } from 'vue-router'
+import { Roles } from '&/project'
 
 const { t } = useI18n()
 const { logout } = useAuthentication()
@@ -27,7 +28,7 @@ watch(
 )
 
 onMounted(async () => {
-    await userStore.getProjects()
+    await userStore.fetchUser()
 })
 
 async function onLogout() {
@@ -91,19 +92,23 @@ async function onLogout() {
                     </p>
                     <div :class="['scrollable-projects', { 'min-height': userStore.projects.length > 3 }]">
                         <QItem
-                            v-if="userStore.projectsLoading"
+                            v-if="userStore.userLoading"
                             class="q-spinner-container"
                         >
                             <QSpinner />
                         </QItem>
-                        <QList v-else-if="userStore.projects.length > 0">
+                        <QList v-else-if="!userStore.userLoading && user">
                             <DrawerItem
-                                v-for="project in userStore.projects"
+                                v-for="project in user.projects"
                                 :key="project.id"
                                 icon="mdi-book-multiple"
+                                :is-administrated="project.roles.includes(Roles.ProjectAdmin)"
                                 :name="!collapsed ? project.name : ''"
                                 :to="{ name: 'project', params: { id: project.id } }"
                                 :tooltip="collapsed ? project.name : undefined"
+                                @administrate="
+                                    router.push({ name: 'projectAdministration', params: { id: project.id } })
+                                "
                             />
                         </QList>
                         <p v-else-if="!collapsed && !userStore.projects.length">

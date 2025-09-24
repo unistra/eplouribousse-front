@@ -7,6 +7,7 @@ import { type ProjectLibrary } from '#/project.ts'
 import { useProjectLibraryCard } from '@/components/project/projectStepper/steps/projectLibraries/useProjectLibraryCard.ts'
 import ProjectLibraryCollection from '@/components/project/projectStepper/steps/projectLibraries/collections/ProjectLibraryCollection.vue'
 import { Roles } from '&/project.ts'
+import { storeToRefs } from 'pinia'
 
 const props = defineProps<{
     library: ProjectLibrary
@@ -15,6 +16,7 @@ const props = defineProps<{
 
 const { t } = useI18n()
 const store = useProjectStore()
+const { isInEditionMode } = storeToRefs(useProjectStore())
 
 const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading, borderColorIsAlternativeStorageSite } =
     useProjectLibraryCard(props.library)
@@ -85,7 +87,7 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading,
         </QCardSection>
 
         <QCardActions
-            v-if="!isSummary"
+            v-if="!isSummary && !isInEditionMode"
             align="between"
         >
             <QCheckbox
