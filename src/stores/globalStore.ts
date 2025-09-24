@@ -35,7 +35,7 @@ export const useGlobalStore = defineStore('globalStore', () => {
     }
 
     const defineBackendBaseURL = () => {
-        let prefix = import.meta.env.DEV
+        const prefix = import.meta.env.DEV
             ? new URL(location.href).host.split('.', 1)[0]
             : new URL(location.href).host.split('-', 1)[0]
 
