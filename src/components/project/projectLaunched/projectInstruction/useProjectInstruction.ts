@@ -75,13 +75,16 @@ export const useProjectInstruction = () => {
             },
             align: 'center',
         },
-        {
+    ]
+
+    if (resourceStore.isInstructorForLibrarySelected) {
+        columns.push({
             name: 'options',
             label: t('project.instruction.tableFields.options'),
             field: 'options',
             align: 'center',
-        },
-    ]
+        })
+    }
 
     const orderedRows = computed(() => [...resourceStore.segments].sort((a, b) => a.order - b.order))
 
