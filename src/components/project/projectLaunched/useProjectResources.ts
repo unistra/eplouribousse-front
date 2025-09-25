@@ -104,10 +104,6 @@ export const useProjectResources = () => {
             rowsPerPage: 10,
             rowsNumber: 0,
         }),
-        onRequest: async (props: Parameters<NonNullable<QTableProps['onRequest']>>[0]) => {
-            const resourceStore = useResourceStore()
-            await resourceStore.fetchResources(tabStatus.value, { props, table })
-        },
     }
 
     const selectDefaultLibrary = () => {
@@ -124,26 +120,30 @@ export const useProjectResources = () => {
     }
 
     const resourceDialog = ref<boolean>(false)
-    const dialogLoading = ref<boolean>(false)
 
     const onRowClick = async (_: Event, row: Resource) => {
-        resourceDialog.value = true
-        dialogLoading.value = true
-
-        if (resourceStore.resourceSelected?.id !== row.id) {
-            resourceStore.collections = []
-            resourceStore.segments = []
-            await resourceStore.fetchResourceAndCollections(row.id)
-        }
         resourceStore.resourceSelected = row
-        dialogLoading.value = false
+        resourceDialog.value = true
     }
 
-    const fetchResources = () =>
-        resourceStore.fetchResources(tabStatus.value, {
+    const fetchResources = async (
+        props?: Parameters<NonNullable<QTableProps['onRequest']>>[0],
+        switchTab: boolean = false,
+    ) => {
+        table.loading.value = true
+
+        if (switchTab && !props) table.pagination.value.page = 1
+
+        const options = {
+            pagination: props?.pagination ? props?.pagination : table.pagination.value,
+            filter: props?.filter ? props?.filter : table.filter,
+        }
+        await resourceStore.fetchResources(tabStatus.value, {
             table,
-            props: { pagination: table.pagination.value, filter: table.filter.value },
+            props: options,
         })
+        table.loading.value = false
+    }
 
     const { libraryIdSelected, libraryIdComparedSelected } = storeToRefs(useResourceStore())
     const selects = [
@@ -166,14 +166,11 @@ export const useProjectResources = () => {
     return {
         tab,
         tabs,
-        tabStatus,
-        librariesOptions,
-        librariesComparedOptions,
         table,
         resourceDialog,
         selectDefaultLibrary,
         onRowClick,
         selects,
-        dialogLoading,
+        fetchResources,
     }
 }
