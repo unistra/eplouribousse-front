@@ -8,7 +8,7 @@ import {
     type Segment,
     type SegmentNoCollection,
 } from '#/project.ts'
-import { Arbitration, CollectionPosition, ResourceStatus } from '&/project.ts'
+import { Arbitration, CollectionPosition, ResourceStatus, Roles } from '&/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { Notify, type QTableProps } from 'quasar'
 import i18n from '@/plugins/i18n'
@@ -16,6 +16,7 @@ import type { Pagination } from '#/pagination.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import type { TableProjectResources } from '#/table'
+import { useUserStore } from '@/stores/userStore.ts'
 
 const { t } = i18n.global
 
@@ -76,6 +77,16 @@ export const useResourceStore = defineStore('resource', {
         statusName(this: ResourceStoreState): 'boundCopies' | 'unboundCopies' {
             return this.status === ResourceStatus.InstructionBound ? 'boundCopies' : 'unboundCopies'
         },
+        isInstructorForLibrarySelected(this: ResourceStoreState) {
+            const userStore = useUserStore()
+            const projectStore = useProjectStore()
+            return !!projectStore.roles.find(
+                (el) =>
+                    el.user.id === userStore.user?.id &&
+                    el.role === Roles.Instructor &&
+                    el.libraryId === this.libraryIdSelected,
+            )
+        },
     },
     actions: {
         _findCollection(collectionId: string) {
@@ -86,20 +97,6 @@ export const useResourceStore = defineStore('resource', {
         getAll(table: TableProjectResources) {
             table.pagination.value.rowsNumber = this.resourcesCount
             return this.resources
-        },
-        getResourcesWithStatus(table: TableProjectResources, status: ResourceStatus) {
-            const resources = this.resources.filter((resource: Resource) => resource.status === status)
-            table.pagination.value.rowsNumber = resources.length
-            return resources
-        },
-        getArbitrations(table: TableProjectResources) {
-            const resources = this.resources.filter(
-                (resource: Resource) =>
-                    resource.arbitration === Arbitration.MultiplePosition1 ||
-                    resource.arbitration === Arbitration.NoPosition1,
-            )
-            table.pagination.value.rowsNumber = resources.length
-            return resources
         },
         async fetchResourceAndCollections(resourceId: string) {
             const projectStore = useProjectStore()
@@ -348,6 +345,20 @@ export const useResourceStore = defineStore('resource', {
                 if (index !== -1) {
                     this.segments[index] = response.data
                 }
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async finishTurn() {
+            try {
+                if (!this.shouldInstruct || !this.instructionTurns) throw new Error('Instruction is not allowed')
+                const collectionId = this.instructionTurns[this.statusName].turns[0].collection
+
+                await axiosI.post<Segment>(`/collections/${collectionId}/finish_turn/`)
+                await this.fetchResources(this.status)
             } catch {
                 Notify.create({
                     type: 'negative',
