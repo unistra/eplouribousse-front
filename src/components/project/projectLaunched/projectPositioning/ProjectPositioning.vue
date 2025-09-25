@@ -44,7 +44,6 @@ const { t } = useI18n()
                     :key="collection.id"
                     :collection="collection"
                     :library-id="library.id"
-                    :library-id-selected="resourceStore.libraryIdSelected"
                 />
             </QCardSection>
         </QCard>
@@ -61,6 +60,7 @@ const { t } = useI18n()
     display: flex
     flex-direction: column
     gap: 1rem
+    width: 100%
 
     .button-section
         display: flex

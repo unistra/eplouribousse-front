@@ -242,7 +242,8 @@
                 "exception": "Exception",
                 "options": "Options",
                 "resolve": "@.capitalize:project.instruction.segment.i remédié"
-            }
+            },
+            "next": "Finir l'instruction et passer à la bibliothèque suivante"
         }
     },
     "libraries": {
