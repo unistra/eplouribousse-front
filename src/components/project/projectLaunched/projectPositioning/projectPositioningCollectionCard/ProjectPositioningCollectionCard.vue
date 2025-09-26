@@ -7,14 +7,15 @@ import { useProjectStore } from '@/stores/projectStore.ts'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import { useProjectPositioningCollectionCard } from '@/components/project/projectLaunched/projectPositioning/projectPositioningCollectionCard/useProjectPositioningCollectionCard.ts'
 import { CollectionPosition } from '&/project.ts'
+import { useResourceStore } from '@/stores/resourceStore.ts'
 const props = defineProps<{
     libraryId: string
-    libraryIdSelected: string
     collection: CollectionsInResource
 }>()
 
 const { t } = useI18n()
 const projectStore = useProjectStore()
+const resourceStore = useResourceStore()
 
 const { collection, exclude, comment, exclusionReason, newPosition, onSave, showSaveBtn, saveBtnLoading } =
     useProjectPositioningCollectionCard(props.collection.id)
@@ -47,7 +48,7 @@ onMounted(() => {
                     {{ collection.holdStatement || t('project.resources.noHoldStatement') }}
                 </p>
             </QCardSection>
-            <QCardSection v-if="collection.acl.position && libraryIdSelected === libraryId">
+            <QCardSection v-if="collection.acl.position && resourceStore.libraryIdSelected === libraryId">
                 <QForm @submit.prevent>
                     <div class="button-section">
                         <QRadio

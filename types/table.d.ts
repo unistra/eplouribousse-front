@@ -1,5 +1,5 @@
 import { type Ref, type ShallowRef } from 'vue'
-import type { QTable, QTableProps } from 'quasar'
+import type { QTable } from 'quasar'
 import type { Resource } from './project.ts'
 
 export interface TableProjectResources {
@@ -9,7 +9,6 @@ export interface TableProjectResources {
     loading: Ref<boolean>
     columns: QTable['columns']
     pagination: Ref<TableProjectResourcePagination>
-    onRequest: (props: Parameters<NonNullable<QTableProps['onRequest']>>[0]) => Promise<void>
 }
 
 export interface TableProjectResourcePagination {

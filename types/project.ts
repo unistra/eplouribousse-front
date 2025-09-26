@@ -92,6 +92,20 @@ export interface ProjectLibrary extends LibraryI {
     isAlternativeStorageSite: boolean
 }
 
+export type InstructionTurns = {
+    boundCopies: InstructionTurnGroup
+    unboundCopies: InstructionTurnGroup
+}
+
+export type InstructionTurnGroup = {
+    turns: InstructionTurn[]
+}
+
+export type InstructionTurn = {
+    library: string
+    collection: string
+}
+
 export type Resource = {
     id: string
     title: string
@@ -103,6 +117,7 @@ export type Resource = {
     status: ResourceStatus
     arbitration: number
     acl: Record<string, boolean>
+    instructionTurns: InstructionTurns | undefined
 }
 
 export type CollectionsInResource = {
@@ -118,7 +133,7 @@ export type CollectionsInResource = {
 }
 
 export type CollectionsWithResource = {
-    resource: Omit<Resource, 'is_excluded'>
+    resource: Resource
     collections: CollectionsInResource[]
 }
 
@@ -132,3 +147,25 @@ export type CommentPositioning = {
     author: string
     createdAt: string
 }
+
+export interface SegmentI {
+    content: string
+    improvableElements: string
+    exception: string
+    improvedSegment?: string
+    collection: string
+}
+
+export type SegmentNoCollection = Omit<SegmentI, 'collection'>
+
+export interface Segment extends SegmentI {
+    id: string
+    segmentType: 'bound' | 'unbound'
+    order: number
+    retained: boolean
+    createdBy: string | null
+    createdAt: string
+    acl: Record<string, boolean>
+}
+
+export type Tab = 'positioning' | 'instructionBound' | 'instructionUnbound' | 'control'

@@ -141,6 +141,9 @@
             "errors": "Anomalies",
             "sucessUpdate": "Projet mis à jour avec succès"
         },
+        "collection": {
+            "i": "Collection"
+        },
         "review": {
             "title": "Vérification du projet",
             "passToReady": "Marquer comme prêt",
@@ -210,6 +213,37 @@
             "treatmentTracking": "Suivi des traitements",
             "exclusionReason": "Raisons d'exclusion",
             "alternativeStorageSite": "Lieu de stockage alternatif"
+        },
+        "positioning": {
+            "arbitration": {
+                "i": "Arbitrage",
+                "currently": "Cette ressource est en cours d'@.lower:project.positioning.arbitration.i",
+                "type0": "Au moins une collection doit être positionnée en 1",
+                "type1": "Une de vos collections est en concurence pour la position 1"
+            }
+        },
+        "instruction": {
+            "turns": "Ordre de passage",
+            "segment": {
+                "i": "segment",
+                "ii": "le segment",
+                "new": "@.capitalize:common.new @.lower:project.instruction.segment.i",
+                "insertUnder": "Insérer en dessous",
+                "update": "@.capitalize:common.update @.lower:project.instruction.segment.ii",
+                "noSegment": "@.capitalize:common.none @.lower:project.instruction.segment.i"
+            },
+            "tableFields": {
+                "order": "Ordre",
+                "library": "@.capitalize:libraries.title",
+                "collection": "@.capitalize:project.collection.i",
+                "segment": "@.capitalize:project.instruction.segment.i",
+                "boundOrUnbound": "Relié ou non relié",
+                "improvableElements": "Élément améliorable",
+                "exception": "Exception",
+                "options": "Options",
+                "resolve": "@.capitalize:project.instruction.segment.i remédié"
+            },
+            "next": "Finir l'instruction et passer à la bibliothèque suivante"
         }
     },
     "libraries": {
@@ -353,7 +387,9 @@
         "or": "ou",
         "waiting": "En attente",
         "all": "Tous",
-        "undefined": "Non renseigné"
+        "undefined": "Non renseigné",
+        "new": "Nouveau",
+        "update": "Modifier"
     },
     "utils": {
         "searchUser": {

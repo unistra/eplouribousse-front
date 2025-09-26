@@ -1,52 +1,36 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import ProjectPositioningCollectionCard from '@/components/project/projectLaunched/projectPositioning/projectPositioningCollectionCard/ProjectPositioningCollectionCard.vue'
+import { useI18n } from 'vue-i18n'
 import { Arbitration } from '&/project.ts'
 
-const props = defineProps<{
-    resourceId: string
-}>()
 
 const resourceStore = useResourceStore()
-const loading = ref<boolean>(false)
-
-onMounted(async () => {
-    loading.value = true
-    await resourceStore.fetchResourceAndCollections(props.resourceId)
-    loading.value = false
-})
+const { t } = useI18n()
 </script>
 
 <template>
-    <div
-        v-if="loading"
-        class="spinner"
-    >
-        <QSpinner size="2rem" />
-    </div>
-    <div
-        v-else
-        class="project-positioning"
-    >
-        <hgroup>
-            <h2>{{ resourceStore.title }}</h2>
-            <p>{{ resourceStore.code }}</p>
-
-            <QCard
-                v-if="resourceStore.arbitration !== Arbitration.NoArbitration"
-                class="arbitration-card"
-                dark
-                flat
-            >
-                <QCardSection>
-                    <p>Arbitrage</p>
-                </QCardSection>
-                <QCardSection>
-                    <p>Cette ressource est en cours d'arbitrage</p>
-                </QCardSection>
-            </QCard>
-        </hgroup>
+    <div class="project-positioning">
+        <QCard
+            v-if="resourceStore.arbitration !== Arbitration.NoArbitration"
+            class="arbitration-card"
+            dark
+            flat
+        >
+            <QCardSection>
+                <p>{{ t('project.positioning.arbitration.i') }}</p>
+            </QCardSection>
+            <QCardSection>
+                <p>{{ t('project.positioning.arbitration.currently') }}</p>
+                <p>
+                    {{
+                        resourceStore.arbitration == Arbitration.NoPosition1
+                            ? t('project.positioning.arbitration.type0')
+                            : t('project.positioning.arbitration.type1')
+                    }}
+                </p>
+            </QCardSection>
+        </QCard>
         <QCard
             v-for="library in resourceStore.librariesAssociated"
             :key="library.id"
@@ -60,7 +44,6 @@ onMounted(async () => {
                     :key="collection.id"
                     :collection="collection"
                     :library-id="library.id"
-                    :library-id-selected="resourceStore.libraryIdSelected"
                 />
             </QCardSection>
         </QCard>
@@ -77,6 +60,7 @@ onMounted(async () => {
     display: flex
     flex-direction: column
     gap: 1rem
+    width: 100%
 
     .button-section
         display: flex

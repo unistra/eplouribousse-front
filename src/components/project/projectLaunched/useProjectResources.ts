@@ -1,5 +1,5 @@
 import { computed, ref, useTemplateRef } from 'vue'
-import type { Resource } from '#/project.ts'
+import type { Resource, Tab } from '#/project.ts'
 import { ResourceStatus, Roles } from '&/project.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
@@ -7,6 +7,7 @@ import { useUserStore } from '@/stores/userStore.ts'
 import type { QTable, QTableProps } from 'quasar'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import type { TableProjectResources } from '#/table.ts'
+import { storeToRefs } from 'pinia'
 
 export const useProjectResources = () => {
     const projectStore = useProjectStore()
@@ -15,7 +16,7 @@ export const useProjectResources = () => {
     const { t } = useI18n()
 
     const tabs = [
-        { name: 'position', label: t('project.resources.status.toPosition'), status: ResourceStatus.Positioning },
+        { name: 'positioning', label: t('project.resources.status.toPosition'), status: ResourceStatus.Positioning },
         {
             name: 'instructionBound',
             label: t('project.resources.status.toInstructBound'),
@@ -28,7 +29,7 @@ export const useProjectResources = () => {
         },
         { name: 'control', label: t('project.resources.status.toControl'), status: ResourceStatus.ControlBound },
     ]
-    const tab = ref<string>('position')
+    const tab = ref<Tab>('positioning')
     const tabStatus = computed(() => {
         const t = tabs.find((el) => el.name === tab.value)
         return t ? t.status : ResourceStatus.Positioning
@@ -103,10 +104,6 @@ export const useProjectResources = () => {
             rowsPerPage: 10,
             rowsNumber: 0,
         }),
-        onRequest: async (props: Parameters<NonNullable<QTableProps['onRequest']>>[0]) => {
-            const resourceStore = useResourceStore()
-            await resourceStore.fetchResources(tabStatus.value, { props, table })
-        },
     }
 
     const selectDefaultLibrary = () => {
@@ -123,23 +120,57 @@ export const useProjectResources = () => {
     }
 
     const resourceDialog = ref<boolean>(false)
-    const resourceIdSelected = ref<string>('')
 
-    const onRowClick = (_: Event, row: Resource) => {
-        resourceIdSelected.value = row.id
+    const onRowClick = async (_: Event, row: Resource) => {
+        resourceStore.resourceSelected = row
         resourceDialog.value = true
     }
+
+    const fetchResources = async (
+        props?: Parameters<NonNullable<QTableProps['onRequest']>>[0],
+        switchTab: boolean = false,
+    ) => {
+        table.loading.value = true
+
+        if (switchTab && !props) table.pagination.value.page = 1
+
+        const options = {
+            pagination: props?.pagination ? props?.pagination : table.pagination.value,
+            filter: props?.filter ? props?.filter : table.filter,
+        }
+        await resourceStore.fetchResources(tabStatus.value, {
+            table,
+            props: options,
+        })
+        table.loading.value = false
+    }
+
+    const { libraryIdSelected, libraryIdComparedSelected } = storeToRefs(useResourceStore())
+    const selects = [
+        {
+            model: libraryIdSelected,
+            label: t('project.resources.showResources'),
+            options: librariesOptions.value,
+            callback: fetchResources,
+            name: 'librariesSelection',
+        },
+        {
+            model: libraryIdComparedSelected,
+            label: t('project.resources.compareWith'),
+            options: librariesComparedOptions.value,
+            callback: fetchResources,
+            name: 'librariesComparison',
+        },
+    ]
 
     return {
         tab,
         tabs,
-        tabStatus,
-        librariesOptions,
-        librariesComparedOptions,
         table,
         resourceDialog,
-        resourceIdSelected,
         selectDefaultLibrary,
         onRowClick,
+        selects,
+        fetchResources,
     }
 }
