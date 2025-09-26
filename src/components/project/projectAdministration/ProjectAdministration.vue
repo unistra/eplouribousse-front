@@ -15,6 +15,7 @@ const store = useProjectStore()
             align="left"
             dense
             no-caps
+            @update:model-value="console.log('changement de tab')"
         >
             <QTab
                 v-for="(value, index) in tabs"
@@ -42,7 +43,7 @@ const store = useProjectStore()
             label="Enregister"
             :loading="store.isLoading"
             @click="store.updateProject"
-        ></AtomicButton>
+        />
     </div>
 </template>
 

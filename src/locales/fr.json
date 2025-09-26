@@ -1,7 +1,19 @@
 {
     "homePage": "Accueil",
     "homeMessage": "Bienvenue sur Eplouribousse",
+    "layout": {
+        "header": {
+            "logo": "Eplouribousse logo",
+            "manageAccount": "Gérer votre profil",
+            "account": "@:navigation.myAccount"
+        }
+    },
+    "auth": {
+        "login": "Connexion",
+        "logout": "Déconnexion"
+    },
     "navigation": {
+        "myAccount": "Mon @.lower:common.account",
         "search": "Recherche",
         "login": "Connexion",
         "logout": "Déconnexion",
@@ -144,6 +156,29 @@
         },
         "collection": {
             "i": "Collection"
+        },
+        "status": {
+            "draft": "Brouillon",
+            "review": "En revue",
+            "ready": "Prêt",
+            "launched": "Démarré",
+            "archived": "Archivé"
+        },
+        "administration": {
+            "title": "Administration",
+            "informations": "Informations générales",
+            "libraries": "Bibliothèques",
+            "users": "Utilisateurs",
+            "alerts": "Notifications",
+            "exclusions": "Motifs d'exclusion",
+            "errors": "Anomalies"
+        },
+        "status": {
+            "draft": "Brouillon",
+            "review": "En revue",
+            "ready": "Prêt",
+            "launched": "Démarré",
+            "archived": "Archivé"
         },
         "review": {
             "title": "Vérification du projet",
@@ -363,6 +398,23 @@
         "irreversible": "Cette action est irréversible",
         "areYouSure": "Êtes-vous sûr de vouloir continuer ?"
     },
+    "account": {
+        "local": "Local",
+        "federation": "Fédération ESR",
+        "tenantRole": "Rôle spécifique sur le tenant",
+        "projects": {
+            "myProjects": "Mes @.lower:common.project",
+            "forLibrary": "pour la @.lower:common.library",
+            "rolesInProject": "Vos rôles dans le projet",
+            "alerts": {
+                "title": "Alertes associées au projet :",
+                "positioning": "Alertes positionnement",
+                "instructions": "Alertes instructions",
+                "arbitrages": "Alertes arbitrages",
+                "results": "Alertes résultantes"
+            }
+        }
+    },
     "common": {
         "yes": "Oui",
         "no": "Non",
@@ -388,9 +440,15 @@
         "or": "ou",
         "waiting": "En attente",
         "all": "Tous",
-        "undefined": "Non renseigné",
         "new": "Nouveau",
-        "update": "Modifier"
+        "update": "Modifier",
+        "undefined": "Non renseigné",
+        "account": "Compte",
+        "name": "Nom",
+        "project": "Projet | Projets",
+        "library": "Bibliothèque | Bibliothèques",
+        "createdAt": "Créé le",
+        "status": "Status"
     },
     "utils": {
         "searchUser": {

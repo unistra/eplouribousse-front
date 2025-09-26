@@ -15,7 +15,19 @@ export function useProjectAdministration() {
         { name: 'errors', label: t('project.administration.errors') },
     ]
     const tab = ref<string>('informations')
+
+    const emailAlerts = ref({
+        positionning: false,
+        arbitrary0: false,
+        arbitrary1: false,
+        instructions: false,
+        results: false,
+    })
+
     const storageOptions: string[] = []
+
+    const transferTracking = ref<boolean>(false)
+    const treatmentTracking = ref<boolean>(false)
 
     const addingExclusionReason = ref<boolean>(false)
     const newExclusionReason = ref<string>('')
@@ -32,7 +44,10 @@ export function useProjectAdministration() {
     return {
         tabs,
         tab,
+        emailAlerts,
         storageOptions,
+        transferTracking,
+        treatmentTracking,
         addingExclusionReason,
         newExclusionReason,
         onAddExclusionReason,
