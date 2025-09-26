@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
@@ -26,10 +26,6 @@ watch(
         await userStore.getProjects()
     },
 )
-
-onMounted(async () => {
-    await userStore.fetchUser()
-})
 
 async function onLogout() {
     await logout()
@@ -102,14 +98,19 @@ async function onLogout() {
                                 v-for="project in user.projects"
                                 :key="project.id"
                                 icon="mdi-book-multiple"
-                                :is-administrated="project.roles.includes(Roles.ProjectAdmin)"
                                 :name="!collapsed ? project.name : ''"
                                 :to="{ name: 'project', params: { id: project.id } }"
                                 :tooltip="collapsed ? project.name : undefined"
-                                @administrate="
-                                    router.push({ name: 'projectAdministration', params: { id: project.id } })
-                                "
-                            />
+                            >
+                                <AtomicButton
+                                    v-if="project.roles.includes(Roles.ProjectAdmin)"
+                                    dense
+                                    flat
+                                    icon="mdi-cog"
+                                    round
+                                    :to="{ name: 'projectAdministration', params: { id: project.id } }"
+                                />
+                            </DrawerItem>
                         </QList>
                         <p v-else-if="!collapsed && !userStore.projects.length">
                             {{ t('navigation.noProject') }}
