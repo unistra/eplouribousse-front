@@ -35,9 +35,10 @@ export const useGlobalStore = defineStore('globalStore', () => {
     }
 
     const defineBackendBaseURL = () => {
-        let prefix = import.meta.env.DEV
-            ? new URL(location.href).host.split('.', 1)[0]
-            : new URL(location.href).host.split('-', 1)[0]
+        const prefix =
+            import.meta.env.VITE_ENV === 'dev'
+                ? new URL(location.href).host.split('.epl', 1)[0]
+                : new URL(location.href).host.split('-eplouribousse', 1)[0]
 
         const url = import.meta.env.VITE_BACK_URL.replace('[tenant]', prefix)
         axiosI.defaults.baseURL = `${url}/api`

@@ -146,6 +146,18 @@ const routes: RouteRecordRaw[] = [
             title: 'Projets',
         },
     },
+    {
+        path: '/admin',
+        name: 'admin',
+        component: () => import('@/views/AdminView.vue'),
+        meta: {
+            title: t('navigation.admin'),
+        },
+        beforeEnter: async () => {
+            // const userStore = useUserStore()
+            // TODO: tester que l'utilisateur est le superuser du tenant, le rediriger vers une 403 sinon
+        },
+    },
 ]
 
 export default routes
