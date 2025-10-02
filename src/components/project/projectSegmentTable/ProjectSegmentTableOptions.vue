@@ -55,7 +55,7 @@ const { orderSegment, isSegmentCollectionLibrarySameAsLibrarySelected, dialogUpd
             no-border
             size="sm"
         >
-            <QMenu>
+            <QMenu auto-close>
                 <QList>
                     <QItem
                         v-if="row.acl && row.acl.partialUpdate && isSegmentCollectionLibrarySameAsLibrarySelected(row)"
