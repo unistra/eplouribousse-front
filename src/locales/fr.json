@@ -151,27 +151,11 @@
             "users": "Utilisateurs",
             "alerts": "Alertes email",
             "exclusions": "Motifs d'exclusion",
-            "errors": "Anomalies",
+            "errors": "@:project.anomaly.i",
             "sucessUpdate": "Projet mis à jour avec succès"
         },
         "collection": {
             "i": "Collection"
-        },
-        "status": {
-            "draft": "Brouillon",
-            "review": "En revue",
-            "ready": "Prêt",
-            "launched": "Démarré",
-            "archived": "Archivé"
-        },
-        "administration": {
-            "title": "Administration",
-            "informations": "Informations générales",
-            "libraries": "Bibliothèques",
-            "users": "Utilisateurs",
-            "alerts": "Notifications",
-            "exclusions": "Motifs d'exclusion",
-            "errors": "Anomalies"
         },
         "status": {
             "draft": "Brouillon",
@@ -266,7 +250,8 @@
                 "new": "@.capitalize:common.new @.lower:project.instruction.segment.i",
                 "insertUnder": "Insérer en dessous",
                 "update": "@.capitalize:common.update @.lower:project.instruction.segment.ii",
-                "noSegment": "@.capitalize:common.none @.lower:project.instruction.segment.i"
+                "noSegment": "@.capitalize:common.none @.lower:project.instruction.segment.i",
+                "signalAnomalie": "Signaler une @.lower:project.anomaly.i"
             },
             "tableFields": {
                 "order": "Ordre",
@@ -277,9 +262,36 @@
                 "improvableElements": "Élément améliorable",
                 "exception": "Exception",
                 "options": "Options",
-                "resolve": "@.capitalize:project.instruction.segment.i remédié"
+                "resolve": "@.capitalize:project.instruction.segment.i remédié",
+                "anomalies": "@:project.anomaly.i"
             },
             "next": "Finir l'instruction et passer à la bibliothèque suivante"
+        },
+        "control": {
+            "nextPhase": "Passer à la phase suivante"
+        },
+        "anomaly": {
+            "i": "Anomalie | Anomalies",
+            "tableField": {
+                "type": "@.capitalize:common.type d'@.lower:project.anomaly.i",
+                "description": "@.capitalize:common.description",
+                "fixed": "@.capitalize:common.fixed",
+                "fixedAt": "@.capitalize:common.fixed le",
+                "fixedBy": "@.capitalize:common.fixed par",
+                "createdAt": "@.capitalize:common.created le",
+                "createdBy": "@.capitalize:common.created par",
+                "fix": "Résoudre"
+            },
+            "type": {
+                "pubPeriodPassed": "Période de publication dépassée",
+                "discontinuousSegment": "Segment discontinu",
+                "excpImprovable": "Exception améliorable",
+                "chronologicalError": "Erreur chronologique",
+                "segmentOverlap": "Chevauchement de segment",
+                "misuseOfRemediatedLibrary": "Mauvaise utilisation de la bibliothèque remédiée",
+                "confusingWording": "Formulation confuse",
+                "other": "Autre"
+            }
         }
     },
     "libraries": {
@@ -448,7 +460,13 @@
         "project": "Projet | Projets",
         "library": "Bibliothèque | Bibliothèques",
         "createdAt": "Créé le",
-        "status": "Status"
+        "status": "Status",
+        "type": "Type",
+        "description": "description",
+        "fixed": "Corrigé",
+        "created": "Créé",
+        "the": "le",
+        "by": "par"
     },
     "utils": {
         "searchUser": {

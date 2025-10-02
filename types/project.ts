@@ -1,6 +1,6 @@
 import type { LibraryI } from './library'
 import { type ProjectPermissions } from '#/permissions'
-import { CollectionPosition, ProjectStatus, ResourceStatus, Roles } from '&/project.ts'
+import { AnomalyType, CollectionPosition, ProjectStatus, ResourceStatus, Roles } from '&/project.ts'
 
 export interface ProjectI {
     id: string
@@ -169,3 +169,15 @@ export interface Segment extends SegmentI {
 }
 
 export type Tab = 'positioning' | 'instructionBound' | 'instructionUnbound' | 'control'
+
+export interface Anomaly {
+    id: string
+    segment: Omit<Segment, 'retained' | 'createdBy' | 'createdAt' | 'acl'>
+    type: AnomalyType
+    description: string
+    fixed: boolean
+    fixedAt: string
+    fixedBy: ProjectUser
+    createdAt: string
+    createdBy: ProjectUser
+}

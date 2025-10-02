@@ -40,3 +40,14 @@ export const CollectionPosition = {
 }
 
 export type CollectionPosition = (typeof CollectionPosition)[keyof typeof CollectionPosition]
+
+export enum AnomalyType {
+    PubPeriodPassed = 'pub_period_passed',
+    Discontinuous = 'discontinuous_segment',
+    ExcpImprovable = 'excp_improvable',
+    ChronologicalError = 'chronological_error',
+    SegmentOverlap = 'segment_overlap',
+    MisuseOfRemediatedLib = 'misuse_of_remediated_library',
+    ConfusingWording = 'confusing_wording',
+    Other = 'other',
+}
