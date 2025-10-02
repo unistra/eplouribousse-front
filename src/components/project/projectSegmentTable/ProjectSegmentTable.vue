@@ -28,6 +28,7 @@ const {
 onMounted(async () => {
     loading.value = true
     await resourceStore.fetchSegments()
+    await resourceStore.fetchAnomalies()
     loading.value = false
 })
 </script>
@@ -88,7 +89,8 @@ onMounted(async () => {
             >
                 <QTd colspan="100%">
                     <AnomalyTable
-                        :add-anomaly
+                        :add-anomaly="addAnomaly"
+                        :segment="props.row"
                         @cancel-add-anomaly="cancelAddAnomaly(props)"
                     />
                 </QTd>

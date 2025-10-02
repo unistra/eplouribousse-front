@@ -2,15 +2,8 @@
 import ProjectSegmentTable from '@/components/project/projectSegmentTable/ProjectSegmentTable.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useI18n } from 'vue-i18n'
-import { useResourceStore } from '@/stores/resourceStore.ts'
-import { onMounted } from 'vue'
 
 const { t } = useI18n()
-const resourceStore = useResourceStore()
-
-onMounted(async () => {
-    await resourceStore.fetchAnomalies()
-})
 </script>
 
 <template>

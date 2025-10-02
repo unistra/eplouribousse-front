@@ -9,7 +9,7 @@ import {
     type Segment,
     type SegmentNoCollection,
 } from '#/project.ts'
-import { Arbitration, CollectionPosition, ResourceStatus, Roles } from '&/project.ts'
+import { AnomalyType, Arbitration, CollectionPosition, ResourceStatus, Roles } from '&/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { Notify, type QTableProps } from 'quasar'
 import i18n from '@/plugins/i18n'
@@ -377,6 +377,22 @@ export const useResourceStore = defineStore('resource', {
                 })
 
                 this.anomalies = response.data
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async postAnomaly(segmentId: string, type: string, description?: string) {
+            try {
+                const response = await axiosI.post<Anomaly>(`/anomalies/`, {
+                    segmentId,
+                    type,
+                    ...(description && type === AnomalyType.Other && { description }),
+                })
+
+                this.anomalies.push(response.data)
             } catch {
                 Notify.create({
                     type: 'negative',

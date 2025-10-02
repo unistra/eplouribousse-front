@@ -22,7 +22,7 @@ export const useProjectSegmentTable = () => {
     }
     const cancelAddAnomaly = (props: { expand: boolean }) => {
         addAnomaly.value = false
-        props.expand = false
+        if (!resourceStore.anomalies.length) props.expand = false
     }
 
     const columns: QTableColumn[] = [

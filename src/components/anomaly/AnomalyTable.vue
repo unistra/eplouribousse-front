@@ -4,7 +4,7 @@ import { snakeToCamel } from '@/utils/string.ts'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import type { QTableColumn } from 'quasar'
 import { AnomalyType } from '&/project.ts'
-import type { Anomaly } from '#/project.ts'
+import type { Anomaly, Segment } from '#/project.ts'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
 import { ref } from 'vue'
@@ -12,8 +12,9 @@ import AtomicInput from '@/components/atomic/AtomicInput.vue'
 
 const { t, locale } = useI18n()
 const resourceStore = useResourceStore()
-defineProps<{
+const props = defineProps<{
     addAnomaly: boolean
+    segment: Segment
 }>()
 const emit = defineEmits<{
     (e: 'cancelAddAnomaly'): void
@@ -24,6 +25,18 @@ const anomalyOptions = Object.entries(AnomalyType).map(([_key, value]) => ({
     value,
 }))
 const anomalyOther = ref<string>()
+
+const postAnomaly = async () => {
+    if (!anomalyType.value) return
+    await resourceStore.postAnomaly(
+        props.segment.id,
+        anomalyType.value,
+        anomalyType.value === AnomalyType.Other ? anomalyOther.value : undefined,
+    )
+
+    anomalyType.value = undefined
+    emit('cancelAddAnomaly')
+}
 
 const columns: QTableColumn[] = [
     {
@@ -63,6 +76,7 @@ const columns: QTableColumn[] = [
         bordered
         :columns
         flat
+        :hide-header="resourceStore.anomalies.length === 0"
         hide-no-data
         hide-pagination
         :rows="resourceStore.anomalies"
@@ -97,11 +111,14 @@ const columns: QTableColumn[] = [
                 <AtomicButton :label="t('project.anomaly.tableField.fix') + value + row" />
             </QTd>
         </template>
-        <template #bottom-row>
+        <template
+            v-if="addAnomaly"
+            #bottom-row
+        >
             <QTd colspan="100">
                 <QForm
                     class="add-anomaly"
-                    @submit="console.log('aaa')"
+                    @submit="postAnomaly"
                 >
                     <div>
                         <AtomicSelect
@@ -118,6 +135,11 @@ const columns: QTableColumn[] = [
                         <AtomicInput
                             v-if="anomalyType === AnomalyType.Other"
                             v-model="anomalyOther"
+                            dense
+                            :rules="[
+                                (val: string) =>
+                                    (anomalyType === AnomalyType.Other && !!val) || t('forms.fieldIsRequired'),
+                            ]"
                         />
                     </div>
                     <div>
