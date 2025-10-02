@@ -6,6 +6,7 @@ import type { Tab } from '#/project.ts'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useI18n } from 'vue-i18n'
 import { provide, ref } from 'vue'
+import ProjectControl from '@/components/project/projectLaunched/projectControl/ProjectControl.vue'
 
 defineProps<{
     tab: Tab
@@ -66,6 +67,7 @@ const onBeforeShow = async () => {
                 <QCardSection class="content">
                     <ProjectPositioning v-if="tab === 'positioning'" />
                     <ProjectInstruction v-else-if="tab === 'instructionBound' || tab === 'instructionUnbound'" />
+                    <ProjectControl v-else-if="tab === 'control'" />
                     <p v-else>Unsupported status for Resource</p>
                 </QCardSection>
             </template>

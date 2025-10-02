@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import {
+    type Anomaly,
     type CollectionsInResource,
     type CollectionsWithResource,
     type CommentPositioning,
@@ -14,7 +15,6 @@ import { Notify, type QTableProps } from 'quasar'
 import i18n from '@/plugins/i18n'
 import type { Pagination } from '#/pagination.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
-import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import type { TableProjectResources } from '#/table'
 import { useUserStore } from '@/stores/userStore.ts'
 
@@ -31,6 +31,7 @@ interface ResourceStoreState extends Resource {
     resourcesCount: number
     segments: Segment[]
     resourceSelected: Resource | null
+    anomalies: Anomaly[]
 }
 
 const initialState: Resource = {
@@ -60,6 +61,7 @@ export const useResourceStore = defineStore('resource', {
         resourcesCount: 0,
         segments: [],
         resourceSelected: null,
+        anomalies: [],
     }),
     getters: {
         librariesAssociated(this: ResourceStoreState) {
@@ -359,6 +361,22 @@ export const useResourceStore = defineStore('resource', {
 
                 await axiosI.post<Segment>(`/collections/${collectionId}/finish_turn/`)
                 await this.fetchResources(this.status)
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async fetchAnomalies() {
+            try {
+                const response = await axiosI.get<Anomaly[]>(`/anomalies/`, {
+                    params: {
+                        resource: this.id,
+                    },
+                })
+
+                this.anomalies = response.data
             } catch {
                 Notify.create({
                     type: 'negative',
