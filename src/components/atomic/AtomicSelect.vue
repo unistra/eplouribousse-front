@@ -11,6 +11,7 @@ defineProps<{
     emitValue?: boolean
     mapOptions?: boolean
     rules?: QSelectProps['rules']
+    dense?: boolean
 }>()
 </script>
 
@@ -18,6 +19,7 @@ defineProps<{
     <QSelect
         v-model="model"
         color="grey-100"
+        :dense
         :emit-value
         :label
         :map-options

@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import AtomicIcon from '@/components/atomic/AtomicIcon.vue'
 import type { RouterLinkProps } from 'vue-router'
 
