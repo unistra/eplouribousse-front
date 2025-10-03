@@ -111,7 +111,7 @@ const table = {
         dialog.loading = true
 
         try {
-            const response = await axiosI.get<ProjectI>(`/projects/${row.id}`)
+            const response = await axiosI.get<ProjectI>(`/projects/${row.id}/`)
             projectSelected.value = response.data
         } catch {
             notify({

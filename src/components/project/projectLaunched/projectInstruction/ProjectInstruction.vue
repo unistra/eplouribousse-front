@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import { useResourceStore } from '@/stores/resourceStore.ts'
-import { inject, onMounted, type Ref } from 'vue'
+import { inject, type Ref } from 'vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useI18n } from 'vue-i18n'
 import { useProjectInstruction } from '@/components/project/projectLaunched/projectInstruction/useProjectInstruction.ts'
 import ProjectInstructionSegmentDialog from '@/components/project/projectLaunched/projectInstruction/projectInstructionSegmentDialog/ProjectInstructionSegmentDialog.vue'
 import ProjectSegmentTable from '@/components/project/projectSegmentTable/ProjectSegmentTable.vue'
+import { useProjectStore } from '@/stores/projectStore.ts'
 
 const { t } = useI18n()
 const resourceStore = useResourceStore()
-const { tableLoading, dialogCreateSegment, insertAfter, turnsWithNames } = useProjectInstruction()
+const projectStore = useProjectStore()
+const { dialogCreateSegment, insertAfter, turnsWithNames } = useProjectInstruction()
 
 const dialogModal = inject<Ref<boolean>>('dialogModal')
 
@@ -17,12 +19,6 @@ const onConfirm = async () => {
     await resourceStore.finishTurn()
     if (dialogModal) dialogModal.value = false
 }
-
-onMounted(async () => {
-    tableLoading.value = true
-    await resourceStore.fetchSegments()
-    tableLoading.value = false
-})
 </script>
 
 <template>
@@ -40,7 +36,7 @@ onMounted(async () => {
         </div>
         <ProjectSegmentTable />
         <AtomicButton
-            v-if="resourceStore.shouldInstruct && resourceStore.isInstructorForLibrarySelected"
+            v-if="resourceStore.shouldInstruct && projectStore.userIsInstructorForLibrarySelected"
             class="finish-turn"
             color="primary"
             confirm-button-color="primary"

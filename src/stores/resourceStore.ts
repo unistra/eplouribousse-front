@@ -9,14 +9,13 @@ import {
     type Segment,
     type SegmentNoCollection,
 } from '#/project.ts'
-import { AnomalyType, Arbitration, CollectionPosition, ResourceStatus, Roles } from '&/project.ts'
+import { AnomalyType, Arbitration, CollectionPosition, ResourceStatus } from '&/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { Notify, type QTableProps } from 'quasar'
 import i18n from '@/plugins/i18n'
 import type { Pagination } from '#/pagination.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import type { TableProjectResources } from '#/table'
-import { useUserStore } from '@/stores/userStore.ts'
 
 const { t } = i18n.global
 
@@ -78,16 +77,6 @@ export const useResourceStore = defineStore('resource', {
         },
         statusName(this: ResourceStoreState): 'boundCopies' | 'unboundCopies' {
             return this.status === ResourceStatus.InstructionBound ? 'boundCopies' : 'unboundCopies'
-        },
-        isInstructorForLibrarySelected(this: ResourceStoreState) {
-            const userStore = useUserStore()
-            const projectStore = useProjectStore()
-            return !!projectStore.roles.find(
-                (el) =>
-                    el.user.id === userStore.user?.id &&
-                    el.role === Roles.Instructor &&
-                    el.libraryId === this.libraryIdSelected,
-            )
         },
     },
     actions: {
@@ -258,7 +247,7 @@ export const useResourceStore = defineStore('resource', {
         },
         async fetchSegments() {
             try {
-                const response = await axiosI.get(`segments/`, { params: { resource_id: this.id } })
+                const response = await axiosI.get(`/segments/`, { params: { resource_id: this.id } })
 
                 this.segments = response.data
             } catch {
@@ -286,7 +275,7 @@ export const useResourceStore = defineStore('resource', {
                         id: string
                         order: number
                     }
-                }>(`segments/${segment.id}/${direction}/`)
+                }>(`/segments/${segment.id}/${direction}/`)
 
                 const currentSegment = this.segments.find((el) => el.id === segment.id)
                 const targetSegment = this.segments.find(

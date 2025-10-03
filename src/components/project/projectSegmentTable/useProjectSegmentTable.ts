@@ -4,6 +4,7 @@ import type { QTableColumn } from 'quasar'
 import { useI18n } from 'vue-i18n'
 import type { Segment } from '#/project.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
+import { Tab } from '&/project.ts'
 
 export const useProjectSegmentTable = () => {
     const resourceStore = useResourceStore()
@@ -11,6 +12,13 @@ export const useProjectSegmentTable = () => {
     const { t } = useI18n()
     const loading = ref<boolean>(false)
     const hoveredValue = ref<string | null>(null)
+    const displayOptionsColumn = computed(
+        () =>
+            (projectStore.userIsInstructorForLibrarySelected &&
+                (projectStore.tab === Tab.InstructionBound || projectStore.tab === Tab.InstructionUnbound)) ||
+            (projectStore.userIsController && projectStore.tab === Tab.Control) ||
+            projectStore.userIsAdmin,
+    )
 
     const dialogCreateSegment = ref<boolean>(false)
     const insertAfter = ref<string>()
@@ -89,12 +97,12 @@ export const useProjectSegmentTable = () => {
         {
             name: 'anomalies',
             label: t('project.anomaly.i', 2),
-            field: '',
+            field: 'anomalies',
             align: 'center',
         },
     ]
 
-    if (resourceStore.isInstructorForLibrarySelected) {
+    if (displayOptionsColumn.value) {
         columns.push({
             name: 'options',
             label: t('project.instruction.tableFields.options'),
@@ -125,5 +133,6 @@ export const useProjectSegmentTable = () => {
         addAnomaly,
         onAddAnomaly,
         cancelAddAnomaly,
+        displayOptionsColumn,
     }
 }

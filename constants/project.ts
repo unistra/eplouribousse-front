@@ -51,3 +51,10 @@ export enum AnomalyType {
     ConfusingWording = 'confusing_wording',
     Other = 'other',
 }
+
+export enum Tab {
+    Positioning = 'positioning',
+    InstructionBound = 'instructionBound',
+    InstructionUnbound = 'instructionUnbound',
+    Control = 'control',
+}

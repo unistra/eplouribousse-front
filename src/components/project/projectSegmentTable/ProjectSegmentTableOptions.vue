@@ -6,6 +6,8 @@ import { useProjectSegmentTableOptions } from '@/components/project/projectSegme
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useI18n } from 'vue-i18n'
 import type { Segment } from '#/project.ts'
+import { useProjectStore } from '@/stores/projectStore.ts'
+import { Tab } from '&/project.ts'
 
 const loading = defineModel<boolean>('loading', { required: true })
 
@@ -18,17 +20,20 @@ const emit = defineEmits<{
 }>()
 
 const resourceStore = useResourceStore()
+const projectStore = useProjectStore()
 const { t } = useI18n()
 
-const { orderSegment, isSegmentCollectionLibrarySameAsLibrarySelected, dialogUpdateSegment, dialogDeleteSegment } =
-    useProjectSegmentTableOptions(loading)
+const {
+    orderSegment,
+    isSegmentCollectionLibrarySameAsLibrarySelected,
+    dialogUpdateSegment,
+    dialogDeleteSegment,
+    userIsInstructorForSegmentCollectionLibrary,
+} = useProjectSegmentTableOptions(loading)
 </script>
 
 <template>
-    <div
-        v-if="resourceStore.isInstructorForLibrarySelected"
-        class="options"
-    >
+    <div class="options">
         <div
             v-if="row.acl && row.acl.up && row.acl.down && isSegmentCollectionLibrarySameAsLibrarySelected(row)"
             class="order"
@@ -68,12 +73,12 @@ const { orderSegment, isSegmentCollectionLibrarySameAsLibrarySelected, dialogUpd
                         <QItemSection>
                             <QItemLabel>{{ t('common.update') }}</QItemLabel>
                         </QItemSection>
+                        <ProjectInstructionSegmentDialog
+                            v-model="dialogUpdateSegment"
+                            :is-new="false"
+                            :segment="row"
+                        />
                     </QItem>
-                    <ProjectInstructionSegmentDialog
-                        v-model="dialogUpdateSegment"
-                        :is-new="false"
-                        :segment="row"
-                    />
                     <QItem
                         v-if="row.acl && row.acl.destroy && isSegmentCollectionLibrarySameAsLibrarySelected(row)"
                         clickable
@@ -85,12 +90,13 @@ const { orderSegment, isSegmentCollectionLibrarySameAsLibrarySelected, dialogUpd
                         <QItemSection>
                             <QItemLabel>{{ t('common.delete') }}</QItemLabel>
                         </QItemSection>
+                        <AtomicConfirmationDialog
+                            v-model="dialogDeleteSegment"
+                            @confirm="resourceStore.deleteSegment(row.id)"
+                        />
                     </QItem>
-                    <AtomicConfirmationDialog
-                        v-model="dialogDeleteSegment"
-                        @confirm="resourceStore.deleteSegment(row.id)"
-                    />
                     <QItem
+                        v-if="projectStore.userIsInstructorForLibrarySelected"
                         clickable
                         @click="openDialogCreateSegment(row.id)"
                     >
@@ -102,6 +108,12 @@ const { orderSegment, isSegmentCollectionLibrarySameAsLibrarySelected, dialogUpd
                         </QItemSection>
                     </QItem>
                     <QItem
+                        v-if="
+                            (!userIsInstructorForSegmentCollectionLibrary(row) &&
+                                (projectStore.tab === Tab.InstructionBound ||
+                                    projectStore.tab === Tab.InstructionUnbound)) ||
+                            (projectStore.userIsController && projectStore.tab === Tab.Control)
+                        "
                         clickable
                         @click="emit('addAnomaly')"
                     >
@@ -115,17 +127,6 @@ const { orderSegment, isSegmentCollectionLibrarySameAsLibrarySelected, dialogUpd
                 </QList>
             </QMenu>
         </AtomicButton>
-    </div>
-    <div
-        v-else
-        class="forbidden"
-    >
-        <AtomicButton
-            disable
-            icon="mdi-cancel"
-            no-border
-            size="sm"
-        />
     </div>
 </template>
 
