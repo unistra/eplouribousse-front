@@ -35,7 +35,13 @@ const {
 <template>
     <div class="options">
         <div
-            v-if="row.acl && row.acl.up && row.acl.down && isSegmentCollectionLibrarySameAsLibrarySelected(row)"
+            v-if="
+                row.acl &&
+                row.acl.up &&
+                row.acl.down &&
+                isSegmentCollectionLibrarySameAsLibrarySelected(row) &&
+                projectStore.tab !== Tab.Control
+            "
             class="order"
         >
             <AtomicButton
@@ -63,7 +69,12 @@ const {
             <QMenu auto-close>
                 <QList>
                     <QItem
-                        v-if="row.acl && row.acl.partialUpdate && isSegmentCollectionLibrarySameAsLibrarySelected(row)"
+                        v-if="
+                            row.acl &&
+                            row.acl.partialUpdate &&
+                            isSegmentCollectionLibrarySameAsLibrarySelected(row) &&
+                            projectStore.tab !== Tab.Control
+                        "
                         clickable
                         @click="dialogUpdateSegment = true"
                     >
@@ -80,7 +91,12 @@ const {
                         />
                     </QItem>
                     <QItem
-                        v-if="row.acl && row.acl.destroy && isSegmentCollectionLibrarySameAsLibrarySelected(row)"
+                        v-if="
+                            row.acl &&
+                            row.acl.destroy &&
+                            isSegmentCollectionLibrarySameAsLibrarySelected(row) &&
+                            projectStore.tab !== Tab.Control
+                        "
                         clickable
                         @click="dialogDeleteSegment = true"
                     >
@@ -96,7 +112,7 @@ const {
                         />
                     </QItem>
                     <QItem
-                        v-if="projectStore.userIsInstructorForLibrarySelected"
+                        v-if="projectStore.userIsInstructorForLibrarySelected && projectStore.tab !== Tab.Control"
                         clickable
                         @click="openDialogCreateSegment(row.id)"
                     >
