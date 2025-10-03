@@ -291,7 +291,10 @@
                 "misuseOfRemediatedLibrary": "Mauvaise utilisation de la bibliothèque remédiée",
                 "confusingWording": "Formulation confuse",
                 "other": "Autre"
-            }
+            },
+            "fixed": "Résolu",
+            "unfixed": "Non résolu",
+            "fixBtn": "Marquer comme @.lower:project.anomaly.fixed"
         }
     },
     "libraries": {

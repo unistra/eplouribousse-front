@@ -8,9 +8,11 @@ import { onMounted } from 'vue'
 import ProjectSegmentTableOptions from '@/components/project/projectSegmentTable/ProjectSegmentTableOptions.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import AnomalyTable from '@/components/anomaly/AnomalyTable.vue'
+import { useProjectStore } from '@/stores/projectStore.ts'
 
 const { t } = useI18n()
 const resourceStore = useResourceStore()
+const projectStore = useProjectStore()
 const {
     columns,
     loading,
@@ -23,6 +25,7 @@ const {
     addAnomaly,
     onAddAnomaly,
     cancelAddAnomaly,
+    displayOptionsColumn,
 } = useProjectSegmentTable()
 
 onMounted(async () => {
@@ -53,7 +56,7 @@ onMounted(async () => {
                     :key="col.name"
                     :props="props"
                 >
-                    <template v-if="col.name === 'options'">
+                    <template v-if="col.name === 'options' && displayOptionsColumn">
                         <ProjectSegmentTableOptions
                             v-model:loading="loading"
                             :open-dialog-create-segment
@@ -71,14 +74,24 @@ onMounted(async () => {
                         </div>
                     </template>
                     <template v-else-if="col.name === 'anomalies'">
-                        <template v-if="!filteredAnomaliesBySegment(props.row.id).length"> 0 </template>
                         <AtomicButton
-                            v-else
-                            :icon="props.expand ? 'mdi-chevron-up' : 'mdi-chevron-down'"
-                            :label="filteredAnomaliesBySegment(props.row.id).length.toString()"
-                            size="sm"
+                            :disable="props.row.anomalies.unfixed === 0"
+                            :icon="
+                                props.row.anomalies.unfixed === 0
+                                    ? ''
+                                    : props.expand
+                                      ? 'mdi-chevron-up'
+                                      : 'mdi-chevron-down'
+                            "
+                            :label="props.row.anomalies.unfixed.toString()"
+                            no-border
                             @click="props.expand = !props.expand"
-                        />
+                        >
+                            <QTooltip>
+                                {{ props.row.anomalies.unfixed }} {{ t('project.anomaly.unfixed').toLowerCase() }} |
+                                {{ props.row.anomalies.fixed }} {{ t('project.anomaly.fixed').toLowerCase() }}
+                            </QTooltip>
+                        </AtomicButton>
                     </template>
                     <template v-else> {{ col.value }} </template>
                 </QTd>
@@ -98,7 +111,7 @@ onMounted(async () => {
         </template>
 
         <template
-            v-if="resourceStore.shouldInstruct && resourceStore.isInstructorForLibrarySelected"
+            v-if="resourceStore.shouldInstruct && projectStore.userIsInstructorForLibrarySelected"
             #bottom
         >
             <QTr class="bottom">
@@ -112,7 +125,7 @@ onMounted(async () => {
             </QTr>
         </template>
         <template
-            v-if="resourceStore.shouldInstruct && resourceStore.isInstructorForLibrarySelected"
+            v-if="resourceStore.shouldInstruct && projectStore.userIsInstructorForLibrarySelected"
             #no-data="{ message }"
         >
             <div class="no-data">

@@ -393,6 +393,20 @@ export const useResourceStore = defineStore('resource', {
                 })
 
                 this.anomalies.push(response.data)
+                const segment = this.segments.find((el) => el.id === segmentId)
+                if (segment) segment.anomalies.unfixed += 1
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async fixAnomaly(id: string) {
+            try {
+                const response = await axiosI.patch<Anomaly>(`/anomalies/${id}/fix/`)
+
+                this.anomalies = this.anomalies.map((a) => (a.id === id ? response.data : a))
             } catch {
                 Notify.create({
                     type: 'negative',

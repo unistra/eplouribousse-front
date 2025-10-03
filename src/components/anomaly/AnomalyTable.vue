@@ -79,6 +79,7 @@ const columns: QTableColumn[] = [
         :hide-header="resourceStore.anomalies.length === 0"
         hide-no-data
         hide-pagination
+        :pagination="{ rowsPerPage: 0 }"
         :rows="resourceStore.anomalies"
     >
         <template #body-cell-fixed="{ value, row }">
@@ -106,9 +107,13 @@ const columns: QTableColumn[] = [
                 </QTooltip>
             </QTd>
         </template>
-        <template #body-cell-fix="{ value, row }">
+        <template #body-cell-fix="{ row }">
             <QTd auto-width>
-                <AtomicButton :label="t('project.anomaly.tableField.fix') + value + row" />
+                <AtomicButton
+                    v-if="!row.fixed"
+                    :label="t('project.anomaly.fixBtn')"
+                    @click="resourceStore.fixAnomaly(row.id)"
+                />
             </QTd>
         </template>
         <template

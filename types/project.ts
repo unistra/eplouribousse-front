@@ -166,6 +166,7 @@ export interface Segment extends SegmentI {
     createdBy: string | null
     createdAt: string
     acl: Record<string, boolean>
+    anomalies: { fixed: number; unfixed: number }
 }
 
 export type Tab = 'positioning' | 'instructionBound' | 'instructionUnbound' | 'control'
