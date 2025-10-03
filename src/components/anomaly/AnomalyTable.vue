@@ -7,7 +7,7 @@ import { AnomalyType } from '&/project.ts'
 import type { Anomaly, Segment } from '#/project.ts'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
 
 const { t, locale } = useI18n()
@@ -25,6 +25,10 @@ const anomalyOptions = Object.entries(AnomalyType).map(([_key, value]) => ({
     value,
 }))
 const anomalyOther = ref<string>()
+
+const anomaliesForSegment = computed(() =>
+    resourceStore.anomalies.filter((anomaly) => anomaly.segment.id === props.segment.id),
+)
 
 const postAnomaly = async () => {
     if (!anomalyType.value) return
@@ -76,11 +80,11 @@ const columns: QTableColumn[] = [
         bordered
         :columns
         flat
-        :hide-header="resourceStore.anomalies.length === 0"
+        :hide-header="anomaliesForSegment.length === 0"
         hide-no-data
         hide-pagination
         :pagination="{ rowsPerPage: 0 }"
-        :rows="resourceStore.anomalies"
+        :rows="anomaliesForSegment"
     >
         <template #body-cell-fixed="{ value, row }">
             <QTd>

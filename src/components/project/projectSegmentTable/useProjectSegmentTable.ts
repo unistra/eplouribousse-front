@@ -28,9 +28,10 @@ export const useProjectSegmentTable = () => {
         addAnomaly.value = true
         props.expand = true
     }
-    const cancelAddAnomaly = (props: { expand: boolean }) => {
+    const cancelAddAnomaly = (props: { expand: boolean; row: Segment }) => {
         addAnomaly.value = false
-        if (!resourceStore.anomalies.length) props.expand = false
+        if (!resourceStore.anomalies.filter((anomaly) => anomaly.segment.id === props.row.id).length)
+            props.expand = false
     }
 
     const columns: QTableColumn[] = [
