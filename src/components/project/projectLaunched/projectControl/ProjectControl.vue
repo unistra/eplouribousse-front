@@ -2,8 +2,10 @@
 import ProjectSegmentTable from '@/components/project/projectSegmentTable/ProjectSegmentTable.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useI18n } from 'vue-i18n'
+import { useResourceStore } from '@/stores/resourceStore.ts'
 
 const { t } = useI18n()
+const resourceStore = useResourceStore()
 </script>
 
 <template>
@@ -11,9 +13,12 @@ const { t } = useI18n()
         <ProjectSegmentTable />
         <AtomicButton
             color="primary"
+            :disable="!!resourceStore.anomalies.length"
             :label="t('project.control.nextPhase')"
             no-border
-        />
+        >
+            <QTooltip>{{ t('project.control.btnDisabled', 2) }}</QTooltip>
+        </AtomicButton>
     </div>
 </template>
 

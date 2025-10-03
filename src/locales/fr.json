@@ -268,7 +268,8 @@
             "next": "Finir l'instruction et passer à la bibliothèque suivante"
         },
         "control": {
-            "nextPhase": "Passer à la phase suivante"
+            "nextPhase": "Passer à la phase suivante",
+            "btnDisabled": "Une ou des @.lower:project.anomaly.i ne sont pas résolu"
         },
         "anomaly": {
             "i": "Anomalie | Anomalies",
