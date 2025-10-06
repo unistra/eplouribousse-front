@@ -12,11 +12,15 @@ const resourceStore = useResourceStore()
 const projectStore = useProjectStore()
 
 const dialogModal = inject<Ref<boolean>>('dialogModal')
+
+const onValidateControl = async () => {
+    await resourceStore.validateControl()
+    if (dialogModal) dialogModal.value = false
+}
 </script>
 
 <template>
     <div class="control">
-        <ProjectSegmentTable />
         <div
             v-if="projectStore.userIsController"
             class="buttons"
@@ -30,6 +34,7 @@ const dialogModal = inject<Ref<boolean>>('dialogModal')
                 :disable="!!resourceStore.anomaliesUnfixed.length"
                 :label="t('project.control.nextPhase')"
                 no-border
+                @click="onValidateControl"
             >
                 <QTooltip
                     v-if="!!resourceStore.anomaliesUnfixed.length"
@@ -38,6 +43,7 @@ const dialogModal = inject<Ref<boolean>>('dialogModal')
                 >
             </AtomicButton>
         </div>
+        <ProjectSegmentTable />
     </div>
 </template>
 
@@ -46,17 +52,12 @@ const dialogModal = inject<Ref<boolean>>('dialogModal')
     display: flex
     flex-direction: column
     width: 100%
-
-    > :first-child
-        flex-grow: 1
-
-    .q-btn
-        width: fit-content
-        align-self: end
+    gap: 2rem
 
     .buttons
-        margin-top: auto
-        align-self: end
         display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: center
         gap: 1rem
 </style>

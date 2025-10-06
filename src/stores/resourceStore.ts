@@ -433,5 +433,18 @@ export const useResourceStore = defineStore('resource', {
                 })
             }
         },
+        async validateControl() {
+            try {
+                await axiosI.post<unknown>(`/resources/${this.id}/control/`, {
+                    validation: true,
+                })
+                await this.fetchResources(this.status)
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
     },
 })

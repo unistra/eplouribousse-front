@@ -79,43 +79,9 @@ const { dialogCreateSegment, insertAfter, turnsWithNames, onConfirmAnomaliesDecl
     align-items: center
     flex-grow: 1
 
-.btn-segment
-    width: fit-content
-
-.table
-    .options
-        display: flex
-        justify-content: end
-        align-items: center
-        .order
-            display: flex
-            .opacity
-                opacity: 0
-
-            .q-btn
-                width: fit-content
-
-    .resolve
-        text-align: center
-
-    .forbidden
-        text-align: right
-
-:deep(.q-table tbody .resolved)
-    background-color: var(--color-neutral-300)
-
 .turns
     display: flex
     gap: 0.5rem
-
-.no-data
-        display: flex
-        justify-content: space-between
-        align-items: center
-        width: 100%
-
-.bottom
-    margin-left: auto
 
 .buttons
     margin-top: auto

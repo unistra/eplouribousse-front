@@ -47,6 +47,7 @@ onMounted(async () => {
         row-key="id"
         :rows="orderedRows"
         :table-row-class-fn="(row: Segment) => (hoveredValue === row.order.toString() ? 'resolved' : '')"
+        virtual-scroll
     >
         <template #body="props">
             <QTr :props="props">
@@ -167,6 +168,8 @@ onMounted(async () => {
 
 <style lang="sass" scoped>
 .table
+    flex-grow: 1
+    height: 0
     .resolve
         text-align: center
 
