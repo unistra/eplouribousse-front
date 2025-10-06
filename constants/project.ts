@@ -25,9 +25,12 @@ export enum Arbitration {
 export enum ResourceStatus {
     Positioning = 10,
     InstructionBound = 20,
+    AnomalyBound = 25,
     ControlBound = 30,
     InstructionUnbound = 40,
+    AnomalyUnbound = 45,
     ControlUnbound = 50,
+    Edition = 60,
 }
 
 export const CollectionPosition = {
@@ -57,4 +60,5 @@ export enum Tab {
     InstructionBound = 'instructionBound',
     InstructionUnbound = 'instructionUnbound',
     Control = 'control',
+    Anomalies = 'anomalies',
 }

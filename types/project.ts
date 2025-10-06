@@ -172,7 +172,7 @@ export interface Segment extends SegmentI {
 
 export interface Anomaly {
     id: string
-    segment: Omit<Segment, 'retained' | 'createdBy' | 'createdAt' | 'acl'>
+    segment: Pick<Segment, 'id' | 'order' | 'segmentType' | 'content'>
     type: AnomalyType
     description: string
     fixed: boolean

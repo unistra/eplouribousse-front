@@ -78,6 +78,9 @@ export const useResourceStore = defineStore('resource', {
         statusName(this: ResourceStoreState): 'boundCopies' | 'unboundCopies' {
             return this.status === ResourceStatus.InstructionBound ? 'boundCopies' : 'unboundCopies'
         },
+        anomaliesUnfixed(this: ResourceStoreState): Anomaly[] {
+            return this.anomalies.filter((anomaly) => !anomaly.fixed)
+        },
     },
     actions: {
         _findCollection(collectionId: string) {
@@ -396,6 +399,33 @@ export const useResourceStore = defineStore('resource', {
                 const response = await axiosI.patch<Anomaly>(`/anomalies/${id}/fix/`)
 
                 this.anomalies = this.anomalies.map((a) => (a.id === id ? response.data : a))
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async deleteAnomaly(id: string) {
+            try {
+                const anomaly = this.anomalies.find((a) => a.id === id)
+                await axiosI.delete<Anomaly>(`/anomalies/${id}/`)
+
+                this.anomalies = this.anomalies.filter((a) => a.id !== id)
+
+                const segment = this.segments.find((el) => el.id === anomaly?.segment.id)
+                if (segment) segment.anomalies[anomaly?.fixed ? 'fixed' : 'unfixed'] -= 1
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async declareAnomaly() {
+            try {
+                await axiosI.patch<Anomaly>(`/resources/${this.id}/report-anomalies/`)
+                await this.fetchResources(this.status)
             } catch {
                 Notify.create({
                     type: 'negative',
