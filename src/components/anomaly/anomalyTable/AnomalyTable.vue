@@ -1,77 +1,27 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useResourceStore } from '@/stores/resourceStore.ts'
-import type { QTableColumn } from 'quasar'
-import { AnomalyType } from '&/project.ts'
-import type { Anomaly, Segment } from '#/project.ts'
+import { AnomalyType, Tab } from '&/project.ts'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
-import { computed, ref } from 'vue'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
+import { useProjectStore } from '@/stores/projectStore.ts'
+import { useUserStore } from '@/stores/userStore.ts'
+import {
+    type AnomalyTableEmits,
+    type AnomalyTableProps,
+    useAnomalyTable,
+} from '@/components/anomaly/anomalyTable/useAnomalyTable.ts'
 
 const { t, locale } = useI18n()
 const resourceStore = useResourceStore()
-const props = defineProps<{
-    addAnomaly: boolean
-    segment: Segment
-}>()
-const emit = defineEmits<{
-    (e: 'cancelAddAnomaly'): void
-}>()
-const anomalyType = ref<AnomalyType>()
-const anomalyOptions = Object.entries(AnomalyType).map(([_key, value]) => ({
-    label: t(`project.anomaly.type.${value.snakeToCamel()}`),
-    value,
-}))
-const anomalyOther = ref<string>()
+const projectStore = useProjectStore()
+const userStore = useUserStore()
+const props = defineProps<AnomalyTableProps>()
+const emit = defineEmits<AnomalyTableEmits>()
 
-const anomaliesForSegment = computed(() =>
-    resourceStore.anomalies.filter((anomaly) => anomaly.segment.id === props.segment.id),
-)
-
-const postAnomaly = async () => {
-    if (!anomalyType.value) return
-    await resourceStore.postAnomaly(
-        props.segment.id,
-        anomalyType.value,
-        anomalyType.value === AnomalyType.Other ? anomalyOther.value : undefined,
-    )
-
-    anomalyType.value = undefined
-    emit('cancelAddAnomaly')
-}
-
-const columns: QTableColumn[] = [
-    {
-        name: 'type',
-        label: t('project.anomaly.tableField.type'),
-        field: 'type',
-        format: (val: string, row: Anomaly) => {
-            return val === AnomalyType.Other
-                ? `${t(`project.anomaly.type.other`)}: ${row.description}`
-                : t(`project.anomaly.type.${val.snakeToCamel()}`)
-        },
-        align: 'left',
-    },
-    {
-        name: 'createdAt',
-        label: t('project.anomaly.tableField.createdAt'),
-        field: 'createdAt',
-        align: 'left',
-    },
-    {
-        name: 'fixed',
-        label: t('project.anomaly.tableField.fixed'),
-        field: 'fixed',
-        align: 'left',
-    },
-    {
-        name: 'fix',
-        label: t('project.anomaly.tableField.fix'),
-        field: '',
-        align: 'right',
-    },
-]
+const { columns, anomalyDescription, anomalyOptions, onDeleteAnomaly, segmentAnomalies, onPostAnomaly, anomalyType } =
+    useAnomalyTable(props, emit)
 </script>
 
 <template>
@@ -79,11 +29,11 @@ const columns: QTableColumn[] = [
         bordered
         :columns
         flat
-        :hide-header="anomaliesForSegment.length === 0"
+        :hide-header="segmentAnomalies.length === 0"
         hide-no-data
         hide-pagination
         :pagination="{ rowsPerPage: 0 }"
-        :rows="anomaliesForSegment"
+        :rows="segmentAnomalies"
     >
         <template #body-cell-fixed="{ value, row }">
             <QTd>
@@ -113,9 +63,15 @@ const columns: QTableColumn[] = [
         <template #body-cell-fix="{ row }">
             <QTd auto-width>
                 <AtomicButton
-                    v-if="!row.fixed"
+                    v-if="!row.fixed && projectStore.userIsAdmin && projectStore.tab === Tab.Anomalies"
                     :label="t('project.anomaly.fixBtn')"
                     @click="resourceStore.fixAnomaly(row.id)"
+                />
+                <AtomicButton
+                    v-else-if="row.createdBy.id === userStore.user?.id"
+                    icon="mdi-delete-forever-outline"
+                    no-border
+                    @click="onDeleteAnomaly(row.id)"
                 />
             </QTd>
         </template>
@@ -126,7 +82,7 @@ const columns: QTableColumn[] = [
             <QTd colspan="100">
                 <QForm
                     class="add-anomaly"
-                    @submit="postAnomaly"
+                    @submit="onPostAnomaly"
                 >
                     <div>
                         <AtomicSelect
@@ -142,7 +98,7 @@ const columns: QTableColumn[] = [
                         />
                         <AtomicInput
                             v-if="anomalyType === AnomalyType.Other"
-                            v-model="anomalyOther"
+                            v-model="anomalyDescription"
                             dense
                             :label="t('common.description').capitalize()"
                             :rules="[

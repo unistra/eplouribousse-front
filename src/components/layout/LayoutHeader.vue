@@ -18,7 +18,7 @@ const onLogout = async () => {
     addNotify({
         message: t('logout.success'),
     })
-    await router.push({ name: 'Home' })
+    await router.push({ name: 'login' })
 }
 </script>
 
