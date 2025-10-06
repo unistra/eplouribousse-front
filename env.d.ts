@@ -9,3 +9,12 @@ interface ImportMetaEnv {
     readonly VITE_I18N_LOCALE: string
     readonly VITE_APP_BASE_URL: string // MUST END WITH '/api'
 }
+
+export {}
+
+declare global {
+    interface String {
+        snakeToCamel(): string
+        capitalize(): string
+    }
+}

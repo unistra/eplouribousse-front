@@ -10,7 +10,6 @@ import { useUserStore } from '@/stores/userStore.ts'
 import { ProjectStatus, Roles } from '&/project'
 import type { LibraryI } from '#/library'
 import AtomicToggle from '@/components/atomic/AtomicToggle.vue'
-import { snakeToCamel } from '@/utils/string.ts'
 
 const userStore = useUserStore()
 const { t, locale } = useI18n()
@@ -127,7 +126,7 @@ const table = {
 
 const rolesInProjectSelected = computed(() => {
     return projectSelected.value?.roles.map((role: ProjectRole) => {
-        const roleName = snakeToCamel(userStore.user?.id === role.user.id ? role.role : '')
+        const roleName = (userStore.user?.id === role.user.id ? role.role : '').snakeToCamel()
         const libraryName = projectSelected.value?.libraries.find(
             (library: LibraryI) => library.id === role.libraryId,
         )?.name

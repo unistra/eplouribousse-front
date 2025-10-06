@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { snakeToCamel } from '@/utils/string.ts'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import type { QTableColumn } from 'quasar'
 import { AnomalyType } from '&/project.ts'
@@ -21,7 +20,7 @@ const emit = defineEmits<{
 }>()
 const anomalyType = ref<AnomalyType>()
 const anomalyOptions = Object.entries(AnomalyType).map(([_key, value]) => ({
-    label: t(`project.anomaly.type.${snakeToCamel(value)}`),
+    label: t(`project.anomaly.type.${value.snakeToCamel()}`),
     value,
 }))
 const anomalyOther = ref<string>()
@@ -50,7 +49,7 @@ const columns: QTableColumn[] = [
         format: (val: string, row: Anomaly) => {
             return val === AnomalyType.Other
                 ? `${t(`project.anomaly.type.other`)}: ${row.description}`
-                : t(`project.anomaly.type.${snakeToCamel(val)}`)
+                : t(`project.anomaly.type.${val.snakeToCamel()}`)
         },
         align: 'left',
     },
@@ -145,6 +144,7 @@ const columns: QTableColumn[] = [
                             v-if="anomalyType === AnomalyType.Other"
                             v-model="anomalyOther"
                             dense
+                            :label="t('common.description').capitalize()"
                             :rules="[
                                 (val: string) =>
                                     (anomalyType === AnomalyType.Other && !!val) || t('forms.fieldIsRequired'),

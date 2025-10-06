@@ -268,8 +268,7 @@
             "next": "Finir l'instruction et passer à la bibliothèque suivante"
         },
         "control": {
-            "nextPhase": "Passer à la phase suivante",
-            "btnDisabled": "Une ou des @.lower:project.anomaly.i ne sont pas résolu"
+            "nextPhase": "Passer à la phase suivante"
         },
         "anomaly": {
             "i": "Anomalie | Anomalies",
@@ -295,7 +294,9 @@
             },
             "fixed": "Résolu",
             "unfixed": "Non résolu",
-            "fixBtn": "Marquer comme @.lower:project.anomaly.fixed"
+            "fixBtn": "Marquer comme @.lower:project.anomaly.fixed",
+            "declareBtn": "Finaliser la déclaration d'@.lower:project.anomaly.i",
+            "actionBtnDisabled": "Au moins une @.lower:project.anomaly.i sur un segment d'une collection ne vous appartenant pas ne sont pas résolu"
         }
     },
     "libraries": {
