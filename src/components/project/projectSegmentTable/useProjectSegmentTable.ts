@@ -24,14 +24,20 @@ export const useProjectSegmentTable = () => {
     const insertAfter = ref<string>()
 
     const addAnomaly = ref<boolean>(false)
-    const onAddAnomaly = (props: { expand: boolean }) => {
-        addAnomaly.value = true
-        props.expand = true
-    }
-    const cancelAddAnomaly = (props: { expand: boolean; row: Segment }) => {
-        addAnomaly.value = false
-        if (!resourceStore.anomalies.filter((anomaly) => anomaly.segment.id === props.row.id).length)
+    const onActionOnAnomaly = (
+        props: { expand: boolean; row: Segment },
+        options?: { cancelAddAnomaly?: boolean; addAnomaly?: boolean; anomalyAdded?: boolean },
+    ) => {
+        const segmentAnomalies = resourceStore.anomalies.filter((anomaly) => anomaly.segment.id === props.row.id)
+
+        if (options?.cancelAddAnomaly || options?.anomalyAdded) addAnomaly.value = false
+        if (options?.addAnomaly) addAnomaly.value = true
+
+        if (options?.addAnomaly || options?.anomalyAdded) {
+            props.expand = true
+        } else if (!segmentAnomalies.length) {
             props.expand = false
+        }
     }
 
     const columns: QTableColumn[] = [
@@ -119,9 +125,6 @@ export const useProjectSegmentTable = () => {
         insertAfter.value = insertAfterId
     }
 
-    const filteredAnomaliesBySegment = (segmentId: string) =>
-        resourceStore.anomalies.filter((el) => el.segment.id === segmentId)
-
     return {
         columns,
         loading,
@@ -130,10 +133,8 @@ export const useProjectSegmentTable = () => {
         dialogCreateSegment,
         insertAfter,
         openDialogCreateSegment,
-        filteredAnomaliesBySegment,
         addAnomaly,
-        onAddAnomaly,
-        cancelAddAnomaly,
+        onActionOnAnomaly,
         displayOptionsColumn,
     }
 }

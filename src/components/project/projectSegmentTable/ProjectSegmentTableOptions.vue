@@ -29,6 +29,7 @@ const {
     dialogUpdateSegment,
     dialogDeleteSegment,
     userIsInstructorForSegmentCollectionLibrary,
+    areActionDisabled,
 } = useProjectSegmentTableOptions(loading)
 </script>
 
@@ -46,20 +47,34 @@ const {
         >
             <AtomicButton
                 :class="{ opacity: row.order === 1 }"
+                :disable="areActionDisabled"
                 icon="mdi-chevron-up"
                 no-border
                 size="sm"
                 @click="orderSegment(row, 'up')"
-            />
+            >
+                <QTooltip
+                    v-if="areActionDisabled"
+                    :delay="1000"
+                    >{{ t('project.anomaly.actionBtnDisabled', 2) }}</QTooltip
+                >
+            </AtomicButton>
             <AtomicButton
                 :class="{
                     opacity: row.order === resourceStore.segments.length || resourceStore.segments.length === 1,
                 }"
+                :disable="areActionDisabled"
                 icon="mdi-chevron-down"
                 no-border
                 size="sm"
                 @click="orderSegment(row, 'down')"
-            />
+            >
+                <QTooltip
+                    v-if="areActionDisabled"
+                    :delay="1000"
+                    >{{ t('project.anomaly.actionBtnDisabled', 2) }}</QTooltip
+                >
+            </AtomicButton>
         </div>
         <AtomicButton
             icon="mdi-dots-vertical"
@@ -76,6 +91,7 @@ const {
                             projectStore.tab !== Tab.Control
                         "
                         clickable
+                        :disable="areActionDisabled"
                         @click="dialogUpdateSegment = true"
                     >
                         <QItemSection avatar>
@@ -89,6 +105,11 @@ const {
                             :is-new="false"
                             :segment="row"
                         />
+                        <QTooltip
+                            v-if="areActionDisabled"
+                            :delay="1000"
+                            >{{ t('project.anomaly.actionBtnDisabled', 2) }}</QTooltip
+                        >
                     </QItem>
                     <QItem
                         v-if="
@@ -98,6 +119,7 @@ const {
                             projectStore.tab !== Tab.Control
                         "
                         clickable
+                        :disable="areActionDisabled"
                         @click="dialogDeleteSegment = true"
                     >
                         <QItemSection avatar>
@@ -110,10 +132,16 @@ const {
                             v-model="dialogDeleteSegment"
                             @confirm="resourceStore.deleteSegment(row.id)"
                         />
+                        <QTooltip
+                            v-if="areActionDisabled"
+                            :delay="1000"
+                            >{{ t('project.anomaly.actionBtnDisabled', 2) }}</QTooltip
+                        >
                     </QItem>
                     <QItem
                         v-if="projectStore.userIsInstructorForLibrarySelected && projectStore.tab !== Tab.Control"
                         clickable
+                        :disable="areActionDisabled"
                         @click="openDialogCreateSegment(row.id)"
                     >
                         <QItemSection avatar>
@@ -122,6 +150,11 @@ const {
                         <QItemSection>
                             <QItemLabel>{{ t('project.instruction.segment.insertUnder') }}</QItemLabel>
                         </QItemSection>
+                        <QTooltip
+                            v-if="areActionDisabled"
+                            :delay="1000"
+                            >{{ t('project.anomaly.actionBtnDisabled', 2) }}</QTooltip
+                        >
                     </QItem>
                     <QItem
                         v-if="

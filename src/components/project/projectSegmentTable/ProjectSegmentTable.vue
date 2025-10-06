@@ -7,8 +7,9 @@ import { useResourceStore } from '@/stores/resourceStore.ts'
 import { onMounted } from 'vue'
 import ProjectSegmentTableOptions from '@/components/project/projectSegmentTable/ProjectSegmentTableOptions.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
-import AnomalyTable from '@/components/anomaly/AnomalyTable.vue'
+import AnomalyTable from '@/components/anomaly/anomalyTable/AnomalyTable.vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
+import { Tab } from '&/project.ts'
 
 const { t } = useI18n()
 const resourceStore = useResourceStore()
@@ -21,10 +22,8 @@ const {
     dialogCreateSegment,
     insertAfter,
     openDialogCreateSegment,
-    filteredAnomaliesBySegment,
     addAnomaly,
-    onAddAnomaly,
-    cancelAddAnomaly,
+    onActionOnAnomaly,
     displayOptionsColumn,
 } = useProjectSegmentTable()
 
@@ -61,7 +60,7 @@ onMounted(async () => {
                             v-model:loading="loading"
                             :open-dialog-create-segment
                             :row="props.row"
-                            @add-anomaly="onAddAnomaly(props)"
+                            @add-anomaly="onActionOnAnomaly(props, { addAnomaly: true })"
                         />
                     </template>
                     <template v-else-if="col.name === 'resolve'">
@@ -104,24 +103,38 @@ onMounted(async () => {
                     <AnomalyTable
                         :add-anomaly="addAnomaly"
                         :segment="props.row"
-                        @cancel-add-anomaly="cancelAddAnomaly(props)"
+                        @add-anomaly="onActionOnAnomaly(props, { anomalyAdded: true })"
+                        @cancel-add-anomaly="onActionOnAnomaly(props, { cancelAddAnomaly: true })"
+                        @delete-anomaly="onActionOnAnomaly(props)"
                     />
                 </QTd>
             </QTr>
         </template>
 
         <template
-            v-if="resourceStore.shouldInstruct && projectStore.userIsInstructorForLibrarySelected"
+            v-if="
+                (resourceStore.shouldInstruct &&
+                    projectStore.userIsInstructorForLibrarySelected &&
+                    projectStore.tab === Tab.InstructionBound) ||
+                projectStore.tab === Tab.InstructionUnbound
+            "
             #bottom
         >
             <QTr class="bottom">
                 <AtomicButton
                     class="btn-segment"
+                    :disable="!!resourceStore.anomaliesUnfixed.length"
                     icon="mdi-plus"
                     :label="t('project.instruction.segment.new')"
                     no-border
                     @click="openDialogCreateSegment()"
-                />
+                >
+                    <QTooltip
+                        v-if="!!resourceStore.anomalies.length"
+                        :delay="1000"
+                        >{{ t('project.anomaly.actionBtnDisabled', 2) }}</QTooltip
+                    >
+                </AtomicButton>
             </QTr>
         </template>
         <template
