@@ -1,24 +1,21 @@
 <script setup lang="ts">
 import { useResourceStore } from '@/stores/resourceStore.ts'
-import { inject, type Ref } from 'vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useI18n } from 'vue-i18n'
 import { useProjectInstruction } from '@/components/project/projectLaunched/projectInstruction/useProjectInstruction.ts'
 import ProjectInstructionSegmentDialog from '@/components/project/projectLaunched/projectInstruction/projectInstructionSegmentDialog/ProjectInstructionSegmentDialog.vue'
 import ProjectSegmentTable from '@/components/project/projectSegmentTable/ProjectSegmentTable.vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
+import AnomalyDeclarationBtn from '@/components/anomaly/AnomalyDeclarationBtn.vue'
+import { inject, type Ref } from 'vue'
 
 const { t } = useI18n()
 const resourceStore = useResourceStore()
 const projectStore = useProjectStore()
-const { dialogCreateSegment, insertAfter, turnsWithNames } = useProjectInstruction()
-
 const dialogModal = inject<Ref<boolean>>('dialogModal')
 
-const onConfirm = async () => {
-    await resourceStore.finishTurn()
-    if (dialogModal) dialogModal.value = false
-}
+const { dialogCreateSegment, insertAfter, turnsWithNames, onConfirmAnomaliesDeclaration } =
+    useProjectInstruction(dialogModal)
 </script>
 
 <template>
@@ -35,17 +32,31 @@ const onConfirm = async () => {
             </p>
         </div>
         <ProjectSegmentTable />
-        <AtomicButton
+        <div
             v-if="resourceStore.shouldInstruct && projectStore.userIsInstructorForLibrarySelected"
-            class="finish-turn"
-            color="primary"
-            confirm-button-color="primary"
-            icon="mdi-content-save-move"
-            :label="t('project.instruction.next')"
-            no-border
-            require-confirmation
-            @confirm="onConfirm"
-        />
+            class="buttons"
+        >
+            <AnomalyDeclarationBtn
+                v-if="resourceStore.anomaliesUnfixed.length"
+                @confirm="dialogModal = false"
+            />
+            <AtomicButton
+                color="primary"
+                confirm-button-color="primary"
+                :disable="!!resourceStore.anomaliesUnfixed.length"
+                icon="mdi-content-save-move"
+                :label="t('project.instruction.next')"
+                no-border
+                require-confirmation
+                @confirm="onConfirmAnomaliesDeclaration"
+            >
+                <QTooltip
+                    v-if="!!resourceStore.anomaliesUnfixed.length"
+                    :delay="1000"
+                    >{{ t('project.anomaly.actionBtnDisabled', 2) }}</QTooltip
+                >
+            </AtomicButton>
+        </div>
     </div>
 
     <ProjectInstructionSegmentDialog
@@ -106,7 +117,9 @@ const onConfirm = async () => {
 .bottom
     margin-left: auto
 
-.finish-turn
+.buttons
     margin-top: auto
     align-self: end
+    display: flex
+    gap: 1rem
 </style>

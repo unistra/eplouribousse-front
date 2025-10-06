@@ -3,22 +3,41 @@ import ProjectSegmentTable from '@/components/project/projectSegmentTable/Projec
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useI18n } from 'vue-i18n'
 import { useResourceStore } from '@/stores/resourceStore.ts'
+import AnomalyDeclarationBtn from '@/components/anomaly/AnomalyDeclarationBtn.vue'
+import { useProjectStore } from '@/stores/projectStore.ts'
+import { inject, type Ref } from 'vue'
 
 const { t } = useI18n()
 const resourceStore = useResourceStore()
+const projectStore = useProjectStore()
+
+const dialogModal = inject<Ref<boolean>>('dialogModal')
 </script>
 
 <template>
     <div class="control">
         <ProjectSegmentTable />
-        <AtomicButton
-            color="primary"
-            :disable="!!resourceStore.anomalies.length"
-            :label="t('project.control.nextPhase')"
-            no-border
+        <div
+            v-if="projectStore.userIsController"
+            class="buttons"
         >
-            <QTooltip>{{ t('project.control.btnDisabled', 2) }}</QTooltip>
-        </AtomicButton>
+            <AnomalyDeclarationBtn
+                v-if="resourceStore.anomaliesUnfixed.length"
+                @confirm="dialogModal = false"
+            />
+            <AtomicButton
+                color="primary"
+                :disable="!!resourceStore.anomaliesUnfixed.length"
+                :label="t('project.control.nextPhase')"
+                no-border
+            >
+                <QTooltip
+                    v-if="!!resourceStore.anomaliesUnfixed.length"
+                    :delay="1000"
+                    >{{ t('project.anomaly.actionBtnDisabled', 2) }}</QTooltip
+                >
+            </AtomicButton>
+        </div>
     </div>
 </template>
 
@@ -34,4 +53,10 @@ const resourceStore = useResourceStore()
     .q-btn
         width: fit-content
         align-self: end
+
+    .buttons
+        margin-top: auto
+        align-self: end
+        display: flex
+        gap: 1rem
 </style>

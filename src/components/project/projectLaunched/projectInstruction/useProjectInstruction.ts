@@ -1,11 +1,11 @@
-import { computed, ref } from 'vue'
+import { computed, type Ref, ref } from 'vue'
 import type { InstructionTurn } from '#/project.ts'
 import { useI18n } from 'vue-i18n'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { ResourceStatus } from '&/project.ts'
 
-export const useProjectInstruction = () => {
+export const useProjectInstruction = (dialogModal: Ref<boolean> | undefined) => {
     const { t } = useI18n()
     const resourceStore = useResourceStore()
     const projectStore = useProjectStore()
@@ -28,9 +28,15 @@ export const useProjectInstruction = () => {
         }))
     })
 
+    const onConfirmAnomaliesDeclaration = async () => {
+        await resourceStore.finishTurn()
+        if (dialogModal) dialogModal.value = false
+    }
+
     return {
         dialogCreateSegment,
         insertAfter,
         turnsWithNames,
+        onConfirmAnomaliesDeclaration,
     }
 }
