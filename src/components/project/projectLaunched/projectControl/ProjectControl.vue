@@ -21,6 +21,7 @@ const onValidateControl = async () => {
 
 <template>
     <div class="control">
+        <ProjectSegmentTable />
         <div
             v-if="projectStore.userIsController"
             class="buttons"
@@ -43,7 +44,6 @@ const onValidateControl = async () => {
                 >
             </AtomicButton>
         </div>
-        <ProjectSegmentTable />
     </div>
 </template>
 
@@ -55,9 +55,7 @@ const onValidateControl = async () => {
     gap: 2rem
 
     .buttons
+        align-self: end
         display: flex
-        flex-direction: column
-        align-items: center
-        justify-content: center
         gap: 1rem
 </style>

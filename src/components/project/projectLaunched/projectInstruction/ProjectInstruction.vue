@@ -84,7 +84,6 @@ const { dialogCreateSegment, insertAfter, turnsWithNames, onConfirmAnomaliesDecl
     gap: 0.5rem
 
 .buttons
-    margin-top: auto
     align-self: end
     display: flex
     gap: 1rem
