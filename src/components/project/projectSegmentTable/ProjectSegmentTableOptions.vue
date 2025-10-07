@@ -9,8 +9,6 @@ import type { Segment } from '#/project.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { Tab } from '&/project.ts'
 
-const loading = defineModel<boolean>('loading', { required: true })
-
 defineProps<{
     row: Segment
     openDialogCreateSegment: (insertAfterId: string | undefined) => void
@@ -30,7 +28,7 @@ const {
     dialogDeleteSegment,
     userIsInstructorForSegmentCollectionLibrary,
     areActionDisabled,
-} = useProjectSegmentTableOptions(loading)
+} = useProjectSegmentTableOptions()
 </script>
 
 <template>

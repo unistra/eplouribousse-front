@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { computed, reactive, ref, toRefs } from 'vue'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import type { QTableColumn } from 'quasar'
 import { useI18n } from 'vue-i18n'
@@ -6,19 +6,35 @@ import type { Segment } from '#/project.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { Tab } from '&/project.ts'
 
+interface UseProjectSegmentTableState {
+    loading: boolean
+}
+
+const state = reactive<UseProjectSegmentTableState>({
+    loading: false,
+})
+
 export const useProjectSegmentTable = () => {
     const resourceStore = useResourceStore()
     const projectStore = useProjectStore()
     const { t } = useI18n()
-    const loading = ref<boolean>(false)
     const hoveredValue = ref<string | null>(null)
-    const displayOptionsColumn = computed(
-        () =>
+    const displayOptionsColumnBasedOnUserRole = computed(() => {
+        return (
             (projectStore.userIsInstructorForLibrarySelected &&
                 (projectStore.tab === Tab.InstructionBound || projectStore.tab === Tab.InstructionUnbound)) ||
             (projectStore.userIsController && projectStore.tab === Tab.Control) ||
-            projectStore.userIsAdmin,
-    )
+            projectStore.userIsAdmin
+        )
+    })
+
+    const checkIfSegmentTypeIsSameAsInstructionTab = (segment: Segment) => {
+        return (
+            (segment.segmentType === 'bound' && projectStore.tab === Tab.InstructionBound) ||
+            (segment.segmentType === 'unbound' && projectStore.tab === Tab.InstructionUnbound) ||
+            projectStore.tab === Tab.Control
+        )
+    }
 
     const dialogCreateSegment = ref<boolean>(false)
     const insertAfter = ref<string>()
@@ -109,7 +125,7 @@ export const useProjectSegmentTable = () => {
         },
     ]
 
-    if (displayOptionsColumn.value) {
+    if (displayOptionsColumnBasedOnUserRole.value) {
         columns.push({
             name: 'options',
             label: t('project.instruction.tableFields.options'),
@@ -126,8 +142,8 @@ export const useProjectSegmentTable = () => {
     }
 
     return {
+        ...toRefs(state),
         columns,
-        loading,
         orderedRows,
         hoveredValue,
         dialogCreateSegment,
@@ -135,6 +151,7 @@ export const useProjectSegmentTable = () => {
         openDialogCreateSegment,
         addAnomaly,
         onActionOnAnomaly,
-        displayOptionsColumn,
+        displayOptionsColumnBasedOnUserRole,
+        checkIfSegmentTypeIsSameAsInstructionTab,
     }
 }

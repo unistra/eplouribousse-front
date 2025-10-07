@@ -1,16 +1,18 @@
-import { computed, type ModelRef, ref } from 'vue'
+import { computed, ref } from 'vue'
 import type { Segment } from '#/project.ts'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { Roles } from '&/project.ts'
 import { useUserStore } from '@/stores/userStore.ts'
+import { useProjectSegmentTable } from '@/components/project/projectSegmentTable/useProjectSegmentTable.ts'
 
-export const useProjectSegmentTableOptions = (loading: ModelRef<boolean | undefined>) => {
+export const useProjectSegmentTableOptions = () => {
     const resourceStore = useResourceStore()
     const projectStore = useProjectStore()
     const userStore = useUserStore()
     const dialogUpdateSegment = ref<boolean>(false)
     const dialogDeleteSegment = ref<boolean>(false)
+    const { loading } = useProjectSegmentTable()
 
     const orderSegment = async (row: Segment, direction: 'up' | 'down') => {
         loading.value = true

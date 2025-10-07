@@ -17,7 +17,13 @@ export const allowedRoutesToAnon: Readonly<string[]> = [
     '/saml2/login/',
 ]
 
-export const allowedRoutesToAnonAndAuth: Readonly<string[]> = ['/projects/', '/resources/']
+export const allowedRoutesToAnonAndAuth: Readonly<string[]> = [
+    '/projects/',
+    '/resources/',
+    '/collections/',
+    '/segments/',
+    '/anomalies/',
+]
 
 export const isRouteAllowed = (to: 'anon' | 'anonAndAuth', url: string | undefined) => {
     if (!url) return false

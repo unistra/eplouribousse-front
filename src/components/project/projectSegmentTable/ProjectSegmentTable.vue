@@ -24,7 +24,8 @@ const {
     openDialogCreateSegment,
     addAnomaly,
     onActionOnAnomaly,
-    displayOptionsColumn,
+    displayOptionsColumnBasedOnUserRole,
+    checkIfSegmentTypeIsSameAsInstructionTab,
 } = useProjectSegmentTable()
 
 onMounted(async () => {
@@ -56,9 +57,14 @@ onMounted(async () => {
                     :key="col.name"
                     :props="props"
                 >
-                    <template v-if="col.name === 'options' && displayOptionsColumn">
+                    <template
+                        v-if="
+                            col.name === 'options' &&
+                            displayOptionsColumnBasedOnUserRole &&
+                            checkIfSegmentTypeIsSameAsInstructionTab(props.row)
+                        "
+                    >
                         <ProjectSegmentTableOptions
-                            v-model:loading="loading"
                             :open-dialog-create-segment
                             :row="props.row"
                             @add-anomaly="onActionOnAnomaly(props, { addAnomaly: true })"
