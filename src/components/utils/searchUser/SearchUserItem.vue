@@ -11,7 +11,7 @@ const onDelete = () => {
     emit('delete')
 }
 
-const props = defineProps<{ disable?: boolean }>()
+defineProps<{ disable?: boolean }>()
 </script>
 
 <template>

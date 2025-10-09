@@ -4,7 +4,6 @@ import ProjectPositioningCollectionCard from '@/components/project/projectLaunch
 import { useI18n } from 'vue-i18n'
 import { Arbitration } from '&/project.ts'
 
-
 const resourceStore = useResourceStore()
 const { t } = useI18n()
 </script>

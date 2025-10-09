@@ -69,7 +69,7 @@ onMounted(async () => {
                     flat
                     icon="mdi-menu"
                 >
-                    <QMenu>
+                    <QMenu auto-close>
                         <QList>
                             <LibraryCreateAndEditBtn
                                 :libraryToEdit="props.row"

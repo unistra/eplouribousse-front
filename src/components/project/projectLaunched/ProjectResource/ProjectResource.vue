@@ -2,16 +2,15 @@
 import ProjectInstruction from '@/components/project/projectLaunched/projectInstruction/ProjectInstruction.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import ProjectPositioning from '@/components/project/projectLaunched/projectPositioning/ProjectPositioning.vue'
-import type { Tab } from '#/project.ts'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useI18n } from 'vue-i18n'
 import { provide, ref } from 'vue'
+import ProjectControl from '@/components/project/projectLaunched/projectControl/ProjectControl.vue'
+import { useProjectStore } from '@/stores/projectStore.ts'
 
-defineProps<{
-    tab: Tab
-}>()
 const { t } = useI18n()
 const resourceStore = useResourceStore()
+const projectStore = useProjectStore()
 
 const dialogModal = defineModel<boolean>()
 provide('dialogModal', dialogModal)
@@ -64,8 +63,11 @@ const onBeforeShow = async () => {
                     </hgroup>
                 </QCardSection>
                 <QCardSection class="content">
-                    <ProjectPositioning v-if="tab === 'positioning'" />
-                    <ProjectInstruction v-else-if="tab === 'instructionBound' || tab === 'instructionUnbound'" />
+                    <ProjectPositioning v-if="projectStore.tab === 'positioning'" />
+                    <ProjectInstruction
+                        v-else-if="projectStore.tab === 'instructionBound' || projectStore.tab === 'instructionUnbound'"
+                    />
+                    <ProjectControl v-else-if="projectStore.tab === 'control'" />
                     <p v-else>Unsupported status for Resource</p>
                 </QCardSection>
             </template>

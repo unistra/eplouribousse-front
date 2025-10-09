@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import {
+    type Anomaly,
     type CollectionsInResource,
     type CollectionsWithResource,
     type CommentPositioning,
@@ -8,15 +9,13 @@ import {
     type Segment,
     type SegmentNoCollection,
 } from '#/project.ts'
-import { Arbitration, CollectionPosition, ResourceStatus, Roles } from '&/project.ts'
+import { AnomalyType, Arbitration, CollectionPosition, ResourceStatus } from '&/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { Notify, type QTableProps } from 'quasar'
 import i18n from '@/plugins/i18n'
 import type { Pagination } from '#/pagination.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
-import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import type { TableProjectResources } from '#/table'
-import { useUserStore } from '@/stores/userStore.ts'
 
 const { t } = i18n.global
 
@@ -31,6 +30,7 @@ interface ResourceStoreState extends Resource {
     resourcesCount: number
     segments: Segment[]
     resourceSelected: Resource | null
+    anomalies: Anomaly[]
 }
 
 const initialState: Resource = {
@@ -60,6 +60,7 @@ export const useResourceStore = defineStore('resource', {
         resourcesCount: 0,
         segments: [],
         resourceSelected: null,
+        anomalies: [],
     }),
     getters: {
         librariesAssociated(this: ResourceStoreState) {
@@ -77,15 +78,8 @@ export const useResourceStore = defineStore('resource', {
         statusName(this: ResourceStoreState): 'boundCopies' | 'unboundCopies' {
             return this.status === ResourceStatus.InstructionBound ? 'boundCopies' : 'unboundCopies'
         },
-        isInstructorForLibrarySelected(this: ResourceStoreState) {
-            const userStore = useUserStore()
-            const projectStore = useProjectStore()
-            return !!projectStore.roles.find(
-                (el) =>
-                    el.user.id === userStore.user?.id &&
-                    el.role === Roles.Instructor &&
-                    el.libraryId === this.libraryIdSelected,
-            )
+        anomaliesUnfixed(this: ResourceStoreState): Anomaly[] {
+            return this.anomalies.filter((anomaly) => !anomaly.fixed)
         },
     },
     actions: {
@@ -256,7 +250,7 @@ export const useResourceStore = defineStore('resource', {
         },
         async fetchSegments() {
             try {
-                const response = await axiosI.get(`segments/`, { params: { resource_id: this.id } })
+                const response = await axiosI.get(`/segments/`, { params: { resource_id: this.id } })
 
                 this.segments = response.data
             } catch {
@@ -284,7 +278,7 @@ export const useResourceStore = defineStore('resource', {
                         id: string
                         order: number
                     }
-                }>(`segments/${segment.id}/${direction}/`)
+                }>(`/segments/${segment.id}/${direction}/`)
 
                 const currentSegment = this.segments.find((el) => el.id === segment.id)
                 const targetSegment = this.segments.find(
@@ -358,6 +352,92 @@ export const useResourceStore = defineStore('resource', {
                 const collectionId = this.instructionTurns[this.statusName].turns[0].collection
 
                 await axiosI.post<Segment>(`/collections/${collectionId}/finish_turn/`)
+                await this.fetchResources(this.status)
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async fetchAnomalies() {
+            try {
+                const response = await axiosI.get<Anomaly[]>(`/anomalies/`, {
+                    params: {
+                        resource: this.id,
+                    },
+                })
+
+                this.anomalies = response.data
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async postAnomaly(segmentId: string, type: string, description?: string) {
+            try {
+                const response = await axiosI.post<Anomaly>(`/anomalies/`, {
+                    segmentId,
+                    type,
+                    ...(description && type === AnomalyType.Other && { description }),
+                })
+
+                this.anomalies.push(response.data)
+                const segment = this.segments.find((el) => el.id === segmentId)
+                if (segment) segment.anomalies.unfixed += 1
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async fixAnomaly(id: string) {
+            try {
+                const response = await axiosI.patch<Anomaly>(`/anomalies/${id}/fix/`)
+
+                this.anomalies = this.anomalies.map((a) => (a.id === id ? response.data : a))
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async deleteAnomaly(id: string) {
+            try {
+                const anomaly = this.anomalies.find((a) => a.id === id)
+                await axiosI.delete<Anomaly>(`/anomalies/${id}/`)
+
+                this.anomalies = this.anomalies.filter((a) => a.id !== id)
+
+                const segment = this.segments.find((el) => el.id === anomaly?.segment.id)
+                if (segment) segment.anomalies[anomaly?.fixed ? 'fixed' : 'unfixed'] -= 1
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async declareAnomaly() {
+            try {
+                await axiosI.patch<Anomaly>(`/resources/${this.id}/report-anomalies/`)
+                await this.fetchResources(this.status)
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async validateControl() {
+            try {
+                await axiosI.post<unknown>(`/resources/${this.id}/control/`, {
+                    validation: true,
+                })
                 await this.fetchResources(this.status)
             } catch {
                 Notify.create({

@@ -25,9 +25,12 @@ export enum Arbitration {
 export enum ResourceStatus {
     Positioning = 10,
     InstructionBound = 20,
+    AnomalyBound = 25,
     ControlBound = 30,
     InstructionUnbound = 40,
+    AnomalyUnbound = 45,
     ControlUnbound = 50,
+    Edition = 60,
 }
 
 export const CollectionPosition = {
@@ -40,3 +43,22 @@ export const CollectionPosition = {
 }
 
 export type CollectionPosition = (typeof CollectionPosition)[keyof typeof CollectionPosition]
+
+export enum AnomalyType {
+    PubPeriodPassed = 'pub_period_passed',
+    Discontinuous = 'discontinuous_segment',
+    ExcpImprovable = 'excp_improvable',
+    ChronologicalError = 'chronological_error',
+    SegmentOverlap = 'segment_overlap',
+    MisuseOfRemediatedLib = 'misuse_of_remediated_library',
+    ConfusingWording = 'confusing_wording',
+    Other = 'other',
+}
+
+export enum Tab {
+    Positioning = 'positioning',
+    InstructionBound = 'instructionBound',
+    InstructionUnbound = 'instructionUnbound',
+    Control = 'control',
+    Anomalies = 'anomalies',
+}

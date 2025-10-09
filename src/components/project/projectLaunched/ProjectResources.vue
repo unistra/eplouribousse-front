@@ -12,8 +12,7 @@ import AtomicInput from '@/components/atomic/AtomicInput.vue'
 const resourceStore = useResourceStore()
 const projectStore = useProjectStore()
 
-const { tab, tabs, resourceDialog, table, selectDefaultLibrary, onRowClick, fetchResources, selects } =
-    useProjectResources()
+const { tabs, resourceDialog, table, selectDefaultLibrary, onRowClick, fetchResources, selects } = useProjectResources()
 const { t } = useI18n()
 
 onMounted(async () => {
@@ -44,7 +43,7 @@ onMounted(async () => {
         </div>
         <div>
             <QTabs
-                v-model="tab"
+                v-model="projectStore.tab"
                 align="left"
                 dense
                 no-caps
@@ -59,7 +58,7 @@ onMounted(async () => {
             </QTabs>
         </div>
         <QTabPanels
-            v-model="tab"
+            v-model="projectStore.tab"
             animated
         >
             <QTabPanel
@@ -105,10 +104,7 @@ onMounted(async () => {
                         </QTd>
                     </template>
                 </QTable>
-                <ProjectResource
-                    v-model="resourceDialog"
-                    :tab="tab"
-                />
+                <ProjectResource v-model="resourceDialog" />
             </QTabPanel>
         </QTabPanels>
     </div>

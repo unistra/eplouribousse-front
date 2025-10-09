@@ -16,7 +16,8 @@ import i18n from '@/plugins/i18n'
 import type { Pagination } from '#/pagination.ts'
 import axios from 'axios'
 import { useUserStore } from '@/stores/userStore.ts'
-import { ProjectStatus, Roles } from '&/project.ts'
+import { ProjectStatus, Roles, Tab } from '&/project.ts'
+import { useResourceStore } from '@/stores/resourceStore.ts'
 
 const { t } = i18n.global
 
@@ -64,10 +65,29 @@ export const useProjectStore = defineStore('project', {
         initialState: structuredClone(initialState),
         isLoading: false,
         isInEditionMode: false,
+        tab: Tab.Positioning,
     }),
     getters: {
         nameRequired: (state) => state.name.length > 0,
         nameLengthValid: (state) => state.name.length <= 255,
+        userIsAdmin: (state) => {
+            const userStore = useUserStore()
+            return !!state.roles.find((el) => el.role === Roles.ProjectAdmin && el.user.id === userStore.user?.id)
+        },
+        userIsController: (state) => {
+            const userStore = useUserStore()
+            return !!state.roles.find((el) => el.role === Roles.Controller && el.user.id === userStore.user?.id)
+        },
+        userIsInstructorForLibrarySelected(state) {
+            const userStore = useUserStore()
+            const resourceStore = useResourceStore()
+            return !!state.roles.find(
+                (el) =>
+                    el.user.id === userStore.user?.id &&
+                    el.role === Roles.Instructor &&
+                    el.libraryId === resourceStore.libraryIdSelected,
+            )
+        },
     },
     actions: {
         // UTILS
@@ -79,7 +99,8 @@ export const useProjectStore = defineStore('project', {
                     ...structuredClone(response.data),
                     initialState: structuredClone(response.data),
                     isLoading: false,
-                    isInEditionMode: edition ? true : false,
+                    isInEditionMode: !!edition,
+                    tab: Tab.Positioning,
                 }
             } catch {
                 Notify.create({
@@ -414,14 +435,6 @@ export const useProjectStore = defineStore('project', {
                     userStore.user?.id === el.user.id &&
                     ((!libraryId && role !== Roles.Instructor) || el.libraryId === libraryId),
             )
-        },
-        hasRole(role: Roles) {
-            const userStore = useUserStore()
-            return this.roles.find(
-                (projectUser) => projectUser.user.id === userStore.user?.id && projectUser.role === role,
-            )
-                ? true
-                : false
         },
         findUsersByRole(role: Roles) {
             return this.roles.filter((projectUser) => projectUser.role === role)
