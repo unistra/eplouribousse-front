@@ -9,6 +9,7 @@ import {
     type ProjectInvitation,
     type ProjectLibrary,
     type ProjectRole,
+    type ProjectSettings,
 } from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { Notify } from 'quasar'
@@ -33,12 +34,12 @@ const initialState: ProjectI = {
         exclusionReasons: [],
         alerts: {
             positioning: false,
-            arbitration0: false,
-            arbitration1: false,
-            instructions: false,
-            results: false,
-            transferTracking: false,
-            treatmentTracking: false,
+            arbitration: false,
+            instruction: false,
+            control: false,
+            edition: false,
+            preservation: false,
+            transfer: false,
         },
     },
     invitations: [],

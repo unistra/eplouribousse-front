@@ -219,14 +219,15 @@
             "emailAlert": {
                 "title": "Alertes email",
                 "resourcesAlterts": "Opérations sur les ressources",
-                "tracking": "Suivi",
+                "successAlertUpdated": "Alerte mise à jour avec succès",
                 "positioning": "Positionnement",
-                "arbitration0": "Arbitrage type 0",
-                "arbitration1": "Arbitrage type 1",
-                "instructions": "Instruction",
+                "arbitration": "@.capitalize:project.positioning.arbitration.i",
+                "control": "Contrôle",
+                "instruction": "Instruction",
+                "edition": "Édition",
+                "preservation": "Préservation",
                 "results": "Résultante",
-                "transferTracking": "Suivi des transferts",
-                "treatmentTracking": "Suivi des traitements"
+                "transfer": "Suivi des transferts"
             },
             "defaultStorageLocation": "Lieu de conservation par défaut",
             "transferTracking": "Suivi des transferts",
