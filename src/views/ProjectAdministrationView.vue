@@ -3,7 +3,7 @@ import { watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useUserStore } from '@/stores/userStore'
-import ProjectAdministration from '@/components/project/projectAdministration/ProjectAdministration.vue'
+import ProjectAdmin from '@/components/project/projectAdmin/ProjectAdmin.vue'
 import { useI18n } from 'vue-i18n'
 
 const route = useRoute()
@@ -28,7 +28,7 @@ watch(
     <QPage padding>
         <h1 class="heading">{{ t('project.administration.title') }} : {{ store.name }}</h1>
         <template v-if="!store.isLoading">
-            <ProjectAdministration />
+            <ProjectAdmin />
         </template>
         <QSpinner
             v-else

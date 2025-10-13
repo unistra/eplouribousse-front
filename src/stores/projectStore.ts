@@ -440,5 +440,36 @@ export const useProjectStore = defineStore('project', {
         findUsersByRole(role: Roles) {
             return this.roles.filter((projectUser) => projectUser.role === role)
         },
+        async fetchAlerts() {
+            try {
+                const response = await axiosI.get<{ alerts: ProjectSettings['alerts'] }>(`/projects/${this.id}/alerts/`)
+                this.settings.alerts = structuredClone(response.data.alerts)
+                this.initialState.settings.alerts = structuredClone(response.data.alerts)
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async patchAlerts() {
+            try {
+                const response = await axiosI.patch<{ alerts: ProjectSettings['alerts'] }>(
+                    `/projects/${this.id}/alerts/`,
+                    { alerts: { ...this.settings.alerts } },
+                )
+                this.settings.alerts = structuredClone(response.data.alerts)
+                this.initialState.settings.alerts = structuredClone(response.data.alerts)
+                Notify.create({
+                    type: 'positive',
+                    message: t('project.settings.emailAlert.successAlertUpdated'),
+                })
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
     },
 })
