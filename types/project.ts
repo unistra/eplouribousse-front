@@ -89,6 +89,8 @@ export interface ProjectSettings {
     }
 }
 
+export type AlertKey = keyof ProjectSettings['alerts']
+
 export interface ProjectLibrary extends LibraryI {
     isAlternativeStorageSite: boolean
 }
