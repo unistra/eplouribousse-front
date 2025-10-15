@@ -2,7 +2,7 @@ import { computed, ref } from 'vue'
 import type { Segment } from '#/project.ts'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
-import { Roles } from '&/project.ts'
+import { Roles, Tab } from '&/project.ts'
 import { useUserStore } from '@/stores/userStore.ts'
 import { useProjectSegmentTable } from '@/components/project/projectSegmentTable/useProjectSegmentTable.ts'
 
@@ -20,10 +20,11 @@ export const useProjectSegmentTableOptions = () => {
         loading.value = false
     }
 
-    const isSegmentCollectionLibrarySameAsLibrarySelected = (row: Segment) => {
+    const isSegmentCollectionLibrarySameAsLibrarySelectedOrUserIsAdminAndOnAnomaliesTab = (row: Segment) => {
         return (
             resourceStore.libraryIdSelected ===
-            resourceStore.collections.find((el) => el.id === row.collection)?.library
+                resourceStore.collections.find((el) => el.id === row.collection)?.library ||
+            (projectStore.userIsAdmin && projectStore.tab === Tab.Anomalies)
         )
     }
 
@@ -61,7 +62,7 @@ export const useProjectSegmentTableOptions = () => {
 
     return {
         orderSegment,
-        isSegmentCollectionLibrarySameAsLibrarySelected,
+        isSegmentCollectionLibrarySameAsLibrarySelectedOrUserIsAdminAndOnAnomaliesTab,
         dialogUpdateSegment,
         dialogDeleteSegment,
         userIsInstructorForSegmentCollectionLibrary,

@@ -299,7 +299,11 @@
             "unfixed": "Non résolu",
             "fixBtn": "Marquer comme @.lower:project.anomaly.fixed",
             "declareBtn": "Finaliser la déclaration d'@.lower:project.anomaly.i",
-            "actionBtnDisabled": "Au moins une @.lower:project.anomaly.i sur un segment d'une collection ne vous appartenant pas ne sont pas résolu"
+            "actionBtnDisabled": "Au moins une @.lower:project.anomaly.i sur un segment d'une collection ne vous appartenant pas ne sont pas résolu",
+            "tab": {
+                "btnGiveTurn": "Attribuer le tour",
+                "btnReset": "Réinitialiser la fiche"
+            }
         }
     },
     "libraries": {

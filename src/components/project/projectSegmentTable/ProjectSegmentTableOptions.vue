@@ -23,7 +23,7 @@ const { t } = useI18n()
 
 const {
     orderSegment,
-    isSegmentCollectionLibrarySameAsLibrarySelected,
+    isSegmentCollectionLibrarySameAsLibrarySelectedOrUserIsAdminAndOnAnomaliesTab,
     dialogUpdateSegment,
     dialogDeleteSegment,
     userIsInstructorForSegmentCollectionLibrary,
@@ -38,7 +38,7 @@ const {
                 row.acl &&
                 row.acl.up &&
                 row.acl.down &&
-                isSegmentCollectionLibrarySameAsLibrarySelected(row) &&
+                isSegmentCollectionLibrarySameAsLibrarySelectedOrUserIsAdminAndOnAnomaliesTab(row) &&
                 projectStore.tab !== Tab.Control
             "
             class="order"
@@ -85,7 +85,7 @@ const {
                         v-if="
                             row.acl &&
                             row.acl.partialUpdate &&
-                            isSegmentCollectionLibrarySameAsLibrarySelected(row) &&
+                            isSegmentCollectionLibrarySameAsLibrarySelectedOrUserIsAdminAndOnAnomaliesTab(row) &&
                             projectStore.tab !== Tab.Control
                         "
                         clickable
@@ -113,7 +113,7 @@ const {
                         v-if="
                             row.acl &&
                             row.acl.destroy &&
-                            isSegmentCollectionLibrarySameAsLibrarySelected(row) &&
+                            isSegmentCollectionLibrarySameAsLibrarySelectedOrUserIsAdminAndOnAnomaliesTab(row) &&
                             projectStore.tab !== Tab.Control
                         "
                         clickable
