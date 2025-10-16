@@ -20,15 +20,24 @@ export const useProjectSegmentTableOptions = () => {
         loading.value = false
     }
 
-    const isSegmentCollectionLibrarySameAsLibrarySelectedOrUserIsAdminAndOnAnomaliesTab = (row: Segment) => {
+    const checkACL = (row: Segment, keys: string[]) => {
+        if (!row.acl) return false
+        return keys.every((key) => row.acl[key])
+    }
+
+    const isUserAdminOnAnomaliesTab = computed(() => projectStore.userIsAdmin && projectStore.tab === Tab.Anomalies)
+    const isUserInAnInstructionTab = computed(
+        () => projectStore.tab === Tab.InstructionBound || projectStore.tab === Tab.InstructionUnbound,
+    )
+
+    const doesSegmentBelongToSelectedLibrary = (row: Segment) => {
         return (
             resourceStore.libraryIdSelected ===
-                resourceStore.collections.find((el) => el.id === row.collection)?.library ||
-            (projectStore.userIsAdmin && projectStore.tab === Tab.Anomalies)
+            resourceStore.collections.find((el) => el.id === row.collection)?.library
         )
     }
 
-    const userIsInstructorForSegmentCollectionLibrary = (row: Segment): boolean => {
+    const isUserInstructorForSegment = (row: Segment): boolean => {
         const segmentCollectionLibraryId = resourceStore.collections.find((el) => el.id === row.collection)?.library
         return !!projectStore.roles.find(
             (el) =>
@@ -38,8 +47,53 @@ export const useProjectSegmentTableOptions = () => {
         )
     }
 
+    const displayReorderButtons = (row: Segment) => {
+        return (
+            checkACL(row, ['up', 'down']) &&
+            ((isUserInstructorForSegment(row) &&
+                isUserInAnInstructionTab.value &&
+                doesSegmentBelongToSelectedLibrary(row)) ||
+                isUserAdminOnAnomaliesTab.value)
+        )
+    }
+
+    const displayUpdateButton = (row: Segment) => {
+        return (
+            checkACL(row, ['partialUpdate']) &&
+            ((isUserInstructorForSegment(row) &&
+                isUserInAnInstructionTab.value &&
+                doesSegmentBelongToSelectedLibrary(row)) ||
+                isUserAdminOnAnomaliesTab.value)
+        )
+    }
+
+    const displayDeleteButton = (row: Segment) => {
+        return (
+            checkACL(row, ['destroy']) &&
+            ((isUserInstructorForSegment(row) &&
+                isUserInAnInstructionTab.value &&
+                doesSegmentBelongToSelectedLibrary(row)) ||
+                isUserAdminOnAnomaliesTab.value)
+        )
+    }
+
+    const displayInsertUnderButton = computed(() => {
+        return (
+            (projectStore.userIsInstructorForLibrarySelected && isUserInAnInstructionTab.value) ||
+            isUserAdminOnAnomaliesTab.value
+        )
+    })
+
+    const displayAddAnomalyButton = (row: Segment) => {
+        return (
+            (!isUserInstructorForSegment(row) && isUserInAnInstructionTab.value) ||
+            (projectStore.userIsController && projectStore.tab === Tab.Control)
+        )
+    }
+
     // Actions are disabled when there are anomalies, but if the admin gives control back to someone, there will be anomalies to resolve, and the instructor will be able to modify even if there are anomalies. So if there are only anomalies related to my segments, then I can modify, but if segments I don't control have anomalies, then it blocks.
     const areActionDisabled = computed<boolean>(() => {
+        if (projectStore.userIsAdmin && projectStore.tab === Tab.Anomalies) return false
         if (!projectStore.userIsInstructorForLibrarySelected) return true
 
         const anomaliesThatAreAssocietedWithTheInstructorAndUnresolved = resourceStore.anomalies.filter((anomaly) => {
@@ -61,11 +115,19 @@ export const useProjectSegmentTableOptions = () => {
     })
 
     return {
+        displayReorderButtons,
+        displayUpdateButton,
+        displayDeleteButton,
+        displayInsertUnderButton,
+        displayAddAnomalyButton,
         orderSegment,
-        isSegmentCollectionLibrarySameAsLibrarySelectedOrUserIsAdminAndOnAnomaliesTab,
+        doesSegmentBelongToSelectedLibrary,
+        isUserAdminOnAnomaliesTab,
+        isUserInAnInstructionTab,
         dialogUpdateSegment,
         dialogDeleteSegment,
-        userIsInstructorForSegmentCollectionLibrary,
+        isUserInstructorForSegment,
         areActionDisabled,
+        checkACL,
     }
 }

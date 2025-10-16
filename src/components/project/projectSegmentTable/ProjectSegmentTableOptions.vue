@@ -6,8 +6,6 @@ import { useProjectSegmentTableOptions } from '@/components/project/projectSegme
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useI18n } from 'vue-i18n'
 import type { Segment } from '#/project.ts'
-import { useProjectStore } from '@/stores/projectStore.ts'
-import { Tab } from '&/project.ts'
 
 defineProps<{
     row: Segment
@@ -18,15 +16,17 @@ const emit = defineEmits<{
 }>()
 
 const resourceStore = useResourceStore()
-const projectStore = useProjectStore()
 const { t } = useI18n()
 
 const {
     orderSegment,
-    isSegmentCollectionLibrarySameAsLibrarySelectedOrUserIsAdminAndOnAnomaliesTab,
+    displayUpdateButton,
+    displayReorderButtons,
+    displayDeleteButton,
+    displayInsertUnderButton,
+    displayAddAnomalyButton,
     dialogUpdateSegment,
     dialogDeleteSegment,
-    userIsInstructorForSegmentCollectionLibrary,
     areActionDisabled,
 } = useProjectSegmentTableOptions()
 </script>
@@ -34,13 +34,7 @@ const {
 <template>
     <div class="options">
         <div
-            v-if="
-                row.acl &&
-                row.acl.up &&
-                row.acl.down &&
-                isSegmentCollectionLibrarySameAsLibrarySelectedOrUserIsAdminAndOnAnomaliesTab(row) &&
-                projectStore.tab !== Tab.Control
-            "
+            v-if="displayReorderButtons(row)"
             class="order"
         >
             <AtomicButton
@@ -82,12 +76,7 @@ const {
             <QMenu auto-close>
                 <QList>
                     <QItem
-                        v-if="
-                            row.acl &&
-                            row.acl.partialUpdate &&
-                            isSegmentCollectionLibrarySameAsLibrarySelectedOrUserIsAdminAndOnAnomaliesTab(row) &&
-                            projectStore.tab !== Tab.Control
-                        "
+                        v-if="displayUpdateButton(row)"
                         clickable
                         :disable="areActionDisabled"
                         @click="dialogUpdateSegment = true"
@@ -98,11 +87,6 @@ const {
                         <QItemSection>
                             <QItemLabel>{{ t('common.update') }}</QItemLabel>
                         </QItemSection>
-                        <ProjectInstructionSegmentDialog
-                            v-model="dialogUpdateSegment"
-                            :is-new="false"
-                            :segment="row"
-                        />
                         <QTooltip
                             v-if="areActionDisabled"
                             :delay="1000"
@@ -110,12 +94,7 @@ const {
                         >
                     </QItem>
                     <QItem
-                        v-if="
-                            row.acl &&
-                            row.acl.destroy &&
-                            isSegmentCollectionLibrarySameAsLibrarySelectedOrUserIsAdminAndOnAnomaliesTab(row) &&
-                            projectStore.tab !== Tab.Control
-                        "
+                        v-if="displayDeleteButton(row)"
                         clickable
                         :disable="areActionDisabled"
                         @click="dialogDeleteSegment = true"
@@ -137,7 +116,7 @@ const {
                         >
                     </QItem>
                     <QItem
-                        v-if="projectStore.userIsInstructorForLibrarySelected && projectStore.tab !== Tab.Control"
+                        v-if="displayInsertUnderButton"
                         clickable
                         :disable="areActionDisabled"
                         @click="openDialogCreateSegment(row.id)"
@@ -155,12 +134,7 @@ const {
                         >
                     </QItem>
                     <QItem
-                        v-if="
-                            (!userIsInstructorForSegmentCollectionLibrary(row) &&
-                                (projectStore.tab === Tab.InstructionBound ||
-                                    projectStore.tab === Tab.InstructionUnbound)) ||
-                            (projectStore.userIsController && projectStore.tab === Tab.Control)
-                        "
+                        v-if="displayAddAnomalyButton(row)"
                         clickable
                         @click="emit('addAnomaly')"
                     >
@@ -173,6 +147,15 @@ const {
                     </QItem>
                 </QList>
             </QMenu>
+            <ProjectInstructionSegmentDialog
+                v-model="dialogUpdateSegment"
+                :is-new="false"
+                :segment="row"
+            />
+            <AtomicConfirmationDialog
+                v-model="dialogDeleteSegment"
+                @confirm="resourceStore.deleteSegment(row.id)"
+            />
         </AtomicButton>
     </div>
 </template>
