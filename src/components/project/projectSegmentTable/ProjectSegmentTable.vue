@@ -25,7 +25,7 @@ const {
     addAnomaly,
     onActionOnAnomaly,
     displayOptionsColumnBasedOnUserRole,
-    checkIfSegmentTypeIsSameAsInstructionTab,
+    displayNewSegmentButton,
 } = useProjectSegmentTable()
 
 onMounted(async () => {
@@ -57,13 +57,7 @@ onMounted(async () => {
                     :key="col.name"
                     :props="props"
                 >
-                    <template
-                        v-if="
-                            col.name === 'options' &&
-                            displayOptionsColumnBasedOnUserRole &&
-                            checkIfSegmentTypeIsSameAsInstructionTab(props.row)
-                        "
-                    >
+                    <template v-if="col.name === 'options' && displayOptionsColumnBasedOnUserRole(props.row)">
                         <ProjectSegmentTableOptions
                             :open-dialog-create-segment
                             :row="props.row"
@@ -119,18 +113,16 @@ onMounted(async () => {
         </template>
 
         <template
-            v-if="
-                (resourceStore.shouldInstruct &&
-                    projectStore.userIsInstructorForLibrarySelected &&
-                    projectStore.tab === Tab.InstructionBound) ||
-                projectStore.tab === Tab.InstructionUnbound
-            "
+            v-if="displayNewSegmentButton"
             #bottom
         >
             <QTr class="bottom">
                 <AtomicButton
                     class="btn-segment"
-                    :disable="!!resourceStore.anomaliesUnfixed.length"
+                    :disable="
+                        !!resourceStore.anomaliesUnfixed.length &&
+                        (projectStore.tab === Tab.InstructionBound || projectStore.tab === Tab.InstructionUnbound)
+                    "
                     icon="mdi-plus"
                     :label="t('project.instruction.segment.new')"
                     no-border
