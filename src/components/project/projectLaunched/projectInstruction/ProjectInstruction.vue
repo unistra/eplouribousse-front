@@ -22,12 +22,21 @@ const { dialogCreateSegment, insertAfter, turnsWithNames, onConfirmAnomaliesDecl
     <div class="instruction">
         <div class="turns">
             <p>{{ t('project.instruction.turns') }}:</p>
+
             <p
                 v-for="(turn, index) in turnsWithNames"
                 :key="index"
             >
-                {{ turn.library + (index + 1 === turnsWithNames?.length ? '' : ',') }}
-
+                <span
+                    :class="{
+                        bold:
+                            turn.collectiondId ===
+                            resourceStore.instructionTurns?.[`${resourceStore.statusName}`].turns[0].collection,
+                    }"
+                >
+                    {{ turn.library }}
+                </span>
+                <span>{{ index + 1 === turnsWithNames?.length ? '' : ',' }}</span>
                 <QTooltip> {{ turn.collection }} </QTooltip>
             </p>
         </div>
@@ -87,4 +96,8 @@ const { dialogCreateSegment, insertAfter, turnsWithNames, onConfirmAnomaliesDecl
     align-self: end
     display: flex
     gap: 1rem
+
+.bold
+    font-weight: bold
+    text-decoration: underline
 </style>

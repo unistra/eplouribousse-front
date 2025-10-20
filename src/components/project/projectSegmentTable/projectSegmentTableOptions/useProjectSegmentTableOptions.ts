@@ -86,7 +86,8 @@ export const useProjectSegmentTableOptions = () => {
 
     const displayAddAnomalyButton = (row: Segment) => {
         return (
-            (!isUserInstructorForSegment(row) && isUserInAnInstructionTab.value) ||
+            (!(isUserInstructorForSegment(row) && doesSegmentBelongToSelectedLibrary(row)) &&
+                isUserInAnInstructionTab.value) ||
             (projectStore.userIsController && projectStore.tab === Tab.Control)
         )
     }

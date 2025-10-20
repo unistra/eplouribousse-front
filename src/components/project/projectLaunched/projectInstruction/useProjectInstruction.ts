@@ -14,17 +14,17 @@ export const useProjectInstruction = (dialogModal: Ref<boolean> | undefined) => 
     const insertAfter = ref<string | undefined>()
 
     const turnsWithNames = computed(() => {
-        if (![ResourceStatus.InstructionBound, ResourceStatus.InstructionUnbound].includes(resourceStore.status))
-            return null
+        if (resourceStore.status === ResourceStatus.Positioning) return null
 
         const retrieveCollectionName = (el: InstructionTurn): string => {
             const collection = resourceStore.collections.find((collection) => collection.id === el.collection)
             return `${t('project.resources.callNumber')}: ${collection?.callNumber} - ${t('project.resources.holdStatement')}: ${collection?.holdStatement} - ${t('project.resources.position')}: ${collection?.position}`
         }
 
-        return resourceStore.instructionTurns?.[`${resourceStore.statusName}`].turns.map((el: InstructionTurn) => ({
+        return resourceStore.instructionTurns?.turns.map((el: InstructionTurn) => ({
             library: projectStore.libraries.find((library) => library.id === el.library)?.name,
             collection: retrieveCollectionName(el),
+            collectiondId: el.collection,
         }))
     })
 
