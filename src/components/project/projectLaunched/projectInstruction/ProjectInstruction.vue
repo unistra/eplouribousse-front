@@ -99,5 +99,4 @@ const { dialogCreateSegment, insertAfter, turnsWithNames, onConfirmAnomaliesDecl
 
 .bold
     font-weight: bold
-    text-decoration: underline
 </style>

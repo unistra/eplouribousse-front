@@ -142,14 +142,13 @@ const {
                             <QIcon name="mdi-alert-circle" />
                         </QItemSection>
                         <QItemSection>
-                            <QItemLabel>{{ t('project.instruction.segment.signalAnomalie') }}</QItemLabel>
+                            <QItemLabel>{{ t('project.instruction.segment.signalAnomaly') }}</QItemLabel>
                         </QItemSection>
                     </QItem>
                 </QList>
             </QMenu>
             <ProjectInstructionSegmentDialog
                 v-model="dialogUpdateSegment"
-                :is-new="false"
                 :segment="row"
             />
             <AtomicConfirmationDialog

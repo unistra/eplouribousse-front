@@ -254,7 +254,7 @@
                 "insertUnder": "Insérer en dessous",
                 "update": "@.capitalize:common.update @.lower:project.instruction.segment.ii",
                 "noSegment": "@.capitalize:common.none @.lower:project.instruction.segment.i",
-                "signalAnomalie": "Signaler une @.lower:project.anomaly.i"
+                "signalAnomaly": "Signaler une @.lower:project.anomaly.i"
             },
             "tableFields": {
                 "order": "Ordre",
