@@ -302,7 +302,8 @@
             "actionBtnDisabled": "Au moins une @.lower:project.anomaly.i sur un segment d'une collection ne vous appartenant pas ne sont pas résolu",
             "tab": {
                 "btnGiveTurn": "Attribuer le tour",
-                "btnReset": "Réinitialiser la fiche"
+                "btnReset": "Réinitialiser la fiche",
+                "btnGiveTurnDisableTooltip": "Des @.lower:project.anomaly.i ne sont pas résolues"
             }
         }
     },

@@ -96,6 +96,7 @@ export interface ProjectLibrary extends LibraryI {
 }
 
 export type InstructionTurns = {
+    turns: InstructionTurn[]
     boundCopies: InstructionTurnGroup
     unboundCopies: InstructionTurnGroup
 }
