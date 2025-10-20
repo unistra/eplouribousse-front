@@ -19,22 +19,33 @@ export const useProjectSegmentTable = () => {
     const projectStore = useProjectStore()
     const { t } = useI18n()
     const hoveredValue = ref<string | null>(null)
-    const displayOptionsColumnBasedOnUserRole = computed(() => {
-        return (
-            (projectStore.userIsInstructorForLibrarySelected &&
-                (projectStore.tab === Tab.InstructionBound || projectStore.tab === Tab.InstructionUnbound)) ||
-            (projectStore.userIsController && projectStore.tab === Tab.Control) ||
-            projectStore.userIsAdmin
-        )
-    })
 
-    const checkIfSegmentTypeIsSameAsInstructionTab = (segment: Segment) => {
+    const isSegmentTypeSameAsInstructionTab = (segment: Segment) => {
         return (
             (segment.segmentType === 'bound' && projectStore.tab === Tab.InstructionBound) ||
             (segment.segmentType === 'unbound' && projectStore.tab === Tab.InstructionUnbound) ||
-            projectStore.tab === Tab.Control
+            projectStore.tab === Tab.Control ||
+            projectStore.tab === Tab.Anomalies
         )
     }
+
+    const displayOptionsColumnBasedOnUserRole = (segment?: Segment) => {
+        return (
+            (projectStore.userIsInstructorForLibrarySelected &&
+                (projectStore.tab === Tab.InstructionBound || projectStore.tab === Tab.InstructionUnbound) &&
+                (segment ? isSegmentTypeSameAsInstructionTab(segment) : true)) ||
+            (projectStore.userIsController && projectStore.tab === Tab.Control) ||
+            (projectStore.userIsAdmin && projectStore.tab === Tab.Anomalies)
+        )
+    }
+
+    const displayNewSegmentButton = computed(
+        () =>
+            (resourceStore.shouldInstruct &&
+                projectStore.userIsInstructorForLibrarySelected &&
+                (projectStore.tab === Tab.InstructionBound || projectStore.tab === Tab.InstructionUnbound)) ||
+            (projectStore.userIsAdmin && projectStore.tab === Tab.Anomalies),
+    )
 
     const dialogCreateSegment = ref<boolean>(false)
     const insertAfter = ref<string>()
@@ -125,7 +136,7 @@ export const useProjectSegmentTable = () => {
         },
     ]
 
-    if (displayOptionsColumnBasedOnUserRole.value) {
+    if (displayOptionsColumnBasedOnUserRole()) {
         columns.push({
             name: 'options',
             label: t('project.instruction.tableFields.options'),
@@ -152,6 +163,6 @@ export const useProjectSegmentTable = () => {
         addAnomaly,
         onActionOnAnomaly,
         displayOptionsColumnBasedOnUserRole,
-        checkIfSegmentTypeIsSameAsInstructionTab,
+        displayNewSegmentButton,
     }
 }

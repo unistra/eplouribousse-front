@@ -68,7 +68,7 @@ const { columns, anomalyDescription, anomalyOptions, onDeleteAnomaly, segmentAno
                     @click="resourceStore.fixAnomaly(row.id)"
                 />
                 <AtomicButton
-                    v-else-if="row.createdBy.id === userStore.user?.id"
+                    v-else-if="row.createdBy.id === userStore.user?.id && projectStore.tab !== Tab.Anomalies"
                     icon="mdi-delete-forever-outline"
                     no-border
                     @click="onDeleteAnomaly(row.id)"

@@ -11,11 +11,16 @@ import { useProjectInstructionSegmentDialog } from '@/components/project/project
 const { t } = useI18n()
 const resourceStore = useResourceStore()
 const model = defineModel<boolean>({ required: true })
-const props = defineProps<{
-    segment?: Segment
-    isNew: boolean
-    insertAfter?: string
-}>()
+const props = withDefaults(
+    defineProps<{
+        segment?: Segment
+        isNew?: boolean
+        insertAfter?: string
+    }>(),
+    {
+        isNew: false,
+    },
+)
 
 const { workSegment, segmentLabel, onHide, onSave } = useProjectInstructionSegmentDialog(props, model)
 

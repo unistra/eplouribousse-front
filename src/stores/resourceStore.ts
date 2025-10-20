@@ -142,7 +142,10 @@ export const useResourceStore = defineStore('resource', {
 
                 const params: Record<string, string | number> = {
                     project: projectStore.id,
-                    library: this.libraryIdSelected,
+                    library:
+                        status === ResourceStatus.AnomalyBound || status === ResourceStatus.AnomalyUnbound
+                            ? ''
+                            : this.libraryIdSelected,
                     status: status,
                 }
 

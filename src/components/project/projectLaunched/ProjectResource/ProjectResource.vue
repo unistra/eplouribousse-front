@@ -7,6 +7,8 @@ import { useI18n } from 'vue-i18n'
 import { provide, ref } from 'vue'
 import ProjectControl from '@/components/project/projectLaunched/projectControl/ProjectControl.vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
+import ProjectAnomalies from '@/components/project/projectLaunched/projectAnomalies/ProjectAnomalies.vue'
+import { Tab } from '&/project.ts'
 
 const { t } = useI18n()
 const resourceStore = useResourceStore()
@@ -63,11 +65,14 @@ const onBeforeShow = async () => {
                     </hgroup>
                 </QCardSection>
                 <QCardSection class="content">
-                    <ProjectPositioning v-if="projectStore.tab === 'positioning'" />
+                    <ProjectPositioning v-if="projectStore.tab === Tab.Positioning" />
                     <ProjectInstruction
-                        v-else-if="projectStore.tab === 'instructionBound' || projectStore.tab === 'instructionUnbound'"
+                        v-else-if="
+                            projectStore.tab === Tab.InstructionBound || projectStore.tab === Tab.InstructionUnbound
+                        "
                     />
-                    <ProjectControl v-else-if="projectStore.tab === 'control'" />
+                    <ProjectControl v-else-if="projectStore.tab === Tab.Control" />
+                    <ProjectAnomalies v-else-if="projectStore.tab === Tab.Anomalies" />
                     <p v-else>Unsupported status for Resource</p>
                 </QCardSection>
             </template>

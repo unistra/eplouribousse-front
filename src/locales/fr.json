@@ -151,7 +151,6 @@
             "users": "Utilisateurs",
             "alerts": "Alertes email",
             "exclusions": "Motifs d'exclusion",
-            "errors": "@:project.anomaly.i",
             "sucessUpdate": "Projet mis à jour avec succès"
         },
         "collection": {
@@ -200,7 +199,10 @@
                 "instructionBound": "Instruction des exemplaires reliés",
                 "controlBound": "Contrôle des exemplaires reliés",
                 "instructionUnbound": "Instruction des exemplaires non reliés",
-                "controlUnbound": "Contrôle des exemplaires non reliés"
+                "controlUnbound": "Contrôle des exemplaires non reliés",
+                "anomalies": "@.capitalize:project.anomaly.i",
+                "anomaliesBound": "@.capitalize:project.anomaly.i reliés",
+                "anomaliesUnbound": "@.capitalize:project.anomaly.i non reliés"
             },
 
             "youAreInstructor": "Vous êtes instructeur pour cette bibliothèque",
@@ -252,7 +254,7 @@
                 "insertUnder": "Insérer en dessous",
                 "update": "@.capitalize:common.update @.lower:project.instruction.segment.ii",
                 "noSegment": "@.capitalize:common.none @.lower:project.instruction.segment.i",
-                "signalAnomalie": "Signaler une @.lower:project.anomaly.i"
+                "signalAnomaly": "Signaler une @.lower:project.anomaly.i"
             },
             "tableFields": {
                 "order": "Ordre",
@@ -297,7 +299,13 @@
             "unfixed": "Non résolu",
             "fixBtn": "Marquer comme @.lower:project.anomaly.fixed",
             "declareBtn": "Finaliser la déclaration d'@.lower:project.anomaly.i",
-            "actionBtnDisabled": "Au moins une @.lower:project.anomaly.i sur un segment d'une collection ne vous appartenant pas ne sont pas résolu"
+            "actionBtnDisabled": "Au moins une @.lower:project.anomaly.i sur un segment d'une collection ne vous appartenant pas ne sont pas résolu",
+            "tab": {
+                "btnGiveTurn": "Attribuer le tour",
+                "btnReset": "Réinitialiser la fiche",
+                "btnGiveTurnDisableTooltip": "Des @.lower:project.anomaly.i ne sont pas résolues"
+            },
+            "giveTurnToAController": "Donner la main à un contrôleur"
         }
     },
     "libraries": {
