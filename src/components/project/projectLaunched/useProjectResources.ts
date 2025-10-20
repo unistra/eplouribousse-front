@@ -10,11 +10,12 @@ import type { TableProjectResources } from '#/table.ts'
 import { storeToRefs } from 'pinia'
 
 type useProjectResourceToggleAnomaliesTypes = ResourceStatus.AnomalyBound | ResourceStatus.AnomalyUnbound
+type useProjectResourceToggleControlTypes = ResourceStatus.ControlBound | ResourceStatus.ControlUnbound
 
 type useProjectResourceTab = {
     name: string
     label: string
-    status: ResourceStatus | Ref<useProjectResourceToggleAnomaliesTypes>
+    status: ResourceStatus | Ref<useProjectResourceToggleAnomaliesTypes | useProjectResourceToggleControlTypes>
 }
 
 export const useProjectResources = () => {
@@ -26,6 +27,7 @@ export const useProjectResources = () => {
     const disableLibrarySelectedSelect = ref<boolean>(false)
 
     const toggleAnomaliesTypes = ref<useProjectResourceToggleAnomaliesTypes>(ResourceStatus.AnomalyBound)
+    const toggleControlTypes = ref<useProjectResourceToggleControlTypes>(ResourceStatus.ControlBound)
 
     const tabs: useProjectResourceTab[] = [
         { name: 'positioning', label: t('project.resources.status.toPosition'), status: ResourceStatus.Positioning },
@@ -39,7 +41,7 @@ export const useProjectResources = () => {
             label: t('project.resources.status.toInstructUnbound'),
             status: ResourceStatus.InstructionUnbound,
         },
-        { name: 'control', label: t('project.resources.status.toControl'), status: ResourceStatus.ControlBound },
+        { name: 'control', label: t('project.resources.status.toControl'), status: toggleControlTypes },
         { name: 'anomalies', label: t('project.resources.status.anomalies', 2), status: toggleAnomaliesTypes },
     ]
     const tabStatus = computed(() => {
@@ -152,7 +154,6 @@ export const useProjectResources = () => {
                 libraryIdComparedSelected.value = ''
                 disableLibrarySelectedSelect.value = true
             } else {
-                selectDefaultLibrary()
                 disableLibrarySelectedSelect.value = false
             }
         }
@@ -195,5 +196,6 @@ export const useProjectResources = () => {
         fetchResources,
         toggleAnomaliesTypes,
         disableLibrarySelectedSelect,
+        toggleControlTypes,
     }
 }

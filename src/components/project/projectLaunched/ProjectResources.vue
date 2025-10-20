@@ -22,6 +22,7 @@ const {
     selects,
     toggleAnomaliesTypes,
     disableLibrarySelectedSelect,
+    toggleControlTypes,
 } = useProjectResources()
 const { t } = useI18n()
 
@@ -88,6 +89,19 @@ onMounted(async () => {
                     "
                     name="anomaly-toggle"
                     :true-value="ResourceStatus.AnomalyUnbound"
+                    @update:model-value="fetchResources(undefined, true)"
+                />
+                <QToggle
+                    v-if="projectStore.tab === Tab.Control"
+                    v-model="toggleControlTypes"
+                    :false-value="ResourceStatus.ControlBound"
+                    :label="
+                        toggleControlTypes === ResourceStatus.ControlBound
+                            ? t('project.resources.status.controlBound')
+                            : t('project.resources.status.controlUnbound')
+                    "
+                    name="control-toggle"
+                    :true-value="ResourceStatus.ControlUnbound"
                     @update:model-value="fetchResources(undefined, true)"
                 />
                 <QTable
