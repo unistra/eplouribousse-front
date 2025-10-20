@@ -81,7 +81,7 @@ onMounted(async () => {
                                         flat
                                         icon="mdi-cog"
                                         round
-                                        :to="{ name: 'projectAdministration', params: { id: project.id } }"
+                                        :to="{ name: 'projectAdmin', params: { id: project.id } }"
                                     />
                                 </DrawerItem>
                             </QList>

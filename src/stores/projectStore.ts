@@ -9,6 +9,7 @@ import {
     type ProjectInvitation,
     type ProjectLibrary,
     type ProjectRole,
+    type ProjectSettings,
 } from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { Notify } from 'quasar'
@@ -33,12 +34,12 @@ const initialState: ProjectI = {
         exclusionReasons: [],
         alerts: {
             positioning: false,
-            arbitration0: false,
-            arbitration1: false,
-            instructions: false,
-            results: false,
-            transferTracking: false,
-            treatmentTracking: false,
+            arbitration: false,
+            instruction: false,
+            control: false,
+            edition: false,
+            preservation: false,
+            transfer: false,
         },
     },
     invitations: [],
@@ -438,6 +439,37 @@ export const useProjectStore = defineStore('project', {
         },
         findUsersByRole(role: Roles) {
             return this.roles.filter((projectUser) => projectUser.role === role)
+        },
+        async fetchAlerts() {
+            try {
+                const response = await axiosI.get<{ alerts: ProjectSettings['alerts'] }>(`/projects/${this.id}/alerts/`)
+                this.settings.alerts = structuredClone(response.data.alerts)
+                this.initialState.settings.alerts = structuredClone(response.data.alerts)
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
+        },
+        async patchAlerts() {
+            try {
+                const response = await axiosI.patch<{ alerts: ProjectSettings['alerts'] }>(
+                    `/projects/${this.id}/alerts/`,
+                    { alerts: { ...this.settings.alerts } },
+                )
+                this.settings.alerts = structuredClone(response.data.alerts)
+                this.initialState.settings.alerts = structuredClone(response.data.alerts)
+                Notify.create({
+                    type: 'positive',
+                    message: t('project.settings.emailAlert.successAlertUpdated'),
+                })
+            } catch {
+                Notify.create({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+            }
         },
     },
 })

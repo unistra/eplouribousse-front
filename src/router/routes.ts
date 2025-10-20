@@ -132,7 +132,7 @@ const routes: RouteRecordRaw[] = [
     },
     {
         path: '/projects/:id/administration',
-        name: 'projectAdministration',
+        name: 'projectAdmin',
         component: () => import('@/views/ProjectAdministrationView.vue'),
         meta: {
             title: t('navigation.projectAdministration'),

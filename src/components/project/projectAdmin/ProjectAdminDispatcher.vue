@@ -2,7 +2,7 @@
 import { useProjectStore } from '@/stores/projectStore'
 import ProjectLibraryCard from '@/components/project/projectStepper/steps/projectLibraries/ProjectLibraryCard.vue'
 import ProjectRoles from '@/components/project/projectStepper/steps/projectRoles/ProjectRoles.vue'
-import { useProjectAdministration } from '@/components/project/projectAdministration/useProjectAdministration'
+import { ProjectAdministrationTab, useProjectAdmin } from '@/components/project/projectAdmin/useProjectAdmin.ts'
 import ProjectInformations from '../projectStepper/steps/projectInformations/ProjectInformations.vue'
 import AtomicIcon from '@/components/atomic/AtomicIcon.vue'
 import AtomicToggle from '@/components/atomic/AtomicToggle.vue'
@@ -10,14 +10,14 @@ import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import { Roles } from '&/project'
 import { useI18n } from 'vue-i18n'
+import ProjectAdminAlerts from '@/components/project/projectAdmin/projectAdminAlerts/ProjectAdminAlerts.vue'
 
 const store = useProjectStore()
 const { t } = useI18n()
-const { tabs } = useProjectAdministration()
 const { addingExclusionReason, newExclusionReason, onAddExclusionReason, onCancelAddExclusionReason } =
-    useProjectAdministration()
+    useProjectAdmin()
 defineProps<{
-    tabName: string
+    tabName: ProjectAdministrationTab
 }>()
 
 // TODO: mettre la couleur noire uniquement sur le projet sélectionné, les autres en gris
@@ -26,7 +26,7 @@ defineProps<{
 
 <template>
     <div
-        v-if="tabName === tabs[0].name"
+        v-if="tabName === ProjectAdministrationTab.Informations"
         class="informations space"
     >
         <QCard
@@ -88,7 +88,7 @@ defineProps<{
         </QCard>
     </div>
     <div
-        v-if="tabName === tabs[1].name"
+        v-if="tabName === ProjectAdministrationTab.Libraries"
         class="space"
     >
         <QCard
@@ -105,7 +105,7 @@ defineProps<{
         </QCard>
     </div>
     <div
-        v-if="tabName === tabs[2].name"
+        v-if="tabName === ProjectAdministrationTab.Users"
         class="space"
     >
         <QCard
@@ -117,36 +117,9 @@ defineProps<{
             </QCardSection>
         </QCard>
     </div>
+    <ProjectAdminAlerts v-if="tabName === ProjectAdministrationTab.Alerts" />
     <div
-        v-if="tabName === tabs[3].name"
-        class="space"
-    >
-        <QCard
-            bordered
-            flat
-        >
-            <QCardSection>
-                <b>{{ t('project.settings.emailAlert.resourcesAlterts') }}</b>
-                <QList>
-                    <QItem
-                        v-for="key in Object.keys(store.settings.alerts)"
-                        :key="key"
-                    >
-                        <AtomicToggle
-                            v-model="
-                                //@ts-ignore
-                                store.settings.alerts[key as keyof typeof store.settings.alerts]
-                            "
-                            :label="t(`project.settings.emailAlert.${key}`)"
-                            left-label
-                        />
-                    </QItem>
-                </QList>
-            </QCardSection>
-        </QCard>
-    </div>
-    <div
-        v-if="tabName === tabs[4].name"
+        v-if="tabName === ProjectAdministrationTab.Exclusions"
         class="space"
     >
         <QCard

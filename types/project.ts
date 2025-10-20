@@ -80,14 +80,16 @@ export interface ProjectSettings {
     exclusionReasons: string[]
     alerts: {
         positioning: boolean
-        arbitration0: boolean
-        arbitration1: boolean
-        instructions: boolean
-        results: boolean
-        transferTracking: boolean
-        treatmentTracking: boolean
+        arbitration: boolean
+        instruction: boolean
+        control: boolean
+        edition: boolean
+        preservation: boolean
+        transfer: boolean
     }
 }
+
+export type AlertKey = keyof ProjectSettings['alerts']
 
 export interface ProjectLibrary extends LibraryI {
     isAlternativeStorageSite: boolean

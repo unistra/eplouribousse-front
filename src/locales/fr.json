@@ -219,14 +219,15 @@
             "emailAlert": {
                 "title": "Alertes email",
                 "resourcesAlterts": "Opérations sur les ressources",
-                "tracking": "Suivi",
+                "successAlertUpdated": "Alerte mise à jour avec succès",
                 "positioning": "Positionnement",
-                "arbitration0": "Arbitrage type 0",
-                "arbitration1": "Arbitrage type 1",
-                "instructions": "Instruction",
+                "arbitration": "@.capitalize:project.positioning.arbitration.i",
+                "control": "Contrôle",
+                "instruction": "Instruction",
+                "edition": "Édition",
+                "preservation": "Préservation",
                 "results": "Résultante",
-                "transferTracking": "Suivi des transferts",
-                "treatmentTracking": "Suivi des traitements"
+                "transfer": "Suivi des transferts"
             },
             "defaultStorageLocation": "Lieu de conservation par défaut",
             "transferTracking": "Suivi des transferts",
@@ -424,7 +425,8 @@
             "forLibrary": "pour la @.lower:common.library",
             "rolesInProject": "Vos rôles dans le projet",
             "alerts": {
-                "title": "Alertes associées au projet :",
+                "info": "Si les alertes sont désactivées au niveau du projet, alors elle ne seront pas visible ici",
+                "title": "Alertes associées au projet",
                 "positioning": "Alertes positionnement",
                 "instructions": "Alertes instructions",
                 "arbitrages": "Alertes arbitrages",
@@ -477,7 +479,8 @@
         "searchUser": {
             "inputPlaceholder": "Rechercher un utilisateur, ou entrer son adresse e-mail pour l'inviter",
             "inviteText": "Inviter cet utilisateur avec cet email"
-        }
+        },
+        "modificationSuccess": "Les modifications ont bien été enregistrées"
     },
     "errors": {
         "unknown": "Une erreur est survenue",
