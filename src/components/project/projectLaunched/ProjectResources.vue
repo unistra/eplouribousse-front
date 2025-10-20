@@ -4,7 +4,7 @@ import { useProjectResources } from '@/components/project/projectLaunched/usePro
 import { useI18n } from 'vue-i18n'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
-import { Roles } from '&/project.ts'
+import { ResourceStatus, Roles, Tab } from '&/project.ts'
 import type { QTable } from 'quasar'
 import ProjectResource from '@/components/project/projectLaunched/ProjectResource/ProjectResource.vue'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
@@ -12,7 +12,17 @@ import AtomicInput from '@/components/atomic/AtomicInput.vue'
 const resourceStore = useResourceStore()
 const projectStore = useProjectStore()
 
-const { tabs, resourceDialog, table, selectDefaultLibrary, onRowClick, fetchResources, selects } = useProjectResources()
+const {
+    tabs,
+    resourceDialog,
+    table,
+    selectDefaultLibrary,
+    onRowClick,
+    fetchResources,
+    selects,
+    toggleAnomaliesTypes,
+    disableLibrarySelectedSelect,
+} = useProjectResources()
 const { t } = useI18n()
 
 onMounted(async () => {
@@ -28,6 +38,7 @@ onMounted(async () => {
                 v-for="(select, index) in selects"
                 :key="index"
                 v-model="select.model.value"
+                :disable="disableLibrarySelectedSelect"
                 emit-value
                 :label="select.label"
                 map-options
@@ -66,6 +77,19 @@ onMounted(async () => {
                 :key="index"
                 :name="value.name"
             >
+                <QToggle
+                    v-if="projectStore.tab === Tab.Anomalies"
+                    v-model="toggleAnomaliesTypes"
+                    :false-value="ResourceStatus.AnomalyBound"
+                    :label="
+                        toggleAnomaliesTypes === ResourceStatus.AnomalyBound
+                            ? t('project.resources.status.anomaliesBound')
+                            : t('project.resources.status.anomaliesUnbound')
+                    "
+                    name="anomaly-toggle"
+                    :true-value="ResourceStatus.AnomalyUnbound"
+                    @update:model-value="fetchResources(undefined, true)"
+                />
                 <QTable
                     ref="qTable"
                     v-model:pagination="table.pagination.value"

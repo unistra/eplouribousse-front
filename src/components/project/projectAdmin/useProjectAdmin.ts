@@ -8,7 +8,6 @@ export enum ProjectAdministrationTab {
     Users = 'users',
     Alerts = 'alerts',
     Exclusions = 'exclusions',
-    Errors = 'errors',
 }
 
 export function useProjectAdmin() {
@@ -24,7 +23,6 @@ export function useProjectAdmin() {
         { name: ProjectAdministrationTab.Users, label: t('project.administration.users') },
         { name: ProjectAdministrationTab.Alerts, label: t('project.administration.alerts') },
         { name: ProjectAdministrationTab.Exclusions, label: t('project.administration.exclusions') },
-        { name: ProjectAdministrationTab.Errors, label: t('project.administration.errors') },
     ]
     const tab = ref<string>(ProjectAdministrationTab.Informations)
 

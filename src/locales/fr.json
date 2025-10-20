@@ -151,7 +151,6 @@
             "users": "Utilisateurs",
             "alerts": "Alertes email",
             "exclusions": "Motifs d'exclusion",
-            "errors": "@:project.anomaly.i",
             "sucessUpdate": "Projet mis à jour avec succès"
         },
         "collection": {
@@ -200,7 +199,10 @@
                 "instructionBound": "Instruction des exemplaires reliés",
                 "controlBound": "Contrôle des exemplaires reliés",
                 "instructionUnbound": "Instruction des exemplaires non reliés",
-                "controlUnbound": "Contrôle des exemplaires non reliés"
+                "controlUnbound": "Contrôle des exemplaires non reliés",
+                "anomalies": "@.capitalize:project.anomaly.i",
+                "anomaliesBound": "@.capitalize:project.anomaly.i reliés",
+                "anomaliesUnbound": "@.capitalize:project.anomaly.i non reliés"
             },
 
             "youAreInstructor": "Vous êtes instructeur pour cette bibliothèque",
