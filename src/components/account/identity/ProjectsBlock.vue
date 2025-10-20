@@ -80,15 +80,14 @@ onMounted(async () => {
                             <QIcon name="mdi-information-outline" />
                             <QTooltip size="md">{{ t('account.projects.alerts.info') }}</QTooltip>
                         </p>
-                        <template
-                            v-for="alert in Object.entries(userSettingsAlertsFormatted)"
-                            :key="alert[0]"
-                        >
+                        <div class="alerts-toggles">
                             <AtomicToggle
+                                v-for="alert in Object.entries(userSettingsAlertsFormatted)"
+                                :key="alert[0]"
                                 v-model="userSettingsAlertsFormatted[alert[0] as AlertKey]"
                                 :label="t(`project.settings.emailAlert.${alert[0]}`)"
                             />
-                        </template>
+                        </div>
                     </QCardSection>
                     <QCardActions
                         v-if="isDifferenceBetweenUserSettingsAndInitial"
@@ -112,7 +111,7 @@ h2
 .project-name
     font-size: 1.3rem
 
-.alertes-toggles
+.alerts-toggles
     display: flex
     flex-direction: column
 

@@ -51,7 +51,6 @@ const onPatchAlerts = async () => {
                             projectStore.settings.alerts[key as keyof typeof projectStore.settings.alerts]
                         "
                         :label="t(`project.settings.emailAlert.${key}`)"
-                        left-label
                     />
                 </QItem>
             </QList>
