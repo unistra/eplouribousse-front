@@ -304,7 +304,8 @@
                 "btnGiveTurn": "Attribuer le tour",
                 "btnReset": "Réinitialiser la fiche",
                 "btnGiveTurnDisableTooltip": "Des @.lower:project.anomaly.i ne sont pas résolues"
-            }
+            },
+            "giveTurnToAController": "Donner la main à un contrôleur"
         }
     },
     "libraries": {

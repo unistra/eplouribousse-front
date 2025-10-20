@@ -45,6 +45,12 @@ const { collectionsSortedByOrderInInstructionTurns, resetInstruction, reassignTu
                                 }}
                             </QItemSection>
                         </QItem>
+                        <QItem
+                            clickable
+                            @click="reassignTurn(undefined, true)"
+                        >
+                            <QItemSection>{{ t('project.anomaly.giveTurnToAController') }}</QItemSection>
+                        </QItem>
                     </QList>
                 </QMenu>
             </AtomicButton>
