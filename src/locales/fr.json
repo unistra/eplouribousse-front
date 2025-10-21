@@ -257,18 +257,20 @@
                 "insertUnder": "Insérer en dessous",
                 "update": "@.capitalize:common.update @.lower:project.instruction.segment.ii",
                 "noSegment": "@.capitalize:common.none @.lower:project.instruction.segment.i",
-                "signalAnomaly": "Signaler une @.lower:project.anomaly.i"
+                "signalAnomaly": "Signaler une @.lower:project.anomaly.i",
+                "bound": "Reliée",
+                "unbound": "Non reliée"
             },
             "tableFields": {
-                "order": "Ordre",
+                "line": "Ligne",
                 "library": "@.capitalize:libraries.title",
                 "collection": "@.capitalize:project.collection.i",
                 "segment": "@.capitalize:project.instruction.segment.i",
-                "boundOrUnbound": "Relié ou non relié",
-                "improvableElements": "Élément améliorable",
-                "exception": "Exception",
+                "boundOrUnbound": "Forme reliée ou non reliée",
+                "improvableElements": "Éléments améliorables",
+                "exception": "Exceptions",
                 "options": "Options",
-                "resolve": "@.capitalize:project.instruction.segment.i remédié",
+                "resolve": "@.capitalize:project.instruction.tableFields.line remédiée",
                 "anomalies": "@:project.anomaly.i"
             },
             "next": "Finir l'instruction et passer à la bibliothèque suivante"

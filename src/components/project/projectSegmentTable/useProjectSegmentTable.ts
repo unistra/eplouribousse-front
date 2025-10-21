@@ -53,7 +53,7 @@ export const useProjectSegmentTable = () => {
     const columns: QTableColumn[] = [
         {
             name: 'order',
-            label: t('project.instruction.tableFields.order'),
+            label: t('project.instruction.tableFields.line'),
             field: 'order',
             align: 'center',
         },
@@ -89,6 +89,11 @@ export const useProjectSegmentTable = () => {
             label: t('project.instruction.tableFields.boundOrUnbound'),
             field: 'segmentType',
             align: 'center',
+            format(val: 'bound' | 'unbound') {
+                return val === 'bound'
+                    ? t('project.instruction.segment.bound')
+                    : t('project.instruction.segment.unbound')
+            },
         },
         {
             name: 'improvableElements',

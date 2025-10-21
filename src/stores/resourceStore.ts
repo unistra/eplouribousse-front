@@ -78,7 +78,7 @@ export const useResourceStore = defineStore('resource', {
                 })
         },
         statusName(this: ResourceStoreState): 'boundCopies' | 'unboundCopies' {
-            return this.status === ResourceStatus.InstructionBound ? 'boundCopies' : 'unboundCopies'
+            return this.status <= ResourceStatus.ControlBound ? 'boundCopies' : 'unboundCopies'
         },
         anomaliesUnfixed(this: ResourceStoreState): Anomaly[] {
             return this.anomalies.filter((anomaly) => !anomaly.fixed)

@@ -22,7 +22,8 @@ const props = withDefaults(
     },
 )
 
-const { workSegment, segmentLabel, onHide, onSave } = useProjectInstructionSegmentDialog(props, model)
+const { workSegment, segmentLabel, onHide, onSave, segmentsToDisplayInTheImprovedSegmentSelect } =
+    useProjectInstructionSegmentDialog(props, model)
 
 onMounted(() => {
     if (props.segment) {
@@ -62,7 +63,7 @@ onMounted(() => {
                         type="text"
                     />
                     <AtomicSelect
-                        v-if="(resourceStore.segments.length === 1 && isNew) || resourceStore.segments.length > 1"
+                        v-if="segmentsToDisplayInTheImprovedSegmentSelect.length >= 1"
                         v-model="workSegment.improvedSegment"
                         clearable
                         emit-value
@@ -70,9 +71,7 @@ onMounted(() => {
                         map-options
                         :option-label="(optionSegment: Segment) => segmentLabel(optionSegment)"
                         option-value="id"
-                        :options="
-                            resourceStore.segments.filter((el) => (isNew && !segment ? true : el.id !== segment?.id))
-                        "
+                        :options="segmentsToDisplayInTheImprovedSegmentSelect"
                     />
                     <QCardActions align="right">
                         <AtomicButton
