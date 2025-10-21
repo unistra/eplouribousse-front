@@ -300,6 +300,7 @@
             "fixBtn": "Marquer comme @.lower:project.anomaly.fixed",
             "declareBtn": "Finaliser la déclaration d'@.lower:project.anomaly.i",
             "actionBtnDisabled": "Au moins une @.lower:project.anomaly.i sur un segment d'une collection ne vous appartenant pas ne sont pas résolu",
+            "actionBtnDisabledByAnomalySelection": "Une @.lower:project.anomaly.i est en cours de sélection",
             "tab": {
                 "btnGiveTurn": "Attribuer le tour",
                 "btnReset": "Réinitialiser la fiche",

@@ -8,10 +8,12 @@ import ProjectSegmentTable from '@/components/project/projectSegmentTable/Projec
 import { useProjectStore } from '@/stores/projectStore.ts'
 import AnomalyDeclarationBtn from '@/components/anomaly/AnomalyDeclarationBtn.vue'
 import { inject, type Ref } from 'vue'
+import { useAnomalyStore } from '@/stores/anomalyStore.ts'
 
 const { t } = useI18n()
 const resourceStore = useResourceStore()
 const projectStore = useProjectStore()
+const anomalyStore = useAnomalyStore()
 const dialogModal = inject<Ref<boolean>>('dialogModal')
 
 const { dialogCreateSegment, insertAfter, turnsWithNames, onConfirmAnomaliesDeclaration } =
@@ -52,7 +54,7 @@ const { dialogCreateSegment, insertAfter, turnsWithNames, onConfirmAnomaliesDecl
             <AtomicButton
                 color="primary"
                 confirm-button-color="primary"
-                :disable="!!resourceStore.anomaliesUnfixed.length"
+                :disable="!!resourceStore.anomaliesUnfixed.length || anomalyStore.addAnomalySelection"
                 icon="mdi-content-save-move"
                 :label="t('project.instruction.next')"
                 no-border
@@ -62,8 +64,15 @@ const { dialogCreateSegment, insertAfter, turnsWithNames, onConfirmAnomaliesDecl
                 <QTooltip
                     v-if="!!resourceStore.anomaliesUnfixed.length"
                     :delay="1000"
-                    >{{ t('project.anomaly.actionBtnDisabled', 2) }}</QTooltip
                 >
+                    {{ t('project.anomaly.actionBtnDisabled', 2) }}
+                </QTooltip>
+                <QTooltip
+                    v-if="anomalyStore.addAnomalySelection"
+                    :delay="1000"
+                >
+                    {{ t('project.anomaly.actionBtnDisabledByAnomalySelection', 2) }}
+                </QTooltip>
             </AtomicButton>
         </div>
     </div>

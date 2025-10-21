@@ -10,10 +10,12 @@ import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import AnomalyTable from '@/components/anomaly/anomalyTable/AnomalyTable.vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { Tab } from '&/project.ts'
+import { useAnomalyStore } from '@/stores/anomalyStore.ts'
 
 const { t } = useI18n()
 const resourceStore = useResourceStore()
 const projectStore = useProjectStore()
+const anomalyStore = useAnomalyStore()
 const {
     columns,
     loading,
@@ -22,8 +24,6 @@ const {
     dialogCreateSegment,
     insertAfter,
     openDialogCreateSegment,
-    addAnomaly,
-    onActionOnAnomaly,
     displayOptionsColumnBasedOnUserRole,
     displayNewSegmentButton,
 } = useProjectSegmentTable()
@@ -61,7 +61,7 @@ onMounted(async () => {
                         <ProjectSegmentTableOptions
                             :open-dialog-create-segment
                             :row="props.row"
-                            @add-anomaly="onActionOnAnomaly(props, { addAnomaly: true })"
+                            @add-anomaly="anomalyStore.onActionOnAnomaly(props, { addAnomalySelection: true })"
                         />
                     </template>
                     <template v-else-if="col.name === 'resolve'">
@@ -102,11 +102,10 @@ onMounted(async () => {
             >
                 <QTd colspan="100%">
                     <AnomalyTable
-                        :add-anomaly="addAnomaly"
                         :segment="props.row"
-                        @add-anomaly="onActionOnAnomaly(props, { anomalyAdded: true })"
-                        @cancel-add-anomaly="onActionOnAnomaly(props, { cancelAddAnomaly: true })"
-                        @delete-anomaly="onActionOnAnomaly(props)"
+                        @add-anomaly="anomalyStore.onActionOnAnomaly(props, { anomalyAdded: true })"
+                        @cancel-add-anomaly="anomalyStore.onActionOnAnomaly(props, { cancelAddAnomaly: true })"
+                        @delete-anomaly="anomalyStore.onActionOnAnomaly(props)"
                     />
                 </QTd>
             </QTr>

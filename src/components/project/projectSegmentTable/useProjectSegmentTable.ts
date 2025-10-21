@@ -50,23 +50,6 @@ export const useProjectSegmentTable = () => {
     const dialogCreateSegment = ref<boolean>(false)
     const insertAfter = ref<string>()
 
-    const addAnomaly = ref<boolean>(false)
-    const onActionOnAnomaly = (
-        props: { expand: boolean; row: Segment },
-        options?: { cancelAddAnomaly?: boolean; addAnomaly?: boolean; anomalyAdded?: boolean },
-    ) => {
-        const segmentAnomalies = resourceStore.anomalies.filter((anomaly) => anomaly.segment.id === props.row.id)
-
-        if (options?.cancelAddAnomaly || options?.anomalyAdded) addAnomaly.value = false
-        if (options?.addAnomaly) addAnomaly.value = true
-
-        if (options?.addAnomaly || options?.anomalyAdded) {
-            props.expand = true
-        } else if (!segmentAnomalies.length) {
-            props.expand = false
-        }
-    }
-
     const columns: QTableColumn[] = [
         {
             name: 'order',
@@ -160,8 +143,6 @@ export const useProjectSegmentTable = () => {
         dialogCreateSegment,
         insertAfter,
         openDialogCreateSegment,
-        addAnomaly,
-        onActionOnAnomaly,
         displayOptionsColumnBasedOnUserRole,
         displayNewSegmentButton,
     }

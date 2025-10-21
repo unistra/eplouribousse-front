@@ -12,10 +12,12 @@ import {
     type AnomalyTableProps,
     useAnomalyTable,
 } from '@/components/anomaly/anomalyTable/useAnomalyTable.ts'
+import { useAnomalyStore } from '@/stores/anomalyStore.ts'
 
 const { t, locale } = useI18n()
 const resourceStore = useResourceStore()
 const projectStore = useProjectStore()
+const anomalyStore = useAnomalyStore()
 const userStore = useUserStore()
 const props = defineProps<AnomalyTableProps>()
 const emit = defineEmits<AnomalyTableEmits>()
@@ -76,7 +78,7 @@ const { columns, anomalyDescription, anomalyOptions, onDeleteAnomaly, segmentAno
             </QTd>
         </template>
         <template
-            v-if="addAnomaly"
+            v-if="anomalyStore.addAnomalySelection"
             #bottom-row
         >
             <QTd colspan="100">
@@ -113,9 +115,9 @@ const { columns, anomalyDescription, anomalyOptions, onDeleteAnomaly, segmentAno
                             @click="emit('cancelAddAnomaly')"
                         />
                         <AtomicButton
-                            color="primary"
+                            :color="!!anomalyType ? 'primary' : ''"
                             :label="t('common.save')"
-                            no-border
+                            :no-border="!!anomalyType"
                             type="submit"
                         />
                     </div>
@@ -128,12 +130,12 @@ const { columns, anomalyDescription, anomalyOptions, onDeleteAnomaly, segmentAno
 <style lang="sass" scoped>
 .add-anomaly
     display: flex
-    justify-content: space-between
     align-items: start
+    justify-content: end
+    gap: 1rem
 
     > :first-child
         display: flex
-        flex-grow: 1
         gap: 1rem
 
         > .q-select
