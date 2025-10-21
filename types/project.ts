@@ -122,6 +122,8 @@ export type Resource = {
     arbitration: number
     acl: Record<string, boolean>
     instructionTurns: InstructionTurns | undefined
+    issn: string
+    publicationHistory: string
 }
 
 export type CollectionsInResource = {

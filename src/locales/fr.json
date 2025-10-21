@@ -185,6 +185,7 @@
             "holdStatement": "État de la collection",
             "noHoldStatement": "Aucun état de la collection",
             "position": "Position",
+            "publicationHistory": "Historique de publication",
             "status": {
                 "title": "Status",
                 "toPosition": "Positionnements",

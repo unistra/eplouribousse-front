@@ -45,6 +45,8 @@ const initialState: Resource = {
     arbitration: 2,
     acl: {},
     instructionTurns: undefined,
+    issn: '',
+    publicationHistory: '',
 }
 
 export const useResourceStore = defineStore('resource', {
@@ -113,6 +115,8 @@ export const useResourceStore = defineStore('resource', {
                 this.acl = response.data.resource.acl
                 this.collections = response.data.collections
                 this.instructionTurns = response.data.resource.instructionTurns
+                this.issn = response.data.resource.issn
+                this.publicationHistory = response.data.resource.publicationHistory
 
                 this.collections = response.data.collections.sort(
                     (a: CollectionsInResource, b: CollectionsInResource) => {
