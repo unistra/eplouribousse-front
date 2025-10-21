@@ -7,8 +7,9 @@ import ProjectInstructionSegmentDialog from '@/components/project/projectLaunche
 import ProjectSegmentTable from '@/components/project/projectSegmentTable/ProjectSegmentTable.vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import AnomalyDeclarationBtn from '@/components/anomaly/AnomalyDeclarationBtn.vue'
-import { inject, type Ref } from 'vue'
+import { computed, inject, type Ref } from 'vue'
 import { useAnomalyStore } from '@/stores/anomalyStore.ts'
+import type { CollectionsInResource } from '#/project.ts'
 
 const { t } = useI18n()
 const resourceStore = useResourceStore()
@@ -18,29 +19,53 @@ const dialogModal = inject<Ref<boolean>>('dialogModal')
 
 const { dialogCreateSegment, insertAfter, turnsWithNames, onConfirmAnomaliesDeclaration } =
     useProjectInstruction(dialogModal)
+
+const collectionToBeInstructed = computed<CollectionsInResource | undefined>(() => {
+    return resourceStore.collections.find(
+        (el) => el.id === resourceStore.instructionTurns?.[`${resourceStore.statusName}`].turns[0].collection,
+    )
+})
 </script>
 
 <template>
     <div class="instruction">
-        <div class="turns">
-            <p>{{ t('project.instruction.turns') }}:</p>
-
-            <p
-                v-for="(turn, index) in turnsWithNames"
-                :key="index"
-            >
-                <span
-                    :class="{
-                        bold:
-                            turn.collectiondId ===
-                            resourceStore.instructionTurns?.[`${resourceStore.statusName}`].turns[0].collection,
-                    }"
+        <div>
+            <div class="turns">
+                <p>{{ t('project.instruction.turns') }}:</p>
+                <p
+                    v-for="(turn, index) in turnsWithNames"
+                    :key="index"
                 >
-                    {{ turn.library }}
-                </span>
-                <span>{{ index + 1 === turnsWithNames?.length ? '' : ',' }}</span>
-                <QTooltip> {{ turn.collection }} </QTooltip>
-            </p>
+                    <span
+                        :class="{
+                            bold:
+                                turn.collectiondId ===
+                                resourceStore.instructionTurns?.[`${resourceStore.statusName}`].turns[0].collection,
+                        }"
+                    >
+                        {{ turn.library }}
+                    </span>
+                    <span>{{ index + 1 === turnsWithNames?.length ? '' : ',' }}</span>
+                    <QTooltip v-if="turn.collectiondId !== collectionToBeInstructed?.id">
+                        {{ turn.collection }}
+                    </QTooltip>
+                    <QTooltip v-else> {{ t('project.resources.collectionToBeInstructed') }} </QTooltip>
+                </p>
+            </div>
+            <div
+                v-if="collectionToBeInstructed"
+                class="collection-infos"
+            >
+                <p>{{ t('project.resources.infoAboutCollection') }}:</p>
+                <QChip>
+                    {{ t('project.resources.callNumber') }}:
+                    <span>{{ collectionToBeInstructed.callNumber || '-' }}</span>
+                </QChip>
+                <QChip>
+                    {{ t('project.resources.holdStatement') }}:
+                    <span>{{ collectionToBeInstructed.holdStatement || '-' }}</span>
+                </QChip>
+            </div>
         </div>
         <ProjectSegmentTable />
         <div
@@ -108,4 +133,13 @@ const { dialogCreateSegment, insertAfter, turnsWithNames, onConfirmAnomaliesDecl
 
 .bold
     font-weight: bold
+
+.collection-infos
+    display: flex
+    align-items: center
+.q-chip
+    background-color: var(--color-neutral-100)
+    span
+        margin-left: 0.2rem
+        font-weight: bold
 </style>
