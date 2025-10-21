@@ -6,7 +6,6 @@ import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useI18n } from 'vue-i18n'
 
 export type AnomalyTableProps = {
-    addAnomaly: boolean
     segment: Segment
 }
 
