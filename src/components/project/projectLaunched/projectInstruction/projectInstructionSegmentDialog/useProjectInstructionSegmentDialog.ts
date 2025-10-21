@@ -1,4 +1,4 @@
-import { type ModelRef, reactive } from 'vue'
+import { computed, type ModelRef, reactive } from 'vue'
 import type { Segment, SegmentNoCollection } from '#/project.ts'
 import { useI18n } from 'vue-i18n'
 import { useResourceStore } from '@/stores/resourceStore.ts'
@@ -22,7 +22,7 @@ export const useProjectInstructionSegmentDialog = (
     })
 
     const segmentLabel = (segment?: Segment) => {
-        const name = `${t('project.instruction.tableFields.order')}: ${segment?.order} | ${t('project.instruction.tableFields.segment')}: ${segment?.content || t('common.none')} | ${t('project.instruction.tableFields.exception')}: ${segment?.exception || t('common.none')} | ${t('project.instruction.tableFields.improvableElements')}: ${segment?.improvableElements || t('common.none')}`
+        const name = `${t('project.instruction.tableFields.line')}: ${segment?.order} | ${t('project.instruction.tableFields.segment')}: ${segment?.content || t('common.none')} | ${t('project.instruction.tableFields.exception')}: ${segment?.exception || t('common.none')} | ${t('project.instruction.tableFields.improvableElements')}: ${segment?.improvableElements || t('common.none')}`
         return segment ? name : ''
     }
 
@@ -51,10 +51,35 @@ export const useProjectInstructionSegmentDialog = (
         }
     }
 
+    const segmentsToDisplayInTheImprovedSegmentSelect = computed(() => {
+        const hasExceptionsOrImprovableElements = (segmentToCompare: Segment, segmentUpdated?: Segment) =>
+            (!!segmentToCompare.exception || !!segmentToCompare.improvableElements) &&
+            segmentToCompare.collection !== segmentUpdated?.id
+
+        const isSegmentCollectionSameAsTheInstructedCollection = (segmentToCompare: Segment) => {
+            const instructedCollectionId =
+                resourceStore.instructionTurns?.[resourceStore.statusName].turns[0].collection
+            return segmentToCompare.collection === instructedCollectionId
+        }
+
+        return resourceStore.segments.filter((el) => {
+            if (props.isNew && !props.segment) {
+                return hasExceptionsOrImprovableElements(el) && !isSegmentCollectionSameAsTheInstructedCollection(el)
+            } else {
+                return (
+                    el.id !== props.segment?.id &&
+                    hasExceptionsOrImprovableElements(el, props.segment) &&
+                    !isSegmentCollectionSameAsTheInstructedCollection(el)
+                )
+            }
+        })
+    })
+
     return {
         workSegment,
         segmentLabel,
         onHide,
         onSave,
+        segmentsToDisplayInTheImprovedSegmentSelect,
     }
 }

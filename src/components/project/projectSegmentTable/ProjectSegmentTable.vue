@@ -61,7 +61,7 @@ onMounted(async () => {
                         <ProjectSegmentTableOptions
                             :open-dialog-create-segment
                             :row="props.row"
-                            @add-anomaly="anomalyStore.onActionOnAnomaly(props, { addAnomalySelection: true })"
+                            @add-anomaly="anomalyStore.onActionOnAnomaly(props, 'addAnomalySelection')"
                         />
                     </template>
                     <template v-else-if="col.name === 'resolve'">
@@ -103,9 +103,9 @@ onMounted(async () => {
                 <QTd colspan="100%">
                     <AnomalyTable
                         :segment="props.row"
-                        @add-anomaly="anomalyStore.onActionOnAnomaly(props, { anomalyAdded: true })"
-                        @cancel-add-anomaly="anomalyStore.onActionOnAnomaly(props, { cancelAddAnomaly: true })"
-                        @delete-anomaly="anomalyStore.onActionOnAnomaly(props)"
+                        @add-anomaly="anomalyStore.onActionOnAnomaly(props, 'anomalyAdded')"
+                        @cancel-add-anomaly="anomalyStore.onActionOnAnomaly(props, 'cancelAddAnomaly')"
+                        @delete-anomaly="anomalyStore.onActionOnAnomaly(props, 'deleteAnomaly')"
                     />
                 </QTd>
             </QTr>

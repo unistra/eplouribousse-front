@@ -61,7 +61,16 @@ const onBeforeShow = async () => {
                 <QCardSection>
                     <hgroup>
                         <h2>{{ resourceStore.title }}</h2>
-                        <p>{{ resourceStore.code }}</p>
+                        <QChip>
+                            {{ t('project.resources.code') }}: <span>{{ resourceStore.code || '-' }}</span>
+                        </QChip>
+                        <QChip>
+                            ISSN: <span>{{ resourceStore.issn || '-' }}</span>
+                        </QChip>
+                        <QChip>
+                            {{ t('project.resources.publicationHistory') }}:
+                            <span>{{ resourceStore.publicationHistory || '-' }}</span>
+                        </QChip>
                     </hgroup>
                 </QCardSection>
                 <QCardSection class="content">
@@ -96,4 +105,9 @@ h2
         align-items: center
         justify-content: center
         flex-grow: 1
+
+.q-chip
+    span
+        margin-left: 0.2rem
+        font-weight: bold
 </style>

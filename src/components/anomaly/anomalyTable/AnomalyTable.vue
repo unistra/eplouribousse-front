@@ -78,7 +78,7 @@ const { columns, anomalyDescription, anomalyOptions, onDeleteAnomaly, segmentAno
             </QTd>
         </template>
         <template
-            v-if="anomalyStore.addAnomalySelection"
+            v-if="anomalyStore.anomalyAddForSegment.find((el) => el === segment.id)"
             #bottom-row
         >
             <QTd colspan="100">
