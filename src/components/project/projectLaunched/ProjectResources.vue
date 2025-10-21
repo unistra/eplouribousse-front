@@ -34,6 +34,7 @@ onMounted(async () => {
 
 <template>
     <div class="project-resources">
+        <h1>{{ projectStore.name }}</h1>
         <div>
             <QSelect
                 v-for="(select, index) in selects"
@@ -149,6 +150,9 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="sass">
+h1
+    font-size: 1.5rem
+    font-weight: bold
 .dialog
     .q-card
         display: flex
