@@ -186,7 +186,7 @@
             "noHoldStatement": "Aucun état de la collection",
             "position": "Position",
             "publicationHistory": "Historique de publication",
-            "collectionToBeInstructed": "Collection qui doit instruire",
+            "collectionToBeInstructed": "Collection qui doit être instruite",
             "infoAboutCollection": "Informations de la @.lower:project.resources.collectionToBeInstructed",
             "status": {
                 "title": "Status",

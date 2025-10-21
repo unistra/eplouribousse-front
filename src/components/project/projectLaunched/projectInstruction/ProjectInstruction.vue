@@ -79,7 +79,7 @@ const collectionToBeInstructed = computed<CollectionsInResource | undefined>(() 
             <AtomicButton
                 color="primary"
                 confirm-button-color="primary"
-                :disable="!!resourceStore.anomaliesUnfixed.length || anomalyStore.addAnomalySelection"
+                :disable="!!resourceStore.anomaliesUnfixed.length || !!anomalyStore.anomalyAddForSegment.length"
                 icon="mdi-content-save-move"
                 :label="t('project.instruction.next')"
                 no-border
@@ -93,7 +93,7 @@ const collectionToBeInstructed = computed<CollectionsInResource | undefined>(() 
                     {{ t('project.anomaly.actionBtnDisabled', 2) }}
                 </QTooltip>
                 <QTooltip
-                    v-if="anomalyStore.addAnomalySelection"
+                    v-if="!!anomalyStore.anomalyAddForSegment.length"
                     :delay="1000"
                 >
                     {{ t('project.anomaly.actionBtnDisabledByAnomalySelection', 2) }}
