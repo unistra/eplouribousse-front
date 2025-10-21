@@ -105,7 +105,7 @@ onMounted(async () => {
                         :segment="props.row"
                         @add-anomaly="anomalyStore.onActionOnAnomaly(props, { anomalyAdded: true })"
                         @cancel-add-anomaly="anomalyStore.onActionOnAnomaly(props, { cancelAddAnomaly: true })"
-                        @delete-anomaly="anomalyStore.onActionOnAnomaly(props)"
+                        @delete-anomaly="anomalyStore.onActionOnAnomaly(props, { deleteAnomaly: true })"
                     />
                 </QTd>
             </QTr>

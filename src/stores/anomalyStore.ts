@@ -9,17 +9,29 @@ export const useAnomalyStore = defineStore('anomalyStore', () => {
 
     const onActionOnAnomaly = (
         props: { expand: boolean; row: Segment },
-        options?: { cancelAddAnomaly?: boolean; addAnomalySelection?: boolean; anomalyAdded?: boolean },
+        options?: {
+            cancelAddAnomaly?: boolean
+            addAnomalySelection?: boolean
+            anomalyAdded?: boolean
+            deleteAnomaly?: boolean
+        },
     ) => {
         const segmentAnomalies = resourceStore.anomalies.filter((anomaly) => anomaly.segment.id === props.row.id)
 
-        if (options?.cancelAddAnomaly || options?.anomalyAdded) addAnomalySelection.value = false
+        if (options?.cancelAddAnomaly || options?.anomalyAdded) {
+            addAnomalySelection.value = false
+            if (!segmentAnomalies.filter((el) => !el.fixed).length) props.expand = false
+        }
         if (options?.addAnomalySelection) addAnomalySelection.value = true
 
         if (options?.addAnomalySelection || options?.anomalyAdded) {
             props.expand = true
         } else if (!segmentAnomalies.length) {
             props.expand = false
+        }
+
+        if (options?.deleteAnomaly) {
+            if (!segmentAnomalies.filter((el) => !el.fixed).length) props.expand = false
         }
     }
 
