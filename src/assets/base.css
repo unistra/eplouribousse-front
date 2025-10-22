@@ -41,6 +41,13 @@
     --font-size-6xl: 3.75rem;
 
     --border-radius: 2rem;
+
+    --layout-secondary-bg-color: var(--color-neutral-200);
+    --layout-secondary-color: var(--color-black);
+    --layout-header-bg-color: var(--layout-secondary-bg-color);
+    --layout-header-color: var(--layout-secondary-color);
+    --layout-footer-bg-color: var(--layout-secondary-bg-color);
+    --layout-footer-color: var(--layout-secondary-color);
 }
 
 /*

@@ -5,6 +5,7 @@ import { useUserStore } from './stores/userStore'
 import LayoutDrawer from './components/layout/LayoutDrawer.vue'
 import { useGlobalStore } from '@/stores/globalStore.ts'
 import LayoutHeader from '@/components/layout/LayoutHeader.vue'
+import LayoutFooter from '@/components/layout/LayoutFooter.vue'
 
 const userStore = useUserStore()
 const globalStore = useGlobalStore()
@@ -20,6 +21,7 @@ onMounted(async () => {
     <QLayout view="hHh lpR fFf">
         <LayoutHeader />
         <LayoutDrawer />
+        <LayoutFooter />
         <QPageContainer>
             <RouterView />
         </QPageContainer>

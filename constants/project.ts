@@ -1,7 +1,3 @@
-import i18n from '@/plugins/i18n.ts'
-
-const { t } = i18n.global
-
 export enum ProjectStatus {
     Draft = 10,
     Review = 20,
@@ -76,15 +72,4 @@ export enum AlertType {
     Preservation = 'preservation',
     Transfer = 'transfer',
     Anomaly = 'anomaly',
-}
-
-export const AlertTypeLabels: Record<AlertType, string> = {
-    [AlertType.Positioning]: t('project.settings.emailAlert.positioning'),
-    [AlertType.Arbitration]: t('project.settings.emailAlert.arbitration'),
-    [AlertType.Instruction]: t('project.settings.emailAlert.instructions'),
-    [AlertType.Control]: t('project.settings.emailAlert.control'),
-    [AlertType.Edition]: t('project.settings.emailAlert.edition'),
-    [AlertType.Preservation]: t('project.settings.emailAlert.preservation'),
-    [AlertType.Transfer]: t('project.settings.emailAlert.transfer'),
-    [AlertType.Anomaly]: t('project.settings.emailAlert.anomalies'),
 }
