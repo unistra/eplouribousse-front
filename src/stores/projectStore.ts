@@ -41,6 +41,7 @@ const initialState: ProjectI = {
             preservation: false,
             transfer: false,
         },
+        projectCreator: '',
     },
     invitations: [],
     roles: [],

@@ -78,17 +78,19 @@ export type Collection = {
 }
 
 export interface ProjectSettings {
-    exclusionReasons: string[]
+    exclusionReasons: string[];
     alerts: {
-        positioning: boolean
-        arbitration: boolean
-        instruction: boolean
-        control: boolean
-        edition: boolean
-        preservation: boolean
-        transfer: boolean
-    }
+        positioning: boolean;
+        arbitration: boolean;
+        instruction: boolean;
+        control: boolean;
+        edition: boolean;
+        preservation: boolean;
+        transfer: boolean;
+    };
+    projectCreator?: string;
 }
+
 
 export type AlertKey = keyof ProjectSettings['alerts']
 
