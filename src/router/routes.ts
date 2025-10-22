@@ -62,15 +62,15 @@ const routes: RouteRecordRaw[] = [
         name: 'resetPassword',
         component: () => import('@/views/Auth/ResetPasswordView.vue'),
         meta: {
-            title: 'Réinitialiser le mot de passe',
+            title: t('forms.password.reset.i'),
         },
     },
     {
-        path: '/send-email',
-        name: 'sendEmail',
+        path: '/request-password-reset',
+        name: 'requestPasswordReset',
         component: () => import('@/views/Auth/SendEmailView.vue'),
         meta: {
-            title: 'Réinitialiser le mot de passe',
+            title: t('forms.password.reset.request'),
         },
     },
     {

@@ -28,12 +28,12 @@ fetchEmailFromToken()
         <AtomicInput
             v-model="email"
             disable
-            :label="t('forms.login.email')"
+            :label="t('common.email')"
             type="email"
         />
         <PasswordField
             v-model="password"
-            :label="t('forms.login.password')"
+            :label="t('common.password')"
             :linear-progress="true"
             :rules="[() => isPasswordStrongEnough || t('forms.password.validation.passwordRequirements')]"
         />
@@ -52,5 +52,3 @@ fetchEmailFromToken()
         </div>
     </QForm>
 </template>
-
-<style lang="scss" scoped></style>

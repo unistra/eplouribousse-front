@@ -16,7 +16,7 @@ const { email, isLoading, sendEmail } = useSendEmailResetPasswordForm()
             v-model="email"
             autofocus
             data-testid="email-input"
-            :label="t('forms.login.email')"
+            :label="t('common.email')"
             reactive-rules
             :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
             type="email"

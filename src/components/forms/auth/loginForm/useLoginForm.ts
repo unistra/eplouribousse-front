@@ -3,7 +3,7 @@ import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useRoute, useRouter } from 'vue-router'
 import { AxiosError } from 'axios'
 import { useI18n } from 'vue-i18n'
-import { axiosAuth, axiosI } from '@/plugins/axios/axios.ts'
+import { axiosI } from '@/plugins/axios/axios.ts'
 import { useUserStore } from '@/stores/userStore.ts'
 
 const login = async (email: string, password: string) => {
@@ -30,20 +30,7 @@ export function useLoginForm() {
     const email = ref<string>('')
     const password = ref<string>('')
     const isLoading = ref<boolean>(false)
-
-    async function loginViaShibbolet() {
-        isLoading.value = true
-        try {
-            await axiosAuth.get('/saml2/login/')
-        } catch {
-            notify({
-                type: 'negative',
-                message: t('errors.unknown'),
-            })
-        } finally {
-            isLoading.value = false
-        }
-    }
+    const saml2URL = ref<string>('')
 
     const onLogin = async () => {
         isLoading.value = true
@@ -80,6 +67,6 @@ export function useLoginForm() {
         password,
         isLoading,
         onLogin,
-        loginViaShibbolet,
+        saml2URL,
     }
 }

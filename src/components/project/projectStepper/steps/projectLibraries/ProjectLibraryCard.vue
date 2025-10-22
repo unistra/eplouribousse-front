@@ -72,7 +72,7 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading,
                     :key="user.id"
                 >
                     {{ user.firstName || '***' }} {{ user.lastName || `***` }} -
-                    {{ user.email || `${t('common.none')} ${t('common.email')}` }}
+                    {{ user.email || t('utils.noEmailAddress') }}
                 </QItem>
             </QList>
         </QCardSection>
