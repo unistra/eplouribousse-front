@@ -210,6 +210,11 @@ export const useResourceStore = defineStore('resource', {
 
                 this.arbitration = response.data.arbitration
                 this.status = response.data.status
+                const resource = this.resources.find((el) => el.id === this.id)
+                if (resource) {
+                    resource.arbitration = this.arbitration
+                    resource.status = this.status
+                }
             } catch {
                 Notify.create({
                     type: 'negative',
