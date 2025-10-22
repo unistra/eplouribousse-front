@@ -27,7 +27,8 @@ const onLogout = async () => {
         <RouterLink :to="{ name: 'Home' }">
             <QImg
                 :alt="t('layout.header.logo')"
-                src="../../assets/logo-eplouribousse.png"
+                no-spinner
+                src="/img/logo-eplouribousse.png"
             />
         </RouterLink>
         <AtomicButton

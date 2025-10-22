@@ -1,6 +1,11 @@
 {
     "homePage": "Accueil",
-    "homeMessage": "Bienvenue sur Eplouribousse",
+    "home": {
+        "title": "Bienvenue sur Eplouribousse",
+        "description": "L'application web pour le dédoublonnage des périodiques",
+        "unistraAlt": "Site de l'Université de Strasbourg",
+        "abesAlt": "Site de l'Agence bibliographique de l'enseignement supérieur"
+    },
     "layout": {
         "header": {
             "logo": "Eplouribousse logo",
