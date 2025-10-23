@@ -8,7 +8,7 @@
     },
     "layout": {
         "header": {
-            "logo": "Eplouribousse logo",
+            "logoAlt": "Retour à l'acceuil d'Eplouribousse",
             "manageAccount": "Gérer votre profil",
             "account": "@:navigation.myAccount"
         },
