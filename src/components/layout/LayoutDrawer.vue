@@ -98,7 +98,7 @@ onMounted(async () => {
                     <AtomicButton
                         v-if="!collapsed"
                         icon="mdi-plus"
-                        :label="t('newProject.create')"
+                        :label="t('newProject.buttons.create', { article: t('common.a') })"
                         :no-border="userStore.projects.length < 0"
                         :to="{ name: 'newProject' }"
                     />
@@ -106,7 +106,7 @@ onMounted(async () => {
                         v-else
                         icon="mdi-plus"
                         :to="{ name: 'newProject' }"
-                        :tooltip="t('newProject.create')"
+                        :tooltip="t('newProject.buttons.create', { article: t('common.a') })"
                     />
                 </div>
             </QItem>

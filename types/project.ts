@@ -24,6 +24,7 @@ export interface Project extends ProjectI {
     isLoading: boolean
     isInEditionMode: boolean
     tab: Tab
+    librariesIdThatHaveACollectionImported: string[]
 }
 
 export interface ProjectSummarized {

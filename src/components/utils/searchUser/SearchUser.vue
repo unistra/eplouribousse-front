@@ -7,7 +7,6 @@ import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import SearchUserItem from '@/components/utils/searchUser/SearchUserItem.vue'
 import type { Roles } from '&/project'
-import { useProjectStore } from '@/stores/projectStore'
 
 const props = defineProps<{
     role?: Roles
@@ -16,15 +15,9 @@ const props = defineProps<{
     isAddUserLoading: boolean
 }>()
 const { t } = useI18n()
-const store = useProjectStore()
 const emit = defineEmits<SearchUserEmitActions>()
 const { username, matchingUsers, onLoad, sendAction, clear, isUserListLoading, userAlreadySelected } =
     useSearchUser(emit)
-
-const disable = computed((): boolean => {
-    if (props.role) return store.findUsersByRole(props.role).length <= 1
-    else return false
-})
 
 watch(
     () => props.usersSelected,
@@ -115,7 +108,6 @@ onMounted(() => {
             <SearchUserItem
                 v-for="user in usersSelected"
                 :key="user.id"
-                :disable
                 @delete="sendAction('removeUser', { userId: user.id })"
             >
                 <p>
