@@ -46,7 +46,7 @@ const emit = defineEmits<{
         :label
         :loading
         :noCaps="!caps"
-        :outline="!noBorder"
+        :outline="color === 'primary' ? false : !noBorder"
         :round
         rounded
         :size

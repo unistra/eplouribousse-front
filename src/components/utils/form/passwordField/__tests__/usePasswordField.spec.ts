@@ -15,7 +15,7 @@ describe('usePasswordField', () => {
     })
 
     test('returns default values when initialized', () => {
-        expect(passwordFieldComposable.defaultLabel).toBe('forms.login.password')
+        expect(passwordFieldComposable.defaultLabel).toBe('common.password')
         expect(passwordFieldComposable.isPasswordVisible.value).toBe(false)
         expect(passwordFieldComposable.passwordStrength.value).toBe(0)
         expect(passwordFieldComposable.isInputFocused.value).toBe(false)

@@ -10,7 +10,7 @@ const { t } = useI18n()
         class="container column content-center"
         padding
     >
-        <h1>{{ t('forms.password.reset.title') }}</h1>
+        <h1>{{ t('forms.password.reset.i') }}</h1>
         <SendEmailResetPasswordForm />
     </QPage>
 </template>

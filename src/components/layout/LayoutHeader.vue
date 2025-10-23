@@ -34,7 +34,7 @@ const onLogout = async () => {
         <AtomicButton
             v-if="!userStore.isAuth"
             icon="mdi-login"
-            :label="t('auth.login')"
+            :label="t('auth.login.i')"
             :to="{ name: 'login' }"
         />
         <AtomicButton

@@ -34,13 +34,14 @@ export const useGlobalStore = defineStore('globalStore', () => {
         }
     }
 
+    const backendBaseURL = ref<string>('')
     const defineBackendBaseURL = () => {
         const prefix = import.meta.env.DEV
             ? new URL(location.href).host.split('.epl', 1)[0]
             : new URL(location.href).host.split('-eplouribousse', 1)[0]
-        const url = import.meta.env.VITE_BACK_URL.replace('[tenant]', prefix)
-        axiosI.defaults.baseURL = `${url}/api`
-        axiosAuth.defaults.baseURL = url
+        backendBaseURL.value = import.meta.env.VITE_BACK_URL.replace('[tenant]', prefix)
+        axiosI.defaults.baseURL = `${backendBaseURL.value}/api`
+        axiosAuth.defaults.baseURL = backendBaseURL.value
     }
 
     return {
@@ -49,6 +50,7 @@ export const useGlobalStore = defineStore('globalStore', () => {
         showNotify,
         tenant,
         fetchTenant,
+        backendBaseURL,
         defineBackendBaseURL,
     }
 })

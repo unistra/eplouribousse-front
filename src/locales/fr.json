@@ -19,7 +19,11 @@
         }
     },
     "auth": {
-        "login": "Connexion",
+        "login": {
+            "i": "Connexion",
+            "authShibboleth": "Authentification via la fédération éducation recherche",
+            "authLocal": "Authentification avec un compte local"
+        },
         "logout": "Déconnexion"
     },
     "navigation": {
@@ -368,17 +372,10 @@
         },
         "fieldIsRequired": "Ce champ est requis",
         "login": {
-            "email": "Adresse email",
-            "password": "Mot de passe",
-            "submit": "Se connecter",
             "forgotPassword": "Mot de passe oublié ?",
             "credentialsError": "Identifiants incorrects",
             "forgottenPassword": "Mot de passe oublié ?",
-            "clickHere": "Cliquez ici",
-            "success": "Vous êtes désormais connecté",
-            "localAccount": "Connexion Eplouribousse",
-            "renater": "Connexion via Renater",
-            "or": "ou"
+            "success": "Vous êtes désormais connecté"
         },
         "password": {
             "isVisibleTooltip": {
@@ -408,7 +405,8 @@
                 "success": "Votre mot de passe a été changé avec succès"
             },
             "reset": {
-                "title": "Réinitialiser le mot de passe",
+                "i": "Réinitialiser le @.lower:common.password",
+                "request": "Demande de réinitialisation de @.lower:common.password",
                 "confirmPassword": "Confirmer le nouveau mot de passe",
                 "submit": "Réinitialiser mon mot de passe",
                 "success": "Votre mot de passe a été réinitialisé avec succès",
@@ -479,7 +477,8 @@
         "none": "Aucun",
         "firstName": "Prénom",
         "lastName": "Nom",
-        "email": "Email",
+        "email": "Adresse email",
+        "password": "Mot de passe",
         "or": "ou",
         "waiting": "En attente",
         "all": "Tous",
@@ -505,6 +504,7 @@
             "inviteText": "Inviter cet utilisateur avec cet email"
         },
         "modificationSuccess": "Les modifications ont bien été enregistrées",
+        "noEmailAddress": "Aucune @.lower:common.email",
         "universityOfStrasbourg": "Université de Strasbourg",
         "abes": "Agence bibliographique de l'enseignement supérieur"
     },

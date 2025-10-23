@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 export const usePasswordField = () => {
     const { t } = useI18n()
 
-    const defaultLabel = t('forms.login.password')
+    const defaultLabel = t('common.password')
     const isPasswordVisible = ref<boolean>(false)
     const icon = computed(() => (isPasswordVisible.value ? 'mdi-eye-off-outline' : 'mdi-eye-outline'))
     const passwordVisibilityLabel = computed(
