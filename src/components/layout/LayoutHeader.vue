@@ -27,7 +27,8 @@ const onLogout = async () => {
         <RouterLink :to="{ name: 'Home' }">
             <QImg
                 :alt="t('layout.header.logo')"
-                src="../../assets/logo-eplouribousse.png"
+                no-spinner
+                src="/img/logo-eplouribousse.png"
             />
         </RouterLink>
         <AtomicButton
@@ -80,8 +81,8 @@ const onLogout = async () => {
     display: flex
     justify-content: space-between
     padding: 1rem
-    background-color: var(--color-white)
-    color: var(--color-black)
+    background-color: var(--layout-header-bg-color)
+    color: var(--layout-header-color)
 
     .q-img
         width: 300px

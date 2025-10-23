@@ -1,11 +1,21 @@
 {
     "homePage": "Accueil",
-    "homeMessage": "Bienvenue sur Eplouribousse",
+    "home": {
+        "title": "Bienvenue sur Eplouribousse",
+        "description": "L'application web pour le dédoublonnage des périodiques",
+        "unistraAlt": "Site de l'@:utils.universityOfStrasbourg",
+        "abesAlt": "Site de l'@:utils.abes"
+    },
     "layout": {
         "header": {
             "logo": "Eplouribousse logo",
             "manageAccount": "Gérer votre profil",
             "account": "@:navigation.myAccount"
+        },
+        "footer": {
+            "legalNotice": "Mentions légales",
+            "contact": "Contact",
+            "about": "À propos"
         }
     },
     "auth": {
@@ -494,7 +504,9 @@
             "inputPlaceholder": "Rechercher un utilisateur, ou entrer son adresse e-mail pour l'inviter",
             "inviteText": "Inviter cet utilisateur avec cet email"
         },
-        "modificationSuccess": "Les modifications ont bien été enregistrées"
+        "modificationSuccess": "Les modifications ont bien été enregistrées",
+        "universityOfStrasbourg": "Université de Strasbourg",
+        "abes": "Agence bibliographique de l'enseignement supérieur"
     },
     "errors": {
         "unknown": "Une erreur est survenue",
