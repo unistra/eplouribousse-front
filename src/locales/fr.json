@@ -205,7 +205,7 @@
             "status": {
                 "title": "Status",
                 "toPosition": "Positionnements",
-                "toArbitrate": "Arbitrages",
+                "toArbitrate": "Arbitrage",
                 "toInstructBound": "Instruction reliés",
                 "toInstructUnbound": "Instruction non-reliés",
                 "toControl": "Contrôles",
