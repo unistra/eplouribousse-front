@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { QStepper } from 'quasar'
 import { useI18n } from 'vue-i18n'
-import { useProjectStepper } from '@/components/project/projectStepper/useProjectStepper'
+import { checkValidityProjectStepper, useProjectStepper } from '@/components/project/projectStepper/useProjectStepper'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useRoute } from 'vue-router'
 import { onMounted } from 'vue'
@@ -13,6 +13,8 @@ import ProjectSummary from '@/components/project/projectStepper/steps/projectSum
 const { t } = useI18n()
 
 const { step, nextStep, previousStep, buttonLabel, passToReviewLoading, passToReview } = useProjectStepper()
+
+const { checkValidityForRolesStep, checkValidityForLibraryStep } = checkValidityProjectStepper()
 
 onMounted(async () => {
     const route = useRoute()
@@ -27,7 +29,9 @@ onMounted(async () => {
         active-color="primary"
         animated
         done-color="positive"
+        error-color="negative"
         flat
+        header-nav
     >
         <QStep
             :done="step > 1"
@@ -40,6 +44,7 @@ onMounted(async () => {
 
         <QStep
             :done="step > 2"
+            :error="step > 2 && !checkValidityForLibraryStep"
             icon="mdi-bookshelf"
             :name="2"
             :title="t('newProject.steps.libraries.title')"
@@ -48,7 +53,8 @@ onMounted(async () => {
         </QStep>
 
         <QStep
-            :done="step > 3"
+            :done="step > 3 && checkValidityForRolesStep"
+            :error="step > 3 && !checkValidityForRolesStep"
             icon="mdi-account"
             :name="3"
             :title="t('newProject.steps.roles.title')"
@@ -76,6 +82,7 @@ onMounted(async () => {
                     v-if="step === 4"
                     color="primary"
                     confirm-button-color="red"
+                    :disable="!checkValidityForRolesStep || !checkValidityForLibraryStep"
                     :label="t('newProject.buttons.passToReview')"
                     :loading="passToReviewLoading"
                     no-border

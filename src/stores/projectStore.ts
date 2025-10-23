@@ -67,6 +67,7 @@ export const useProjectStore = defineStore('project', {
         isLoading: false,
         isInEditionMode: false,
         tab: Tab.Positioning,
+        librariesIdThatHaveACollectionImported: [],
     }),
     getters: {
         nameRequired: (state) => state.name.length > 0,
@@ -102,6 +103,7 @@ export const useProjectStore = defineStore('project', {
                     isLoading: false,
                     isInEditionMode: !!edition,
                     tab: Tab.Positioning,
+                    librariesIdThatHaveACollectionImported: [],
                 }
             } catch {
                 Notify.create({
@@ -124,36 +126,6 @@ export const useProjectStore = defineStore('project', {
                 this.initialState.id = response.data.id
                 this.initialState.name = this.name
                 this.initialState.description = this.description
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            } finally {
-                this.isLoading = false
-            }
-        },
-        async updateProject() {
-            this.isLoading = true
-            try {
-                await axiosI.patch(`/projects/${this.id}/`, {
-                    name: this.name,
-                    description: this.description,
-                    roles: this.roles,
-                    settings: this.settings,
-                    isPrivate: this.isPrivate,
-                })
-
-                this.initialState.name = this.name
-                this.initialState.description = this.description
-                this.initialState.roles = this.roles
-                this.initialState.settings = this.settings
-                this.initialState.isPrivate = this.isPrivate
-
-                Notify.create({
-                    type: 'positive',
-                    message: t('project.administration.sucessUpdate'),
-                })
             } catch {
                 Notify.create({
                     type: 'negative',
@@ -280,6 +252,8 @@ export const useProjectStore = defineStore('project', {
                     },
                 })
 
+                if (!this.librariesIdThatHaveACollectionImported.includes(libraryId) && response.data.count)
+                    this.librariesIdThatHaveACollectionImported.push(libraryId)
                 return response.data
             } catch {
                 Notify.create({

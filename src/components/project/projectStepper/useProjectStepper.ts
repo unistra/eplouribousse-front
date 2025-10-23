@@ -5,10 +5,41 @@ import { useI18n } from 'vue-i18n'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import router from '@/router'
 import { useUserStore } from '@/stores/userStore.ts'
+import { Roles } from '&/project.ts'
 
+export const checkValidityProjectStepper = () => {
+    const projectStore = useProjectStore()
+    const checkValidityForLibraryStep = computed(() => {
+        if (!(projectStore.libraries.length >= 2)) return false
+
+        return projectStore.libraries.every((library) => {
+            return (
+                (projectStore.roles.some((role) => role.libraryId === library.id && role.role === Roles.Instructor) ||
+                    projectStore.invitations.some(
+                        (invitation) => invitation.role === Roles.Instructor && invitation.libraryId === library.id,
+                    )) &&
+                projectStore.librariesIdThatHaveACollectionImported.includes(library.id)
+            )
+        })
+    })
+
+    const checkValidityForRolesStep = computed(() => {
+        const requiredRoles = [Roles.ProjectManager, Roles.ProjectAdmin, Roles.Controller]
+        return requiredRoles.every(
+            (required) =>
+                projectStore.roles.some((role) => role.role === required) ||
+                projectStore.invitations.some((invitation) => invitation.role === required),
+        )
+    })
+
+    return {
+        checkValidityForLibraryStep,
+        checkValidityForRolesStep,
+    }
+}
 export const useProjectStepper = () => {
     const { t } = useI18n()
-    const store = useProjectStore()
+    const projectStore = useProjectStore()
     const { notify } = useComposableQuasar()
 
     const step = ref(1)
@@ -16,47 +47,44 @@ export const useProjectStepper = () => {
     const passToReviewLoading = ref<boolean>(false)
     const passToReview = async () => {
         passToReviewLoading.value = true
-        await store.passToReview()
+        await projectStore.passToReview()
         passToReviewLoading.value = false
     }
 
     const buttonLabel = computed(() => {
         if (step.value === 1) {
-            if (!store.id) return t('newProject.buttons.create')
+            if (!projectStore.id) return t('newProject.buttons.create')
             if (
-                store.id &&
-                (store.name !== store.initialState.name || store.description !== store.initialState.description)
+                projectStore.id &&
+                (projectStore.name !== projectStore.initialState.name ||
+                    projectStore.description !== projectStore.initialState.description)
             )
                 return t('newProject.buttons.modify')
         }
-        return t('newProject.buttons.continue')
+        return t('common.continue')
     })
 
     const nextStep = async () => {
         if (!stepper.value) throw new Error()
 
-        switch (step.value) {
-            case 1:
-                const isValid = await store.validateAndProceedTitleAndDescription()
-                if (isValid) {
-                    if (router.currentRoute.value.name === 'newProject') {
-                        const userStore = useUserStore()
-                        await userStore.getProjects()
-                        await router.push({ name: 'project', params: { id: store.id }, query: { page: 2 } })
-                        return
-                    }
+        if (step.value === 1) {
+            if (!(await projectStore.validateAndProceedTitleAndDescription())) {
+                notify({
+                    type: 'negative',
+                    message: t('errors.unknown'),
+                })
+                return
+            }
 
-                    stepper.value.next()
-                } else {
-                    notify({
-                        type: 'negative',
-                        message: t('errors.unknown'),
-                    })
-                }
-                break
-            default:
-                stepper.value.next()
+            if (router.currentRoute.value.name === 'newProject') {
+                const userStore = useUserStore()
+                await userStore.getProjects()
+                await router.push({ name: 'project', params: { id: projectStore.id }, query: { page: 2 } })
+                return
+            }
         }
+
+        stepper.value.next()
     }
 
     const previousStep = () => {

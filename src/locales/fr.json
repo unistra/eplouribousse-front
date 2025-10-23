@@ -70,12 +70,9 @@
         "title": "Projets publics"
     },
     "newProject": {
-        "create": "Créer un projet",
         "title": "Création d'un nouveau projet",
         "buttons": {
-            "continue": "Continuer",
-            "back": "Retour",
-            "create": "Créer le projet",
+            "create": "Créer {article} projet",
             "modify": "Modifier le projet",
             "ready": "Je suis prêt",
             "passToReview": "Passer le projet en review"
@@ -125,7 +122,11 @@
             "summary": {
                 "title": "Récapitulatif",
                 "noUser": "Aucun utilisateur n'a été assigné ce rôle",
-                "whenConfirm": "En confirmant, les invitations seront envoyés aux emails renseignés, ainsi que les notifications aux utilisateurs participants au projet"
+                "whenConfirm": "En confirmant, les invitations seront envoyés aux emails renseignés, ainsi que les notifications aux utilisateurs participants au projet",
+                "errors": {
+                    "libraries": "Au moins deux bibliothèques doivent être renseignées, chacune devant avoir une collection importée et au moins un instructeur",
+                    "roles": "Au moins un utilisateur ou une invitation doit être renseignée pour les rôles Administrateur, Pilote et Contrôleur"
+                }
             }
         },
         "requirements": {
@@ -496,6 +497,7 @@
         "fixed": "Corrigé",
         "created": "Créé",
         "the": "le",
+        "a": "un",
         "by": "par"
     },
     "utils": {
