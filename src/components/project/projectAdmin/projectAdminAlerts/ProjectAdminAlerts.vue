@@ -40,19 +40,23 @@ const onPatchAlerts = async () => {
         <QCardSection v-if="!loading">
             <h2>{{ t('project.settings.emailAlert.resourcesAlterts') }}</h2>
             <QList denses>
-                <QItem
+                <template
                     v-for="key in Object.keys(projectStore.settings.alerts)"
                     :key="key"
-                    dense
                 >
-                    <AtomicToggle
-                        v-model="
-                            //@ts-ignore
-                            projectStore.settings.alerts[key as keyof typeof projectStore.settings.alerts]
-                        "
-                        :label="t(`project.settings.emailAlert.${key}`)"
-                    />
-                </QItem>
+                    <QItem
+                        v-if="key !== 'preservation' && key !== 'transfer'"
+                        dense
+                    >
+                        <AtomicToggle
+                            v-model="
+                                //@ts-ignore
+                                projectStore.settings.alerts[key as keyof typeof projectStore.settings.alerts]
+                            "
+                            :label="t(`project.settings.emailAlert.${key}`)"
+                        />
+                    </QItem>
+                </template>
             </QList>
         </QCardSection>
         <QCardActions

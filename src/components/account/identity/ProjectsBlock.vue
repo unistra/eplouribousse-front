@@ -81,12 +81,16 @@ onMounted(async () => {
                             <QTooltip size="md">{{ t('account.projects.alerts.info') }}</QTooltip>
                         </p>
                         <div class="alerts-toggles">
-                            <AtomicToggle
+                            <template
                                 v-for="alert in Object.entries(userSettingsAlertsFormatted)"
                                 :key="alert[0]"
-                                v-model="userSettingsAlertsFormatted[alert[0] as AlertKey]"
-                                :label="t(`project.settings.emailAlert.${alert[0]}`)"
-                            />
+                            >
+                                <AtomicToggle
+                                    v-if="alert[0] !== 'preservation' && alert[0] !== 'transfer'"
+                                    v-model="userSettingsAlertsFormatted[alert[0] as AlertKey]"
+                                    :label="t(`project.settings.emailAlert.${alert[0]}`)"
+                                />
+                            </template>
                         </div>
                     </QCardSection>
                     <QCardActions
