@@ -214,6 +214,8 @@ export const useResourceStore = defineStore('resource', {
                 if (resource) {
                     resource.arbitration = this.arbitration
                     resource.status = this.status
+                    resource.shouldPosition = this.shouldPosition
+                    resource.shouldInstruct = this.shouldInstruct
                 }
             } catch {
                 Notify.create({

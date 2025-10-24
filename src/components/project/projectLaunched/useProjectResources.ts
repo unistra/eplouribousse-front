@@ -62,12 +62,10 @@ export const useProjectResources = () => {
 
     const computeStatusLabel = (val: ResourceStatus, row: Resource) => {
         if (val === ResourceStatus.Positioning) {
+            if (row.arbitration !== 2) return t('project.resources.status.toArbitrate')
             if (row.shouldPosition) return t('project.resources.status.positioningRequired')
-            if (projectStore.isRole(Roles.Instructor, resourceStore.libraryIdSelected)) {
-                if (row.arbitration !== 2) return t('project.resources.status.toArbitrate')
+            if (projectStore.isRole(Roles.Instructor, resourceStore.libraryIdSelected))
                 return t('project.resources.status.waitingPositioning')
-            }
-
             return t('project.resources.status.positioning')
         }
 
