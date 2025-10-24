@@ -30,6 +30,13 @@ const initialState: ProjectI = {
     activeAfter: '',
     isActive: false,
     status: ProjectStatus.Draft,
+    createdBy: {
+        id: '',
+        email: '',
+        firstName: '',
+        lastName: '',
+        displayName: '',
+    },
     settings: {
         exclusionReasons: [],
         alerts: {

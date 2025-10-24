@@ -9,6 +9,7 @@ export interface ProjectI {
     isPrivate: boolean
     activeAfter: string
     isActive: boolean
+    createdBy: ProjectUser
     status: ProjectStatus
     settings: ProjectSettings
     invitations: ProjectInvitation[]
@@ -38,6 +39,7 @@ export interface ProjectUser {
     email: string
     firstName: string
     lastName: string
+    displayName: string
 }
 
 export interface ProjectRole {
