@@ -23,6 +23,7 @@ const {
     toggleAnomaliesTypes,
     disableLibrarySelectedSelect,
     toggleControlTypes,
+    computeStatusInfos,
 } = useProjectResources()
 const { t } = useI18n()
 
@@ -59,12 +60,14 @@ onMounted(async () => {
                 v-model="projectStore.tab"
                 align="left"
                 dense
+                inline-label
                 no-caps
                 @update:model-value="fetchResources(undefined, true)"
             >
                 <QTab
                     v-for="(value, index) in tabs"
                     :key="index"
+                    :icon="value.icon"
                     :label="value.label"
                     :name="value.name"
                 />
@@ -140,6 +143,20 @@ onMounted(async () => {
                             :props="props"
                         >
                             <p class="title-p">{{ props.row.title }}</p>
+                        </QTd>
+                    </template>
+
+                    <template #body-cell-status="props">
+                        <QTd>
+                            <QChip
+                                class="status"
+                                :color="computeStatusInfos(props.row).color"
+                                :icon="computeStatusInfos(props.row).icon"
+                                size="0.8rem"
+                                :text-color="!computeStatusInfos(props.row).color ? undefined : 'white'"
+                            >
+                                {{ computeStatusInfos(props.row).message }}
+                            </QChip>
                         </QTd>
                     </template>
                 </QTable>
