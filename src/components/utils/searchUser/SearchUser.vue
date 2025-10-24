@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, watch } from 'vue'
+import { onMounted, watch } from 'vue'
 import { type SearchUserEmitActions, useSearchUser } from './useSearchUser'
 import { useI18n } from 'vue-i18n'
 import type { ProjectInvitation, ProjectUser } from '#/project.ts'
