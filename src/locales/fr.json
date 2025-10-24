@@ -498,7 +498,8 @@
         "created": "Créé",
         "the": "le",
         "a": "un",
-        "by": "par"
+        "by": "par",
+        "unknown": "Inconnu"
     },
     "utils": {
         "searchUser": {

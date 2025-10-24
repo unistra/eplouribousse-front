@@ -30,6 +30,13 @@ const initialState: ProjectI = {
     activeAfter: '',
     isActive: false,
     status: ProjectStatus.Draft,
+    createdBy: {
+        id: '',
+        email: '',
+        firstName: '',
+        lastName: '',
+        displayName: '',
+    },
     settings: {
         exclusionReasons: [],
         alerts: {
@@ -41,6 +48,7 @@ const initialState: ProjectI = {
             preservation: false,
             transfer: false,
         },
+        projectCreator: '',
     },
     invitations: [],
     roles: [],

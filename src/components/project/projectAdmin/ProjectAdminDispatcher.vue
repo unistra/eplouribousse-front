@@ -13,7 +13,7 @@ import { useI18n } from 'vue-i18n'
 import ProjectAdminAlerts from '@/components/project/projectAdmin/projectAdminAlerts/ProjectAdminAlerts.vue'
 
 const store = useProjectStore()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const { addingExclusionReason, newExclusionReason, onAddExclusionReason, onCancelAddExclusionReason } =
     useProjectAdmin()
 defineProps<{
@@ -38,22 +38,15 @@ defineProps<{
             </QCardSection>
             <QSeparator />
             <QCardSection>
-                <p>Crée le : {{ new Date(store.createdAt).toLocaleString('fr-FR') }}</p>
                 <p>
-                    Crée par :
-                    <AtomicIcon
-                        v-for="(_value, index) in [1, 2, 3]"
-                        :key="index"
-                        color="grey-900"
-                        name="mdi-ghost"
-                    />
-                    Le monteur de projet (TODO: récupérer le monteur de projet)
-                    <AtomicIcon
-                        v-for="(_value, index) in [1, 2, 3]"
-                        :key="index"
-                        color="grey-900"
-                        name="mdi-run-fast"
-                    />
+                    {{ t('common.createdAt') }}
+                    {{
+                        new Intl.DateTimeFormat(locale, { year: 'numeric', month: '2-digit', day: '2-digit' }).format(
+                            new Date(store.createdAt),
+                        )
+                    }}
+                    {{ t('common.by') }}
+                    {{ store.createdBy['displayName'] || t('common.unknown') }}
                 </p>
             </QCardSection>
             <QSeparator />
