@@ -1,6 +1,6 @@
 import { computed, isRef, type Ref, ref, useTemplateRef } from 'vue'
 import type { Resource } from '#/project.ts'
-import { ResourceStatus, Roles, Tab } from '&/project.ts'
+import { PositioningFilter, ResourceStatus, Roles, Tab } from '&/project.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/userStore.ts'
@@ -31,6 +31,17 @@ export const useProjectResources = () => {
 
     const toggleAnomaliesTypes = ref<useProjectResourceToggleAnomaliesTypes>(ResourceStatus.AnomalyBound)
     const toggleControlTypes = ref<useProjectResourceToggleControlTypes>(ResourceStatus.ControlBound)
+
+    const selectFilterOnPositioning: { label: string; value: PositioningFilter }[] = [
+        { label: t('common.all'), value: PositioningFilter.All },
+        { label: t('project.positioning.filter.positioningOnly'), value: PositioningFilter.PositioningOnly },
+        {
+            label: t('project.positioning.filter.instructionNotStarted'),
+            value: PositioningFilter.InstructionNotStarted,
+        },
+        { label: t('project.positioning.filter.arbitration'), value: PositioningFilter.Arbitation },
+    ]
+    const positioningFilter = ref<PositioningFilter>(PositioningFilter.All)
 
     const tabs: useProjectResourceTab[] = [
         {
@@ -221,6 +232,7 @@ export const useProjectResources = () => {
         await resourceStore.fetchResources(tabStatus.value, {
             table,
             props: options,
+            ...(projectStore.tab === Tab.Positioning && { positioningFilter: positioningFilter.value }),
         })
         table.loading.value = false
     }
@@ -254,5 +266,7 @@ export const useProjectResources = () => {
         disableLibrarySelectedSelect,
         toggleControlTypes,
         computeStatusInfos,
+        selectFilterOnPositioning,
+        positioningFilter,
     }
 }

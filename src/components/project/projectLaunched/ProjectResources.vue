@@ -8,6 +8,7 @@ import { ResourceStatus, Roles, Tab } from '&/project.ts'
 import type { QTable } from 'quasar'
 import ProjectResource from '@/components/project/projectLaunched/ProjectResource/ProjectResource.vue'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
+import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
 
 const resourceStore = useResourceStore()
 const projectStore = useProjectStore()
@@ -24,6 +25,8 @@ const {
     disableLibrarySelectedSelect,
     toggleControlTypes,
     computeStatusInfos,
+    selectFilterOnPositioning,
+    positioningFilter,
 } = useProjectResources()
 const { t } = useI18n()
 
@@ -107,6 +110,21 @@ onMounted(async () => {
                     name="control-toggle"
                     :true-value="ResourceStatus.ControlUnbound"
                     @update:model-value="fetchResources(undefined, true)"
+                />
+                <AtomicSelect
+                    v-if="projectStore.tab === Tab.Positioning"
+                    v-model="positioningFilter"
+                    class="filter-positioning"
+                    dense
+                    :disable="disableLibrarySelectedSelect"
+                    emit-value
+                    :label="t('project.positioning.filter.i')"
+                    map-options
+                    name="filter-positioning"
+                    option-label="label"
+                    option-value="value"
+                    :options="selectFilterOnPositioning"
+                    @update:model-value="fetchResources(undefined, false)"
                 />
                 <QTable
                     ref="qTable"
@@ -199,4 +217,8 @@ h1
 .title-qtd
     .title-p
         white-space: wrap
+
+.filter-positioning
+    width: 100%
+    max-width: 300px
 </style>

@@ -9,7 +9,7 @@ import {
     type Segment,
     type SegmentNoCollection,
 } from '#/project.ts'
-import { AnomalyType, Arbitration, CollectionPosition, ResourceStatus } from '&/project.ts'
+import { AnomalyType, Arbitration, CollectionPosition, PositioningFilter, ResourceStatus } from '&/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { Notify, type QTableProps } from 'quasar'
 import i18n from '@/plugins/i18n'
@@ -138,6 +138,7 @@ export const useResourceStore = defineStore('resource', {
             options?: {
                 props: Omit<Parameters<NonNullable<QTableProps['onRequest']>>[0], 'getCellValue'>
                 table: TableProjectResources
+                positioningFilter?: PositioningFilter
             },
         ) {
             const projectStore = useProjectStore()
@@ -166,6 +167,11 @@ export const useResourceStore = defineStore('resource', {
                     if (pagination) {
                         params.ordering = `${pagination.descending ? '-' : ''}${pagination.sortBy || 'name'}`
                     }
+                }
+
+                if (options?.positioningFilter && status === ResourceStatus.Positioning) {
+                    if (options?.positioningFilter == PositioningFilter.Arbitation) params.arbitration = 'all'
+                    else params.positioning_filter = options.positioningFilter
                 }
 
                 const response = await axiosI.get<Pagination<Resource>>('/resources/', { params })

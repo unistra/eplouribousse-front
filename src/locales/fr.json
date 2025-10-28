@@ -257,6 +257,12 @@
             "alternativeStorageSite": "Lieu de stockage alternatif"
         },
         "positioning": {
+            "filter": {
+                "i": "Filtrer par ressource: ",
+                "positioningOnly": "Tous les types de positionnement",
+                "instructionNotStarted": "Instruction non démarrée",
+                "arbitration": "@:project.positioning.arbitration.i"
+            },
             "arbitration": {
                 "i": "Arbitrage",
                 "currently": "Cette ressource est en cours d'@.lower:project.positioning.arbitration.i",
