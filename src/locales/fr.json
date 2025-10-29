@@ -232,7 +232,10 @@
                 "exclusionReason": "Motif d'exclusion",
                 "excluded": "Collection exclue"
             },
-            "comment": "Commentaire"
+            "comment": "Commentaire",
+            "resultant": {
+                "i": "Résultante | Résultantes"
+            }
         },
         "settings": {
             "title": "Paramètres du projet",

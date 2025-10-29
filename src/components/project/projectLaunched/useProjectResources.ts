@@ -68,6 +68,12 @@ export const useProjectResources = () => {
             status: [ResourceStatus.AnomalyBound, ResourceStatus.AnomalyUnbound],
             icon: 'mdi-alert-circle',
         },
+        {
+            name: 'resultant',
+            label: t('project.resources.resultant.i', 2),
+            status: ResourceStatus.Edition,
+            icon: 'mdi-table-check',
+        },
     ]
     const tabStatus = computed(() => {
         const tab = tabs.find((el) => el.name === projectStore.tab)
