@@ -9,6 +9,7 @@ import ProjectControl from '@/components/project/projectLaunched/projectControl/
 import { useProjectStore } from '@/stores/projectStore.ts'
 import ProjectAnomalies from '@/components/project/projectLaunched/projectAnomalies/ProjectAnomalies.vue'
 import { Tab } from '&/project.ts'
+import ProjectEdition from '@/components/project/projectLaunched/projectEdition/ProjectEdition.vue'
 
 const { t } = useI18n()
 const resourceStore = useResourceStore()
@@ -82,6 +83,7 @@ const onBeforeShow = async () => {
                     />
                     <ProjectControl v-else-if="projectStore.tab === Tab.Control" />
                     <ProjectAnomalies v-else-if="projectStore.tab === Tab.Anomalies" />
+                    <ProjectEdition v-else-if="projectStore.tab === Tab.Edition" />
                     <p v-else>Unsupported status for Resource</p>
                 </QCardSection>
             </template>

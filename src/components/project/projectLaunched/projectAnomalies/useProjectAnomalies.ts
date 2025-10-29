@@ -1,4 +1,4 @@
-import { computed, type Ref } from 'vue'
+import { type Ref } from 'vue'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import type { CollectionsInResource, Resource } from '#/project.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
@@ -27,15 +27,6 @@ export const useProjectAnomalies = (dialogModal: Ref<boolean, boolean> | undefin
             })
         }
     }
-    const collectionsSortedByOrderInInstructionTurns = computed<CollectionsInResource[]>(() => {
-        if (!resourceStore.instructionTurns || !resourceStore.instructionTurns.turns || !resourceStore.collections) {
-            return []
-        }
-        const turns = resourceStore.instructionTurns.turns
-        return turns
-            .map((turn) => resourceStore.collections.find((collection) => collection.id === turn.collection))
-            .filter((item): item is (typeof resourceStore.collections)[0] => item !== undefined)
-    })
 
     const reassignTurn = async (collection?: CollectionsInResource, controller?: boolean) => {
         try {
@@ -71,7 +62,6 @@ export const useProjectAnomalies = (dialogModal: Ref<boolean, boolean> | undefin
 
     return {
         reassignTurn,
-        collectionsSortedByOrderInInstructionTurns,
         resetInstruction,
     }
 }

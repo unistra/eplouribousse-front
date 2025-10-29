@@ -26,6 +26,7 @@ const {
     openDialogCreateSegment,
     displayOptionsColumnBasedOnUserRole,
     displayNewSegmentButton,
+    isHighlightedRow,
 } = useProjectSegmentTable()
 
 onMounted(async () => {
@@ -51,7 +52,10 @@ onMounted(async () => {
         virtual-scroll
     >
         <template #body="props">
-            <QTr :props="props">
+            <QTr
+                :class="{ highlighted: isHighlightedRow(props.row.collection) }"
+                :props="props"
+            >
                 <QTd
                     v-for="col in props.cols"
                     :key="col.name"
@@ -187,4 +191,9 @@ onMounted(async () => {
 
 .bottom
     margin-left: auto
+
+.highlighted
+    background-color: var(--color-black)
+    color: var(--color-white)
+    font-weight: bold
 </style>

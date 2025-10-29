@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import type { Segment } from '#/project.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { Tab } from '&/project.ts'
+import { useProjectEdition } from '@/components/project/projectLaunched/projectEdition/useProjectEdition.ts'
 
 interface UseProjectSegmentTableState {
     loading: boolean
@@ -72,9 +73,9 @@ export const useProjectSegmentTable = () => {
             name: 'collection',
             label: t('project.instruction.tableFields.collection'),
             field: 'collection',
-            format(_val: unknown, row: Segment) {
+            format(_val: unknown, row: Segment): string {
                 const collection = resourceStore.collections.find((el) => el.id === row.collection)
-                return `${t('project.resources.position')}: ${collection?.position} | ${t('project.resources.callNumber')}: ${collection?.callNumber}`
+                return collection ? projectStore.formatCollectionToString(collection) : ''
             },
             align: 'center',
         },
@@ -133,11 +134,18 @@ export const useProjectSegmentTable = () => {
         })
     }
 
-    const orderedRows = computed(() => [...resourceStore.segments].sort((a, b) => a.order - b.order))
+    const orderedRows = computed<Segment[]>(() => [...resourceStore.segments].sort((a, b) => a.order - b.order))
 
     const openDialogCreateSegment = (insertAfterId: string | undefined = undefined) => {
         dialogCreateSegment.value = true
         insertAfter.value = insertAfterId
+    }
+
+    const { selectCollectionToShowEdition } = useProjectEdition()
+
+    const isHighlightedRow = (collectionId: string) => {
+        if (!selectCollectionToShowEdition) return false
+        return collectionId === selectCollectionToShowEdition.value
     }
 
     return {
@@ -150,5 +158,6 @@ export const useProjectSegmentTable = () => {
         openDialogCreateSegment,
         displayOptionsColumnBasedOnUserRole,
         displayNewSegmentButton,
+        isHighlightedRow,
     }
 }

@@ -83,6 +83,15 @@ export const useResourceStore = defineStore('resource', {
         anomaliesUnfixed(this: ResourceStoreState): Anomaly[] {
             return this.anomalies.filter((anomaly) => !anomaly.fixed)
         },
+        collectionsSortedByOrderInInstructionTurns(this: ResourceStoreState) {
+            if (!this.instructionTurns || !this.instructionTurns.turns || !this.collections) {
+                return []
+            }
+            const turns = this.instructionTurns.turns
+            return turns
+                .map((turn) => this.collections.find((collection) => collection.id === turn.collection))
+                .filter((item): item is (typeof this.collections)[0] => item !== undefined)
+        },
     },
     actions: {
         _findCollection(collectionId: string) {

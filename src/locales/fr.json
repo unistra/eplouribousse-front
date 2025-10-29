@@ -234,7 +234,8 @@
             },
             "comment": "Commentaire",
             "resultant": {
-                "i": "Résultante | Résultantes"
+                "i": "Résultante | Résultantes",
+                "selectCollection": "@:project.resources.resultant.i de la @.lower:project.collection.i"
             }
         },
         "settings": {

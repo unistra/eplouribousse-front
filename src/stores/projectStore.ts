@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import type { LibraryI } from '#/library'
 import {
     type Collection,
+    type CollectionsInResource,
     type ImportCSVError,
     type ImportCSVResponse,
     type Project,
@@ -452,6 +453,11 @@ export const useProjectStore = defineStore('project', {
                     message: t('errors.unknown'),
                 })
             }
+        },
+        formatCollectionToString(collection: CollectionsInResource | '') {
+            return collection
+                ? `${t('project.resources.position')}: ${collection.position} | ${t('project.resources.callNumber')}: ${collection.callNumber}`
+                : ''
         },
     },
 })
