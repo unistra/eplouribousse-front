@@ -214,13 +214,14 @@
                 "positioning": "Positionnement en cours",
                 "positioningRequired": "Positionnement requis",
                 "waitingPositioning": "En attente des autres bibliothèques",
+                "instructionBoundButPositioningTab": "Instruction non démarrée",
                 "instructionBound": "Instruction des exemplaires reliés",
                 "controlBound": "Contrôle des exemplaires reliés",
                 "instructionUnbound": "Instruction des exemplaires non reliés",
                 "controlUnbound": "Contrôle des exemplaires non reliés",
                 "anomalies": "@.capitalize:project.anomaly.i",
-                "anomaliesBound": "@.capitalize:project.anomaly.i reliés",
-                "anomaliesUnbound": "@.capitalize:project.anomaly.i non reliés"
+                "anomaliesBound": "@.capitalize:project.anomaly.i en phase reliés",
+                "anomaliesUnbound": "@.capitalize:project.anomaly.i en phase non reliés"
             },
 
             "youAreInstructor": "Vous êtes instructeur pour cette bibliothèque",
@@ -256,6 +257,12 @@
             "alternativeStorageSite": "Lieu de stockage alternatif"
         },
         "positioning": {
+            "filter": {
+                "i": "Filtrer par ressource: ",
+                "positioningOnly": "Tous les types de positionnement",
+                "instructionNotStarted": "Instruction non démarrée",
+                "arbitration": "@:project.positioning.arbitration.i"
+            },
             "arbitration": {
                 "i": "Arbitrage",
                 "currently": "Cette ressource est en cours d'@.lower:project.positioning.arbitration.i",

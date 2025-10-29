@@ -8,6 +8,7 @@ import { ResourceStatus, Roles, Tab } from '&/project.ts'
 import type { QTable } from 'quasar'
 import ProjectResource from '@/components/project/projectLaunched/ProjectResource/ProjectResource.vue'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
+import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
 
 const resourceStore = useResourceStore()
 const projectStore = useProjectStore()
@@ -23,6 +24,9 @@ const {
     toggleAnomaliesTypes,
     disableLibrarySelectedSelect,
     toggleControlTypes,
+    computeStatusInfos,
+    selectFilterOnPositioning,
+    positioningFilter,
 } = useProjectResources()
 const { t } = useI18n()
 
@@ -59,12 +63,14 @@ onMounted(async () => {
                 v-model="projectStore.tab"
                 align="left"
                 dense
+                inline-label
                 no-caps
                 @update:model-value="fetchResources(undefined, true)"
             >
                 <QTab
                     v-for="(value, index) in tabs"
                     :key="index"
+                    :icon="value.icon"
                     :label="value.label"
                     :name="value.name"
                 />
@@ -105,6 +111,21 @@ onMounted(async () => {
                     :true-value="ResourceStatus.ControlUnbound"
                     @update:model-value="fetchResources(undefined, true)"
                 />
+                <AtomicSelect
+                    v-if="projectStore.tab === Tab.Positioning"
+                    v-model="positioningFilter"
+                    class="filter-positioning"
+                    dense
+                    :disable="disableLibrarySelectedSelect"
+                    emit-value
+                    :label="t('project.positioning.filter.i')"
+                    map-options
+                    name="filter-positioning"
+                    option-label="label"
+                    option-value="value"
+                    :options="selectFilterOnPositioning"
+                    @update:model-value="fetchResources(undefined, false)"
+                />
                 <QTable
                     ref="qTable"
                     v-model:pagination="table.pagination.value"
@@ -140,6 +161,20 @@ onMounted(async () => {
                             :props="props"
                         >
                             <p class="title-p">{{ props.row.title }}</p>
+                        </QTd>
+                    </template>
+
+                    <template #body-cell-status="props">
+                        <QTd>
+                            <QChip
+                                class="status"
+                                :color="computeStatusInfos(props.row).color"
+                                :icon="computeStatusInfos(props.row).icon"
+                                size="0.8rem"
+                                :text-color="!computeStatusInfos(props.row).color ? undefined : 'white'"
+                            >
+                                {{ computeStatusInfos(props.row).message }}
+                            </QChip>
                         </QTd>
                     </template>
                 </QTable>
@@ -182,4 +217,8 @@ h1
 .title-qtd
     .title-p
         white-space: wrap
+
+.filter-positioning
+    width: 100%
+    max-width: 300px
 </style>

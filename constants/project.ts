@@ -73,3 +73,10 @@ export enum AlertType {
     Transfer = 'transfer',
     Anomaly = 'anomaly',
 }
+
+export enum PositioningFilter {
+    All = 0,
+    PositioningOnly = 10,
+    InstructionNotStarted = 20,
+    Arbitation = 30,
+}

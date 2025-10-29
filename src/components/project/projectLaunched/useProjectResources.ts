@@ -1,6 +1,6 @@
 import { computed, isRef, type Ref, ref, useTemplateRef } from 'vue'
 import type { Resource } from '#/project.ts'
-import { ResourceStatus, Roles, Tab } from '&/project.ts'
+import { PositioningFilter, ResourceStatus, Roles, Tab } from '&/project.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/userStore.ts'
@@ -16,7 +16,10 @@ type useProjectResourceTab = {
     name: string
     label: string
     status: ResourceStatus | Ref<useProjectResourceToggleAnomaliesTypes | useProjectResourceToggleControlTypes>
+    icon: string
 }
+
+type StatusInfo = { message: string; icon: string; color?: string }
 
 export const useProjectResources = () => {
     const projectStore = useProjectStore()
@@ -29,20 +32,48 @@ export const useProjectResources = () => {
     const toggleAnomaliesTypes = ref<useProjectResourceToggleAnomaliesTypes>(ResourceStatus.AnomalyBound)
     const toggleControlTypes = ref<useProjectResourceToggleControlTypes>(ResourceStatus.ControlBound)
 
+    const selectFilterOnPositioning: { label: string; value: PositioningFilter }[] = [
+        { label: t('common.all'), value: PositioningFilter.All },
+        { label: t('project.positioning.filter.positioningOnly'), value: PositioningFilter.PositioningOnly },
+        {
+            label: t('project.positioning.filter.instructionNotStarted'),
+            value: PositioningFilter.InstructionNotStarted,
+        },
+        { label: t('project.positioning.filter.arbitration'), value: PositioningFilter.Arbitation },
+    ]
+    const positioningFilter = ref<PositioningFilter>(PositioningFilter.All)
+
     const tabs: useProjectResourceTab[] = [
-        { name: 'positioning', label: t('project.resources.status.toPosition'), status: ResourceStatus.Positioning },
+        {
+            name: 'positioning',
+            label: t('project.resources.status.toPosition'),
+            status: ResourceStatus.Positioning,
+            icon: 'mdi-podium',
+        },
         {
             name: 'instructionBound',
             label: t('project.resources.status.toInstructBound'),
             status: ResourceStatus.InstructionBound,
+            icon: 'mdi-book-open-page-variant',
         },
         {
             name: 'instructionUnbound',
             label: t('project.resources.status.toInstructUnbound'),
             status: ResourceStatus.InstructionUnbound,
+            icon: 'mdi-file-multiple',
         },
-        { name: 'control', label: t('project.resources.status.toControl'), status: toggleControlTypes },
-        { name: 'anomalies', label: t('project.resources.status.anomalies', 2), status: toggleAnomaliesTypes },
+        {
+            name: 'control',
+            label: t('project.resources.status.toControl'),
+            status: toggleControlTypes,
+            icon: 'mdi-shield-check',
+        },
+        {
+            name: 'anomalies',
+            label: t('project.resources.status.anomalies', 2),
+            status: toggleAnomaliesTypes,
+            icon: 'mdi-alert-circle',
+        },
     ]
     const tabStatus = computed(() => {
         const t = tabs.find((el) => el.name === projectStore.tab)
@@ -60,22 +91,56 @@ export const useProjectResources = () => {
         ]
     })
 
-    const computeStatusLabel = (val: ResourceStatus, row: Resource) => {
-        if (val === ResourceStatus.Positioning) {
-            if (row.arbitration !== 2) return t('project.resources.status.toArbitrate')
-            if (row.shouldPosition) return t('project.resources.status.positioningRequired')
-            if (projectStore.isRole(Roles.Instructor, resourceStore.libraryIdSelected))
-                return t('project.resources.status.waitingPositioning')
-            return t('project.resources.status.positioning')
+    const computeStatusInfos = (row: Resource): StatusInfo => {
+        if (row.arbitration !== 2)
+            return {
+                message: t('project.resources.status.toArbitrate') + ` ${row.arbitration}`,
+                icon: 'mdi-gavel',
+                color: 'negative',
+            }
+
+        if (row.status === ResourceStatus.Positioning) {
+            const infos: StatusInfo = { message: '', icon: 'mdi-podium' }
+            if (row.shouldPosition) {
+                infos.message = t('project.resources.status.positioningRequired')
+                infos.color = 'primary'
+                return infos
+            }
+            if (projectStore.isRole(Roles.Instructor, resourceStore.libraryIdSelected)) {
+                infos.message = t('project.resources.status.waitingPositioning')
+                return infos
+            }
+            infos.message = t('project.resources.status.positioning')
+            return infos
         }
 
-        if (val === ResourceStatus.InstructionBound) {
-            if (row.arbitration !== 2) return t('project.resources.status.toArbitrate')
-            return t('project.resources.status.instructionBound')
+        if (row.status === ResourceStatus.InstructionBound) {
+            if (projectStore.tab === Tab.Positioning)
+                return {
+                    message: t('project.resources.status.instructionBoundButPositioningTab'),
+                    icon: 'mdi-timer-outline',
+                }
+            return { message: t('project.resources.status.instructionBound'), icon: 'mdi-segment' }
         }
-        if (val === ResourceStatus.ControlBound) return t('project.resources.status.controlBound')
-        if (val === ResourceStatus.InstructionUnbound) return t('project.resources.status.instructionUnbound')
-        else return t('project.resources.status.controlUnbound')
+        if (row.status === ResourceStatus.ControlBound)
+            return { message: t('project.resources.status.controlBound'), icon: 'mdi-shield-check-outline' }
+        if (row.status === ResourceStatus.InstructionUnbound)
+            return { message: t('project.resources.status.instructionUnbound'), icon: 'mdi-segment' }
+        if (row.status === ResourceStatus.ControlUnbound)
+            return { message: t('project.resources.status.controlUnbound'), icon: 'mdi-shield-check-outline' }
+        if (row.status === ResourceStatus.AnomalyBound)
+            return {
+                message: t('project.resources.status.anomaliesBound'),
+                icon: 'mdi-alert-octagon',
+                color: 'negative',
+            }
+        if (row.status === ResourceStatus.AnomalyUnbound)
+            return {
+                message: t('project.resources.status.anomaliesUnbound'),
+                icon: 'mdi-alert-octagon',
+                color: 'negative',
+            }
+        return { message: t('common.error'), icon: 'mdi-alert-outline' }
     }
 
     const table: TableProjectResources = {
@@ -111,7 +176,6 @@ export const useProjectResources = () => {
                 align: 'left',
                 field: 'status',
                 sortable: true,
-                format: computeStatusLabel,
             },
         ],
         pagination: ref({
@@ -168,6 +232,7 @@ export const useProjectResources = () => {
         await resourceStore.fetchResources(tabStatus.value, {
             table,
             props: options,
+            ...(projectStore.tab === Tab.Positioning && { positioningFilter: positioningFilter.value }),
         })
         table.loading.value = false
     }
@@ -200,5 +265,8 @@ export const useProjectResources = () => {
         toggleAnomaliesTypes,
         disableLibrarySelectedSelect,
         toggleControlTypes,
+        computeStatusInfos,
+        selectFilterOnPositioning,
+        positioningFilter,
     }
 }

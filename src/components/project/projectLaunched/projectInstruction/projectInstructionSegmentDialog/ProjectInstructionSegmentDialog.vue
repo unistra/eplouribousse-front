@@ -5,11 +5,9 @@ import type { Segment } from '#/project.ts'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import { onMounted } from 'vue'
 import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
-import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useProjectInstructionSegmentDialog } from '@/components/project/projectLaunched/projectInstruction/projectInstructionSegmentDialog/useProjectInstructionSegmentDialog.ts'
 
 const { t } = useI18n()
-const resourceStore = useResourceStore()
 const model = defineModel<boolean>({ required: true })
 const props = withDefaults(
     defineProps<{
