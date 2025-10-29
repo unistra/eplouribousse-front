@@ -1,4 +1,4 @@
-import { computed, isRef, type Ref, ref, useTemplateRef } from 'vue'
+import { computed, ref, useTemplateRef } from 'vue'
 import type { Resource } from '#/project.ts'
 import { PositioningFilter, ResourceStatus, Roles, Tab } from '&/project.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
@@ -9,13 +9,10 @@ import { useResourceStore } from '@/stores/resourceStore.ts'
 import type { TableProjectResources } from '#/table.ts'
 import { storeToRefs } from 'pinia'
 
-type useProjectResourceToggleAnomaliesTypes = ResourceStatus.AnomalyBound | ResourceStatus.AnomalyUnbound
-type useProjectResourceToggleControlTypes = ResourceStatus.ControlBound | ResourceStatus.ControlUnbound
-
 type useProjectResourceTab = {
     name: string
     label: string
-    status: ResourceStatus | Ref<useProjectResourceToggleAnomaliesTypes | useProjectResourceToggleControlTypes>
+    status: ResourceStatus | ResourceStatus[]
     icon: string
 }
 
@@ -28,9 +25,6 @@ export const useProjectResources = () => {
     const { t } = useI18n()
     const { libraryIdSelected, libraryIdComparedSelected } = storeToRefs(useResourceStore())
     const disableLibrarySelectedSelect = ref<boolean>(false)
-
-    const toggleAnomaliesTypes = ref<useProjectResourceToggleAnomaliesTypes>(ResourceStatus.AnomalyBound)
-    const toggleControlTypes = ref<useProjectResourceToggleControlTypes>(ResourceStatus.ControlBound)
 
     const selectFilterOnPositioning: { label: string; value: PositioningFilter }[] = [
         { label: t('common.all'), value: PositioningFilter.All },
@@ -65,19 +59,19 @@ export const useProjectResources = () => {
         {
             name: 'control',
             label: t('project.resources.status.toControl'),
-            status: toggleControlTypes,
+            status: [ResourceStatus.ControlBound, ResourceStatus.ControlUnbound],
             icon: 'mdi-shield-check',
         },
         {
             name: 'anomalies',
             label: t('project.resources.status.anomalies', 2),
-            status: toggleAnomaliesTypes,
+            status: [ResourceStatus.AnomalyBound, ResourceStatus.AnomalyUnbound],
             icon: 'mdi-alert-circle',
         },
     ]
     const tabStatus = computed(() => {
-        const t = tabs.find((el) => el.name === projectStore.tab)
-        return t ? (isRef(t.status) ? t.status.value : t.status) : ResourceStatus.Positioning
+        const tab = tabs.find((el) => el.name === projectStore.tab)
+        return tab ? tab.status : ResourceStatus.Positioning
     })
 
     const librariesOptions = computed(() => {
@@ -262,9 +256,7 @@ export const useProjectResources = () => {
         onRowClick,
         selects,
         fetchResources,
-        toggleAnomaliesTypes,
         disableLibrarySelectedSelect,
-        toggleControlTypes,
         computeStatusInfos,
         selectFilterOnPositioning,
         positioningFilter,

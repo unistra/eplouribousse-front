@@ -4,7 +4,7 @@ import { useProjectResources } from '@/components/project/projectLaunched/usePro
 import { useI18n } from 'vue-i18n'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
-import { ResourceStatus, Roles, Tab } from '&/project.ts'
+import { Roles, Tab } from '&/project.ts'
 import type { QTable } from 'quasar'
 import ProjectResource from '@/components/project/projectLaunched/ProjectResource/ProjectResource.vue'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
@@ -21,9 +21,7 @@ const {
     onRowClick,
     fetchResources,
     selects,
-    toggleAnomaliesTypes,
     disableLibrarySelectedSelect,
-    toggleControlTypes,
     computeStatusInfos,
     selectFilterOnPositioning,
     positioningFilter,
@@ -85,32 +83,6 @@ onMounted(async () => {
                 :key="index"
                 :name="value.name"
             >
-                <QToggle
-                    v-if="projectStore.tab === Tab.Anomalies"
-                    v-model="toggleAnomaliesTypes"
-                    :false-value="ResourceStatus.AnomalyBound"
-                    :label="
-                        toggleAnomaliesTypes === ResourceStatus.AnomalyBound
-                            ? t('project.resources.status.anomaliesBound')
-                            : t('project.resources.status.anomaliesUnbound')
-                    "
-                    name="anomaly-toggle"
-                    :true-value="ResourceStatus.AnomalyUnbound"
-                    @update:model-value="fetchResources(undefined, true)"
-                />
-                <QToggle
-                    v-if="projectStore.tab === Tab.Control"
-                    v-model="toggleControlTypes"
-                    :false-value="ResourceStatus.ControlBound"
-                    :label="
-                        toggleControlTypes === ResourceStatus.ControlBound
-                            ? t('project.resources.status.controlBound')
-                            : t('project.resources.status.controlUnbound')
-                    "
-                    name="control-toggle"
-                    :true-value="ResourceStatus.ControlUnbound"
-                    @update:model-value="fetchResources(undefined, true)"
-                />
                 <AtomicSelect
                     v-if="projectStore.tab === Tab.Positioning"
                     v-model="positioningFilter"
