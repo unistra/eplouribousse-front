@@ -33,6 +33,21 @@ interface ResourceStoreState extends Resource {
     anomalies: Anomaly[]
 }
 
+interface CollectionPositionAndExcludeResponse {
+    arbitration: Arbitration
+    status: ResourceStatus
+    shouldInstruct: boolean
+    shouldPosition: boolean
+}
+
+interface UpdateCollectionPositionResponse extends CollectionPositionAndExcludeResponse {
+    position: CollectionPosition
+}
+
+interface ExcludeCollectionResponse extends CollectionPositionAndExcludeResponse {
+    exclusionReason: string
+}
+
 const initialState: Resource = {
     id: '',
     title: '',
@@ -102,6 +117,20 @@ export const useResourceStore = defineStore('resource', {
         getAll(table: TableProjectResources) {
             table.pagination.value.rowsNumber = this.resourcesCount
             return this.resources
+        },
+        _applyResourceUpdate(response: CollectionPositionAndExcludeResponse) {
+            this.arbitration = response.arbitration
+            this.status = response.status
+            this.shouldPosition = response.shouldPosition
+            this.shouldInstruct = response.shouldInstruct
+
+            const resource = this.resources.find((el) => el.id === this.id)
+            if (resource) {
+                resource.arbitration = response.arbitration
+                resource.status = response.status
+                resource.shouldPosition = response.shouldPosition
+                resource.shouldInstruct = response.shouldInstruct
+            }
         },
         async fetchResourceAndCollections(resourceId: string) {
             const projectStore = useProjectStore()
@@ -211,27 +240,23 @@ export const useResourceStore = defineStore('resource', {
         },
         async updatePosition(collectionId: string, newPosition: CollectionPosition) {
             try {
-                const response = await axiosI.patch<{
-                    position: CollectionPosition
-                    arbitration: Arbitration
-                    status: ResourceStatus
-                }>(`collections/${collectionId}/position/`, {
-                    position: newPosition,
-                })
+                const response = await axiosI.patch<UpdateCollectionPositionResponse>(
+                    `collections/${collectionId}/position/`,
+                    {
+                        position: newPosition,
+                    },
+                )
 
                 const collection = this._findCollection(collectionId)
                 collection.position = response.data.position
                 collection.exclusionReason = ''
 
-                this.arbitration = response.data.arbitration
-                this.status = response.data.status
-                const resource = this.resources.find((el) => el.id === this.id)
-                if (resource) {
-                    resource.arbitration = this.arbitration
-                    resource.status = this.status
-                    resource.shouldPosition = this.shouldPosition
-                    resource.shouldInstruct = this.shouldInstruct
-                }
+                this._applyResourceUpdate({
+                    arbitration: response.data.arbitration,
+                    status: response.data.status,
+                    shouldPosition: response.data.shouldPosition,
+                    shouldInstruct: response.data.shouldInstruct,
+                })
             } catch {
                 Notify.create({
                     type: 'negative',
@@ -241,17 +266,19 @@ export const useResourceStore = defineStore('resource', {
         },
         async excludeCollection(collectionId: string, exclusionReason: string) {
             try {
-                const response = await axiosI.patch<{ exclusionReason: string; arbitration: Arbitration }>(
-                    `collections/${collectionId}/exclude/`,
-                    {
-                        exclusion_reason: exclusionReason,
-                    },
-                )
-
+                const response = await axiosI.patch<ExcludeCollectionResponse>(`collections/${collectionId}/exclude/`, {
+                    exclusion_reason: exclusionReason,
+                })
                 const collection = this._findCollection(collectionId)
                 collection.position = CollectionPosition.Excluded
                 collection.exclusionReason = response.data.exclusionReason
-                this.arbitration = response.data.arbitration
+
+                this._applyResourceUpdate({
+                    arbitration: response.data.arbitration,
+                    status: response.data.status,
+                    shouldPosition: response.data.shouldPosition,
+                    shouldInstruct: response.data.shouldInstruct,
+                })
             } catch {
                 Notify.create({
                     type: 'negative',
