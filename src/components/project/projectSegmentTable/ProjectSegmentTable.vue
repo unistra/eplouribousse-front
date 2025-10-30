@@ -20,13 +20,14 @@ const {
     columns,
     loading,
     orderedRows,
-    hoveredValue,
+    improvedSegmentIdHovered,
     dialogCreateSegment,
     insertAfter,
     openDialogCreateSegment,
     displayOptionsColumnBasedOnUserRole,
     displayNewSegmentButton,
     isHighlightedRow,
+    isSemiHighlightedRow,
 } = useProjectSegmentTable()
 
 onMounted(async () => {
@@ -39,7 +40,7 @@ onMounted(async () => {
 
 <template>
     <QTable
-        class="table"
+        :class="['table', { 'virtual-scroll': projectStore.tab !== Tab.Edition }]"
         :columns
         flat
         hide-pagination
@@ -48,12 +49,15 @@ onMounted(async () => {
         :pagination="{ rowsPerPage: 0 }"
         row-key="id"
         :rows="orderedRows"
-        :table-row-class-fn="(row: Segment) => (hoveredValue === row.order.toString() ? 'resolved' : '')"
-        virtual-scroll
+        :table-row-class-fn="(row: Segment) => (improvedSegmentIdHovered === row.id ? 'resolved' : '')"
+        :virtual-scroll="projectStore.tab !== Tab.Edition"
     >
         <template #body="props">
             <QTr
-                :class="{ highlighted: isHighlightedRow(props.row.collection) }"
+                :class="{
+                    highlighted: isHighlightedRow(props.row.collection),
+                    'semi-highlighted': isSemiHighlightedRow(props.row.improvedSegment),
+                }"
                 :props="props"
             >
                 <QTd
@@ -71,8 +75,8 @@ onMounted(async () => {
                     <template v-else-if="col.name === 'resolve'">
                         <div
                             class="resolve"
-                            @mouseenter="hoveredValue = col.value"
-                            @mouseleave="hoveredValue = null"
+                            @mouseenter="improvedSegmentIdHovered = props.row.improvedSegment"
+                            @mouseleave="improvedSegmentIdHovered = null"
                         >
                             {{ col.value }}
                         </div>
@@ -169,8 +173,9 @@ onMounted(async () => {
 
 <style lang="sass" scoped>
 .table
-    flex-grow: 1
-    height: 0
+    &.virtual-scroll
+        flex-grow: 1
+        height: 0
     .resolve
         text-align: center
 
@@ -179,6 +184,11 @@ onMounted(async () => {
 
 :deep(.q-table tbody .resolved)
     background-color: var(--color-neutral-300)
+
+    &.highlighted
+        background-color: var(--color-neutral-500)
+:deep(.q-table tbody .semi-highlighted)
+    background-color: var(--color-yellow)
 
 .btn-segment
     width: fit-content

@@ -60,19 +60,30 @@ const onBeforeShow = async () => {
             </QCardSection>
             <template v-else>
                 <QCardSection>
-                    <hgroup>
-                        <h2>{{ resourceStore.title }}</h2>
-                        <QChip>
-                            {{ t('project.resources.code') }}: <span>{{ resourceStore.code || '-' }}</span>
-                        </QChip>
-                        <QChip>
-                            ISSN: <span>{{ resourceStore.issn || '-' }}</span>
-                        </QChip>
-                        <QChip>
-                            {{ t('project.resources.publicationHistory') }}:
-                            <span>{{ resourceStore.publicationHistory || '-' }}</span>
-                        </QChip>
-                    </hgroup>
+                    <template v-if="projectStore.tab === Tab.Edition">
+                        <h2>
+                            {{
+                                projectStore.libraries.find((el) => el.id === resourceStore.libraryIdSelected)
+                                    ? projectStore.libraries.find((el) => el.id === resourceStore.libraryIdSelected)
+                                          ?.name + ':'
+                                    : ''
+                            }}
+                            {{ t('project.resources.resultant.title') }}
+                        </h2>
+                        <p class="resource-title">{{ resourceStore.title }}</p>
+                    </template>
+                    <h2 v-else>{{ resourceStore.title }}</h2>
+
+                    <QChip>
+                        {{ t('project.resources.code') }}: <span>{{ resourceStore.code || '-' }}</span>
+                    </QChip>
+                    <QChip>
+                        ISSN: <span>{{ resourceStore.issn || '-' }}</span>
+                    </QChip>
+                    <QChip>
+                        {{ t('project.resources.publicationHistory') }}:
+                        <span>{{ resourceStore.publicationHistory || '-' }}</span>
+                    </QChip>
                 </QCardSection>
                 <QCardSection class="content">
                     <ProjectPositioning v-if="projectStore.tab === Tab.Positioning" />
@@ -95,6 +106,11 @@ const onBeforeShow = async () => {
 h2
     font-size: 1.5rem
     font-weight: bold
+
+.resource-title
+    font-size: 1.3rem
+    font-weight: bold
+
 .q-card
     display: flex
     flex-direction: column
