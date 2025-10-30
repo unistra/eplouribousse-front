@@ -9,7 +9,7 @@ import { onMounted } from 'vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 
 const resourceStore = useResourceStore()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const { selectCollectionToShowEdition, motherCollectionString, pdfPreviewURL, storageLocation } = useProjectEdition()
 
@@ -28,8 +28,30 @@ onMounted(() => {
                 <QChip class="chip-with-bold">
                     {{ t('project.storageLocation') }}: <span>{{ storageLocation }}</span>
                 </QChip>
-                <QChip class="chip-with-bold">{{ t('project.resources.status.controlBound') }}: <span>-</span></QChip>
-                <QChip class="chip-with-bold">{{ t('project.resources.status.controlUnbound') }}: <span>-</span></QChip>
+                <QChip class="chip-with-bold"
+                    >{{ t('project.resources.status.controlBound') }}:
+                    <span>{{
+                        new Intl.DateTimeFormat(locale, {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                        }).format(new Date(resourceStore.validations.controlBound)) || '-'
+                    }}</span></QChip
+                >
+                <QChip class="chip-with-bold"
+                    >{{ t('project.resources.status.controlUnbound') }}:
+                    <span>{{
+                        new Intl.DateTimeFormat(locale, {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                        }).format(new Date(resourceStore.validations.controlUnbound)) || '-'
+                    }}</span></QChip
+                >
             </div>
             <QList class="collection-lists">
                 <QExpansionItem
@@ -114,25 +136,15 @@ onMounted(() => {
                 </div>
 
                 <div class="pdf">
-                    <div class="label">
-                        <QIcon name="mdi-file-outline" />
-                        <p>PDF</p>
-                    </div>
-                    <div class="buttons">
-                        <AtomicButton
-                            dense
-                            :href="pdfPreviewURL()"
-                            icon="mdi-eye"
-                            :label="t('common.preview')"
-                            target="_blank"
-                        />
-                        <AtomicButton
-                            dense
-                            :href="pdfPreviewURL(false)"
-                            icon="mdi-download"
-                            :label="t('common.download')"
-                        />
-                    </div>
+                    <QIcon
+                        name=""
+                        size="lg"
+                    />
+                    <AtomicButton
+                        :href="pdfPreviewURL(false)"
+                        icon="mdi-download"
+                        :label="t('utils.downloadPDF')"
+                    />
                 </div>
             </div>
         </div>
@@ -227,13 +239,8 @@ h3
     .pdf
         display: flex
         align-items: center
-        gap: 1rem
         align-self: end
-        .label
-            display: flex
-            align-items: center
-        .buttons
-            display: flex
-            align-items: center
-            gap: 0.5rem
+
+        .q-icon
+            color: var(--color-red)
 </style>

@@ -62,6 +62,10 @@ const initialState: Resource = {
     instructionTurns: undefined,
     issn: '',
     publicationHistory: '',
+    validations: {
+        controlBound: '',
+        controlUnbound: '',
+    },
 }
 
 export const useResourceStore = defineStore('resource', {
@@ -136,7 +140,7 @@ export const useResourceStore = defineStore('resource', {
             const projectStore = useProjectStore()
 
             try {
-                const response = await axiosI.get<CollectionsWithResource>(`/resources/${resourceId}/collections`, {
+                const response = await axiosI.get<CollectionsWithResource>(`/resources/${resourceId}/collections/`, {
                     params: {
                         project_id: projectStore.id,
                     },
@@ -155,6 +159,7 @@ export const useResourceStore = defineStore('resource', {
                 this.instructionTurns = response.data.resource.instructionTurns
                 this.issn = response.data.resource.issn
                 this.publicationHistory = response.data.resource.publicationHistory
+                this.validations = response.data.resource.validations
 
                 this.collections = response.data.collections.sort(
                     (a: CollectionsInResource, b: CollectionsInResource) => {

@@ -529,7 +529,8 @@
         "noEmailAddress": "Aucune @.lower:common.email",
         "universityOfStrasbourg": "Université de Strasbourg",
         "abes": "Agence bibliographique de l'enseignement supérieur",
-        "noLibrary": "Aucune bibliothèque"
+        "noLibrary": "Aucune bibliothèque",
+        "downloadPDF": "@:common.download le PDF"
     },
     "errors": {
         "unknown": "Une erreur est survenue",
