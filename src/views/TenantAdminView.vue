@@ -7,7 +7,7 @@ const { t } = useI18n()
 
 <template>
     <QPage padding>
-        <h1>{{ t('navigation.generalAdministration') }}</h1>
+        <h1>{{ t('navigation.tenantAdmin') }}</h1>
         <AdminPanel />
     </QPage>
 </template>

@@ -214,15 +214,15 @@ const routes: RouteRecordRaw[] = [
         },
     },
     {
-        path: '/admin',
-        name: 'admin',
-        component: () => import('@/views/AdminView.vue'),
+        path: '/tenant-admin',
+        name: 'tenantAdmin',
+        component: () => import('@/views/TenantAdminView.vue'),
         meta: {
-            title: t('navigation.admin'),
+            title: t('navigation.tenantAdmin'),
         },
-        beforeEnter: async () => {
-            // const userStore = useUserStore()
-            // TODO: tester que l'utilisateur est le superuser du tenant, le rediriger vers une 403 sinon
+        beforeEnter: async (_, from) => {
+            const userStore = useUserStore()
+            if (!userStore.user?.isSuperuser) return { name: from.name }
         },
     },
     {

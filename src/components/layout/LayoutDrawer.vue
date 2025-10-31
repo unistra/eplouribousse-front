@@ -46,6 +46,12 @@ onMounted(async () => {
                 exact-active-class=""
             >
                 <p>{{ globalStore.tenant?.name || '' }}</p>
+                <AtomicButton
+                    v-if="userStore.user?.isSuperuser"
+                    icon="mdi-cog"
+                    no-border
+                    :to="{ name: 'tenantAdmin' }"
+                />
             </QItem>
             <div class="projects">
                 <DrawerItem
@@ -160,11 +166,13 @@ onMounted(async () => {
 
         .tenant-name
             display: flex
-            flex-direction: column
+            align-items: start
+            justify-content: space-between
 
             p
                 font-size: 1.5rem
                 font-weight: bold
+                flex-grow: 1
 
 
         .projects

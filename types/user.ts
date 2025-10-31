@@ -13,6 +13,7 @@ export interface User {
     username: string
     canAuthenticateLocally: boolean
     isProjectCreator: boolean
+    isSuperuser: boolean
     projects: ProjectSummarized[]
     settings: UserSettings
 }
