@@ -128,6 +128,10 @@ export type Resource = {
     instructionTurns: InstructionTurns | undefined
     issn: string
     publicationHistory: string
+    validations: {
+        controlBound: string
+        controlUnbound: string
+    }
 }
 
 export type CollectionsInResource = {

@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import type { Segment } from '#/project.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { Tab } from '&/project.ts'
+import { useProjectEdition } from '@/components/project/projectLaunched/projectEdition/useProjectEdition.ts'
 
 interface UseProjectSegmentTableState {
     loading: boolean
@@ -18,7 +19,7 @@ export const useProjectSegmentTable = () => {
     const resourceStore = useResourceStore()
     const projectStore = useProjectStore()
     const { t } = useI18n()
-    const hoveredValue = ref<string | null>(null)
+    const improvedSegmentIdHovered = ref<string | null>(null)
 
     const isSegmentTypeSameAsInstructionTab = (segment: Segment) => {
         return (
@@ -72,16 +73,10 @@ export const useProjectSegmentTable = () => {
             name: 'collection',
             label: t('project.instruction.tableFields.collection'),
             field: 'collection',
-            format(_val: unknown, row: Segment) {
+            format(_val: unknown, row: Segment): string {
                 const collection = resourceStore.collections.find((el) => el.id === row.collection)
-                return `${t('project.resources.position')}: ${collection?.position} | ${t('project.resources.callNumber')}: ${collection?.callNumber}`
+                return collection ? resourceStore.formatCollectionToString(collection) : ''
             },
-            align: 'center',
-        },
-        {
-            name: 'content',
-            label: t('project.instruction.tableFields.segment'),
-            field: 'content',
             align: 'center',
         },
         {
@@ -96,9 +91,9 @@ export const useProjectSegmentTable = () => {
             },
         },
         {
-            name: 'improvableElements',
-            label: t('project.instruction.tableFields.improvableElements'),
-            field: 'improvableElements',
+            name: 'content',
+            label: t('project.instruction.tableFields.segment'),
+            field: 'content',
             align: 'center',
         },
         {
@@ -108,22 +103,39 @@ export const useProjectSegmentTable = () => {
             align: 'center',
         },
         {
+            name: 'improvableElements',
+            label: t('project.instruction.tableFields.improvableElements'),
+            field: 'improvableElements',
+            align: 'center',
+        },
+        {
             name: 'resolve',
             label: t('project.instruction.tableFields.resolve'),
             field: 'resolve',
             format(_val: unknown, row: Segment) {
-                return resourceStore.segments.find((el) => el.id === row.improvedSegment)?.order.toString() || '-'
+                const segmentString = resourceStore.segments
+                    .find((el) => el.id === row.improvedSegment)
+                    ?.order.toString()
+                if (!segmentString) return '-'
+
+                const collection = resourceStore.collections.find((collection) => collection.id === row.collection)
+                const libraryString =
+                    projectStore.libraries.find((library) => library.id === collection?.library)?.name ||
+                    t('utils.noLibrary')
+                return `${libraryString} | ${t('project.instruction.tableFields.line')}: ${segmentString}`
             },
-            align: 'center',
-        },
-        {
-            name: 'anomalies',
-            label: t('project.anomaly.i', 2),
-            field: 'anomalies',
             align: 'center',
         },
     ]
 
+    if (projectStore.tab !== Tab.Edition) {
+        columns.push({
+            name: 'anomalies',
+            label: t('project.anomaly.i', 2),
+            field: 'anomalies',
+            align: 'center',
+        })
+    }
     if (displayOptionsColumnBasedOnUserRole()) {
         columns.push({
             name: 'options',
@@ -133,22 +145,37 @@ export const useProjectSegmentTable = () => {
         })
     }
 
-    const orderedRows = computed(() => [...resourceStore.segments].sort((a, b) => a.order - b.order))
+    const orderedRows = computed<Segment[]>(() => [...resourceStore.segments].sort((a, b) => a.order - b.order))
 
     const openDialogCreateSegment = (insertAfterId: string | undefined = undefined) => {
         dialogCreateSegment.value = true
         insertAfter.value = insertAfterId
     }
 
+    const { selectCollectionToShowEdition } = useProjectEdition()
+
+    const isHighlightedRow = (collectionId: string) => {
+        if (!selectCollectionToShowEdition.value) return false
+        return collectionId === selectCollectionToShowEdition.value?.id
+    }
+    const isSemiHighlightedRow = (improvedSegmentId: string) => {
+        if (!selectCollectionToShowEdition.value) return false
+
+        const segment = resourceStore.segments.find((segment) => segment.id === improvedSegmentId)
+        return segment?.collection === selectCollectionToShowEdition.value.id
+    }
+
     return {
         ...toRefs(state),
         columns,
         orderedRows,
-        hoveredValue,
+        improvedSegmentIdHovered,
         dialogCreateSegment,
         insertAfter,
         openDialogCreateSegment,
         displayOptionsColumnBasedOnUserRole,
         displayNewSegmentButton,
+        isHighlightedRow,
+        isSemiHighlightedRow,
     }
 }

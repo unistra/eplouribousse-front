@@ -61,6 +61,7 @@ export enum Tab {
     InstructionUnbound = 'instructionUnbound',
     Control = 'control',
     Anomalies = 'anomalies',
+    Edition = 'edition',
 }
 
 export enum AlertType {

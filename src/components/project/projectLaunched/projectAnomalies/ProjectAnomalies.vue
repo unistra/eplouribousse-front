@@ -12,7 +12,7 @@ const resourceStore = useResourceStore()
 const projectStore = useProjectStore()
 const dialogModal = inject<Ref<boolean>>('dialogModal')
 
-const { collectionsSortedByOrderInInstructionTurns, resetInstruction, reassignTurn } = useProjectAnomalies(dialogModal)
+const { resetInstruction, reassignTurn } = useProjectAnomalies(dialogModal)
 </script>
 
 <template>
@@ -34,7 +34,7 @@ const { collectionsSortedByOrderInInstructionTurns, resetInstruction, reassignTu
                 <QMenu auto-close>
                     <QList>
                         <QItem
-                            v-for="collection in collectionsSortedByOrderInInstructionTurns"
+                            v-for="collection in resourceStore.collectionsSortedByOrderInInstructionTurns"
                             :key="collection.id"
                             clickable
                             @click="reassignTurn(collection)"

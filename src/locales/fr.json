@@ -193,7 +193,7 @@
         "resources": {
             "title": "Titre",
             "all": "Tout",
-            "code": "Code",
+            "code": "Identifiant de la ressource",
             "count": "Nombre de collections",
             "callNumber": "Cote",
             "noCallNumber": "Aucune cote",
@@ -232,7 +232,16 @@
                 "exclusionReason": "Motif d'exclusion",
                 "excluded": "Collection exclue"
             },
-            "comment": "Commentaire"
+            "comment": "Commentaire",
+            "resultant": {
+                "i": "Résultante | Résultantes",
+                "selectCollection": "@:project.resources.resultant.i de la @.lower:project.collection.i",
+                "title": "Édition de la résultante",
+                "infos": "Les lignes impliquant la bibliothèque sélectionnée sont mises en évidence",
+                "motherCollection": "Collection mère",
+                "participatingCollections": "Collections participantes",
+                "excludeCollections": "Collections exclues"
+            }
         },
         "settings": {
             "title": "Paramètres du projet",
@@ -292,7 +301,7 @@
                 "improvableElements": "Éléments améliorables",
                 "exception": "Exceptions",
                 "options": "Options",
-                "resolve": "@.capitalize:project.instruction.tableFields.line remédiée",
+                "resolve": "Bibliothèque remédiée",
                 "anomalies": "@:project.anomaly.i"
             },
             "next": "Finir l'instruction et passer à la bibliothèque suivante"
@@ -334,7 +343,8 @@
                 "btnGiveTurnDisableTooltip": "Des @.lower:project.anomaly.i ne sont pas résolues"
             },
             "giveTurnToAController": "Donner la main à un contrôleur"
-        }
+        },
+        "storageLocation": "Lieu de conservation"
     },
     "libraries": {
         "title": "Bibliothèques",
@@ -477,7 +487,7 @@
         "loading": "Chargement",
         "success": "Succès",
         "error": "Erreur",
-        "info": "Information",
+        "info": "Information | Informations",
         "continue": "Continuer",
         "back": "Retour",
         "row": "Ligne",
@@ -506,7 +516,9 @@
         "the": "le",
         "a": "un",
         "by": "par",
-        "unknown": "Inconnu"
+        "unknown": "Inconnu",
+        "preview": "Prévisualiser",
+        "download": "Télécharger"
     },
     "utils": {
         "searchUser": {
@@ -516,7 +528,9 @@
         "modificationSuccess": "Les modifications ont bien été enregistrées",
         "noEmailAddress": "Aucune @.lower:common.email",
         "universityOfStrasbourg": "Université de Strasbourg",
-        "abes": "Agence bibliographique de l'enseignement supérieur"
+        "abes": "Agence bibliographique de l'enseignement supérieur",
+        "noLibrary": "Aucune bibliothèque",
+        "downloadPDF": "@:common.download le PDF"
     },
     "errors": {
         "unknown": "Une erreur est survenue",

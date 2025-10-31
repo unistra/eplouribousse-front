@@ -39,34 +39,40 @@ export const useProjectResources = () => {
 
     const tabs: useProjectResourceTab[] = [
         {
-            name: 'positioning',
+            name: Tab.Positioning,
             label: t('project.resources.status.toPosition'),
             status: ResourceStatus.Positioning,
             icon: 'mdi-podium',
         },
         {
-            name: 'instructionBound',
+            name: Tab.InstructionBound,
             label: t('project.resources.status.toInstructBound'),
             status: ResourceStatus.InstructionBound,
             icon: 'mdi-book-open-page-variant',
         },
         {
-            name: 'instructionUnbound',
+            name: Tab.InstructionUnbound,
             label: t('project.resources.status.toInstructUnbound'),
             status: ResourceStatus.InstructionUnbound,
             icon: 'mdi-file-multiple',
         },
         {
-            name: 'control',
+            name: Tab.Control,
             label: t('project.resources.status.toControl'),
             status: [ResourceStatus.ControlBound, ResourceStatus.ControlUnbound],
             icon: 'mdi-shield-check',
         },
         {
-            name: 'anomalies',
+            name: Tab.Anomalies,
             label: t('project.resources.status.anomalies', 2),
             status: [ResourceStatus.AnomalyBound, ResourceStatus.AnomalyUnbound],
             icon: 'mdi-alert-circle',
+        },
+        {
+            name: Tab.Edition,
+            label: t('project.resources.resultant.i', 2),
+            status: ResourceStatus.Edition,
+            icon: 'mdi-table-check',
         },
     ]
     const tabStatus = computed(() => {
@@ -134,6 +140,12 @@ export const useProjectResources = () => {
                 icon: 'mdi-alert-octagon',
                 color: 'negative',
             }
+        if (row.status === ResourceStatus.Edition)
+            return {
+                message: t('project.resources.resultant.i'),
+                icon: 'mdi-table-check',
+            }
+
         return { message: t('common.error'), icon: 'mdi-alert-outline' }
     }
 
