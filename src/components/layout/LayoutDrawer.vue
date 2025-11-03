@@ -47,51 +47,52 @@ onMounted(async () => {
             >
                 <p>{{ globalStore.tenant?.name || '' }}</p>
             </QItem>
-            <QItem class="projects">
-                <div>
-                    <DrawerItem
-                        icon="mdi-folder-move-outline"
-                        :name="!collapsed ? t('navigation.publicProjects') : ''"
-                        :to="{ name: 'publicProjects' }"
-                        :tooltip="collapsed ? t('navigation.publicProjects') : undefined"
-                    />
-                    <template v-if="userStore.isAuth">
-                        <p v-if="!collapsed">
-                            {{ t('navigation.projects') }}
-                        </p>
-                        <div :class="['scrollable-projects', { 'min-height': userStore.projects.length > 3 }]">
-                            <QItem
-                                v-if="userStore.userLoading"
-                                class="q-spinner-container"
-                            >
-                                <QSpinner />
-                            </QItem>
-                            <QList v-else-if="!userStore.userLoading && user">
-                                <DrawerItem
-                                    v-for="project in user.projects"
-                                    :key="project.id"
-                                    icon="mdi-book-multiple"
-                                    :name="!collapsed ? project.name : ''"
-                                    :to="{ name: 'project', params: { id: project.id } }"
-                                    :tooltip="collapsed ? project.name : undefined"
-                                >
-                                    <AtomicButton
-                                        v-if="project.roles.includes(Roles.ProjectAdmin)"
-                                        dense
-                                        flat
-                                        icon="mdi-cog"
-                                        round
-                                        :to="{ name: 'projectAdmin', params: { id: project.id } }"
-                                    />
-                                </DrawerItem>
-                            </QList>
-                            <p v-else-if="!collapsed && !userStore.projects.length">
-                                {{ t('navigation.noProject') }}
-                            </p>
-                        </div>
-                    </template>
-                </div>
+            <div class="projects">
+                <DrawerItem
+                    icon="mdi-folder-move-outline"
+                    :name="!collapsed ? t('navigation.publicProjects') : ''"
+                    :to="{ name: 'publicProjects' }"
+                    :tooltip="collapsed ? t('navigation.publicProjects') : undefined"
+                />
                 <div
+                    v-if="userStore.isAuth"
+                    class="my-projects"
+                >
+                    <p v-if="!collapsed">
+                        {{ t('navigation.projects') }}
+                    </p>
+                    <div :class="['scrollable-projects', { 'min-height': userStore.projects.length > 3 }]">
+                        <QItem
+                            v-if="userStore.userLoading"
+                            class="q-spinner-container"
+                        >
+                            <QSpinner />
+                        </QItem>
+                        <QList v-else-if="!userStore.userLoading && user">
+                            <DrawerItem
+                                v-for="project in user.projects"
+                                :key="project.id"
+                                icon="mdi-book-multiple"
+                                :name="!collapsed ? project.name : ''"
+                                :to="{ name: 'project', params: { id: project.id } }"
+                                :tooltip="collapsed ? project.name : undefined"
+                            >
+                                <AtomicButton
+                                    v-if="project.roles.includes(Roles.ProjectAdmin)"
+                                    dense
+                                    flat
+                                    icon="mdi-cog"
+                                    round
+                                    :to="{ name: 'projectAdmin', params: { id: project.id } }"
+                                />
+                            </DrawerItem>
+                        </QList>
+                        <p v-else-if="!collapsed && !userStore.projects.length">
+                            {{ t('navigation.noProject') }}
+                        </p>
+                    </div>
+                </div>
+                <QItem
                     v-if="user && user.isProjectCreator"
                     class="create-btn"
                 >
@@ -108,8 +109,8 @@ onMounted(async () => {
                         :to="{ name: 'newProject' }"
                         :tooltip="t('newProject.buttons.create', { article: t('common.a') })"
                     />
-                </div>
-            </QItem>
+                </QItem>
+            </div>
         </QList>
 
         <QList dense>
@@ -180,29 +181,26 @@ onMounted(async () => {
             flex-direction: column
             gap: 1rem
 
-            > :first-child
-                display: flex
-                flex-direction: column
-                gap: 0.5rem
+            .my-projects
+                padding-left: 1rem
+                .scrollable-projects
+                    overflow-y: auto
+                    max-height: calc(100vh - 550px)
+                    flex-grow: 1
 
-            .scrollable-projects
-                overflow-y: auto
-                max-height: calc(100vh - 550px)
-                flex-grow: 1
+                    .min-height
+                        min-height: 8rem
 
-                .min-height
-                    min-height: 8rem
+                    .q-spinner-container
+                        font-size: 1.5rem
+                        display: flex
+                        justify-content: center
+                        align-items: center
 
-                .q-spinner-container
-                    font-size: 1.5rem
-                    display: flex
-                    justify-content: center
-                    align-items: center
-
-                p
-                    color: var(--color-neutral-400)
-                    font-style: italic
-                    text-align: center
+                    p
+                        color: var(--color-neutral-400)
+                        font-style: italic
+                        text-align: center
 
             .create-btn
                 display: flex
