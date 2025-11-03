@@ -57,7 +57,7 @@
         "collapse": "Masquer",
         "expand": "Afficher",
         "noProject": "Aucun projet",
-        "403": "La page que vous avez demandé n'est pas accessible"
+        "404": "La page que vous demandez n'existe pas"
     },
     "roles": {
         "superUser": "Super utilisateur",

@@ -6,16 +6,17 @@ const { t } = useI18n()
 
 <template>
     <QPage padding>
-        <div class="page-403">
-            {{ t('navigation.403') }}
-        </div>
+        <h1>404</h1>
+        <p>{{ t('navigation.404') }}</p>
     </QPage>
 </template>
 
 <style lang="sass" scoped>
-.page-403
+main
     display: flex
     flex-direction: column
     align-items: center
-    font-size: 1rem
+
+    h1
+        font-size: var(--font-size-6xl)
 </style>

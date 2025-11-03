@@ -23,6 +23,14 @@ const routes: RouteRecordRaw[] = [
             title: 'Accueil',
         },
     },
+    {
+        path: '/:pathMatch(.*)*',
+        name: '404',
+        component: () => import('@/views/404View.vue'),
+        meta: {
+            title: '404',
+        },
+    },
     // AUTH PAGES ======================
     {
         path: '/login',
@@ -81,14 +89,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/ContactAdminView.vue'),
         meta: {
             title: 'Contact',
-        },
-    },
-    {
-        path: '/403',
-        name: '403',
-        component: () => import('@/views/403View.vue'),
-        meta: {
-            title: 'Page non accessible',
         },
     },
     {
