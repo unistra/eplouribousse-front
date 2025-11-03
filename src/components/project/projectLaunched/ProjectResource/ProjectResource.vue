@@ -70,7 +70,7 @@ const onBeforeShow = async () => {
                             }}
                             {{ t('project.resources.resultant.title') }}
                         </h2>
-                        <p class="resource-title">{{ resourceStore.title }}</p>
+                        <h3>{{ resourceStore.title }}</h3>
                     </template>
                     <h2 v-else>{{ resourceStore.title }}</h2>
 
@@ -103,14 +103,6 @@ const onBeforeShow = async () => {
 </template>
 
 <style lang="sass" scoped>
-h2
-    font-size: 1.5rem
-    font-weight: bold
-
-.resource-title
-    font-size: 1.3rem
-    font-weight: bold
-
 .q-card
     display: flex
     flex-direction: column

@@ -54,7 +54,7 @@ onMounted(async () => {
 
 <template>
     <QPage padding>
-        <h1 class="header">{{ t('publicProjects.title') }}</h1>
+        <h1>{{ t('publicProjects.title') }}</h1>
         <div class="container">
             <QTable
                 :columns="columns"
@@ -107,9 +107,8 @@ onMounted(async () => {
 </template>
 
 <style lang="sass" scoped>
-.header
+h1
     text-align: center
-    font-size: 2rem
     padding-bottom: 2vh
 
 .container

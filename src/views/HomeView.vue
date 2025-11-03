@@ -57,13 +57,11 @@ hgroup
     align-items: center
 
     h1
-        font-size: 1.5rem
-
         .tenant
             font-weight: bold
 
     p
-        font-size: 1.2rem
+        font-size: var(--font-size-xl)
 
 .img
     display: flex

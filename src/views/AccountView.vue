@@ -14,9 +14,3 @@ const { t } = useI18n()
         <ProjectsBlock />
     </QPage>
 </template>
-
-<style scoped lang="sass">
-h1
-    font-size: 2rem
-    font-weight: bold
-</style>
