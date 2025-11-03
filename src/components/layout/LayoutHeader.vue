@@ -24,7 +24,7 @@ const onLogout = async () => {
 
 <template>
     <QHeader bordered>
-        <RouterLink :to="{ name: 'Home' }">
+        <RouterLink :to="{ name: 'home' }">
             <QImg
                 :alt="t('layout.header.logoAlt')"
                 no-spinner

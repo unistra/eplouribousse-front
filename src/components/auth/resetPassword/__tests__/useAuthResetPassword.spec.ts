@@ -136,7 +136,7 @@ describe('useAuthResetPassword', () => {
             message: 'forms.password.reset.success',
         })
 
-        expect(mock.routerPush).toHaveBeenCalledWith({ name: 'Home' })
+        expect(mock.routerPush).toHaveBeenCalledWith({ name: 'home' })
         expect(isLoading.value).toBe(false)
     })
 

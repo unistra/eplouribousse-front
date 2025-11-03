@@ -41,7 +41,7 @@ export function useAuthLogin() {
                 type: 'positive',
                 message: t('forms.login.success'),
             })
-            await router.push((route.query.redirect as string | undefined) ?? { name: 'Home' })
+            await router.push((route.query.redirect as string | undefined) ?? { name: 'home' })
             // await router.go(0)
         } catch (e) {
             password.value = ''

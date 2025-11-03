@@ -58,7 +58,7 @@ export function useAuthResetPassword() {
                 message: t('forms.password.reset.success'),
             })
 
-            await router.push({ name: 'Home' })
+            await router.push({ name: 'home' })
         } catch (e) {
             if (e instanceof AxiosError && e.response?.status === 400) {
                 notify({

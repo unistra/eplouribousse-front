@@ -35,14 +35,14 @@ onMounted(async () => {
         localStorage.setItem('username', profile.data.username)
 
         await router.push({
-            name: 'Home',
+            name: 'home',
         })
     } catch (e) {
         globalStore.addNotify({
             type: 'negative',
             message: t('errors.unknown') + ', ' + t('errors.retry'),
         })
-        await router.push({ name: 'Home' })
+        await router.push({ name: 'home' })
     }
 })
 </script>

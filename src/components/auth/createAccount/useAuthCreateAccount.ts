@@ -30,7 +30,7 @@ export const useAuthCreateAccount = () => {
                 type: 'negative',
                 message: t('forms.createAccount.missingToken'),
             })
-            await router.push({ name: 'Home' })
+            await router.push({ name: 'home' })
             return
         }
         try {
@@ -44,7 +44,7 @@ export const useAuthCreateAccount = () => {
                     type: 'negative',
                     message: t('forms.createAccount.fetchEmailFailed'),
                 })
-                await router.push({ name: 'Home' })
+                await router.push({ name: 'home' })
             }
         } catch (e) {
             addNotify({
@@ -54,7 +54,7 @@ export const useAuthCreateAccount = () => {
                         ? t('forms.createAccount.tokenRejected')
                         : t('errors.unknownRetry'),
             })
-            await router.push({ name: 'Home' })
+            await router.push({ name: 'home' })
         }
     }
 

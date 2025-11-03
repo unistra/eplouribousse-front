@@ -102,7 +102,7 @@ describe('useAuthCreateAccount', () => {
                 type: 'negative',
                 message: 'forms.createAccount.missingToken',
             })
-            expect(mock.routerPush).toHaveBeenCalledWith({ name: 'Home' })
+            expect(mock.routerPush).toHaveBeenCalledWith({ name: 'home' })
             expect(mock.axiosPost).not.toHaveBeenCalled()
         })
 
@@ -117,7 +117,7 @@ describe('useAuthCreateAccount', () => {
                 type: 'negative',
                 message: 'forms.createAccount.fetchEmailFailed',
             })
-            expect(mock.routerPush).toHaveBeenCalledWith({ name: 'Home' })
+            expect(mock.routerPush).toHaveBeenCalledWith({ name: 'home' })
         })
 
         test('fetchEmailFromToken should handle 403 error', async () => {
@@ -142,7 +142,7 @@ describe('useAuthCreateAccount', () => {
                 type: 'negative',
                 message: 'forms.createAccount.tokenRejected',
             })
-            expect(mock.routerPush).toHaveBeenCalledWith({ name: 'Home' })
+            expect(mock.routerPush).toHaveBeenCalledWith({ name: 'home' })
         })
 
         test('fetchEmailFromToken should handle general error', async () => {
@@ -156,7 +156,7 @@ describe('useAuthCreateAccount', () => {
                 type: 'negative',
                 message: 'errors.unknownRetry',
             })
-            expect(mock.routerPush).toHaveBeenCalledWith({ name: 'Home' })
+            expect(mock.routerPush).toHaveBeenCalledWith({ name: 'home' })
         })
     })
 
