@@ -93,7 +93,8 @@
                 "description": "Description du projet",
                 "noDescription": "Aucun description",
                 "continue": "Continuer",
-                "back": "Retour"
+                "back": "Retour",
+                "startInFuture": "Le projet commencera le"
             },
             "libraries": {
                 "title": "Bibliothèques participantes",

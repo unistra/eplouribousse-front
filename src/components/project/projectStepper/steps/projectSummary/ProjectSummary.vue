@@ -5,23 +5,37 @@ import ProjectLibraryCard from '@/components/project/projectStepper/steps/projec
 import { useProjectRoles } from '@/components/project/projectStepper/steps/projectRoles/useProjectRoles.ts'
 import { checkValidityProjectStepper } from '@/components/project/projectStepper/useProjectStepper.ts'
 
-const store = useProjectStore()
+const projectStore = useProjectStore()
 const { roles } = useProjectRoles()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const { checkValidityForRolesStep, checkValidityForLibraryStep } = checkValidityProjectStepper()
 </script>
 
 <template>
     <div class="summary">
+        <QChip
+            v-if="projectStore.activeAfter && new Date(projectStore.activeAfter) > new Date()"
+            class="info"
+            icon="mdi-information"
+            size="lg"
+        >
+            {{ t('newProject.steps.informations.startInFuture') }}
+            {{
+                new Intl.DateTimeFormat(locale, { dateStyle: 'long', timeStyle: 'short' }).format(
+                    new Date(projectStore.activeAfter),
+                )
+            }}
+        </QChip>
+
         <hgroup>
             <p class="label">{{ t('newProject.steps.informations.name') }}</p>
-            <h1>{{ store.name }}</h1>
+            <h2>{{ projectStore.name }}</h2>
         </hgroup>
         <div class="description">
             <p class="label">{{ t('newProject.steps.informations.description') }}</p>
-            <p :class="{ 'no-description': !store.description }">
-                {{ store.description || t('newProject.steps.informations.noDescription') }}
+            <p :class="{ 'no-description': !projectStore.description }">
+                {{ projectStore.description || t('newProject.steps.informations.noDescription') }}
             </p>
         </div>
         <QSeparator />
@@ -39,7 +53,7 @@ const { checkValidityForRolesStep, checkValidityForLibraryStep } = checkValidity
             </div>
             <div class="cards">
                 <ProjectLibraryCard
-                    v-for="library in store.libraries"
+                    v-for="library in projectStore.libraries"
                     :key="library.id"
                     is-summary
                     :library="library"
@@ -66,18 +80,18 @@ const { checkValidityForRolesStep, checkValidityForLibraryStep } = checkValidity
                 <p>{{ role.title }}</p>
                 <template
                     v-if="
-                        store.roles.filter((userRole) => role.role === userRole.role).length ||
-                        store.invitations.filter((invitation) => role.role === invitation.role).length
+                        projectStore.roles.filter((userRole) => role.role === userRole.role).length ||
+                        projectStore.invitations.filter((invitation) => role.role === invitation.role).length
                     "
                 >
                     <QItem
-                        v-for="invitation in store.invitations.filter((invitation) => role.role === invitation.role)"
+                        v-for="invitation in projectStore.invitations.filter((inv) => role.role === inv.role)"
                         :key="invitation.email"
                     >
                         <span>📨 {{ invitation.email }}</span>
                     </QItem>
                     <QItem
-                        v-for="userRole in store.roles.filter((userRole) => role.role === userRole.role)"
+                        v-for="userRole in projectStore.roles.filter((usrRole) => role.role === usrRole.role)"
                         :key="userRole.user.id"
                     >
                         <span
@@ -98,6 +112,16 @@ const { checkValidityForRolesStep, checkValidityForLibraryStep } = checkValidity
     flex-flow: column nowrap
     gap: 2rem
     width: 100%
+
+    .info
+        background-color: var(--color-info)
+        width: fit-content
+        align-self: center
+        border-radius: var(--border-radius-pills)
+
+        &, ::v-deep(.q-icon)
+            color: var(--text-color-dark)
+
 
     p.label
         font-size: var(--font-size-sm)
