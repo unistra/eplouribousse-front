@@ -7,7 +7,7 @@ import { usePasswordValidators } from '@/composables/usePasswordValidators.ts'
 import { AxiosError } from 'axios'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 
-export const useCreateAccountForm = () => {
+export const useAuthCreateAccount = () => {
     const route = useRoute()
     const router = useRouter()
     const token = route.query.t

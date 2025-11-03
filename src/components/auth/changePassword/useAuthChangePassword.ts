@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router'
 import { AxiosError } from 'axios'
 import { usePasswordValidators } from '@/composables/usePasswordValidators.ts'
 
-export function useChangePasswordForm() {
+export function useAuthChangePassword() {
     const { t } = useI18n()
     const { notify } = useComposableQuasar()
     const router = useRouter()

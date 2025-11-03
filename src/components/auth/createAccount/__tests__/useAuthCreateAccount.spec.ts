@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest'
-import { useCreateAccountForm } from '../useCreateAccountForm.ts'
+import { useAuthCreateAccount } from '../useAuthCreateAccount.ts'
 import { flushPromises } from '@vue/test-utils'
 import { AxiosError, type AxiosRequestHeaders } from 'axios'
 
@@ -60,7 +60,7 @@ vi.mock('@/composables/usePasswordValidators.ts', () => ({
     }),
 }))
 
-describe('useCreateAccountForm', () => {
+describe('useAuthCreateAccount', () => {
     beforeEach(() => {
         vi.clearAllMocks()
 
@@ -71,7 +71,7 @@ describe('useCreateAccountForm', () => {
     })
 
     test('initial state should have empty values', () => {
-        const { email, password, confirmPassword, isLoading } = useCreateAccountForm()
+        const { email, password, confirmPassword, isLoading } = useAuthCreateAccount()
 
         expect(email.value).toBe('')
         expect(password.value).toBe('')
@@ -81,7 +81,7 @@ describe('useCreateAccountForm', () => {
 
     describe('fetchEmailFromToken', () => {
         test('fetchEmailFromToken should fetch email from token', async () => {
-            const { fetchEmailFromToken, email } = useCreateAccountForm()
+            const { fetchEmailFromToken, email } = useAuthCreateAccount()
 
             await fetchEmailFromToken()
 
@@ -94,7 +94,7 @@ describe('useCreateAccountForm', () => {
         test('fetchEmailFromToken should handle missing token', async () => {
             mock.route.query.t = undefined
 
-            const { fetchEmailFromToken } = useCreateAccountForm()
+            const { fetchEmailFromToken } = useAuthCreateAccount()
 
             await fetchEmailFromToken()
 
@@ -109,7 +109,7 @@ describe('useCreateAccountForm', () => {
         test('fetchEmailFromToken should handle invalid response', async () => {
             mock.axiosPost.mockResolvedValue({ status: 200, data: {} })
 
-            const { fetchEmailFromToken } = useCreateAccountForm()
+            const { fetchEmailFromToken } = useAuthCreateAccount()
 
             await fetchEmailFromToken()
 
@@ -134,7 +134,7 @@ describe('useCreateAccountForm', () => {
 
             mock.axiosPost.mockRejectedValue(axiosError)
 
-            const { fetchEmailFromToken } = useCreateAccountForm()
+            const { fetchEmailFromToken } = useAuthCreateAccount()
 
             await fetchEmailFromToken()
 
@@ -148,7 +148,7 @@ describe('useCreateAccountForm', () => {
         test('fetchEmailFromToken should handle general error', async () => {
             mock.axiosPost.mockRejectedValue(new Error('Network error'))
 
-            const { fetchEmailFromToken } = useCreateAccountForm()
+            const { fetchEmailFromToken } = useAuthCreateAccount()
 
             await fetchEmailFromToken()
 
@@ -164,7 +164,7 @@ describe('useCreateAccountForm', () => {
         test('createAccount should validate password strength', async () => {
             mock.passwordValidators.passwordStrengthValidator.mockReturnValue(false)
 
-            const { createAccount, password } = useCreateAccountForm()
+            const { createAccount, password } = useAuthCreateAccount()
             password.value = 'weak'
 
             await createAccount()
@@ -180,7 +180,7 @@ describe('useCreateAccountForm', () => {
         test('createAccount should validate passwords match', async () => {
             mock.passwordValidators.passwordMatchingValidator.mockReturnValue(false)
 
-            const { createAccount, password, confirmPassword } = useCreateAccountForm()
+            const { createAccount, password, confirmPassword } = useAuthCreateAccount()
             password.value = 'StrongPassword123!'
             confirmPassword.value = 'DifferentPassword123!'
 
@@ -198,7 +198,7 @@ describe('useCreateAccountForm', () => {
         })
 
         test('createAccount should submit the form successfully', async () => {
-            const { createAccount, password, confirmPassword, isLoading } = useCreateAccountForm()
+            const { createAccount, password, confirmPassword, isLoading } = useAuthCreateAccount()
 
             password.value = 'StrongPassword123!'
             confirmPassword.value = 'StrongPassword123!'
@@ -228,7 +228,7 @@ describe('useCreateAccountForm', () => {
         test('createAccount should handle errors from API', async () => {
             mock.axiosPost.mockRejectedValue(new Error('Network error'))
 
-            const { createAccount, password, confirmPassword } = useCreateAccountForm()
+            const { createAccount, password, confirmPassword } = useAuthCreateAccount()
 
             password.value = 'StrongPassword123!'
             confirmPassword.value = 'StrongPassword123!'

@@ -21,7 +21,7 @@ const login = async (email: string, password: string) => {
     userStore.user = user.data
 }
 
-export function useLoginForm() {
+export function useAuthLogin() {
     const { t } = useI18n()
     const { notify } = useComposableQuasar()
     const router = useRouter()

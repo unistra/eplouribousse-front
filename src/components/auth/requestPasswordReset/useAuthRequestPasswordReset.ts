@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { useI18n } from 'vue-i18n'
 
-export function useSendEmailResetPasswordForm() {
+export function useAuthRequestPasswordReset() {
     const { notify } = useComposableQuasar()
     const { t } = useI18n()
     const email = ref<string>('')

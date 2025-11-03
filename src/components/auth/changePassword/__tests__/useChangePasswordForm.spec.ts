@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest'
-import { useResetPasswordForm } from '../useResetPasswordForm.ts'
+import { useAuthChangePassword } from '../useAuthChangePassword.ts'
 import { flushPromises } from '@vue/test-utils'
 import { AxiosError, type AxiosRequestHeaders } from 'axios'
 
@@ -13,7 +13,6 @@ const mock = vi.hoisted(() => {
             passwordMatchingValidator: vi.fn(),
             passwordStrengthValidator: vi.fn(),
         },
-        addNotify: vi.fn(),
     }
 })
 
@@ -48,13 +47,7 @@ vi.mock('@/composables/usePasswordValidators.ts', () => ({
     }),
 }))
 
-vi.mock('@/stores/globalStore.ts', () => ({
-    useGlobalStore: () => ({
-        addNotify: mock.addNotify,
-    }),
-}))
-
-describe('useResetPasswordForm', () => {
+describe('useAuthChangePassword', () => {
     beforeEach(() => {
         vi.clearAllMocks()
 
@@ -63,22 +56,22 @@ describe('useResetPasswordForm', () => {
         mock.axiosPatch.mockResolvedValue({})
     })
 
-    test('initial state should have empty passwords and token', () => {
-        const { newPassword, confirmPassword, token, isLoading } = useResetPasswordForm()
+    test('initial state should have empty passwords', () => {
+        const { oldPassword, newPassword, confirmPassword, isLoading } = useAuthChangePassword()
 
+        expect(oldPassword.value).toBe('')
         expect(newPassword.value).toBe('')
         expect(confirmPassword.value).toBe('')
-        expect(token.value).toBe('')
         expect(isLoading.value).toBe(false)
     })
 
     test('should validate password strength', async () => {
         mock.passwordValidators.passwordStrengthValidator.mockReturnValue(false)
 
-        const { resetPassword, newPassword } = useResetPasswordForm()
+        const { changePassword, newPassword } = useAuthChangePassword()
         newPassword.value = 'weak'
 
-        await resetPassword()
+        await changePassword()
 
         expect(mock.passwordValidators.passwordStrengthValidator).toHaveBeenCalledWith('weak')
         expect(mock.notify).toHaveBeenCalledWith({
@@ -91,11 +84,11 @@ describe('useResetPasswordForm', () => {
     test('should validate passwords match', async () => {
         mock.passwordValidators.passwordMatchingValidator.mockReturnValue(false)
 
-        const { resetPassword, newPassword, confirmPassword } = useResetPasswordForm()
+        const { changePassword, newPassword, confirmPassword } = useAuthChangePassword()
         newPassword.value = 'StrongPassword123!'
         confirmPassword.value = 'DifferentPassword123!'
 
-        await resetPassword()
+        await changePassword()
 
         expect(mock.passwordValidators.passwordMatchingValidator).toHaveBeenCalledWith(
             'StrongPassword123!',
@@ -109,41 +102,42 @@ describe('useResetPasswordForm', () => {
     })
 
     test('should submit the form successfully', async () => {
-        const { resetPassword, newPassword, confirmPassword, token, uidb64, isLoading } = useResetPasswordForm()
+        const { changePassword, oldPassword, newPassword, confirmPassword, isLoading } = useAuthChangePassword()
 
-        token.value = 'valid-reset-token'
-        uidb64.value = 'valid-uidb64-token'
-
+        oldPassword.value = 'OldPassword123!'
         newPassword.value = 'NewPassword123!'
         confirmPassword.value = 'NewPassword123!'
 
-        const resetPasswordPromise = resetPassword()
+        const changePasswordPromise = changePassword()
 
         expect(isLoading.value).toBe(true)
 
-        await resetPasswordPromise
+        await changePasswordPromise
         await flushPromises()
 
-        expect(mock.axiosPatch).toHaveBeenCalledWith('/users/reset-password/', {
-            token: 'valid-reset-token',
-            uidb64: 'valid-uidb64-token',
+        expect(mock.axiosPatch).toHaveBeenCalledWith('/users/change-password/', {
+            oldPassword: 'OldPassword123!',
             newPassword: 'NewPassword123!',
             confirmPassword: 'NewPassword123!',
         })
 
-        expect(mock.addNotify).toHaveBeenCalledWith({
+        expect(mock.notify).toHaveBeenCalledWith({
             type: 'positive',
-            message: 'forms.password.reset.success',
+            message: 'forms.password.change.success',
         })
 
-        expect(mock.routerPush).toHaveBeenCalledWith({ name: 'Home' })
-        expect(isLoading.value).toBe(false)
+        expect(mock.routerPush).toHaveBeenCalledWith({ path: '/' })
+
+        expect(oldPassword.value).toBe('')
+        expect(newPassword.value).toBe('')
+        expect(newPassword.value).toBe('')
+        expect(confirmPassword.value).toBe('')
     })
 
-    test('should handle 400 error with token error from API', async () => {
+    test('should handle 400 error from API', async () => {
         const axiosError = new AxiosError('Bad Request')
         axiosError.response = {
-            data: { token: ['Invalid or expired token'] },
+            data: undefined,
             statusText: '400',
             headers: {},
             config: {
@@ -154,34 +148,42 @@ describe('useResetPasswordForm', () => {
 
         mock.axiosPatch.mockRejectedValue(axiosError)
 
-        const { resetPassword, newPassword, confirmPassword, token } = useResetPasswordForm()
+        const { changePassword, oldPassword, newPassword, confirmPassword } = useAuthChangePassword()
 
-        token.value = 'invalid-token'
+        oldPassword.value = 'IncorrectPassword123!'
         newPassword.value = 'NewPassword123!'
         confirmPassword.value = 'NewPassword123!'
 
-        await resetPassword()
+        await changePassword()
 
         expect(mock.notify).toHaveBeenCalledWith({
             type: 'negative',
-            message: 'forms.password.reset.tokenRejected',
+            message: 'forms.password.oldPasswordIncorrect',
         })
+
+        expect(oldPassword.value).toBe('')
+        expect(newPassword.value).toBe('')
+        expect(confirmPassword.value).toBe('')
     })
 
     test('should handle general errors from API', async () => {
         mock.axiosPatch.mockRejectedValue(new Error('Network error'))
 
-        const { resetPassword, newPassword, confirmPassword, token } = useResetPasswordForm()
+        const { changePassword, oldPassword, newPassword, confirmPassword } = useAuthChangePassword()
 
-        token.value = 'valid-token'
+        oldPassword.value = 'OldPassword123!'
         newPassword.value = 'NewPassword123!'
         confirmPassword.value = 'NewPassword123!'
 
-        await resetPassword()
+        await changePassword()
 
         expect(mock.notify).toHaveBeenCalledWith({
             type: 'negative',
             message: 'errors.unknown',
         })
+
+        expect(oldPassword.value).toBe('')
+        expect(newPassword.value).toBe('')
+        expect(confirmPassword.value).toBe('')
     })
 })

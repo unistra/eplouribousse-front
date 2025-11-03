@@ -7,7 +7,7 @@ import { AxiosError } from 'axios'
 import { usePasswordValidators } from '@/composables/usePasswordValidators.ts'
 import { useGlobalStore } from '@/stores/globalStore.ts'
 
-export function useResetPasswordForm() {
+export function useAuthResetPassword() {
     const { t } = useI18n()
     const { notify } = useComposableQuasar()
     const router = useRouter()

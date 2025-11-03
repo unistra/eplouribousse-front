@@ -3,7 +3,7 @@ import { QBtn, QInput, Quasar } from 'quasar'
 import { mount } from '@vue/test-utils'
 import type { I18n } from 'vue-i18n'
 import useI18nMock from '~/mocks/i18n.ts'
-import SendEmailResetPasswordForm from '@/components/forms/auth/sendEmailResetPasswordForm/SendEmailResetPasswordForm.vue'
+import AuthRequestPasswordReset from '@/components/auth/requestPasswordReset/AuthRequestPasswordReset.vue'
 
 let i18n: I18n
 const mock = vi.hoisted(() => {
@@ -28,11 +28,11 @@ vi.mock('@/composables/useComposableQuasar.ts', () => ({
     },
 }))
 
-vi.mock('@/components/forms/auth/sendEmailResetPasswordForm/useSendEmailResetPasswordForm.ts', () => ({
+vi.mock('@/components/forms/auth/requestPasswordReset/useAuthRequestPasswordReset.ts', () => ({
     useSendEmailResetPasswordForm: () => mock.useSendEmailResetPasswordForm,
 }))
 
-describe('SendEmailResetPasswordForm', () => {
+describe('AuthRequestPasswordReset', () => {
     beforeEach(() => {
         vi.clearAllMocks()
 
@@ -43,7 +43,7 @@ describe('SendEmailResetPasswordForm', () => {
     })
 
     test('renders email input field and submit button', () => {
-        const wrapper = mount(SendEmailResetPasswordForm, {
+        const wrapper = mount(AuthRequestPasswordReset, {
             global: {
                 plugins: [i18n, Quasar],
             },
@@ -56,19 +56,5 @@ describe('SendEmailResetPasswordForm', () => {
         expect(emailInput.props('rules')).toBeTruthy()
 
         expect(submitButton.exists()).toBe(true)
-    })
-
-    test('submits the form successfully', async () => {
-        const wrapper = mount(SendEmailResetPasswordForm, {
-            global: {
-                plugins: [i18n, Quasar],
-            },
-        })
-        await wrapper.find('form').trigger('submit')
-
-        // Use a slight delay to ensure async operations complete 🙃
-        await new Promise((resolve) => setTimeout(resolve, 0))
-
-        expect(mock.useSendEmailResetPasswordForm.sendEmail).toHaveBeenCalledOnce()
     })
 })

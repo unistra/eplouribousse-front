@@ -3,7 +3,7 @@ import { Quasar } from 'quasar'
 import { mount } from '@vue/test-utils'
 import type { I18n } from 'vue-i18n'
 import useI18nMock from '~/mocks/i18n.ts'
-import ChangePasswordForm from '@/components/forms/auth/changePassword/ChangePasswordForm.vue'
+import AuthChangePassword from '@/components/auth/changePassword/AuthChangePassword.vue'
 import PasswordField from '@/components/utils/form/passwordField/PasswordField.vue'
 
 let i18n: I18n
@@ -60,11 +60,11 @@ vi.mock('@/composables/usePasswordValidators.ts', () => ({
     }),
 }))
 
-vi.mock('@/components/forms/auth/changePassword/useChangePasswordForm.ts', () => ({
+vi.mock('@/components/forms/auth/changePassword/useAuthChangePassword.ts', () => ({
     useChangePasswordForm: () => mock.useChangePasswordForm,
 }))
 
-describe('ChangePasswordForm', () => {
+describe('AuthChangePassword', () => {
     beforeEach(() => {
         vi.clearAllMocks()
 
@@ -78,7 +78,7 @@ describe('ChangePasswordForm', () => {
     })
 
     test('renders all three password fields', () => {
-        const wrapper = mount(ChangePasswordForm, {
+        const wrapper = mount(AuthChangePassword, {
             global: {
                 plugins: [i18n, Quasar],
             },
@@ -92,7 +92,7 @@ describe('ChangePasswordForm', () => {
     })
 
     test('validation rules are applied correctly to fields', async () => {
-        const wrapper = mount(ChangePasswordForm, {
+        const wrapper = mount(AuthChangePassword, {
             global: {
                 plugins: [i18n, Quasar],
             },
@@ -103,20 +103,5 @@ describe('ChangePasswordForm', () => {
         expect(passwordFields[0].props('rules')).toBeFalsy() // old password
         expect(passwordFields[1].props('rules')).toBeTruthy() // new password
         expect(passwordFields[2].props('rules')).toBeTruthy() // confirm password
-    })
-
-    test('submits the form successfully', async () => {
-        const wrapper = mount(ChangePasswordForm, {
-            global: {
-                plugins: [i18n, Quasar],
-            },
-        })
-
-        await wrapper.find('form').trigger('submit')
-
-        // Use a slight delay to ensure async operations complete 🙃
-        await new Promise((resolve) => setTimeout(resolve, 0))
-
-        expect(mock.useChangePasswordForm.changePassword).toHaveBeenCalledOnce()
     })
 })

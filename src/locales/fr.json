@@ -21,12 +21,20 @@
     "auth": {
         "login": {
             "i": "Connexion",
-            "authShibboleth": "Authentification via la fédération éducation recherche",
-            "authLocal": "Authentification avec un compte local"
+            "authShibboleth": "Via la fédération éducation recherche",
+            "authLocal": "Avec un compte local"
         },
         "logout": "Déconnexion"
     },
     "navigation": {
+        "auth": {
+            "login": "@:auth.login.i",
+            "changePassword": "Changer son mot de passe",
+            "resetPassword": "Réinitialiser son mot de passe",
+            "requestPasswordReset": "Demande de réinitialisation de mot de passe",
+            "handshake": "Handshake",
+            "createAccount": "Créer son compte"
+        },
         "myAccount": "Mon @.lower:common.account",
         "search": "Recherche",
         "login": "Connexion",
@@ -304,7 +312,7 @@
                 "resolve": "Bibliothèque remédiée",
                 "anomalies": "@:project.anomaly.i"
             },
-            "next": "Finir l'instruction et passer à la bibliothèque suivante"
+            "next": "Finir l'instruction et passer la main à la bibliothèque suivante"
         },
         "control": {
             "nextPhase": "Passer à la phase suivante"
@@ -449,7 +457,8 @@
             "submit": "Créer mon compte",
             "tokenRejected": "Le jeton est expiré ou invalide",
             "accountCreated": "Votre compte a été créé avec succès, vous pouvez vous connecter",
-            "fetchEmailFailed": "Impossible de récupérer l'adresse e-mail"
+            "fetchEmailFailed": "Impossible de récupérer l'adresse e-mail",
+            "missingToken": "Le jeton est manquant"
         }
     },
     "confirmDialogDefault": {

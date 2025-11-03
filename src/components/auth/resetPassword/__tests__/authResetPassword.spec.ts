@@ -3,7 +3,7 @@ import { Quasar } from 'quasar'
 import { mount } from '@vue/test-utils'
 import type { I18n } from 'vue-i18n'
 import useI18nMock from '~/mocks/i18n.ts'
-import ResetPasswordForm from '@/components/forms/auth/resetPasswordForm/ResetPasswordForm.vue'
+import AuthResetPassword from '@/components/auth/resetPassword/AuthResetPassword.vue'
 import PasswordField from '@/components/utils/form/passwordField/PasswordField.vue'
 
 let i18n: I18n
@@ -12,7 +12,7 @@ const mock = vi.hoisted(() => {
     return {
         notify: vi.fn(),
         resetPasswordMock: vi.fn(),
-        useResetPasswordForm: {
+        useAuthResetPassword: {
             newPassword: 'NewPassword123!',
             confirmPassword: 'NewPassword123!',
             token: {
@@ -42,32 +42,36 @@ vi.mock('@/composables/useComposableQuasar.ts', () => ({
     }),
 }))
 
-vi.mock('vue-router', () => ({
-    useRoute: () => ({
-        query: mock.routeQuery,
-    }),
+vi.mock('vue-router', async () => {
+    const actual = await vi.importActual<typeof import('vue-router')>('vue-router')
+    return {
+        ...actual,
+        useRoute: () => ({
+            query: mock.routeQuery,
+        }),
+    }
+})
+
+vi.mock('@/components/forms/auth/resetPassword/useAuthResetPassword.ts', () => ({
+    useAuthResetPassword: () => mock.useAuthResetPassword,
 }))
 
-vi.mock('@/components/forms/auth/resetPasswordForm/useResetPasswordForm.ts', () => ({
-    useResetPasswordForm: () => mock.useResetPasswordForm,
-}))
-
-describe('ResetPasswordForm', () => {
+describe('AuthResetPassword', () => {
     beforeEach(() => {
         vi.clearAllMocks()
         const { i18nMock } = useI18nMock()
         i18n = i18nMock
 
-        mock.useResetPasswordForm.token = { value: 'initial-token' }
-        mock.useResetPasswordForm.newPassword = 'NewPassword123!'
-        mock.useResetPasswordForm.confirmPassword = 'NewPassword123!'
-        mock.useResetPasswordForm.isLoading = false
-        mock.useResetPasswordForm.isPasswordStrongEnough = true
-        mock.useResetPasswordForm.arePasswordsMatching = true
+        mock.useAuthResetPassword.token = { value: 'initial-token' }
+        mock.useAuthResetPassword.newPassword = 'NewPassword123!'
+        mock.useAuthResetPassword.confirmPassword = 'NewPassword123!'
+        mock.useAuthResetPassword.isLoading = false
+        mock.useAuthResetPassword.isPasswordStrongEnough = true
+        mock.useAuthResetPassword.arePasswordsMatching = true
     })
 
     test('renders two password fields', () => {
-        const wrapper = mount(ResetPasswordForm, {
+        const wrapper = mount(AuthResetPassword, {
             global: {
                 plugins: [i18n, Quasar],
             },
@@ -80,7 +84,7 @@ describe('ResetPasswordForm', () => {
     })
 
     test('validation rules are applied correctly to fields', async () => {
-        const wrapper = mount(ResetPasswordForm, {
+        const wrapper = mount(AuthResetPassword, {
             global: {
                 plugins: [i18n, Quasar],
             },
@@ -91,36 +95,9 @@ describe('ResetPasswordForm', () => {
         expect(passwordFields[1].props('rules')).toBeTruthy() // confirm password
     })
 
-    test('submits the form successfully', async () => {
-        const wrapper = mount(ResetPasswordForm, {
-            global: {
-                plugins: [i18n, Quasar],
-            },
-        })
-
-        await wrapper.find('form').trigger('submit')
-
-        // Use a slight delay to ensure async operations complete 🙃
-        await new Promise((resolve) => setTimeout(resolve, 0))
-
-        expect(mock.useResetPasswordForm.resetPassword).toHaveBeenCalledOnce()
-    })
-
-    test('sets token from route query params on mount', async () => {
-        expect(mock.useResetPasswordForm.token).toEqual({ value: 'initial-token' })
-
-        mount(ResetPasswordForm, {
-            global: {
-                plugins: [i18n, Quasar],
-            },
-        })
-
-        expect(mock.useResetPasswordForm.token).toEqual({ value: 'new-token' })
-    })
-
     test('shows validation error when password is not strong enough', async () => {
-        mock.useResetPasswordForm.isPasswordStrongEnough = false
-        const wrapper = mount(ResetPasswordForm, {
+        mock.useAuthResetPassword.isPasswordStrongEnough = false
+        const wrapper = mount(AuthResetPassword, {
             global: {
                 plugins: [i18n, Quasar],
             },

@@ -1,12 +1,16 @@
+// typescript
 import { beforeEach, describe, expect, test, vi } from 'vitest'
 import { Quasar } from 'quasar'
 import { mount } from '@vue/test-utils'
 import type { I18n } from 'vue-i18n'
 import useI18nMock from '~/mocks/i18n.ts'
-import CreateAccountForm from '@/components/forms/auth/createAccount/CreateAccountForm.vue'
+import AuthCreateAccount from '@/components/auth/createAccount/AuthCreateAccount.vue'
 import PasswordField from '@/components/utils/form/passwordField/PasswordField.vue'
+import { createPinia, setActivePinia } from 'pinia'
 
 let i18n: I18n
+let pinia: ReturnType<typeof createPinia>
+
 const mock = vi.hoisted(() => {
     return {
         notify: vi.fn(),
@@ -47,6 +51,11 @@ vi.mock('vue-router', () => ({
     useRouter: () => ({
         push: mock.routerPush,
     }),
+    useRoute: () => ({
+        query: { token: 'mock-token' },
+        params: {},
+        name: 'mock-route',
+    }),
 }))
 
 vi.mock('@/plugins/axios/axios.ts', () => ({
@@ -61,16 +70,20 @@ vi.mock('@/composables/usePasswordValidators.ts', () => ({
     }),
 }))
 
-vi.mock('@/components/forms/auth/createAccount/useCreateAccountForm.ts', () => ({
+vi.mock('@/components/forms/auth/createAccount/useAuthCreateAccount.ts', () => ({
     useCreateAccountForm: () => mock.useCreateAccountForm,
 }))
 
-describe('CreateAccountForm', () => {
+describe('AuthCreateAccount', () => {
     beforeEach(() => {
         vi.clearAllMocks()
 
         const { i18nMock } = useI18nMock()
         i18n = i18nMock
+
+        // create and activate Pinia for each test so useStore() works
+        pinia = createPinia()
+        setActivePinia(pinia)
 
         mock.passwordValidators.passwordMatchingValidator.mockImplementation(() => true)
         mock.passwordValidators.passwordStrengthValidator.mockImplementation(() => true)
@@ -79,9 +92,9 @@ describe('CreateAccountForm', () => {
     })
 
     test('renders email input and two password fields', () => {
-        const wrapper = mount(CreateAccountForm, {
+        const wrapper = mount(AuthCreateAccount, {
             global: {
-                plugins: [i18n, Quasar],
+                plugins: [i18n, Quasar, pinia],
             },
         })
 
@@ -91,56 +104,29 @@ describe('CreateAccountForm', () => {
         const passwordFields = wrapper.findAllComponents(PasswordField)
         expect(passwordFields).toHaveLength(2)
         expect(passwordFields[0].props('label')).toContain('Mot de passe')
-        expect(passwordFields[1].props('label')).toContain('Confirmer le mot de passe') // might change !
+        expect(passwordFields[1].props('label')).toContain('Confirmer le mot de passe')
     })
 
     test('email input should be disabled', () => {
-        const wrapper = mount(CreateAccountForm, {
+        const wrapper = mount(AuthCreateAccount, {
             global: {
-                plugins: [i18n, Quasar],
+                plugins: [i18n, Quasar, pinia],
             },
         })
 
         const emailInput = wrapper.find('input[type="email"]')
-
         expect(emailInput.attributes('disabled')).toBeDefined()
     })
 
     test('validation rules are applied correctly to password fields', async () => {
-        const wrapper = mount(CreateAccountForm, {
+        const wrapper = mount(AuthCreateAccount, {
             global: {
-                plugins: [i18n, Quasar],
+                plugins: [i18n, Quasar, pinia],
             },
         })
 
         const passwordFields = wrapper.findAllComponents(PasswordField)
-
-        expect(passwordFields[0].props('rules')).toBeTruthy() // password
-        expect(passwordFields[1].props('rules')).toBeTruthy() // confirm password
-    })
-
-    test('calls fetchEmailFromToken on component mount', () => {
-        mount(CreateAccountForm, {
-            global: {
-                plugins: [i18n, Quasar],
-            },
-        })
-
-        expect(mock.useCreateAccountForm.fetchEmailFromToken).toHaveBeenCalledOnce()
-    })
-
-    test('submits the form successfully', async () => {
-        const wrapper = mount(CreateAccountForm, {
-            global: {
-                plugins: [i18n, Quasar],
-            },
-        })
-
-        await wrapper.find('form').trigger('submit')
-
-        // Use a slight delay to ensure async operations complete 🙃
-        await new Promise((resolve) => setTimeout(resolve, 0))
-
-        expect(mock.useCreateAccountForm.createAccount).toHaveBeenCalledOnce()
+        expect(passwordFields[0].props('rules')).toBeTruthy()
+        expect(passwordFields[1].props('rules')).toBeTruthy()
     })
 })

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import { useCreateAccountForm } from '@/components/forms/auth/createAccount/useCreateAccountForm.ts'
+import { useAuthCreateAccount } from '@/components/auth/createAccount/useAuthCreateAccount.ts'
 import PasswordField from '@/components/utils/form/passwordField/PasswordField.vue'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
@@ -15,14 +15,14 @@ const {
     fetchEmailFromToken,
     createAccount,
     isLoading,
-} = useCreateAccountForm()
+} = useAuthCreateAccount()
 
 fetchEmailFromToken()
 </script>
 
 <template>
     <QForm
-        class="container column medium"
+        class="auth-form"
         @submit="createAccount"
     >
         <AtomicInput
@@ -43,12 +43,10 @@ fetchEmailFromToken()
             :rules="[() => arePasswordsMatching || t('forms.password.validation.passwordsDoNotMatch')]"
         />
 
-        <div class="container column">
-            <AtomicButton
-                :label="t('forms.createAccount.submit')"
-                :loading="isLoading"
-                type="submit"
-            />
-        </div>
+        <AtomicButton
+            :label="t('forms.createAccount.submit')"
+            :loading="isLoading"
+            type="submit"
+        />
     </QForm>
 </template>

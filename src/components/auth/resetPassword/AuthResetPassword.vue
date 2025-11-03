@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useResetPasswordForm } from '@/components/forms/auth/resetPasswordForm/useResetPasswordForm.ts'
+import { useAuthResetPassword } from './useAuthResetPassword.ts'
 import PasswordField from '@/components/utils/form/passwordField/PasswordField.vue'
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
@@ -16,7 +16,7 @@ const {
     isPasswordStrongEnough,
     arePasswordsMatching,
     resetPassword,
-} = useResetPasswordForm()
+} = useAuthResetPassword()
 
 onMounted(() => {
     const route = useRoute()
@@ -27,7 +27,7 @@ onMounted(() => {
 
 <template>
     <QForm
-        class="container column"
+        class="auth-form"
         @submit.prevent="resetPassword"
     >
         <PasswordField
@@ -43,7 +43,7 @@ onMounted(() => {
             :rules="[() => arePasswordsMatching || t('forms.password.validation.passwordsDoNotMatch')]"
         />
 
-        <div class="password-requirements">
+        <div>
             <p>{{ t('forms.password.passwordMustContain') }}:</p>
             <ul>
                 <li>{{ t('forms.password.minLength') }}</li>
@@ -53,31 +53,10 @@ onMounted(() => {
                 <li>{{ t('forms.password.specialChar') }}</li>
             </ul>
         </div>
-        <div class="container justify-center">
-            <AtomicButton
-                class="submit-btn"
-                :label="t('forms.password.reset.submit')"
-                :loading="isLoading"
-                no-caps
-                type="submit"
-            />
-        </div>
+        <AtomicButton
+            :label="t('forms.password.reset.submit')"
+            :loading="isLoading"
+            type="submit"
+        />
     </QForm>
 </template>
-
-<style scoped>
-.submit-btn {
-    margin-top: 16px;
-}
-
-.password-requirements {
-    margin-top: 16px;
-    font-size: 0.9rem;
-    color: #666;
-}
-
-.password-requirements ul {
-    padding-left: 20px;
-    margin-top: 4px;
-}
-</style>
