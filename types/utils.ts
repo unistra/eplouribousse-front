@@ -81,3 +81,5 @@ export class UniqueSet<T> {
         return this.items.size
     }
 }
+
+export type ButtonColor = 'primary' | 'secondary' | 'positive' | 'negative' | 'info' | 'warning'

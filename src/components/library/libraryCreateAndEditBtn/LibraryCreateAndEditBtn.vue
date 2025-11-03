@@ -3,6 +3,7 @@ import { useI18n } from 'vue-i18n'
 import { useLibraryCreateAndEditBtn } from '@/components/library/libraryCreateAndEditBtn/useLibraryCreateAndEditBtn.ts'
 import type { LibraryI } from '#/library.d.ts'
 import { onMounted } from 'vue'
+import AtomicButton from '@/components/atomic/AtomicButton.vue'
 
 const props = defineProps<{
     buttonLabel?: string
@@ -33,7 +34,7 @@ onMounted(() => {
         name="button"
         :openDialog="dialog.open"
     >
-        <QBtn
+        <AtomicButton
             :icon="buttonIcon || 'mdi-plus'"
             :label="buttonLabel || t('libraries.form.add')"
             @click="dialog.open"

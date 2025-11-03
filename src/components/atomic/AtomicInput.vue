@@ -42,7 +42,7 @@ onMounted(() => {
         v-model="model"
         :autofocus
         :clearable
-        color="grey-100"
+        color="primary"
         :data-testid
         :disable
         :hide-bottom-space

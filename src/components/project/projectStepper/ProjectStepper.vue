@@ -81,7 +81,7 @@ onMounted(async () => {
                 <AtomicButton
                     v-if="step === 4"
                     color="primary"
-                    confirm-button-color="red"
+                    confirm-button-color="negative"
                     :disable="!checkValidityForRolesStep || !checkValidityForLibraryStep"
                     :label="t('newProject.buttons.passToReview')"
                     :loading="passToReviewLoading"

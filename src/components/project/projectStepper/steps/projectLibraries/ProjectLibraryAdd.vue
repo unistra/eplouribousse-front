@@ -41,22 +41,22 @@ const onSelected = (library: LibraryI) => {
 
 <style scoped lang="sass">
 .placeholder-card
-    width: 100%;
-    max-width: 400px;
-    height: 200px;
-    display: flex;
-    border: 4px dotted lightgray;
-    border-radius: 8px;
-    justify-content: center;
-    align-items: center;
+    width: 100%
+    max-width: 400px
+    height: 200px
+    display: flex
+    border: 4px dotted var(--color-neutral-300)
+    border-radius: 8px
+    justify-content: center
+    align-items: center
 
     .q-icon
-        font-size: 36px;
-        color: lightgray;
+        font-size: var(--font-size-4xl)
+        color: var(--color-neutral-300)
 
 .can-add-cursor
-    cursor: pointer;
+    cursor: pointer
 
 .cannot-add-cursor
-    cursor: not-allowed;
+    cursor: not-allowed
 </style>

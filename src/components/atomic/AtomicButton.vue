@@ -2,6 +2,7 @@
 import type { RouterLinkProps } from 'vue-router'
 import AtomicConfirmationDialog from '@/components/atomic/AtomicConfirmationDialog.vue'
 import { ref } from 'vue'
+import type { ButtonColor } from '#/utils.ts'
 
 const props = defineProps<{
     label?: string
@@ -13,13 +14,13 @@ const props = defineProps<{
     loading?: boolean
     disable?: boolean
     tooltip?: string
-    color?: string
+    color?: ButtonColor
     to?: RouterLinkProps['to']
     type?: 'submit'
     dataTestid?: string
     size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
     requireConfirmation?: boolean
-    confirmButtonColor?: 'red' | 'green' | 'primary'
+    confirmButtonColor?: ButtonColor
 }>()
 
 const modalConfirmation = ref<boolean>(false)

@@ -37,11 +37,12 @@ onMounted(async () => {
 <template>
     <div class="project-resources">
         <h1>{{ projectStore.name }}</h1>
-        <div>
-            <QSelect
+        <div class="selects">
+            <AtomicSelect
                 v-for="(select, index) in selects"
                 :key="index"
                 v-model="select.model.value"
+                color="primary"
                 :disable="disableLibrarySelectedSelect"
                 emit-value
                 :label="select.label"
@@ -180,6 +181,16 @@ h1
     display: flex
     flex-direction: column
     width: 100%
+    gap: 1rem
+
+    .selects
+        display: flex
+        gap: 1rem
+        align-items: center
+
+        .q-select
+            width: 100%
+            max-width: 300px
 
 
     .q-list

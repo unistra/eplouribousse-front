@@ -7,15 +7,14 @@
     --color-green: #00c951;
     --color-blue: #2b7fff;
 
-    --q-primary: #000000;
-    --q-secondary: #26a69a;
-    --q-accent: #9c27b0;
-    --q-positive: #00c951;
-    --q-negative: #fb2c36;
-    --q-info: #2b7fff;
-    --q-warning: #efb100;
-    --q-dark: #1d1d1d;
-    --q-dark-page: #121212;
+    --epl-color-green: #76af8f;
+    --epl-color-yellow: #f3c260;
+    --epl-color-blue: #888fc2;
+    --epl-color-red: #e38a77;
+    --epl-color-dark-green: #2a6246;
+    --epl-color-dark-yellow: #734d00;
+    --epl-color-dark-blue: #4b517f;
+    --epl-color-dark-red: #893929;
 
     --color-neutral-50: #fafafa;
     --color-neutral-100: #f3f4f6;
@@ -29,6 +28,36 @@
     --color-neutral-900: #171717;
     --color-neutral-950: #0a0a0a;
 
+    /* ======================================== */
+    /* Colors */
+    --color-primary: var(--color-black);
+    --color-secondary: var(--color-neutral-700);
+    --color-accent: var(--epl-color-yellow);
+
+    --color-positive: var(--color-green);
+    --color-negative: var(--color-red);
+    --color-info: var(--color-blue);
+    --color-warning: var(--color-yellow);
+
+    --text-color: var(--color-black);
+    --text-color-dark: var(--color-white);
+
+    /* Quasar colors */
+    --q-primary: var(--color-primary);
+    --q-secondary: var(--color-secondary);
+    --q-accent: var(--color-accent);
+
+    --q-positive: var(--color-positive);
+    --q-negative: var(--color-negative);
+    --q-info: var(--color-info);
+    --q-warning: var(--color-warning);
+    --q-dark: var(--color-neutral-900);
+    --q-dark-page: var(--color-black);
+
+    /* Other */
+    --border-radius: 2rem;
+    --border-radius-pills: 100rem;
+
     --font-size-xs: 0.75rem;
     --font-size-sm: 0.875rem;
     --font-size-base: 1rem;
@@ -40,8 +69,7 @@
     --font-size-5xl: 3rem;
     --font-size-6xl: 3.75rem;
 
-    --border-radius: 2rem;
-
+    /* Layout */
     --layout-secondary-bg-color: var(--color-neutral-200);
     --layout-secondary-color: var(--color-black);
     --layout-header-bg-color: var(--layout-secondary-bg-color);

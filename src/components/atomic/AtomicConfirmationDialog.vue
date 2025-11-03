@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
+import type { ButtonColor } from '#/utils.ts'
 
 const { t } = useI18n()
 
 defineProps<{
-    confirmButtonColor?: 'red' | 'green' | 'primary'
+    confirmButtonColor?: ButtonColor
 }>()
 const modal = defineModel<boolean>()
 const emit = defineEmits<{

@@ -7,7 +7,7 @@ export const useProjectLibraryCard = (library: ProjectLibrary) => {
     const store = useProjectStore()
 
     const borderColorIsAlternativeStorageSite = computed(() => {
-        return library.isAlternativeStorageSite ? 'var(--color-yellow)' : 'var(--color-neutral-200)'
+        return library.isAlternativeStorageSite ? 'var(--color-accent)' : 'var(--color-neutral-200)'
     })
 
     const isLoadingDelete = ref<boolean>(false)
