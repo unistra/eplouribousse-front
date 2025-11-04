@@ -45,7 +45,7 @@ defineProps<{
                         )
                     }}
                     {{ t('common.by') }}
-                    {{ store.createdBy['displayName'] || t('common.unknown') }}
+                    {{ store.createdBy?.displayName || t('common.unknown') }}
                 </p>
             </QCardSection>
             <QSeparator />
@@ -163,10 +163,10 @@ defineProps<{
     flex-direction: column
 
 .libraries
-    display: flex;
+    display: flex
     flex-direction: row
     justify-content: space-evenly
-    gap: 16px;
+    gap: 16px
 
 .space
     padding-top: 2.5vh
