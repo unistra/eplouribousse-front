@@ -1,31 +1,13 @@
 import { ref } from 'vue'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
-import { useRoute, useRouter } from 'vue-router'
 import { AxiosError } from 'axios'
 import { useI18n } from 'vue-i18n'
-import { axiosI } from '@/plugins/axios/axios.ts'
-import { useUserStore } from '@/stores/userStore.ts'
-
-const login = async (email: string, password: string) => {
-    const userStore = useUserStore()
-    const response = await axiosI.post<{ refresh: string; access: string }>('/token/', {
-        username: email,
-        password: password,
-    })
-
-    userStore.isAuth = true
-    localStorage.setItem('JWT__access__token', response.data.access)
-    localStorage.setItem('JWT__refresh__token', response.data.refresh)
-
-    const user = await axiosI.get('/users/profile/')
-    userStore.user = user.data
-}
+import { useAuth } from '@/composables/useAuth.ts'
 
 export function useAuthLogin() {
     const { t } = useI18n()
     const { notify } = useComposableQuasar()
-    const router = useRouter()
-    const route = useRoute()
+    const { login } = useAuth()
 
     const email = ref<string>('')
     const password = ref<string>('')
@@ -37,12 +19,6 @@ export function useAuthLogin() {
 
         try {
             await login(email.value, password.value)
-            notify({
-                type: 'positive',
-                message: t('forms.login.success'),
-            })
-            await router.push((route.query.redirect as string | undefined) ?? { name: 'home' })
-            // await router.go(0)
         } catch (e) {
             password.value = ''
 

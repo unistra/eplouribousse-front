@@ -2,7 +2,7 @@
 import { useI18n } from 'vue-i18n'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useUserStore } from '@/stores/userStore.ts'
-import { useAuthentication } from '@/composables/useAuthentication.ts'
+import { useAuth } from '@/composables/useAuth.ts'
 import { useGlobalStore } from '@/stores/globalStore.ts'
 import { useRouter } from 'vue-router'
 
@@ -10,7 +10,7 @@ const { t } = useI18n()
 const userStore = useUserStore()
 const router = useRouter()
 
-const { logout } = useAuthentication()
+const { logout } = useAuth()
 
 const onLogout = async () => {
     await logout()
