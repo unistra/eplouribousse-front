@@ -113,12 +113,15 @@ export const useProjectSegmentTable = () => {
             label: t('project.instruction.tableFields.resolve'),
             field: 'resolve',
             format(_val: unknown, row: Segment) {
-                const segmentString = resourceStore.segments
-                    .find((el) => el.id === row.improvedSegment)
-                    ?.order.toString()
-                if (!segmentString) return '-'
+                const segmentImproved = resourceStore.segments.find((el) => el.id === row.improvedSegment)
+                if (!segmentImproved) return '-'
 
-                const collection = resourceStore.collections.find((collection) => collection.id === row.collection)
+                const segmentString = segmentImproved?.order.toString()
+
+                const collection = resourceStore.collections.find(
+                    (collection) => collection.id === segmentImproved.collection,
+                )
+
                 const libraryString =
                     projectStore.libraries.find((library) => library.id === collection?.library)?.name ||
                     t('utils.noLibrary')
