@@ -18,7 +18,7 @@ defineProps<{
 <template>
     <QSelect
         v-model="model"
-        color="grey-100"
+        color="primary"
         :dense
         :emit-value
         :label

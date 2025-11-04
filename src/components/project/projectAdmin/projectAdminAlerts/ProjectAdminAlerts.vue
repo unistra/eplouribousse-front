@@ -81,7 +81,4 @@ const onPatchAlerts = async () => {
     .spinner
         justify-self: center
         align-self: center
-
-    h2
-        font-size: 1.2rem
 </style>

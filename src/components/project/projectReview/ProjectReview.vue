@@ -14,7 +14,7 @@ const { settingsMode, userIsAdmin } = useProjectReview()
     <div class="project-review">
         <hgroup>
             <template v-if="!settingsMode">
-                <h2>{{ t('project.review.title') }}</h2>
+                <h1>{{ t('project.review.title') }}</h1>
                 <AtomicButton
                     v-if="userIsAdmin"
                     icon="mdi-cog"
@@ -23,7 +23,7 @@ const { settingsMode, userIsAdmin } = useProjectReview()
                 />
             </template>
             <template v-else>
-                <h2>{{ t('project.settings.title') }}</h2>
+                <h1>{{ t('project.settings.title') }}</h1>
                 <AtomicButton
                     icon="mdi-close"
                     no-border
@@ -52,6 +52,4 @@ const { settingsMode, userIsAdmin } = useProjectReview()
         display: flex
         justify-content: space-between
         align-items: center
-        h2
-            font-size: var(--font-size-3xl)
 </style>

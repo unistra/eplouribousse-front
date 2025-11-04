@@ -63,7 +63,7 @@ onMounted(async () => await getCollection())
             flat
         >
             <AtomicButton
-                confirm-button-color="red"
+                confirm-button-color="negative"
                 icon="mdi-close"
                 no-border
                 require-confirmation

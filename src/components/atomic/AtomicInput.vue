@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import AtomicIcon from './AtomicIcon.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { computed, onMounted, useTemplateRef } from 'vue'
 import { type QInput } from 'quasar'
@@ -43,7 +42,7 @@ onMounted(() => {
         v-model="model"
         :autofocus
         :clearable
-        color="grey-100"
+        color="primary"
         :data-testid
         :disable
         :hide-bottom-space
@@ -59,7 +58,7 @@ onMounted(() => {
             v-if="icon"
             #prepend
         >
-            <AtomicIcon :name="icon" />
+            <QIcon :name="icon" />
         </template>
         <template
             v-if="!icon && quickInput"
@@ -77,3 +76,8 @@ onMounted(() => {
         </template>
     </QInput>
 </template>
+
+<style scoped lang="sass">
+.q-icon
+    color: var(--color-neutral-400)
+</style>

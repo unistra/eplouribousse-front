@@ -2,13 +2,13 @@ import type { NavLink } from '#/utils.ts'
 
 export const useHeaderLinks: () => NavLink[] = () => {
     return [
-        { label: 'search', to: { name: 'Home' } },
-        { label: 'supervision', to: { name: 'Home' }, require: ['superuser'] },
+        { label: 'search', to: { name: 'home' } },
+        { label: 'supervision', to: { name: 'home' }, require: ['superuser'] },
         { label: 'contactAdmin', to: { name: 'contactAdmin' } },
-        { label: 'diffusionList', to: { name: 'Home' } },
+        { label: 'diffusionList', to: { name: 'home' } },
         { label: 'newProjectRequirements', to: { name: 'newProjectRequirements' }, require: ['manager'] },
-        { label: 'generalAdministration', to: { name: 'Home' }, require: ['admin'] },
-        { label: 'userGuide', to: { name: 'Home' } },
+        { label: 'generalAdministration', to: { name: 'home' }, require: ['admin'] },
+        { label: 'userGuide', to: { name: 'home' } },
     ]
 }
 

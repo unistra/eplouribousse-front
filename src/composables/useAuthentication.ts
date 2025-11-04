@@ -11,7 +11,7 @@ export function useAuthentication() {
         localStorage.removeItem('JWT__access__token')
         localStorage.removeItem('JWT__refresh__token')
 
-        await router.push((route.query.redirect as string | undefined) ?? { name: 'Home' })
+        await router.push((route.query.redirect as string | undefined) ?? { name: 'home' })
     }
 
     return {

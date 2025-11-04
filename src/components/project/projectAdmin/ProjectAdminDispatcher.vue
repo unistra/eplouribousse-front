@@ -4,7 +4,6 @@ import ProjectLibraryCard from '@/components/project/projectStepper/steps/projec
 import ProjectRoles from '@/components/project/projectStepper/steps/projectRoles/ProjectRoles.vue'
 import { ProjectAdministrationTab, useProjectAdmin } from '@/components/project/projectAdmin/useProjectAdmin.ts'
 import ProjectInformations from '../projectStepper/steps/projectInformations/ProjectInformations.vue'
-import AtomicIcon from '@/components/atomic/AtomicIcon.vue'
 import AtomicToggle from '@/components/atomic/AtomicToggle.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'

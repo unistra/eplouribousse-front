@@ -17,42 +17,35 @@ declare module 'vue-router' {
 const routes: RouteRecordRaw[] = [
     {
         path: '/',
-        name: 'Home',
+        name: 'home',
         component: () => import('@/views/HomeView.vue'),
         meta: {
             title: 'Accueil',
         },
     },
     {
-        path: '/contact-admin',
-        name: 'contactAdmin',
-        component: () => import('@/views/ContactAdminView.vue'),
+        path: '/:pathMatch(.*)*',
+        name: '404',
+        component: () => import('@/views/404View.vue'),
         meta: {
-            title: 'Contact',
+            title: '404',
         },
     },
+    // AUTH PAGES ======================
     {
         path: '/login',
         name: 'login',
-        component: () => import('@/views/Auth/LoginView.vue'),
+        component: () => import('@/views/AuthView.vue'),
         meta: {
-            title: 'Connexion',
-        },
-    },
-    {
-        path: '/403',
-        name: '403',
-        component: () => import('@/views/Auth/403View.vue'),
-        meta: {
-            title: 'Page non accessible',
+            title: t('navigation.auth.login'),
         },
     },
     {
         path: '/change-password',
         name: 'changePassword',
-        component: () => import('@/views/Auth/ChangePasswordView.vue'),
+        component: () => import('@/views/AuthView.vue'),
         meta: {
-            title: 'Changer le mot de passe',
+            title: t('navigation.auth.changePassword'),
             needAuth: true,
             needLocal: true,
         },
@@ -60,25 +53,42 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/reset-password',
         name: 'resetPassword',
-        component: () => import('@/views/Auth/ResetPasswordView.vue'),
+        component: () => import('@/views/AuthView.vue'),
         meta: {
-            title: t('forms.password.reset.i'),
+            title: t('navigation.auth.resetPassword'),
         },
     },
     {
         path: '/request-password-reset',
         name: 'requestPasswordReset',
-        component: () => import('@/views/Auth/SendEmailView.vue'),
+        component: () => import('@/views/AuthView.vue'),
         meta: {
-            title: t('forms.password.reset.request'),
+            title: t('navigation.auth.requestPasswordReset'),
         },
     },
     {
         path: '/handshake',
         name: 'handshake',
-        component: () => import('@/views/Auth/HandshakeView.vue'),
+        component: () => import('@/views/AuthView.vue'),
         meta: {
-            title: 'Handshake',
+            title: t('navigation.auth.handshake'),
+        },
+    },
+    {
+        path: '/create-account',
+        name: 'createAccount',
+        component: () => import('@/views/AuthView.vue'),
+        meta: {
+            title: t('navigation.auth.createAccount'),
+        },
+    },
+    // =================================
+    {
+        path: '/contact-admin',
+        name: 'contactAdmin',
+        component: () => import('@/views/ContactAdminView.vue'),
+        meta: {
+            title: 'Contact',
         },
     },
     {
@@ -95,14 +105,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/InviteView.vue'),
         meta: {
             title: 'Inviter un utilisateur',
-        },
-    },
-    {
-        path: '/create-account',
-        name: 'createAccount',
-        component: () => import('@/views/Auth/CreateAccountView.vue'),
-        meta: {
-            title: 'Création du compte',
         },
     },
     {

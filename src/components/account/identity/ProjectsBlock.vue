@@ -60,7 +60,7 @@ onMounted(async () => {
                 />
                 <template v-else-if="selectedProject">
                     <QCardSection>
-                        <p class="project-name">{{ selectedProject.name || '' }}</p>
+                        <h3>{{ selectedProject.name || '' }}</h3>
                     </QCardSection>
                     <QCardSection>
                         <p>{{ t('account.projects.rolesInProject') }}:</p>
@@ -109,12 +109,6 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="sass">
-h2
-    font-size: 1.3rem
-
-.project-name
-    font-size: 1.3rem
-
 .alerts-toggles
     display: flex
     flex-direction: column

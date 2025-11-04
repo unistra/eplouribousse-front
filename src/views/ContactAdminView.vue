@@ -4,6 +4,7 @@ import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
 
 const { t } = useI18n()
 
@@ -26,7 +27,7 @@ function submitEmailForm() {
             class="container column"
             @submit.prevent="submitEmailForm"
         >
-            <QSelect
+            <AtomicSelect
                 v-model="object"
                 emit-value
                 :label="t('contactAdmin.object')"

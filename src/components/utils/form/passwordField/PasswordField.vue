@@ -3,9 +3,10 @@ import { useI18n } from 'vue-i18n'
 import LinearProgress from '@/components/utils/linearProgress/LinearProgress.vue'
 import { watch } from 'vue'
 import { QSlideTransition, type ValidationRule } from 'quasar'
-import type { QInput } from 'quasar'
 import { usePasswordValidators } from '@/composables/usePasswordValidators.ts'
 import { usePasswordField } from '@/components/utils/form/passwordField/usePasswordField.ts'
+import AtomicInput from '@/components/atomic/AtomicInput.vue'
+import AtomicButton from '@/components/atomic/AtomicButton.vue'
 
 const { t } = useI18n()
 const { getPasswordStrength } = usePasswordValidators()
@@ -42,7 +43,6 @@ watch(
     >
         <QInput
             :autofocus="autofocus"
-            color="grey-100"
             :hide-bottom-space="true"
             :label="label ?? defaultLabel"
             :model-value="modelValue"
@@ -56,7 +56,8 @@ watch(
             @update:model-value="(val) => emit('update:modelValue', val as string)"
         >
             <template #append>
-                <QBtn
+                <AtomicButton
+                    id="test"
                     data-testid="visibility-button"
                     dense
                     flat
@@ -67,7 +68,7 @@ watch(
                     <QTooltip>
                         {{ t(passwordVisibilityLabel) }}
                     </QTooltip>
-                </QBtn>
+                </AtomicButton>
             </template>
         </QInput>
         <QSlideTransition ref="linearProgressEl">

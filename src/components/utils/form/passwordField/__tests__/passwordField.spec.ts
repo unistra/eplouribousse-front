@@ -59,7 +59,7 @@ describe('PasswordField', () => {
         })
 
         expect(wrapper.find('input[type="password"]').exists()).toBe(true)
-        await wrapper.find('button').trigger('click')
+        await wrapper.find('#test').trigger('click')
         expect(wrapper.find('input[type="text"]').exists()).toBe(true)
         await wrapper.find('button').trigger('click')
         expect(wrapper.find('input[type="password"]').exists()).toBe(true)

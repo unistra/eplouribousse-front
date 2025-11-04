@@ -115,8 +115,10 @@ onMounted(async () => {
         <QList dense>
             <div>
                 <DrawerItem
+                    href="https://documentation.unistra.fr/DNUM/Services_documentaires/Eplouribousse/co/guide.html"
                     icon="mdi-file-document"
                     :name="!collapsed ? t('navigation.userGuide') : ''"
+                    target="_blank"
                     :tooltip="collapsed ? t('navigation.userGuide') : ''"
                 />
                 <DrawerItem

@@ -8,6 +8,7 @@ import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import { useProjectPositioningCollectionCard } from '@/components/project/projectLaunched/projectPositioning/projectPositioningCollectionCard/useProjectPositioningCollectionCard.ts'
 import { CollectionPosition } from '&/project.ts'
 import { useResourceStore } from '@/stores/resourceStore.ts'
+import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
 const props = defineProps<{
     libraryId: string
     collection: CollectionsInResource
@@ -72,7 +73,7 @@ onMounted(() => {
                         v-model="exclude"
                         :label="t('project.resources.exclusion.exclude')"
                     />
-                    <QSelect
+                    <AtomicSelect
                         v-if="exclude"
                         v-model="exclusionReason"
                         :label="t('project.resources.exclusion.exclusionReason')"

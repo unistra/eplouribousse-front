@@ -96,7 +96,7 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading,
                 @update:model-value="store.toggleIsAlternativeStorageSite(props.library)"
             />
             <AtomicButton
-                confirm-button-color="red"
+                confirm-button-color="negative"
                 icon="mdi-delete"
                 :loading="isLoadingDelete"
                 no-border

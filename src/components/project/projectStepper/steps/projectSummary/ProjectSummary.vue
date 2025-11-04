@@ -16,7 +16,7 @@ const { checkValidityForRolesStep, checkValidityForLibraryStep } = checkValidity
     <div class="summary">
         <hgroup>
             <p class="label">{{ t('newProject.steps.informations.name') }}</p>
-            <h2>{{ store.name }}</h2>
+            <h1>{{ store.name }}</h1>
         </hgroup>
         <div class="description">
             <p class="label">{{ t('newProject.steps.informations.description') }}</p>
@@ -104,8 +104,7 @@ const { checkValidityForRolesStep, checkValidityForLibraryStep } = checkValidity
         color: var(--color-neutral-500)
 
     hgroup
-        h2
-            font-size: var(--font-size-3xl)
+        h1
             margin-left: 2rem
 
     .description
