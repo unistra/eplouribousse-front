@@ -9,7 +9,7 @@ export interface ProjectI {
     isPrivate: boolean
     activeAfter: string
     isActive: boolean
-    createdBy: ProjectUser
+    createdBy: ProjectUser | null
     status: ProjectStatus
     settings: ProjectSettings
     invitations: ProjectInvitation[]

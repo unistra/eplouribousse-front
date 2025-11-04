@@ -37,7 +37,7 @@ const { settingsMode, userIsAdmin } = useProjectReview()
             <ProjectAdmin v-else />
         </KeepAlive>
 
-        <ProjectReviewButton />
+        <ProjectReviewButton v-if="!settingsMode" />
     </div>
 </template>
 

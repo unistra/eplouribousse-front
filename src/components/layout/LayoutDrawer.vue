@@ -76,16 +76,7 @@ onMounted(async () => {
                                 :name="!collapsed ? project.name : ''"
                                 :to="{ name: 'project', params: { id: project.id } }"
                                 :tooltip="collapsed ? project.name : undefined"
-                            >
-                                <AtomicButton
-                                    v-if="project.roles.includes(Roles.ProjectAdmin)"
-                                    dense
-                                    flat
-                                    icon="mdi-cog"
-                                    round
-                                    :to="{ name: 'projectAdmin', params: { id: project.id } }"
-                                />
-                            </DrawerItem>
+                            />
                         </QList>
                         <p v-else-if="!collapsed && !userStore.projects.length">
                             {{ t('navigation.noProject') }}

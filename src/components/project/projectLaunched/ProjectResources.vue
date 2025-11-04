@@ -9,6 +9,7 @@ import type { QTable } from 'quasar'
 import ProjectResource from '@/components/project/projectLaunched/ProjectResource/ProjectResource.vue'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
+import AtomicButton from '@/components/atomic/AtomicButton.vue'
 
 const resourceStore = useResourceStore()
 const projectStore = useProjectStore()
@@ -36,7 +37,17 @@ onMounted(async () => {
 
 <template>
     <div class="project-resources">
-        <h1>{{ projectStore.name }}</h1>
+        <hgroup>
+            <h1>{{ projectStore.name }}</h1>
+            <AtomicButton
+                v-if="projectStore.userIsAdmin"
+                dense
+                flat
+                icon="mdi-cog"
+                round
+                :to="{ name: 'projectAdmin', params: { id: projectStore.id } }"
+            />
+        </hgroup>
         <div class="selects">
             <AtomicSelect
                 v-for="(select, index) in selects"
@@ -182,6 +193,11 @@ h1
     flex-direction: column
     width: 100%
     gap: 1rem
+
+    hgroup
+        display: flex
+        align-items: center
+        justify-content: space-between
 
     .selects
         display: flex
