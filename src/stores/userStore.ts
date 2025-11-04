@@ -66,6 +66,21 @@ export const useUserStore = defineStore('user', () => {
         }
     }
 
+    const updateProfile = async (payload: { firstName?: string; lastName?: string }) => {
+        try {
+            userLoading.value = true
+            const response = await axiosI.patch<User>('/users/profile/', payload)
+            user.value = response.data
+        } catch {
+            Notify.create({
+                type: 'negative',
+                message: t('errors.unknown'),
+            })
+        } finally {
+            userLoading.value = false
+        }
+    }
+
     function fillProjectUser(roles: ProjectRole[]) {
         userInProject.value = roles.find((projectUser) => projectUser.user.id === user.value?.id)
     }
@@ -88,5 +103,6 @@ export const useUserStore = defineStore('user', () => {
         getProjects,
         fillProjectUser,
         clean,
+        updateProfile,
     }
 })

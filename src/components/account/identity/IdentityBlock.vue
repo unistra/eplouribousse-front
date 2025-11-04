@@ -27,8 +27,27 @@ const resetForm = () => {
     form.email = userStore.user?.email || ''
 }
 
-const onNameSubmit = () => {
-    // handle save logic
+const onNameSubmit = async () => {
+    const payload: { firstName?: string; lastName?: string } = {}
+
+    if (form.firstName !== userStore.user?.firstName) {
+        payload.firstName = form.firstName
+    }
+    if (form.lastName !== userStore.user?.lastName) {
+        payload.lastName = form.lastName
+    }
+
+    if (Object.keys(payload).length === 0) {
+        nameDialog.value = false // close dialog if no changes were made
+        return
+    }
+
+    try {
+        await userStore.updateProfile(payload)
+        nameDialog.value = false
+    } catch (error) {
+        console.error('Error updating profile:', error)
+    }
 }
 const onEmailSubmit = () => {
     // handle save logic
