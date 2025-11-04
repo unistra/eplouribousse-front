@@ -88,13 +88,14 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading,
 
         <QCardActions
             v-if="!isSummary && !isInEditionMode"
-            align="between"
+            align="right"
         >
-            <QCheckbox
+            <!-- No alternative storage yet
+             <QCheckbox
                 :label="t('project.settings.alternativeStorageSite')"
                 :model-value="library.isAlternativeStorageSite"
                 @update:model-value="store.toggleIsAlternativeStorageSite(props.library)"
-            />
+            /> -->
             <AtomicButton
                 confirm-button-color="negative"
                 icon="mdi-delete"
