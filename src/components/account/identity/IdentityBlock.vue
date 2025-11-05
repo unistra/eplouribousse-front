@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import AtomicInput from '@/components/atomic/AtomicInput.vue'
-import AtomicButton from '@/components/atomic/AtomicButton.vue'
+import AtomicEditableField from '@/components/atomic/AtomicEditableField.vue'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/userStore.ts'
-import { computed, onMounted, reactive, ref } from 'vue'
+import { ref, watch, computed } from 'vue'
+import { QField } from 'quasar'
 
 const { t } = useI18n()
 const userStore = useUserStore()
@@ -12,142 +12,115 @@ const tenantRole = computed(() => {
     return userStore.user?.isProjectCreator ? t('roles.projectCreator') : ''
 })
 
-const nameDialog = ref<boolean>(false)
-const emailDialog = ref<boolean>(false)
+const firstName = ref(userStore.user?.firstName ?? '')
+const lastName = ref(userStore.user?.lastName ?? '')
+const email = ref(userStore.user?.email ?? '')
 
-const form = reactive({
-    firstName: '',
-    lastName: '',
-    email: '',
-})
+watch(
+    () => userStore.user,
+    (user) => {
+        firstName.value = user?.firstName ?? ''
+        lastName.value = user?.lastName ?? ''
+        email.value = user?.email ?? ''
+    },
+    { immediate: true },
+)
 
-const resetForm = () => {
-    form.firstName = userStore.user?.firstName || ''
-    form.lastName = userStore.user?.lastName || ''
-    form.email = userStore.user?.email || ''
-}
-
-const onNameSubmit = async () => {
-    const payload: { firstName?: string; lastName?: string } = {}
-
-    if (form.firstName !== userStore.user?.firstName) {
-        payload.firstName = form.firstName
-    }
-    if (form.lastName !== userStore.user?.lastName) {
-        payload.lastName = form.lastName
-    }
-
-    if (Object.keys(payload).length === 0) {
-        nameDialog.value = false // close dialog if no changes were made
-        return
-    }
-
+const saveFirstName = async (value: string) => {
+    if (value === userStore.user?.firstName) return
     try {
-        await userStore.updateProfile(payload)
-        nameDialog.value = false
-    } catch (error) {
-        console.error('Error updating profile:', error)
+        await userStore.updateProfile({ firstName: value })
+    } catch (err) {
+        console.error('Error updating first name:', err)
     }
 }
-const onEmailSubmit = () => {
-    // handle save logic
-}
 
-const onCancel = () => {
-    nameDialog.value = false
-    emailDialog.value = false
+const saveLastName = async (value: string) => {
+    if (value === userStore.user?.lastName) return
+    try {
+        await userStore.updateProfile({ lastName: value })
+    } catch (err) {
+        console.error('Error updating last name:', err)
+    }
 }
-
-onMounted(async () => {
-    resetForm()
-})
 </script>
 
 <template>
     <div class="block-identity">
-        <p>
-            {{ t('common.account') }}:
-            {{ userStore.user?.canAuthenticateLocally ? t('account.local') : t('account.federation') }}
-        </p>
-        <div class="name">
-            <p>{{ t('common.firstName') }}: {{ userStore.user?.firstName }}</p>
-            <p>{{ t('common.lastName') }}: {{ userStore.user?.lastName }}</p>
-            <AtomicButton
-                v-if="userStore.user?.canAuthenticateLocally"
-                icon="mdi-pencil"
-                @click="nameDialog = true"
-            />
-            <QDialog v-model="nameDialog">
-                <QCard>
-                    <QForm @submit.prevent="onNameSubmit">
-                        <QCardSection>
-                            <AtomicInput
-                                v-model="form.firstName"
-                                :label="t('common.firstName')"
-                                required
-                                :rules="[(val: string) => !!val || t('forms.fieldIsRequired')]"
-                            />
-                            <AtomicInput
-                                v-model="form.lastName"
-                                :label="t('common.lastName')"
-                                required
-                                :rules="[(val: string) => !!val || t('forms.fieldIsRequired')]"
-                            />
-                        </QCardSection>
-                        <QCardActions align="right">
-                            <AtomicButton
-                                :label="t('common.cancel')"
-                                no-border
-                                @click="onCancel"
-                            />
-                            <AtomicButton
-                                color="primary"
-                                :label="t('common.save')"
-                                no-border
-                                type="submit"
-                            />
-                        </QCardActions>
-                    </QForm>
-                </QCard>
-            </QDialog>
-        </div>
-        <div class="email">
-            <p>{{ t('common.email') }}: {{ userStore.user?.email }}</p>
-            <AtomicButton
-                v-if="userStore.user?.canAuthenticateLocally"
-                icon="mdi-pencil"
-                @click="emailDialog = true"
-            />
-            <QDialog v-model="emailDialog">
-                <QCard>
-                    <QForm @submit.prevent="onEmailSubmit">
-                        <QCardSection>
-                            <AtomicInput
-                                v-model="form.email"
-                                :label="t('common.email')"
-                                required
-                                :rules="[(val: string) => !!val || t('forms.fieldIsRequired')]"
-                            />
-                        </QCardSection>
-                        <QCardActions align="right">
-                            <AtomicButton
-                                :label="t('common.cancel')"
-                                no-border
-                                @click="onCancel"
-                            />
-                            <AtomicButton
-                                color="primary"
-                                :label="t('common.save')"
-                                no-border
-                                type="submit"
-                            />
-                        </QCardActions>
-                    </QForm>
-                </QCard>
-            </QDialog>
-        </div>
-        <p>{{ t('account.tenantRole') }}: {{ tenantRole }}</p>
+        <q-field
+            :label="t('common.account')"
+            stack-label
+            standard
+        >
+            <template v-slot:control>
+                <div class="display-value">
+                    <div class="value-text">
+                        {{ userStore.user?.canAuthenticateLocally ? t('account.local') : t('account.federation') }}
+                    </div>
+                </div>
+            </template>
+        </q-field>
+
+        <AtomicEditableField
+            v-model:modelValue="firstName"
+            class="mt-sm"
+            :editable="userStore.user?.canAuthenticateLocally"
+            :label="t('common.firstName')"
+            @save="saveFirstName"
+        />
+
+        <AtomicEditableField
+            v-model:modelValue="lastName"
+            class="mt-sm"
+            :editable="userStore.user?.canAuthenticateLocally"
+            :label="t('common.lastName')"
+            @save="saveLastName"
+        />
+
+        <q-field
+            class="mt-sm"
+            :label="t('common.email')"
+            stack-label
+            standard
+        >
+            <template v-slot:control>
+                <div class="display-value">
+                    <div class="value-text">{{ email }}</div>
+                </div>
+            </template>
+        </q-field>
+
+        <q-field
+            class="mt-sm"
+            :label="t('account.tenantRole')"
+            stack-label
+            standard
+        >
+            <template v-slot:control>
+                <div class="display-value">
+                    <div class="value-text">{{ tenantRole }}</div>
+                </div>
+            </template>
+        </q-field>
     </div>
 </template>
 
-<style scoped lang="sass"></style>
+<style scoped>
+.block-identity {
+    max-width: 300px;
+    width: 100%;
+}
+.display-value {
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 6px 10px;
+    box-sizing: border-box;
+}
+.value-text {
+    flex: 1;
+}
+.mt-sm {
+    margin-top: 8px;
+}
+</style>
