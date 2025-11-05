@@ -1,16 +1,47 @@
-import type { RouteRecordRaw } from 'vue-router'
+import type { NavigationGuardWithThis, RouteRecordRaw } from 'vue-router'
 import { useUserStore } from '@/stores/userStore.ts'
 import i18n from '@/plugins/i18n'
-import { redirectTo403 } from '@/plugins/axios/axiosUtils.ts'
+import { Notify } from 'quasar'
+import { useAuth } from '@/composables/useAuth.ts'
 
 const { t } = i18n.global
 
-declare module 'vue-router' {
-    interface RouteMeta {
-        title: string
-        needAuth?: boolean
-        needLocal?: boolean
-        require?: string[]
+const userNeedToBeAuth: NavigationGuardWithThis<void> = (to) => {
+    if (!useAuth().checkManuallyIsUserAuth()) {
+        Notify.create({
+            message: t('navigation.error.needAuth'),
+            color: 'negative',
+        })
+        return { name: 'login', query: { redirect: to.fullPath } }
+    }
+}
+
+const userNeedToNotBeAuth: NavigationGuardWithThis<void> = (_, from) => {
+    if (useAuth().checkManuallyIsUserAuth()) {
+        Notify.create({
+            message: t('navigation.error.needNotAuth'),
+            color: 'negative',
+        })
+        return { name: from.name }
+    }
+}
+
+const userAccountNeedToBeLocal: NavigationGuardWithThis<void> = () => {
+    const userStore = useUserStore()
+    if (!userStore.user) {
+        Notify.create({
+            message: t('navigation.error.notAccessibleThisWay'),
+            color: 'negative',
+        })
+        return { name: 'home' }
+    }
+
+    if (!useUserStore().user?.canAuthenticateLocally) {
+        Notify.create({
+            message: t('navigation.error.needLocal'),
+            color: 'negative',
+        })
+        return { name: 'home' }
     }
 }
 
@@ -36,6 +67,7 @@ const routes: RouteRecordRaw[] = [
         path: '/login',
         name: 'login',
         component: () => import('@/views/AuthView.vue'),
+        beforeEnter: [userNeedToNotBeAuth],
         meta: {
             title: t('navigation.auth.login'),
         },
@@ -44,24 +76,26 @@ const routes: RouteRecordRaw[] = [
         path: '/change-password',
         name: 'changePassword',
         component: () => import('@/views/AuthView.vue'),
+        beforeEnter: [userNeedToBeAuth, userAccountNeedToBeLocal],
         meta: {
             title: t('navigation.auth.changePassword'),
-            needAuth: true,
-            needLocal: true,
         },
     },
     {
         path: '/reset-password',
         name: 'resetPassword',
         component: () => import('@/views/AuthView.vue'),
+        beforeEnter: [userNeedToBeAuth, userAccountNeedToBeLocal],
         meta: {
             title: t('navigation.auth.resetPassword'),
+            needLocal: true,
         },
     },
     {
         path: '/request-password-reset',
         name: 'requestPasswordReset',
         component: () => import('@/views/AuthView.vue'),
+        beforeEnter: [userNeedToNotBeAuth],
         meta: {
             title: t('navigation.auth.requestPasswordReset'),
         },
@@ -70,6 +104,7 @@ const routes: RouteRecordRaw[] = [
         path: '/handshake',
         name: 'handshake',
         component: () => import('@/views/AuthView.vue'),
+        beforeEnter: [userNeedToNotBeAuth],
         meta: {
             title: t('navigation.auth.handshake'),
         },
@@ -78,11 +113,65 @@ const routes: RouteRecordRaw[] = [
         path: '/create-account',
         name: 'createAccount',
         component: () => import('@/views/AuthView.vue'),
+        beforeEnter: [userNeedToNotBeAuth],
         meta: {
             title: t('navigation.auth.createAccount'),
         },
     },
     // =================================
+    {
+        path: '/projects',
+        children: [
+            {
+                path: '',
+                name: 'publicProjects',
+                component: () => import('@/views/PublicProjects.vue'),
+                meta: {
+                    title: t('navigation.project.public'),
+                },
+            },
+            {
+                path: 'new',
+                name: 'newProject',
+                component: () => import('@/views/NewProjectView.vue'),
+                meta: {
+                    title: t('navigation.project.new'),
+                },
+                beforeEnter: async () => {
+                    const userStore = useUserStore()
+                    if (!userStore.user?.isProjectCreator) {
+                        Notify.create({
+                            message: t('navigation.error.unauthorize'),
+                            color: 'negative',
+                        })
+                        return { name: 'home' }
+                    }
+                },
+            },
+            {
+                path: ':id',
+                children: [
+                    {
+                        path: '',
+                        component: () => import('@/views/ProjectView.vue'),
+                        name: 'project',
+                        meta: {
+                            title: t('navigation.project.i'),
+                        },
+                    },
+                    {
+                        path: 'admin',
+                        name: 'projectAdmin',
+                        component: () => import('@/views/ProjectAdministrationView.vue'),
+                        meta: {
+                            title: t('navigation.projectAdministration'),
+                        },
+                    },
+                ],
+            },
+        ],
+    },
+
     {
         path: '/contact-admin',
         name: 'contactAdmin',
@@ -113,39 +202,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/LibrariesView.vue'),
         meta: {
             title: 'Manage library',
-        },
-    },
-    {
-        path: '/new-project',
-        name: 'newProject',
-        component: () => import('@/views/NewProjectView.vue'),
-        meta: {
-            title: t('navigation.newProject'),
-        },
-        beforeEnter: async () => {
-            const userStore = useUserStore()
-            if (!userStore.user?.isProjectCreator) await redirectTo403()
-        },
-    },
-    {
-        path: '/projects/:id',
-        name: 'project',
-        component: () => import('@/views/ProjectView.vue'),
-    },
-    {
-        path: '/projects/:id/administration',
-        name: 'projectAdmin',
-        component: () => import('@/views/ProjectAdministrationView.vue'),
-        meta: {
-            title: t('navigation.projectAdministration'),
-        },
-    },
-    {
-        path: '/public-projects',
-        name: 'publicProjects',
-        component: () => import('@/views/PublicProjects.vue'),
-        meta: {
-            title: 'Projets',
         },
     },
     {

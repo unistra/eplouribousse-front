@@ -4,9 +4,9 @@ import type { QTable, QTableProps } from 'quasar'
 import type { ProjectI } from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios'
 import { onMounted, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 
-const { t } = useI18n()
+const route = useRoute()
 const projects = ref<ProjectI[]>([])
 const visibleColumns = ['project', 'description', 'createdAt']
 const columns: QTableProps['columns'] = [
@@ -54,7 +54,7 @@ onMounted(async () => {
 
 <template>
     <QPage padding>
-        <h1>{{ t('publicProjects.title') }}</h1>
+        <h1>{{ route.meta.title }}</h1>
         <div class="container">
             <QTable
                 :columns="columns"

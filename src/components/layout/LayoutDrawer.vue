@@ -50,16 +50,16 @@ onMounted(async () => {
             <div class="projects">
                 <DrawerItem
                     icon="mdi-folder-move-outline"
-                    :name="!collapsed ? t('navigation.publicProjects') : ''"
+                    :name="!collapsed ? t('project.public.btn') : ''"
                     :to="{ name: 'publicProjects' }"
-                    :tooltip="collapsed ? t('navigation.publicProjects') : undefined"
+                    :tooltip="collapsed ? t('project.public.btn') : undefined"
                 />
                 <div
                     v-if="userStore.isAuth"
                     class="my-projects"
                 >
                     <p v-if="!collapsed">
-                        {{ t('navigation.projects') }}
+                        {{ t('layout.drawer.myProjects') }}
                     </p>
                     <div :class="['scrollable-projects', { 'min-height': userStore.projects.length > 3 }]">
                         <QItem

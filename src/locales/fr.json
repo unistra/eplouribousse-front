@@ -16,6 +16,9 @@
             "legalNotice": "Mentions légales",
             "contact": "Contact",
             "about": "À propos"
+        },
+        "drawer": {
+            "myProjects": "Mes projets"
         }
     },
     "auth": {
@@ -35,14 +38,21 @@
             "handshake": "Handshake",
             "createAccount": "Créer son compte"
         },
+        "error": {
+            "needAuth": "Vous devez être connecté pour accéder à cette page",
+            "needNotAuth": "Vous devez ne pas être connecté pour accéder à cette page",
+            "needLocal": "Vous devez avoir un compte local pour accéder à cette page",
+            "notAccessibleThisWay": "Vous ne pouvez pas accéder à cette page de cette manière",
+            "unauthorize": "Vous ne pouvez pas accéder à cette page"
+        },
+        "project": {
+            "i": "Projet",
+            "public": "Projets publics",
+            "new": "Nouveau projet"
+        },
         "myAccount": "Mon @.lower:common.account",
         "search": "Recherche",
-        "login": "Connexion",
-        "logout": "Déconnexion",
         "supervision": "Supervision",
-        "projects": "Mes projets",
-        "publicProjects": "Tous les projets",
-        "project": "Projet",
         "userGuide": "Documentation",
         "contactAdmin": "Contact",
         "diffusionList": "Liste de diffusion",
@@ -52,8 +62,6 @@
         "admin": "Administration",
         "generalAdministration": "Administration générale",
         "hasNoPerm": "Vous avez été redirigé car vous n'avez pas accès à cette page",
-        "needAuth": "Vous devez vous connecter pour accéder à cette page",
-        "needLocal": "Vous devez avoir un compte local pour changer votre mot de passe",
         "collapse": "Masquer",
         "expand": "Afficher",
         "noProject": "Aucun projet",
@@ -73,9 +81,6 @@
         "darkMode": "Thème sombre",
         "account": "Mon compte",
         "changePassword": "Changer mon mot de passe"
-    },
-    "publicProjects": {
-        "title": "Projets publics"
     },
     "newProject": {
         "title": "Création d'un nouveau projet",
@@ -168,6 +173,9 @@
         "searchUsers": "Vous pouvez utiliser l'outil de recherche ci-dessous pour vérifier si les utilisateurs ont déjà un compte, si ce n'est pas le cas, contactez-les pour qu'ils se connectent au site :"
     },
     "project": {
+        "public": {
+            "btn": "Tous les projets"
+        },
         "administration": {
             "title": "Administration",
             "informations": "Informations générales",

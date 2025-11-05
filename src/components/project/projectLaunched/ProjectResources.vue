@@ -45,7 +45,7 @@ onMounted(async () => {
                 flat
                 icon="mdi-cog"
                 round
-                :to="{ name: 'projectAdmin', params: { id: projectStore.id } }"
+                :to="{ name: 'projectAdmin' }"
             />
         </hgroup>
         <div class="selects">

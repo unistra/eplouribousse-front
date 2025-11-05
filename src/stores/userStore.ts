@@ -21,7 +21,7 @@ export const useUserStore = defineStore('user', () => {
     const fetchUser = async () => {
         const token = localStorage.getItem('JWT__access__token')
 
-        if (token !== null && !isExpired(token)) {
+        if (!!token && !isExpired(token)) {
             try {
                 userLoading.value = true
                 const response = await axiosI.get<User>('/users/profile/')

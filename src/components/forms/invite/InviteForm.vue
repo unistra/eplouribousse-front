@@ -29,5 +29,3 @@ const { email, sendInvitation } = useInviteForm()
         </QForm>
     </div>
 </template>
-
-<style scoped></style>

@@ -57,8 +57,6 @@ watch(
         >
             <template #append>
                 <AtomicButton
-                    id="test"
-                    data-testid="visibility-button"
                     dense
                     flat
                     :icon="icon"

@@ -15,5 +15,3 @@ defineProps<{
         :left-label="leftLabel"
     />
 </template>
-
-<style scoped></style>
