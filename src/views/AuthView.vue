@@ -16,7 +16,10 @@ onMounted(async () => {
 </script>
 
 <template>
-    <QPage padding>
+    <QPage
+        v-if="route.name !== 'handshake'"
+        padding
+    >
         <h1>{{ route.meta.title }}</h1>
         <AuthLogin v-if="route.name === 'login'" />
         <AuthChangePassword v-else-if="route.name === 'changePassword'" />
