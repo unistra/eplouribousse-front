@@ -4,7 +4,7 @@ import type { ProjectI, ProjectRole } from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import type { Pagination } from '#/pagination.ts'
 import { type User } from '#/user'
-import { isExpired } from '@/utils/jwt.ts'
+import { getJWT, isExpired } from '@/utils/jwt.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { Notify } from 'quasar'
 import { useI18n } from 'vue-i18n'
@@ -19,9 +19,9 @@ export const useUserStore = defineStore('user', () => {
     const { t } = useI18n()
 
     const fetchUser = async () => {
-        const token = localStorage.getItem('JWT__access__token')
+        const { access } = getJWT()
 
-        if (!!token && !isExpired(token)) {
+        if (!!access && !isExpired(access)) {
             try {
                 userLoading.value = true
                 const response = await axiosI.get<User>('/users/profile/')

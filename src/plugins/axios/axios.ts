@@ -1,25 +1,38 @@
 import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios'
-import { redirectTo403, isRouteAllowed, redirectionOrAddAuth } from './axiosUtils'
+import router from '@/router'
+import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
+import { useI18n } from 'vue-i18n'
+import { getJWT, isExpired } from '@/utils/jwt.ts'
+import { backendBaseURL, refreshAccessToken } from '@/plugins/axios/axiosUtils.ts'
 
-const configAuth = {
-    baseURL: import.meta.env.VITE_APP_BASE_URL,
-}
-const axiosAuth = axios.create(configAuth) // NO INTERCEPTORS
-
-const configAPI = {
-    baseURL: import.meta.env.VITE_APP_BASE_URL + '/api',
-}
-const axiosI = axios.create(configAPI) // WITH INTERCEPTORS
+const axiosAuth = axios.create({ baseURL: backendBaseURL }) // NO INTERCEPTORS
+const axiosI = axios.create({ baseURL: backendBaseURL + '/api' }) // WITH INTERCEPTORS
 
 axiosI.interceptors.request.use(
     async (config: InternalAxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
-        if (isRouteAllowed('anon', config.url)) return config
+        const { access, refresh } = getJWT()
 
-        return await redirectionOrAddAuth(config, isRouteAllowed('anonAndAuth', config.url))
+        if (access && !isExpired(access)) {
+            config.headers.Authorization = `Bearer ${access}`
+            return config
+        }
+
+        if (refresh && !isExpired(refresh)) {
+            const newAccess = await refreshAccessToken()
+            config.headers.Authorization = `Bearer ${newAccess}`
+        }
+
+        return config
     },
     async (error: AxiosError): Promise<never> => {
+        const { notify } = useComposableQuasar()
+        const { t } = useI18n()
         if (error.response?.status === 403) {
-            await redirectTo403()
+            notify({
+                message: t('navigation.error.unauthorize'),
+                color: 'negative',
+            })
+            await router.push({ name: 'home' })
         }
         return Promise.reject(error)
     },

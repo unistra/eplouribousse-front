@@ -3,6 +3,7 @@ import type { CollectionsInResource } from '#/project.ts'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
+import { backendBaseURL } from '@/plugins/axios/axiosUtils.ts'
 
 const state = reactive<{ selectCollectionToShowEdition: CollectionsInResource | undefined }>({
     selectCollectionToShowEdition: undefined,
@@ -16,7 +17,7 @@ export const useProjectEdition = () => {
     const pdfPreviewURL = (preview: boolean = true) => {
         if (!resourceStore.id || !state.selectCollectionToShowEdition?.id) return ''
 
-        const url = new URL(`${import.meta.env.VITE_APP_BASE_URL}/api/resources/${resourceStore.id}/resultant-report/`)
+        const url = new URL(`${backendBaseURL}/api/resources/${resourceStore.id}/resultant-report/`)
         url.search = new URLSearchParams({
             collection: state.selectCollectionToShowEdition?.id,
             preview: preview.toString(),
