@@ -3,7 +3,7 @@ import type { CollectionsInResource } from '#/project.ts'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
-import { backendBaseURL } from '@/plugins/axios/axios.ts'
+import { backendBaseURL } from '@/plugins/axios/axiosUtils.ts'
 
 const state = reactive<{ selectCollectionToShowEdition: CollectionsInResource | undefined }>({
     selectCollectionToShowEdition: undefined,

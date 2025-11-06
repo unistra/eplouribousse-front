@@ -6,7 +6,7 @@ import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import PasswordField from '@/components/utils/form/passwordField/PasswordField.vue'
 import { useAuthLogin } from '@/components/auth/login/useAuthLogin.ts'
-import { backendBaseURL } from '@/plugins/axios/axios.ts'
+import { backendBaseURL } from '@/plugins/axios/axiosUtils.ts'
 
 const globalStore = useGlobalStore()
 const { t } = useI18n()
