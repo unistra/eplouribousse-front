@@ -2,12 +2,12 @@ import type { NavigationGuardWithThis, RouteRecordRaw } from 'vue-router'
 import { useUserStore } from '@/stores/userStore.ts'
 import i18n from '@/plugins/i18n'
 import { Notify } from 'quasar'
-import { useAuth } from '@/composables/useAuth.ts'
+import { checkManuallyIsUserAuth } from '@/utils/jwt.ts'
 
 const { t } = i18n.global
 
 const userNeedToBeAuth: NavigationGuardWithThis<void> = (to) => {
-    if (!useAuth().checkManuallyIsUserAuth()) {
+    if (!checkManuallyIsUserAuth()) {
         Notify.create({
             message: t('navigation.error.needAuth'),
             color: 'negative',
@@ -17,7 +17,7 @@ const userNeedToBeAuth: NavigationGuardWithThis<void> = (to) => {
 }
 
 const userNeedToNotBeAuth: NavigationGuardWithThis<void> = (_, from) => {
-    if (useAuth().checkManuallyIsUserAuth()) {
+    if (checkManuallyIsUserAuth()) {
         Notify.create({
             message: t('navigation.error.needNotAuth'),
             color: 'negative',
