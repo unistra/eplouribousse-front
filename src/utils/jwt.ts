@@ -17,13 +17,3 @@ export const removeJWTFromLocalStorage = () => {
     localStorage.removeItem('JWT__access__token')
     localStorage.removeItem('JWT__refresh__token')
 }
-
-export const checkManuallyIsUserAuth = () => {
-    const { access, refresh } = getJWT()
-
-    if (!access) return false
-    if (!isExpired(access)) return true
-
-    if (!refresh) return false
-    return isExpired(refresh)
-}
