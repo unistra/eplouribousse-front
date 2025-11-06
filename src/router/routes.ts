@@ -2,12 +2,21 @@ import type { NavigationGuardWithThis, RouteRecordRaw } from 'vue-router'
 import { useUserStore } from '@/stores/userStore.ts'
 import i18n from '@/plugins/i18n'
 import { Notify } from 'quasar'
-import { checkManuallyIsUserAuth } from '@/utils/jwt.ts'
+import { getJWT, isExpired } from '@/utils/jwt.ts'
+import { refreshAccessToken } from '@/plugins/axios/axiosUtils.ts'
 
 const { t } = i18n.global
 
-const userNeedToBeAuth: NavigationGuardWithThis<void> = (to) => {
-    if (!checkManuallyIsUserAuth()) {
+const checkManuallyIsUserAuth = async (): Promise<boolean> => {
+    const { access, refresh } = getJWT()
+    if (access && !isExpired(access)) return true
+    if (!refresh || isExpired(refresh)) return false
+
+    return !!(await refreshAccessToken())
+}
+
+const userNeedToBeAuth: NavigationGuardWithThis<void> = async (to) => {
+    if (!(await checkManuallyIsUserAuth())) {
         Notify.create({
             message: t('navigation.error.needAuth'),
             color: 'negative',
@@ -16,8 +25,8 @@ const userNeedToBeAuth: NavigationGuardWithThis<void> = (to) => {
     }
 }
 
-const userNeedToNotBeAuth: NavigationGuardWithThis<void> = (_, from) => {
-    if (checkManuallyIsUserAuth()) {
+const userNeedToNotBeAuth: NavigationGuardWithThis<void> = async (_, from) => {
+    if (await checkManuallyIsUserAuth()) {
         Notify.create({
             message: t('navigation.error.needNotAuth'),
             color: 'negative',
