@@ -6,6 +6,7 @@ import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import PasswordField from '@/components/utils/form/passwordField/PasswordField.vue'
 import { useAuthLogin } from '@/components/auth/login/useAuthLogin.ts'
+import { backendBaseURL } from '@/plugins/axios/axios.ts'
 
 const globalStore = useGlobalStore()
 const { t } = useI18n()
@@ -14,7 +15,7 @@ const { email, password, isLoading, onLogin, saml2URL } = useAuthLogin()
 
 onMounted(() => {
     globalStore.showNotify()
-    saml2URL.value = new URL('/saml2/login/', globalStore.backendBaseURL).toString()
+    saml2URL.value = new URL('/saml2/login/', backendBaseURL).toString()
 })
 </script>
 
@@ -51,7 +52,7 @@ onMounted(() => {
                         :label="t('common.password')"
                         :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
                     />
-                    <RouterLink :to="{ name: 'resetPassword' }">
+                    <RouterLink :to="{ name: 'requestPasswordReset' }">
                         {{ t('forms.login.forgottenPassword') }}
                     </RouterLink>
                 </div>

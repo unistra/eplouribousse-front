@@ -11,7 +11,6 @@ const userStore = useUserStore()
 const globalStore = useGlobalStore()
 
 onMounted(async () => {
-    globalStore.defineBackendBaseURL()
     await globalStore.fetchTenant()
     await userStore.fetchUser()
 })
