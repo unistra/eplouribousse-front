@@ -2,6 +2,9 @@
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { ref } from 'vue'
 
+defineProps<{
+    allowDeleting?: boolean
+}>()
 const emit = defineEmits<{
     (e: 'delete'): void
 }>()
@@ -18,6 +21,7 @@ const onDelete = () => {
             <slot />
         </QItemSection>
         <AtomicButton
+            v-if="allowDeleting"
             icon="mdi-close"
             :loading="isLoading"
             :no-border="true"
