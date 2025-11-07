@@ -57,11 +57,11 @@ const collectionToBeInstructed = computed<CollectionsInResource | undefined>(() 
                 class="collection-infos"
             >
                 <p>{{ t('project.resources.infoAboutCollection') }}:</p>
-                <QChip>
+                <QChip class="chip-label-value">
                     {{ t('project.resources.callNumber') }}:
                     <span>{{ collectionToBeInstructed.callNumber || '-' }}</span>
                 </QChip>
-                <QChip>
+                <QChip class="chip-label-value">
                     {{ t('project.resources.holdStatement') }}:
                     <span>{{ collectionToBeInstructed.holdStatement || '-' }}</span>
                 </QChip>
@@ -137,9 +137,4 @@ const collectionToBeInstructed = computed<CollectionsInResource | undefined>(() 
 .collection-infos
     display: flex
     align-items: center
-.q-chip
-    background-color: var(--color-neutral-100)
-    span
-        margin-left: 0.2rem
-        font-weight: bold
 </style>
