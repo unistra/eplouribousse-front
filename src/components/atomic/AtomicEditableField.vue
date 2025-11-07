@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { QField, QInput, QBtn } from 'quasar'
+import { useI18n } from 'vue-i18n'
 
 const props = defineProps<{
     modelValue: string
@@ -15,6 +15,7 @@ const emit = defineEmits<{
     (e: 'cancel'): void
 }>()
 
+const { t } = useI18n()
 const editing = ref(false)
 const localValue = ref(props.modelValue)
 
@@ -45,13 +46,13 @@ const cancel = () => {
 </script>
 
 <template>
-    <q-field
+    <QField
         :label="props.label"
         stack-label
         standard
     >
         <template #control>
-            <q-input
+            <QInput
                 v-if="editing"
                 v-model="localValue"
                 autofocus
@@ -69,9 +70,9 @@ const cancel = () => {
         </template>
 
         <template #append>
-            <q-btn
-                v-if="props.editable"
-                aria-label="Edit"
+            <QBtn
+                v-if="props.editable && !editing"
+                :aria-label="t('common.edit')"
                 dense
                 flat
                 icon="mdi-pencil"
@@ -80,18 +81,18 @@ const cancel = () => {
             />
             <div
                 v-if="editing"
-                class="row items-center q-gutter-sm"
+                class="btn"
             >
-                <q-btn
-                    aria-label="Save"
+                <QBtn
+                    :aria-label="t('common.save')"
                     color="primary"
                     dense
                     flat
                     icon="mdi-check"
                     @click="save"
                 />
-                <q-btn
-                    aria-label="Cancel"
+                <QBtn
+                    :aria-label="t('common.cancel')"
                     dense
                     flat
                     icon="mdi-close"
@@ -99,15 +100,17 @@ const cancel = () => {
                 />
             </div>
         </template>
-    </q-field>
+    </QField>
 </template>
 
-<style scoped>
-.display-value {
-    min-height: 40px;
-    display: flex;
-    align-items: center;
-    padding: 6px 10px;
-    box-sizing: border-box;
-}
+<style scoped lang="sass">
+.display-value
+    min-height: 40px
+    display: flex
+    align-items: center
+    padding: 6px 10px
+
+.btn
+    display: flex
+    gap: 0.5rem
 </style>

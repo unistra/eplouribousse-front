@@ -2,8 +2,7 @@
 import AtomicEditableField from '@/components/atomic/AtomicEditableField.vue'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/userStore.ts'
-import { ref, watch, computed } from 'vue'
-import { QField } from 'quasar'
+import { ref, computed, onMounted } from 'vue'
 
 const { t } = useI18n()
 const userStore = useUserStore()
@@ -12,19 +11,15 @@ const tenantRole = computed(() => {
     return userStore.user?.isProjectCreator ? t('roles.projectCreator') : ''
 })
 
-const firstName = ref(userStore.user?.firstName ?? '')
-const lastName = ref(userStore.user?.lastName ?? '')
-const email = ref(userStore.user?.email ?? '')
+const firstName = ref('')
+const lastName = ref('')
+const email = ref('')
 
-watch(
-    () => userStore.user,
-    (user) => {
-        firstName.value = user?.firstName ?? ''
-        lastName.value = user?.lastName ?? ''
-        email.value = user?.email ?? ''
-    },
-    { immediate: true },
-)
+onMounted(() => {
+    firstName.value = userStore.user?.firstName ?? ''
+    lastName.value = userStore.user?.lastName ?? ''
+    email.value = userStore.user?.email ?? ''
+})
 
 const saveFirstName = async (value: string) => {
     if (value === userStore.user?.firstName) return
@@ -47,80 +42,68 @@ const saveLastName = async (value: string) => {
 
 <template>
     <div class="block-identity">
-        <q-field
-            :label="t('common.account')"
-            stack-label
-            standard
-        >
-            <template v-slot:control>
-                <div class="display-value">
-                    <div class="value-text">
+        <div>
+            <QField
+                :label="t('common.account')"
+                stack-label
+                standard
+            >
+                <template #control>
+                    <p>
                         {{ userStore.user?.canAuthenticateLocally ? t('account.local') : t('account.federation') }}
-                    </div>
-                </div>
-            </template>
-        </q-field>
+                    </p>
+                </template>
+            </QField>
 
-        <AtomicEditableField
-            v-model:modelValue="firstName"
-            class="mt-sm"
-            :editable="userStore.user?.canAuthenticateLocally"
-            :label="t('common.firstName')"
-            @save="saveFirstName"
-        />
+            <QField
+                :label="t('common.email')"
+                stack-label
+                standard
+            >
+                <template #control>
+                    <p>{{ email }}</p>
+                </template>
+            </QField>
+            <QField
+                :label="t('account.tenantRole')"
+                stack-label
+                standard
+            >
+                <template #control>
+                    <p>{{ tenantRole }}</p>
+                </template>
+            </QField>
+        </div>
+        <div>
+            <AtomicEditableField
+                v-model="firstName"
+                :editable="userStore.user?.canAuthenticateLocally"
+                :label="t('common.firstName')"
+                @save="saveFirstName"
+            />
 
-        <AtomicEditableField
-            v-model:modelValue="lastName"
-            class="mt-sm"
-            :editable="userStore.user?.canAuthenticateLocally"
-            :label="t('common.lastName')"
-            @save="saveLastName"
-        />
-
-        <q-field
-            class="mt-sm"
-            :label="t('common.email')"
-            stack-label
-            standard
-        >
-            <template v-slot:control>
-                <div class="display-value">
-                    <div class="value-text">{{ email }}</div>
-                </div>
-            </template>
-        </q-field>
-
-        <q-field
-            class="mt-sm"
-            :label="t('account.tenantRole')"
-            stack-label
-            standard
-        >
-            <template v-slot:control>
-                <div class="display-value">
-                    <div class="value-text">{{ tenantRole }}</div>
-                </div>
-            </template>
-        </q-field>
+            <AtomicEditableField
+                v-model="lastName"
+                :editable="userStore.user?.canAuthenticateLocally"
+                :label="t('common.lastName')"
+                @save="saveLastName"
+            />
+        </div>
     </div>
 </template>
 
-<style scoped>
-.block-identity {
-    max-width: 300px;
-    width: 100%;
-}
-.display-value {
-    min-height: 40px;
-    display: flex;
-    align-items: center;
-    padding: 6px 10px;
-    box-sizing: border-box;
-}
-.value-text {
-    flex: 1;
-}
-.mt-sm {
-    margin-top: 8px;
-}
+<style scoped lang="sass">
+.block-identity
+    display: flex
+    flex-direction: column
+    gap: 1rem
+    width: 100%
+    div
+        display: flex
+        gap: 2rem
+
+
+        .q-field
+            width: fit-content
+            min-width: 24rem
 </style>

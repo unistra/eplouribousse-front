@@ -14,3 +14,11 @@ const { t } = useI18n()
         <ProjectsBlock />
     </QPage>
 </template>
+
+<style scoped lang="sass">
+.q-page
+    display: flex
+    flex-direction: column
+    width: 100%
+    gap: 3rem
+</style>
