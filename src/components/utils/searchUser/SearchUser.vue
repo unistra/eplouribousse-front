@@ -15,6 +15,7 @@ const props = defineProps<{
     invitationsSelected: ProjectInvitation[]
     isAddUserLoading: boolean
     preventDeleteCurrentUser?: boolean
+    disableInvitations?: boolean
 }>()
 const { t } = useI18n()
 const emit = defineEmits<SearchUserEmitActions>()
@@ -56,12 +57,17 @@ onMounted(() => {
             style="max-height: 10rem"
         >
             <QItem v-if="matchingUsers?.size() === 0 && username.length > 0 && isUserListLoading === false">
-                <QItemSection>{{ t('utils.searchUser.inviteText') }}: {{ username }}</QItemSection>
-                <AtomicButton
-                    icon="mdi-plus"
-                    size="sm"
-                    @click="sendAction('addInvitation')"
-                />
+                <template v-if="disableInvitations">
+                    <QItemSection>{{ t('utils.searchUser.noUserFound') }}: {{ username }}</QItemSection>
+                </template>
+                <template v-else>
+                    <QItemSection>{{ t('utils.searchUser.inviteText') }}: {{ username }}</QItemSection>
+                    <AtomicButton
+                        icon="mdi-plus"
+                        size="sm"
+                        @click="sendAction('addInvitation')"
+                    />
+                </template>
             </QItem>
             <QInfiniteScroll
                 data-testid="scroll"
