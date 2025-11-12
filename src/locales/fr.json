@@ -317,7 +317,7 @@
                 "boundOrUnbound": "Forme reliée ou non reliée",
                 "improvableElements": "Éléments améliorables",
                 "exception": "Exceptions",
-                "options": "Options",
+                "options": "Actions",
                 "resolve": "Bibliothèque remédiée",
                 "anomalies": "@:project.anomaly.i"
             },
