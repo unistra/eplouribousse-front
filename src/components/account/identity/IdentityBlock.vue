@@ -4,11 +4,21 @@ import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/userStore.ts'
 import { ref, computed, onMounted } from 'vue'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const userStore = useUserStore()
 
 const tenantRole = computed(() => {
-    return userStore.user?.isProjectCreator ? t('roles.projectCreator') : ''
+    const roles: string[] = [
+        userStore.user?.isSuperuser ? t('roles.superUser') : undefined,
+        userStore.user?.isProjectCreator ? t('roles.projectCreator') : undefined,
+    ].filter((el) => el !== undefined)
+
+    return roles.length
+        ? new Intl.ListFormat(locale.value, {
+              style: 'long',
+              type: 'conjunction',
+          }).format(roles)
+        : t('utils.noRole')
 })
 
 const firstName = ref('')

@@ -8,9 +8,10 @@ const { t } = useI18n()
 
 <template>
     <QPage padding>
-        <h1>{{ t('navigation.myAccount') }}</h1>
-
-        <IdentityBlock />
+        <div>
+            <h1>{{ t('navigation.myAccount') }}</h1>
+            <IdentityBlock />
+        </div>
         <ProjectsBlock />
     </QPage>
 </template>

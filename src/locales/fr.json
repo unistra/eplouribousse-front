@@ -67,7 +67,7 @@
         "404": "La page que vous demandez n'existe pas"
     },
     "roles": {
-        "superUser": "Super utilisateur",
+        "superUser": "Super utilisateur du tenant",
         "projectCreator": "Créateur de projet",
         "projectAdmin": "Administrateurs",
         "projectManager": "Pilotes de projet",
@@ -553,7 +553,8 @@
         "universityOfStrasbourg": "Université de Strasbourg",
         "abes": "Agence bibliographique de l'enseignement supérieur",
         "noLibrary": "Aucune bibliothèque",
-        "downloadPDF": "@:common.download le PDF"
+        "downloadPDF": "@:common.download le PDF",
+        "noRole": "Aucun rôle sur le tenant"
     },
     "errors": {
         "unknown": "Une erreur est survenue",
