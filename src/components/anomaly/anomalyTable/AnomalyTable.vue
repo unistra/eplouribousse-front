@@ -13,8 +13,9 @@ import {
     useAnomalyTable,
 } from '@/components/anomaly/anomalyTable/useAnomalyTable.ts'
 import { useAnomalyStore } from '@/stores/anomalyStore.ts'
+import { useUtils } from '@/composables/useUtils.ts'
 
-const { t, locale } = useI18n()
+const { t } = useI18n()
 const resourceStore = useResourceStore()
 const projectStore = useProjectStore()
 const anomalyStore = useAnomalyStore()
@@ -46,14 +47,14 @@ const { columns, anomalyDescription, anomalyOptions, onDeleteAnomaly, segmentAno
                     self="bottom start"
                 >
                     {{
-                        `${t('common.by')} ${row.fixedBy.firstName} ${row.fixedBy.lastName} | ${t('common.the')} ${new Intl.DateTimeFormat(locale).format(new Date(row.fixedAt))}`
+                        `${t('common.by')} ${row.fixedBy.firstName} ${row.fixedBy.lastName} | ${t('common.the')} ${useUtils().useIntlDateTimeFormat(row.fixedAt)}`
                     }}
                 </QTooltip>
             </QTd>
         </template>
         <template #body-cell-createdAt="{ value, row }">
             <QTd>
-                {{ new Intl.DateTimeFormat(locale).format(new Date(value)) }}
+                {{ useUtils().useIntlDateTimeFormat(value) }}
                 <QTooltip
                     anchor="bottom start"
                     self="bottom start"
