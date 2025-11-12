@@ -5,7 +5,6 @@ import { watch } from 'vue'
 import { QSlideTransition, type ValidationRule } from 'quasar'
 import { usePasswordValidators } from '@/composables/usePasswordValidators.ts'
 import { usePasswordField } from '@/components/utils/form/passwordField/usePasswordField.ts'
-import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 
 const { t } = useI18n()

@@ -64,12 +64,12 @@ describe('useAuthCreateAccount', () => {
     })
 
     test('initial state should have empty values', () => {
-        const { email, password, confirmPassword, isLoading } = useAuthCreateAccount()
+        const { email, password, confirmPassword, buttonSubmitLoading } = useAuthCreateAccount()
 
         expect(email.value).toBe('')
         expect(password.value).toBe('')
         expect(confirmPassword.value).toBe('')
-        expect(isLoading.value).toBe(false)
+        expect(buttonSubmitLoading.value).toBe(false)
     })
 
     describe('fetchEmailFromToken', () => {
@@ -133,51 +133,18 @@ describe('useAuthCreateAccount', () => {
     })
 
     describe('createAccount', () => {
-        test('createAccount should validate password strength', async () => {
-            mock.passwordValidators.passwordStrengthValidator.mockReturnValue(false)
-
-            const { createAccount, password } = useAuthCreateAccount()
-            password.value = 'weak'
-
-            await createAccount()
-
-            expect(mock.passwordValidators.passwordStrengthValidator).toHaveBeenCalledWith('weak')
-            expect(mock.notify).toHaveBeenCalledWith({
-                type: 'negative',
-                message: 'forms.password.validation.passwordRequirements',
-            })
-            expect(mock.axiosPost).not.toHaveBeenCalled()
-        })
-
-        test('createAccount should validate passwords match', async () => {
-            mock.passwordValidators.passwordMatchingValidator.mockReturnValue(false)
-
-            const { createAccount, password, confirmPassword } = useAuthCreateAccount()
-            password.value = 'StrongPassword123!'
-            confirmPassword.value = 'DifferentPassword123!'
-
-            await createAccount()
-
-            expect(mock.passwordValidators.passwordMatchingValidator).toHaveBeenCalledWith(
-                'StrongPassword123!',
-                'DifferentPassword123!',
-            )
-            expect(mock.notify).toHaveBeenCalledWith({
-                type: 'negative',
-                message: 'forms.password.validation.passwordsDoNotMatch',
-            })
-            expect(mock.axiosPost).not.toHaveBeenCalled()
-        })
-
         test('createAccount should submit the form successfully', async () => {
-            const { createAccount, password, confirmPassword, isLoading } = useAuthCreateAccount()
+            const { createAccount, password, confirmPassword, buttonSubmitLoading, firstName, lastName } =
+                useAuthCreateAccount()
 
             password.value = 'StrongPassword123!'
             confirmPassword.value = 'StrongPassword123!'
+            firstName.value = 'Eplou'
+            lastName.value = 'Ribousse'
 
             const createAccountPromise = createAccount()
 
-            expect(isLoading.value).toBe(true)
+            expect(buttonSubmitLoading.value).toBe(true)
 
             await createAccountPromise
             await flushPromises()
@@ -186,10 +153,12 @@ describe('useAuthCreateAccount', () => {
                 token: 'valid-token',
                 password: 'StrongPassword123!',
                 confirmPassword: 'StrongPassword123!',
+                firstName: 'Eplou',
+                lastName: 'Ribousse',
             })
 
             expect(mock.routerPush).toHaveBeenCalledWith({ name: 'login' })
-            expect(isLoading.value).toBe(false)
+            expect(buttonSubmitLoading.value).toBe(false)
         })
 
         test('createAccount should handle errors from API', async () => {

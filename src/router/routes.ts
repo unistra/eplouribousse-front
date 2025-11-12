@@ -126,7 +126,18 @@ const routes: RouteRecordRaw[] = [
         path: '/create-account',
         name: 'createAccount',
         component: () => import('@/views/AuthView.vue'),
-        beforeEnter: [userNeedToNotBeAuth],
+        beforeEnter: [
+            userNeedToNotBeAuth,
+            (to) => {
+                if (!to.query.t) {
+                    Notify.create({
+                        color: 'negative',
+                        message: t('auth.createAccount.missingToken'),
+                    })
+                    return { name: 'home' }
+                }
+            },
+        ],
         meta: {
             title: t('navigation.auth.createAccount'),
         },

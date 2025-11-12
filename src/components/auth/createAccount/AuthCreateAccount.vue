@@ -4,24 +4,34 @@ import { useAuthCreateAccount } from '@/components/auth/createAccount/useAuthCre
 import PasswordField from '@/components/utils/form/passwordField/PasswordField.vue'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
+import { onMounted } from 'vue'
 
 const { t } = useI18n()
 const {
     email,
+    firstName,
+    lastName,
     password,
     confirmPassword,
     isPasswordStrongEnough,
     arePasswordsMatching,
+    isFirstNameValid,
+    isLastNameValid,
     fetchEmailFromToken,
     createAccount,
-    isLoading,
+    buttonSubmitLoading,
+    fetchEmailLoading,
 } = useAuthCreateAccount()
 
-fetchEmailFromToken()
+onMounted(async () => {
+    await fetchEmailFromToken()
+})
 </script>
 
 <template>
+    <QInnerLoading :showing="fetchEmailLoading" />
     <QForm
+        v-if="!fetchEmailLoading"
         class="auth-form"
         @submit="createAccount"
     >
@@ -30,6 +40,20 @@ fetchEmailFromToken()
             disable
             :label="t('common.email')"
             type="email"
+        />
+        <AtomicInput
+            v-model="firstName"
+            :hide-bottom-space="true"
+            :label="t('common.firstName')"
+            :rules="[() => isFirstNameValid || t('forms.validation.minLength', { length: 2 })]"
+            type="text"
+        />
+        <AtomicInput
+            v-model="lastName"
+            :hide-bottom-space="true"
+            :label="t('common.lastName')"
+            :rules="[() => isLastNameValid || t('forms.validation.minLength', { length: 2 })]"
+            type="text"
         />
         <PasswordField
             v-model="password"
@@ -44,8 +68,8 @@ fetchEmailFromToken()
         />
 
         <AtomicButton
-            :label="t('forms.createAccount.submit')"
-            :loading="isLoading"
+            :label="t('auth.createAccount.submit')"
+            :loading="buttonSubmitLoading"
             type="submit"
         />
     </QForm>

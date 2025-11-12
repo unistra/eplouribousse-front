@@ -27,7 +27,13 @@
             "authShibboleth": "Via la fédération éducation recherche",
             "authLocal": "Avec un compte local"
         },
-        "logout": "Déconnexion"
+        "logout": "Déconnexion",
+        "createAccount": {
+            "submit": "Créer mon compte",
+            "tokenRejected": "Le jeton est expiré ou invalide",
+            "accountCreated": "Votre compte a été créé avec succès, vous pouvez vous connecter",
+            "missingToken": "Le jeton est manquant"
+        }
     },
     "navigation": {
         "auth": {
@@ -407,7 +413,8 @@
     "forms": {
         "validation": {
             "fieldIsRequired": "Ce champ est requis",
-            "fieldLessThan255": "Ce champ doit être inférieur à 255 caractères"
+            "fieldLessThan255": "Ce champ doit être inférieur à 255 caractères",
+            "minLength": "Le champ doit contenir au moins {length} caractères"
         },
         "fieldIsRequired": "Ce champ est requis",
         "login": {
@@ -464,14 +471,6 @@
             "inviteSentTo": "L'invitation a bien été envoyée à",
             "emailAlreadyLinked": "Cette adresse e-mail est déjà liée à un compte",
             "emailNotSent": "l'invitation n'a pas pu être envoyée"
-        },
-        "createAccount": {
-            "title": "Création de votre compte",
-            "submit": "Créer mon compte",
-            "tokenRejected": "Le jeton est expiré ou invalide",
-            "accountCreated": "Votre compte a été créé avec succès, vous pouvez vous connecter",
-            "fetchEmailFailed": "Impossible de récupérer l'adresse e-mail",
-            "missingToken": "Le jeton est manquant"
         }
     },
     "confirmDialogDefault": {

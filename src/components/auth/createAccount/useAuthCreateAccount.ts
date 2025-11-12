@@ -13,17 +13,15 @@ export const useAuthCreateAccount = () => {
     const { passwordMatchingValidator, passwordStrengthValidator } = usePasswordValidators()
     const { notify } = useComposableQuasar()
 
-    const email = ref('')
-    const password = ref('')
-    const confirmPassword = ref('')
-    const isPasswordStrongEnough = computed(() => passwordStrengthValidator(password.value))
-    const arePasswordsMatching = computed(() => passwordMatchingValidator(password.value, confirmPassword.value))
-
-    const isLoading = ref(false)
+    const fetchEmailLoading = ref<boolean>(false)
+    const email = ref<string>('')
+    const firstName = ref<string>('')
+    const lastName = ref<string>('')
 
     const fetchEmailFromToken = async () => {
         // Token presence is validated on router navigation guard
         try {
+            fetchEmailLoading.value = true
             const response = await axiosI.post<{ email: string }>('/users/invite-handshake/', {
                 token: token,
             })
@@ -34,30 +32,27 @@ export const useAuthCreateAccount = () => {
                 message: t('auth.createAccount.tokenRejected'),
             })
             await router.push({ name: 'home' })
+        } finally {
+            fetchEmailLoading.value = false
         }
     }
 
+    const buttonSubmitLoading = ref(false)
+    const password = ref('')
+    const confirmPassword = ref('')
+    const isPasswordStrongEnough = computed(() => passwordStrengthValidator(password.value))
+    const arePasswordsMatching = computed(() => passwordMatchingValidator(password.value, confirmPassword.value))
+
+    const isFirstNameValid = computed(() => firstName.value.trim().length >= 2)
+    const isLastNameValid = computed(() => lastName.value.trim().length >= 2)
+
     const createAccount = async () => {
-        if (!isPasswordStrongEnough.value) {
-            notify({
-                type: 'negative',
-                message: t('forms.password.validation.passwordRequirements'),
-            })
-            return
-        }
-
-        if (!arePasswordsMatching.value) {
-            notify({
-                type: 'negative',
-                message: t('forms.password.validation.passwordsDoNotMatch'),
-            })
-            return
-        }
-
-        isLoading.value = true
         try {
+            buttonSubmitLoading.value = true
             await axiosI.post('/users/create-account/', {
                 token: token,
+                firstName: firstName.value,
+                lastName: lastName.value,
                 password: password.value,
                 confirmPassword: confirmPassword.value,
             })
@@ -66,26 +61,30 @@ export const useAuthCreateAccount = () => {
                 type: 'positive',
                 message: t('auth.createAccount.accountCreated'),
             })
-
-            isLoading.value = false
-
             await router.push({ name: 'login' })
         } catch {
             notify({
                 type: 'negative',
                 message: t('errors.unknownRetry'),
             })
+        } finally {
+            buttonSubmitLoading.value = false
         }
     }
 
     return {
+        fetchEmailLoading,
         email,
+        firstName,
+        lastName,
         password,
         confirmPassword,
         isPasswordStrongEnough,
         arePasswordsMatching,
+        isFirstNameValid,
+        isLastNameValid,
         fetchEmailFromToken,
         createAccount,
-        isLoading,
+        buttonSubmitLoading,
     }
 }
