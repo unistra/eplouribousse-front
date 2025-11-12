@@ -86,7 +86,7 @@ export const useProjectResources = () => {
 
     const librariesComparedOptions = computed(() => {
         return [
-            { name: t('common.none'), id: '' },
+            { name: t('common.all'), id: '' },
             ...projectStore.libraries.filter((lib) => lib.id !== resourceStore.libraryIdSelected),
         ]
     })
