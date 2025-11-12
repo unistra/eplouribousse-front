@@ -1,17 +1,14 @@
 import { computed, ref } from 'vue'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { useRoute, useRouter } from 'vue-router'
-import { useGlobalStore } from '@/stores/globalStore.ts'
 import { useI18n } from 'vue-i18n'
 import { usePasswordValidators } from '@/composables/usePasswordValidators.ts'
-import { AxiosError } from 'axios'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 
 export const useAuthCreateAccount = () => {
     const route = useRoute()
     const router = useRouter()
     const token = route.query.t
-    const { addNotify } = useGlobalStore()
     const { t } = useI18n()
     const { passwordMatchingValidator, passwordStrengthValidator } = usePasswordValidators()
     const { notify } = useComposableQuasar()
@@ -25,34 +22,16 @@ export const useAuthCreateAccount = () => {
     const isLoading = ref(false)
 
     const fetchEmailFromToken = async () => {
-        if (!token) {
-            addNotify({
-                type: 'negative',
-                message: t('forms.createAccount.missingToken'),
-            })
-            await router.push({ name: 'home' })
-            return
-        }
+        // Token presence is validated on router navigation guard
         try {
             const response = await axiosI.post<{ email: string }>('/users/invite-handshake/', {
                 token: token,
             })
-            if (response.status === 200 && response.data.email) {
-                email.value = response.data.email
-            } else {
-                addNotify({
-                    type: 'negative',
-                    message: t('forms.createAccount.fetchEmailFailed'),
-                })
-                await router.push({ name: 'home' })
-            }
-        } catch (e) {
-            addNotify({
+            email.value = response.data.email
+        } catch {
+            notify({
                 type: 'negative',
-                message:
-                    e instanceof AxiosError && e.response?.status === 403
-                        ? t('forms.createAccount.tokenRejected')
-                        : t('errors.unknownRetry'),
+                message: t('auth.createAccount.tokenRejected'),
             })
             await router.push({ name: 'home' })
         }
@@ -83,9 +62,9 @@ export const useAuthCreateAccount = () => {
                 confirmPassword: confirmPassword.value,
             })
 
-            addNotify({
+            notify({
                 type: 'positive',
-                message: t('forms.createAccount.accountCreated'),
+                message: t('auth.createAccount.accountCreated'),
             })
 
             isLoading.value = false

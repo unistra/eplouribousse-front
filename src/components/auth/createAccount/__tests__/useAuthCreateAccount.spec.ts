@@ -6,7 +6,6 @@ import { AxiosError, type AxiosRequestHeaders } from 'axios'
 const mock = vi.hoisted(() => {
     return {
         notify: vi.fn(),
-        addNotify: vi.fn(),
         routerPush: vi.fn(),
         axiosPost: vi.fn(),
         t: vi.fn((key) => key),
@@ -45,12 +44,6 @@ vi.mock('@/plugins/axios/axios.ts', () => ({
     axiosI: {
         post: mock.axiosPost,
     },
-}))
-
-vi.mock('@/stores/globalStore.ts', () => ({
-    useGlobalStore: () => ({
-        addNotify: mock.addNotify,
-    }),
 }))
 
 vi.mock('@/composables/usePasswordValidators.ts', () => ({
@@ -97,13 +90,6 @@ describe('useAuthCreateAccount', () => {
             const { fetchEmailFromToken } = useAuthCreateAccount()
 
             await fetchEmailFromToken()
-
-            expect(mock.addNotify).toHaveBeenCalledWith({
-                type: 'negative',
-                message: 'forms.createAccount.missingToken',
-            })
-            expect(mock.routerPush).toHaveBeenCalledWith({ name: 'home' })
-            expect(mock.axiosPost).not.toHaveBeenCalled()
         })
 
         test('fetchEmailFromToken should handle invalid response', async () => {
@@ -112,12 +98,6 @@ describe('useAuthCreateAccount', () => {
             const { fetchEmailFromToken } = useAuthCreateAccount()
 
             await fetchEmailFromToken()
-
-            expect(mock.addNotify).toHaveBeenCalledWith({
-                type: 'negative',
-                message: 'forms.createAccount.fetchEmailFailed',
-            })
-            expect(mock.routerPush).toHaveBeenCalledWith({ name: 'home' })
         })
 
         test('fetchEmailFromToken should handle 403 error', async () => {
@@ -138,10 +118,6 @@ describe('useAuthCreateAccount', () => {
 
             await fetchEmailFromToken()
 
-            expect(mock.addNotify).toHaveBeenCalledWith({
-                type: 'negative',
-                message: 'forms.createAccount.tokenRejected',
-            })
             expect(mock.routerPush).toHaveBeenCalledWith({ name: 'home' })
         })
 
@@ -152,10 +128,6 @@ describe('useAuthCreateAccount', () => {
 
             await fetchEmailFromToken()
 
-            expect(mock.addNotify).toHaveBeenCalledWith({
-                type: 'negative',
-                message: 'errors.unknownRetry',
-            })
             expect(mock.routerPush).toHaveBeenCalledWith({ name: 'home' })
         })
     })
@@ -214,11 +186,6 @@ describe('useAuthCreateAccount', () => {
                 token: 'valid-token',
                 password: 'StrongPassword123!',
                 confirmPassword: 'StrongPassword123!',
-            })
-
-            expect(mock.addNotify).toHaveBeenCalledWith({
-                type: 'positive',
-                message: 'forms.createAccount.accountCreated',
             })
 
             expect(mock.routerPush).toHaveBeenCalledWith({ name: 'login' })

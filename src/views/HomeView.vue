@@ -1,13 +1,9 @@
 <script lang="ts" setup>
-import { onMounted } from 'vue'
 import { useGlobalStore } from '@/stores/globalStore.ts'
 import { useI18n } from 'vue-i18n'
 
 const globalStore = useGlobalStore()
 const { t } = useI18n()
-onMounted(async () => {
-    globalStore.showNotify()
-})
 </script>
 
 <template>

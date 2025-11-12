@@ -1,26 +1,10 @@
-import { type Ref, ref } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { QNotifyCreateOptions } from 'quasar'
-import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import type { Tenant } from '#/global'
 import { Notify } from 'quasar'
 
 export const useGlobalStore = defineStore('globalStore', () => {
-    const notifyToShow: Ref<(QNotifyCreateOptions | string)[]> = ref([])
-
-    const addNotify = (notify: QNotifyCreateOptions | string) => notifyToShow.value.push(notify)
-
-    const showNotify = () => {
-        if (!notifyToShow.value.length) return
-
-        const { notify } = useComposableQuasar()
-        notifyToShow.value.forEach((item) => {
-            notify(item)
-        })
-        notifyToShow.value = []
-    }
-
     const tenant = ref<Tenant | undefined>(undefined)
     const fetchTenant = async () => {
         try {
@@ -35,9 +19,6 @@ export const useGlobalStore = defineStore('globalStore', () => {
     }
 
     return {
-        notifyToShow,
-        addNotify,
-        showNotify,
         tenant,
         fetchTenant,
     }

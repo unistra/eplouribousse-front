@@ -13,7 +13,6 @@ const mock = vi.hoisted(() => {
             passwordMatchingValidator: vi.fn(),
             passwordStrengthValidator: vi.fn(),
         },
-        addNotify: vi.fn(),
     }
 })
 
@@ -45,12 +44,6 @@ vi.mock('@/composables/usePasswordValidators.ts', () => ({
     usePasswordValidators: () => ({
         passwordMatchingValidator: mock.passwordValidators.passwordMatchingValidator,
         passwordStrengthValidator: mock.passwordValidators.passwordStrengthValidator,
-    }),
-}))
-
-vi.mock('@/stores/globalStore.ts', () => ({
-    useGlobalStore: () => ({
-        addNotify: mock.addNotify,
     }),
 }))
 
@@ -131,12 +124,6 @@ describe('useAuthResetPassword', () => {
             confirmPassword: 'NewPassword123!',
         })
 
-        expect(mock.addNotify).toHaveBeenCalledWith({
-            type: 'positive',
-            message: 'forms.password.reset.success',
-        })
-
-        expect(mock.routerPush).toHaveBeenCalledWith({ name: 'home' })
         expect(isLoading.value).toBe(false)
     })
 
