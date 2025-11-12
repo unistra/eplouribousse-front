@@ -1,29 +1,38 @@
 import { Roles } from '&/project'
 import { axiosI } from '@/plugins/axios/axios'
-import { Notify } from 'quasar'
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
+import type { Pagination } from '#/pagination.ts'
+import type { ProjectUser } from '#/project.ts'
 
 export function useAdmin() {
     const { t } = useI18n()
+    const { notify } = useComposableQuasar()
 
     const isAddUserLoading = ref<boolean>(true)
-    const roles: {
-        title: string
-        role: Roles
-    }[] = [
+
+    const roles: { title: string; role: Roles.ProjectCreator | Roles.TenantSuperUser }[] = [
         { title: t('roles.superUser'), role: Roles.TenantSuperUser },
         { title: t('roles.projectCreator'), role: Roles.ProjectCreator },
     ]
 
-    async function onAddRole(userId: string, role: Roles) {
-        isAddUserLoading.value = true
+    const users = reactive<Record<Roles.ProjectCreator | Roles.TenantSuperUser, ProjectUser[]>>({
+        project_creator: [],
+        tenant_super_user: [],
+    })
+    const getUsersWithRole = async (role: Roles.ProjectCreator | Roles.TenantSuperUser) => {
         try {
-            role === Roles.ProjectCreator
-                ? await axiosI.post(`users/${userId}/project-creator/`, { userId })
-                : await axiosI.post(`users/${userId}/tenant-superuser/`, { userId })
+            isAddUserLoading.value = true
+            const response = await axiosI.get<Pagination<ProjectUser>>('/users/', {
+                params: {
+                    role,
+                    page_size: 1000,
+                },
+            })
+            users[role] = response.data.results
         } catch {
-            Notify.create({
+            notify({
                 type: 'negative',
                 message: t('errors.unknown'),
             })
@@ -32,14 +41,28 @@ export function useAdmin() {
         }
     }
 
-    async function onRemoveRole(userId: string, role: Roles) {
+    const onAddRole = async (user: ProjectUser, role: Roles.ProjectCreator | Roles.TenantSuperUser) => {
         isAddUserLoading.value = true
         try {
-            role === Roles.ProjectCreator
-                ? await axiosI.delete(`users/${userId}/project-creator/`)
-                : await axiosI.delete(`users/${userId}/tenant-superuser/`)
+            await axiosI.post(`users/${user.id}/${role === Roles.ProjectCreator ? 'project-creator' : 'superuser'}/`)
+            users[role].unshift(user)
         } catch {
-            Notify.create({
+            notify({
+                type: 'negative',
+                message: t('errors.unknown'),
+            })
+        } finally {
+            isAddUserLoading.value = false
+        }
+    }
+
+    const onRemoveRole = async (user: ProjectUser, role: Roles.ProjectCreator | Roles.TenantSuperUser) => {
+        isAddUserLoading.value = true
+        try {
+            await axiosI.delete(`users/${user.id}/${role == Roles.ProjectCreator ? 'project-creator' : 'superuser'}/`)
+            users[role] = users[role].filter((usr) => usr.id !== user.id)
+        } catch {
+            notify({
                 type: 'negative',
                 message: t('errors.unknown'),
             })
@@ -53,5 +76,7 @@ export function useAdmin() {
         roles,
         onAddRole,
         onRemoveRole,
+        getUsersWithRole,
+        users,
     }
 }

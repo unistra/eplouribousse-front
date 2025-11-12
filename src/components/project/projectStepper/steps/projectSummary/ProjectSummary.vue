@@ -4,10 +4,11 @@ import { useI18n } from 'vue-i18n'
 import ProjectLibraryCard from '@/components/project/projectStepper/steps/projectLibraries/ProjectLibraryCard.vue'
 import { useProjectRoles } from '@/components/project/projectStepper/steps/projectRoles/useProjectRoles.ts'
 import { checkValidityProjectStepper } from '@/components/project/projectStepper/useProjectStepper.ts'
+import { useUtils } from '@/composables/useUtils.ts'
 
 const projectStore = useProjectStore()
 const { roles } = useProjectRoles()
-const { t, locale } = useI18n()
+const { t } = useI18n()
 
 const { checkValidityForRolesStep, checkValidityForLibraryStep } = checkValidityProjectStepper()
 </script>
@@ -21,11 +22,7 @@ const { checkValidityForRolesStep, checkValidityForLibraryStep } = checkValidity
             size="lg"
         >
             {{ t('newProject.steps.informations.startInFuture') }}
-            {{
-                new Intl.DateTimeFormat(locale, { dateStyle: 'long', timeStyle: 'short' }).format(
-                    new Date(projectStore.activeAfter),
-                )
-            }}
+            {{ useUtils().useIntlDateTimeFormat(projectStore.activeAfter) }}
         </QChip>
 
         <hgroup>

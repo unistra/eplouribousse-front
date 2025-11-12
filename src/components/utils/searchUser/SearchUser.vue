@@ -7,18 +7,21 @@ import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import SearchUserItem from '@/components/utils/searchUser/SearchUserItem.vue'
 import type { Roles } from '&/project'
+import { useUserStore } from '@/stores/userStore.ts'
 
 const props = defineProps<{
     role?: Roles
     usersSelected: ProjectUser[]
     invitationsSelected: ProjectInvitation[]
     isAddUserLoading: boolean
+    preventDeleteCurrentUser?: boolean
+    disableInvitations?: boolean
 }>()
 const { t } = useI18n()
 const emit = defineEmits<SearchUserEmitActions>()
 const { username, matchingUsers, onLoad, sendAction, clear, isUserListLoading, userAlreadySelected } =
     useSearchUser(emit)
-
+const userStore = useUserStore()
 watch(
     () => props.usersSelected,
     () => {
@@ -54,12 +57,17 @@ onMounted(() => {
             style="max-height: 10rem"
         >
             <QItem v-if="matchingUsers?.size() === 0 && username.length > 0 && isUserListLoading === false">
-                <QItemSection>{{ t('utils.searchUser.inviteText') }}: {{ username }}</QItemSection>
-                <AtomicButton
-                    icon="mdi-plus"
-                    size="sm"
-                    @click="sendAction('addInvitation')"
-                />
+                <template v-if="disableInvitations">
+                    <QItemSection>{{ t('utils.searchUser.noUserFound') }}: {{ username }}</QItemSection>
+                </template>
+                <template v-else>
+                    <QItemSection>{{ t('utils.searchUser.inviteText') }}: {{ username }}</QItemSection>
+                    <AtomicButton
+                        icon="mdi-plus"
+                        size="sm"
+                        @click="sendAction('addInvitation')"
+                    />
+                </template>
             </QItem>
             <QInfiniteScroll
                 data-testid="scroll"
@@ -72,7 +80,7 @@ onMounted(() => {
                     :key="user.id"
                     class="container row"
                     clickable
-                    @click="sendAction('addUser', { userId: user.id })"
+                    @click="sendAction('addUser', { user: user })"
                 >
                     <QItemSection>
                         {{ user.firstName || 'non renseigné' }}
@@ -108,7 +116,8 @@ onMounted(() => {
             <SearchUserItem
                 v-for="user in usersSelected"
                 :key="user.id"
-                @delete="sendAction('removeUser', { userId: user.id })"
+                :allow-deleting="!(preventDeleteCurrentUser && user.id === userStore.user?.id)"
+                @delete="sendAction('removeUser', { user: user })"
             >
                 <p>
                     {{ user.firstName || 'non renseigné' }} {{ user.lastName || `non renseigné` }} -

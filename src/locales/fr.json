@@ -59,8 +59,7 @@
         "projectAdministration": "Administration du projet",
         "newProjectRequirements": "Création d'un nouveau projet",
         "newProject": "Nouveau projet",
-        "admin": "Administration",
-        "generalAdministration": "Administration générale",
+        "tenantAdmin": "Administration du tenant",
         "hasNoPerm": "Vous avez été redirigé car vous n'avez pas accès à cette page",
         "collapse": "Masquer",
         "expand": "Afficher",
@@ -363,6 +362,11 @@
         },
         "storageLocation": "Lieu de conservation"
     },
+    "view": {
+        "tenantAdmin": {
+            "section2": "Gestion des rôles spécifiques"
+        }
+    },
     "libraries": {
         "title": "Bibliothèques",
         "name": "Nom de la bibliothèque",
@@ -541,7 +545,8 @@
     "utils": {
         "searchUser": {
             "inputPlaceholder": "Rechercher un utilisateur, ou entrer son adresse e-mail pour l'inviter",
-            "inviteText": "Inviter cet utilisateur avec cet email"
+            "inviteText": "Inviter cet utilisateur avec cet email",
+            "noUserFound": "Aucun utilisateur trouvé"
         },
         "modificationSuccess": "Les modifications ont bien été enregistrées",
         "noEmailAddress": "Aucune @.lower:common.email",

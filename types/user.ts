@@ -13,6 +13,7 @@ export interface User {
     username: string
     canAuthenticateLocally: boolean
     isProjectCreator: boolean
+    isSuperuser: boolean
     projects: ProjectSummarized[]
     settings: UserSettings
 }
@@ -23,4 +24,5 @@ export interface UserI {
     username: string
     firstName: string
     lastName: string
+    displayName: string
 }

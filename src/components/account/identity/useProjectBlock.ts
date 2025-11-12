@@ -8,10 +8,11 @@ import { ProjectStatus, Roles } from '&/project.ts'
 import type { LibraryI } from '#/library'
 import type { QTableProps } from 'quasar'
 import type { Pagination } from '#/pagination.ts'
+import { useUtils } from '@/composables/useUtils.ts'
 
 export const useProjectBlock = () => {
     const userStore = useUserStore()
-    const { t, locale } = useI18n()
+    const { t } = useI18n()
     const { notify } = useComposableQuasar()
 
     const dialog = reactive({
@@ -104,7 +105,7 @@ export const useProjectBlock = () => {
             },
             {
                 name: 'createdAt',
-                field: (row: ProjectI) => Intl.DateTimeFormat(locale.value).format(new Date(row.createdAt)),
+                field: (row: ProjectI) => useUtils().useIntlDateTimeFormat(row.createdAt),
                 label: t('common.createdAt'),
                 sortable: true,
                 align: 'left',

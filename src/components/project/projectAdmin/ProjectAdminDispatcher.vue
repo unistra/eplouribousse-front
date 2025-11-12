@@ -10,9 +10,10 @@ import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import { Roles } from '&/project'
 import { useI18n } from 'vue-i18n'
 import ProjectAdminAlerts from '@/components/project/projectAdmin/projectAdminAlerts/ProjectAdminAlerts.vue'
+import { useUtils } from '@/composables/useUtils.ts'
 
 const store = useProjectStore()
-const { t, locale } = useI18n()
+const { t } = useI18n()
 const { addingExclusionReason, newExclusionReason, onAddExclusionReason, onCancelAddExclusionReason } =
     useProjectAdmin()
 defineProps<{
@@ -39,11 +40,7 @@ defineProps<{
             <QCardSection>
                 <p>
                     {{ t('common.createdAt') }}
-                    {{
-                        new Intl.DateTimeFormat(locale, { year: 'numeric', month: '2-digit', day: '2-digit' }).format(
-                            new Date(store.createdAt),
-                        )
-                    }}
+                    {{ useUtils().useIntlDateTimeFormat(store.createdAt) }}
                     {{ t('common.by') }}
                     {{ store.createdBy?.displayName || t('common.unknown') }}
                 </p>

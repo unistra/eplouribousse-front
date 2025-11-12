@@ -2,21 +2,13 @@ import type { NavigationGuardWithThis, RouteRecordRaw } from 'vue-router'
 import { useUserStore } from '@/stores/userStore.ts'
 import i18n from '@/plugins/i18n'
 import { Notify } from 'quasar'
-import { getJWT, isExpired } from '@/utils/jwt.ts'
-import { refreshAccessToken } from '@/plugins/axios/axiosUtils.ts'
+import { useAuth } from '@/composables/useAuth.ts'
+import type { User } from '#/user.ts'
 
 const { t } = i18n.global
 
-const checkManuallyIsUserAuth = async (): Promise<boolean> => {
-    const { access, refresh } = getJWT()
-    if (access && !isExpired(access)) return true
-    if (!refresh || isExpired(refresh)) return false
-
-    return !!(await refreshAccessToken())
-}
-
-const userNeedToBeAuth: NavigationGuardWithThis<void> = async (to) => {
-    if (!(await checkManuallyIsUserAuth())) {
+const userNeedToBeAuth: NavigationGuardWithThis<void> = (to) => {
+    if (!useAuth().checkManuallyIsUserAuth()) {
         Notify.create({
             message: t('navigation.error.needAuth'),
             color: 'negative',
@@ -25,8 +17,8 @@ const userNeedToBeAuth: NavigationGuardWithThis<void> = async (to) => {
     }
 }
 
-const userNeedToNotBeAuth: NavigationGuardWithThis<void> = async (_, from) => {
-    if (await checkManuallyIsUserAuth()) {
+const userNeedToNotBeAuth: NavigationGuardWithThis<void> = (_, from) => {
+    if (useAuth().checkManuallyIsUserAuth()) {
         Notify.create({
             message: t('navigation.error.needNotAuth'),
             color: 'negative',
@@ -35,24 +27,36 @@ const userNeedToNotBeAuth: NavigationGuardWithThis<void> = async (_, from) => {
     }
 }
 
-const userAccountNeedToBeLocal: NavigationGuardWithThis<void> = () => {
-    const userStore = useUserStore()
-    if (!userStore.user) {
-        Notify.create({
-            message: t('navigation.error.notAccessibleThisWay'),
-            color: 'negative',
-        })
-        return { name: 'home' }
-    }
+const requireUser = (check: (u: User) => boolean, translatedMsg: string): NavigationGuardWithThis<void> => {
+    return () => {
+        const userStore = useUserStore()
+        if (!userStore.user) {
+            Notify.create({
+                message: t('navigation.error.notAccessibleThisWay'),
+                color: 'negative',
+            })
+            return { name: 'home' }
+        }
 
-    if (!useUserStore().user?.canAuthenticateLocally) {
-        Notify.create({
-            message: t('navigation.error.needLocal'),
-            color: 'negative',
-        })
-        return { name: 'home' }
+        if (!check(userStore.user)) {
+            Notify.create({
+                message: translatedMsg,
+                color: 'negative',
+            })
+            return { name: 'home' }
+        }
     }
 }
+
+const userAccountNeedToBeLocal: NavigationGuardWithThis<void> = requireUser(
+    (u: User) => u.canAuthenticateLocally,
+    t('navigation.error.needLocal'),
+)
+
+const userNeedToBeSuperUser: NavigationGuardWithThis<void> = requireUser(
+    (u: User) => u.isSuperuser,
+    t('navigation.error.unauthorize'),
+)
 
 const routes: RouteRecordRaw[] = [
     {
@@ -214,15 +218,12 @@ const routes: RouteRecordRaw[] = [
         },
     },
     {
-        path: '/admin',
-        name: 'admin',
-        component: () => import('@/views/AdminView.vue'),
+        path: '/tenant-admin',
+        name: 'tenantAdmin',
+        component: () => import('@/views/TenantAdminView.vue'),
+        beforeEnter: [userNeedToBeAuth, userNeedToBeSuperUser],
         meta: {
-            title: t('navigation.admin'),
-        },
-        beforeEnter: async () => {
-            // const userStore = useUserStore()
-            // TODO: tester que l'utilisateur est le superuser du tenant, le rediriger vers une 403 sinon
+            title: t('navigation.tenantAdmin'),
         },
     },
     {

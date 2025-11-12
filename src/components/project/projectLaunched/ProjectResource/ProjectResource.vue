@@ -74,13 +74,13 @@ const onBeforeShow = async () => {
                     </template>
                     <h2 v-else>{{ resourceStore.title }}</h2>
 
-                    <QChip>
+                    <QChip class="chip-label-value">
                         {{ t('project.resources.code') }}: <span>{{ resourceStore.code || '-' }}</span>
                     </QChip>
-                    <QChip>
+                    <QChip class="chip-label-value">
                         ISSN: <span>{{ resourceStore.issn || '-' }}</span>
                     </QChip>
-                    <QChip>
+                    <QChip class="chip-label-value">
                         {{ t('project.resources.publicationHistory') }}:
                         <span>{{ resourceStore.publicationHistory || '-' }}</span>
                     </QChip>
@@ -115,9 +115,4 @@ const onBeforeShow = async () => {
         align-items: center
         justify-content: center
         flex-grow: 1
-
-.q-chip
-    span
-        margin-left: 0.2rem
-        font-weight: bold
 </style>

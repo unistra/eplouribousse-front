@@ -3,13 +3,14 @@ import ProjectSegmentTable from '@/components/project/projectSegmentTable/Projec
 import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useI18n } from 'vue-i18n'
-import type { CollectionsInResource } from '#/project.ts'
+import type { CollectionsInResource, Resource } from '#/project.ts'
 import { useProjectEdition } from '@/components/project/projectLaunched/projectEdition/useProjectEdition.ts'
 import { onMounted } from 'vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
+import { useUtils } from '@/composables/useUtils.ts'
 
 const resourceStore = useResourceStore()
-const { t, locale } = useI18n()
+const { t } = useI18n()
 
 const { selectCollectionToShowEdition, motherCollectionString, pdfPreviewURL, storageLocation } = useProjectEdition()
 
@@ -28,30 +29,14 @@ onMounted(() => {
                 <QChip class="chip-with-bold">
                     {{ t('project.storageLocation') }}: <span>{{ storageLocation }}</span>
                 </QChip>
-                <QChip class="chip-with-bold"
-                    >{{ t('project.resources.status.controlBound') }}:
-                    <span>{{
-                        new Intl.DateTimeFormat(locale, {
-                            year: 'numeric',
-                            month: 'short',
-                            day: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                        }).format(new Date(resourceStore.validations.controlBound)) || '-'
-                    }}</span></QChip
+                <QChip
+                    v-for="ctrl in ['controlBound', 'controlUnbound'] as Array<keyof Resource['validations']>"
+                    :key="ctrl"
+                    class="chip-with-bold"
                 >
-                <QChip class="chip-with-bold"
-                    >{{ t('project.resources.status.controlUnbound') }}:
-                    <span>{{
-                        new Intl.DateTimeFormat(locale, {
-                            year: 'numeric',
-                            month: 'short',
-                            day: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                        }).format(new Date(resourceStore.validations.controlUnbound)) || '-'
-                    }}</span></QChip
-                >
+                    {{ t(`project.resources.status.${ctrl}`) }}:
+                    <span>{{ useUtils().useIntlDateTimeFormat(resourceStore.validations[ctrl]) || '-' }}</span>
+                </QChip>
             </div>
             <QList class="collection-lists">
                 <QExpansionItem

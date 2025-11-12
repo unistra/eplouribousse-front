@@ -2,6 +2,7 @@ import { computed, type ComputedRef, ref } from 'vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useUserStore } from '@/stores/userStore.ts'
 import { Roles } from '&/project.ts'
+import { useUtils } from '@/composables/useUtils.ts'
 
 export const useProjectReview = () => {
     const projectStore = useProjectStore()
@@ -19,9 +20,7 @@ export const useProjectReview = () => {
 
     const nowString = new Date().toLocaleString('sv-SE', { timeZone: 'Europe/Paris' }).replace(' ', 'T').slice(0, -3) // 'sv-SE' match the format for the input + the datetime of Paris
     const date = ref<string>(nowString)
-    const dateString = computed(() =>
-        new Intl.DateTimeFormat('fr-FR', { dateStyle: 'long', timeStyle: 'short' }).format(new Date(date.value)),
-    )
+    const dateString = computed(() => useUtils().useIntlDateTimeFormat(date.value))
 
     const onConfirm = async () => {
         await projectStore.startTheProject(date.value)

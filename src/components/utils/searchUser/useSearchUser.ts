@@ -1,4 +1,3 @@
-import { type UserI } from '#/user'
 import { type Comparator, UniqueSet } from '#/utils'
 import { axiosI } from '@/plugins/axios/axios'
 import { ref, watch } from 'vue'
@@ -8,17 +7,17 @@ import type { Pagination } from '#/pagination.ts'
 export type SearchUserEmitActions = {
     (e: 'addInvitation', email: string): void
     (e: 'removeInvitation', invitation: ProjectInvitation): void
-    (e: 'addUser', userId: string): void
-    (e: 'removeUser', userId: string): void
+    (e: 'addUser', user: ProjectUser): void
+    (e: 'removeUser', user: ProjectUser): void
 }
 
 export function useSearchUser(emit: SearchUserEmitActions) {
     const username = ref<string>('')
-    const users = ref<UserI[]>([])
-    const matchingUsers = ref<UniqueSet<UserI>>()
+    const users = ref<ProjectUser[]>([])
+    const matchingUsers = ref<UniqueSet<ProjectUser>>()
     const userAlreadySelected = ref<ProjectUser[]>([])
 
-    const userComparator: Comparator<UserI> = (a: UserI, b: UserI) => a.id === b.id
+    const userComparator: Comparator<ProjectUser> = (a: ProjectUser, b: ProjectUser) => a.id === b.id
     const isUserListLoading = ref<boolean>(false)
     const nextPage = ref<number | null>(1)
 
@@ -36,7 +35,7 @@ export function useSearchUser(emit: SearchUserEmitActions) {
         isUserListLoading.value = true
 
         try {
-            const response = await axiosI.get<Pagination<UserI>>(`/users/`, {
+            const response = await axiosI.get<Pagination<ProjectUser>>(`/users/`, {
                 params: {
                     search: username.value,
                     exclude: userAlreadySelected.value.map((user) => user.id),
@@ -62,7 +61,7 @@ export function useSearchUser(emit: SearchUserEmitActions) {
     async function appendUsers() {
         isUserListLoading.value = true
         try {
-            const response = await axiosI.get<Pagination<UserI>>(
+            const response = await axiosI.get<Pagination<ProjectUser>>(
                 `/users/?exclude=${userAlreadySelected.value.map((user) => user.id).join('&exclude=')}`,
                 {
                     params: {
@@ -99,12 +98,12 @@ export function useSearchUser(emit: SearchUserEmitActions) {
 
     const sendAction = (
         action: 'addInvitation' | 'removeInvitation' | 'addUser' | 'removeUser',
-        payload?: { invitation?: ProjectInvitation; userId?: string },
+        payload?: { invitation?: ProjectInvitation; user?: ProjectUser },
     ) => {
         if (action === 'addInvitation') emit('addInvitation', username.value)
         else if (payload?.invitation && action === 'removeInvitation') emit('removeInvitation', payload.invitation)
-        else if (payload?.userId && action === 'addUser') emit('addUser', payload.userId)
-        else if (payload?.userId && action === 'removeUser') emit('removeUser', payload.userId)
+        else if (payload?.user && action === 'addUser') emit('addUser', payload.user)
+        else if (payload?.user && action === 'removeUser') emit('removeUser', payload.user)
         username.value = ''
     }
 

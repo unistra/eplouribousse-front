@@ -49,9 +49,9 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading,
                         .map((el) => el.user)
                 "
                 @add-invitation="onAddInvitation"
-                @add-user="onAddRole"
+                @add-user="(user) => onAddRole(user.id)"
                 @remove-invitation="async ({ email, role }) => await store.removeInvitation(email, role, library.id)"
-                @remove-user="async (userId) => await store.removeRole(userId, Roles.Instructor, library.id)"
+                @remove-user="async (user) => await store.removeRole(user.id, Roles.Instructor, library.id)"
             />
             <QList
                 v-else
