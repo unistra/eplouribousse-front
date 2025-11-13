@@ -226,7 +226,7 @@
             "collectionToBeInstructed": "Collection qui doit être instruite",
             "infoAboutCollection": "Informations de la @.lower:project.resources.collectionToBeInstructed",
             "status": {
-                "title": "Status",
+                "title": "Statut",
                 "toPosition": "Positionnements",
                 "toArbitrate": "Arbitrage",
                 "toInstructBound": "Instruction reliés",
@@ -289,7 +289,7 @@
         },
         "positioning": {
             "filter": {
-                "i": "Filtrer par ressource: ",
+                "i": "Filtrer par statut: ",
                 "positioningOnly": "Tous les types de positionnement",
                 "instructionNotStarted": "Instruction non démarrée",
                 "arbitration": "@:project.positioning.arbitration.i"
@@ -529,7 +529,7 @@
         "project": "Projet | Projets",
         "library": "Bibliothèque | Bibliothèques",
         "createdAt": "Créé le",
-        "status": "Status",
+        "status": "Statut",
         "type": "Type",
         "description": "description",
         "fixed": "Corrigé",
