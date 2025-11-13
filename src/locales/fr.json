@@ -4,7 +4,8 @@
         "title": "Bienvenue sur Eplouribousse",
         "description": "L'application web pour le dédoublonnage des périodiques",
         "unistraAlt": "Site de l'@:utils.universityOfStrasbourg",
-        "abesAlt": "Site de l'@:utils.abes"
+        "abesAlt": "Site de l'@:utils.abes",
+        "collexAlt": "Site de @:utils.collex"
     },
     "layout": {
         "header": {
@@ -551,6 +552,7 @@
         "noEmailAddress": "Aucune @.lower:common.email",
         "universityOfStrasbourg": "Université de Strasbourg",
         "abes": "Agence bibliographique de l'enseignement supérieur",
+        "collex": "Collex",
         "noLibrary": "Aucune bibliothèque",
         "downloadPDF": "@:common.download le PDF",
         "noRole": "Aucun rôle sur le tenant"

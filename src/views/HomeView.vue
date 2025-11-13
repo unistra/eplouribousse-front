@@ -18,27 +18,40 @@ const { t } = useI18n()
             </h1>
             <p>{{ t('home.description') }}</p>
         </hgroup>
-        <div class="img">
+        <div class="imgs">
+            <div>
+                <a
+                    href="https://abes.fr"
+                    rel="noopener"
+                    target="_blank"
+                >
+                    <QImg
+                        :alt="t('home.abesAlt')"
+                        fit="contain"
+                        src="/img/logo-abes.svg"
+                    />
+                </a>
+                <a
+                    href="https://www.unistra.fr"
+                    rel="noopener"
+                    target="_blank"
+                >
+                    <QImg
+                        :alt="t('home.unistraAlt')"
+                        fit="contain"
+                        src="/img/logo-unistra.svg"
+                    />
+                </a>
+            </div>
             <a
-                href="https://abes.fr"
+                href="https://www.collexpersee.eu/"
                 rel="noopener"
                 target="_blank"
             >
                 <QImg
-                    :alt="t('home.abesAlt')"
+                    :alt="t('home.collexAlt')"
                     fit="contain"
-                    src="/img/logo-abes.svg"
-                />
-            </a>
-            <a
-                href="https://www.unistra.fr"
-                rel="noopener"
-                target="_blank"
-            >
-                <QImg
-                    :alt="t('home.unistraAlt')"
-                    fit="contain"
-                    src="/img/logo-unistra.svg"
+                    src="/img/logo-collex.png"
                 />
             </a>
         </div>
@@ -46,28 +59,42 @@ const { t } = useI18n()
 </template>
 
 <style scoped lang="sass">
-hgroup
+main
     display: flex
     flex-direction: column
-    gap: 1rem
-    align-items: center
 
-    h1
-        .tenant
-            font-weight: bold
-
-    p
-        font-size: var(--font-size-xl)
-
-.img
-    display: flex
-    justify-content: center
-    align-items: center
-    gap: 1rem
-
-    a
-        display: inline-flex
-        justify-content: center
+    hgroup
+        display: flex
+        flex-direction: column
+        gap: 1rem
         align-items: center
-        width: 24rem
+
+        h1
+            .tenant
+                font-weight: bold
+
+        p
+            font-size: var(--font-size-xl)
+
+    .imgs
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: center
+        gap: 2rem
+        flex-grow: 1
+
+        a
+            display: inline-flex
+            justify-content: center
+            align-items: center
+            width: 24rem
+
+        > :first-child
+            display: flex
+            align-items: center
+            gap: 2rem
+
+        > :last-child
+            width: 20rem
 </style>
