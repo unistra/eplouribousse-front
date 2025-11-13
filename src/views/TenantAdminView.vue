@@ -46,7 +46,7 @@ onMounted(async () => {
                 :key="index"
                 class="role"
             >
-                <h2>{{ role.title }}</h2>
+                <h3>{{ role.title }}</h3>
                 <SearchUser
                     disable-invitations
                     :invitations-selected="projectStore.invitations.filter((el) => el.role === role.role)"
