@@ -1,112 +1,90 @@
 import { computed, ref } from 'vue'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { useRoute, useRouter } from 'vue-router'
-import { useGlobalStore } from '@/stores/globalStore.ts'
 import { useI18n } from 'vue-i18n'
 import { usePasswordValidators } from '@/composables/usePasswordValidators.ts'
-import { AxiosError } from 'axios'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 
 export const useAuthCreateAccount = () => {
     const route = useRoute()
     const router = useRouter()
     const token = route.query.t
-    const { addNotify } = useGlobalStore()
     const { t } = useI18n()
     const { passwordMatchingValidator, passwordStrengthValidator } = usePasswordValidators()
     const { notify } = useComposableQuasar()
 
-    const email = ref('')
+    const fetchEmailLoading = ref<boolean>(false)
+    const email = ref<string>('')
+    const firstName = ref<string>('')
+    const lastName = ref<string>('')
+
+    const fetchEmailFromToken = async () => {
+        // Token presence is validated on router navigation guard
+        try {
+            fetchEmailLoading.value = true
+            const response = await axiosI.post<{ email: string }>('/users/invite-handshake/', {
+                token: token,
+            })
+            email.value = response.data.email
+        } catch {
+            notify({
+                type: 'negative',
+                message: t('auth.createAccount.tokenRejected'),
+            })
+            await router.push({ name: 'home' })
+        } finally {
+            fetchEmailLoading.value = false
+        }
+    }
+
+    const buttonSubmitLoading = ref(false)
     const password = ref('')
     const confirmPassword = ref('')
     const isPasswordStrongEnough = computed(() => passwordStrengthValidator(password.value))
     const arePasswordsMatching = computed(() => passwordMatchingValidator(password.value, confirmPassword.value))
 
-    const isLoading = ref(false)
-
-    const fetchEmailFromToken = async () => {
-        if (!token) {
-            addNotify({
-                type: 'negative',
-                message: t('forms.createAccount.missingToken'),
-            })
-            await router.push({ name: 'home' })
-            return
-        }
-        try {
-            const response = await axiosI.post<{ email: string }>('/users/invite-handshake/', {
-                token: token,
-            })
-            if (response.status === 200 && response.data.email) {
-                email.value = response.data.email
-            } else {
-                addNotify({
-                    type: 'negative',
-                    message: t('forms.createAccount.fetchEmailFailed'),
-                })
-                await router.push({ name: 'home' })
-            }
-        } catch (e) {
-            addNotify({
-                type: 'negative',
-                message:
-                    e instanceof AxiosError && e.response?.status === 403
-                        ? t('forms.createAccount.tokenRejected')
-                        : t('errors.unknownRetry'),
-            })
-            await router.push({ name: 'home' })
-        }
-    }
+    const isFirstNameValid = computed(() => firstName.value.trim().length >= 2)
+    const isLastNameValid = computed(() => lastName.value.trim().length >= 2)
 
     const createAccount = async () => {
-        if (!isPasswordStrongEnough.value) {
-            notify({
-                type: 'negative',
-                message: t('forms.password.validation.passwordRequirements'),
-            })
-            return
-        }
-
-        if (!arePasswordsMatching.value) {
-            notify({
-                type: 'negative',
-                message: t('forms.password.validation.passwordsDoNotMatch'),
-            })
-            return
-        }
-
-        isLoading.value = true
         try {
+            buttonSubmitLoading.value = true
             await axiosI.post('/users/create-account/', {
                 token: token,
+                firstName: firstName.value,
+                lastName: lastName.value,
                 password: password.value,
                 confirmPassword: confirmPassword.value,
             })
 
-            addNotify({
+            notify({
                 type: 'positive',
-                message: t('forms.createAccount.accountCreated'),
+                message: t('auth.createAccount.accountCreated'),
             })
-
-            isLoading.value = false
-
             await router.push({ name: 'login' })
         } catch {
             notify({
                 type: 'negative',
                 message: t('errors.unknownRetry'),
             })
+        } finally {
+            buttonSubmitLoading.value = false
         }
     }
 
     return {
+        fetchEmailLoading,
         email,
+        firstName,
+        lastName,
         password,
         confirmPassword,
         isPasswordStrongEnough,
         arePasswordsMatching,
+        isFirstNameValid,
+        isLastNameValid,
         fetchEmailFromToken,
         createAccount,
-        isLoading,
+        buttonSubmitLoading,
     }
 }

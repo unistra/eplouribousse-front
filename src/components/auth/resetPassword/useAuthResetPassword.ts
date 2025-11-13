@@ -5,7 +5,6 @@ import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useRouter } from 'vue-router'
 import { AxiosError } from 'axios'
 import { usePasswordValidators } from '@/composables/usePasswordValidators.ts'
-import { useGlobalStore } from '@/stores/globalStore.ts'
 
 export function useAuthResetPassword() {
     const { t } = useI18n()
@@ -51,9 +50,7 @@ export function useAuthResetPassword() {
                 confirmPassword: confirmPassword.value,
             })
 
-            const { addNotify } = useGlobalStore()
-
-            addNotify({
+            notify({
                 type: 'positive',
                 message: t('forms.password.reset.success'),
             })

@@ -1,7 +1,6 @@
 import { useUserStore } from '@/stores/userStore'
 import { type RouteLocationRaw, useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useGlobalStore } from '@/stores/globalStore.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { addJWTToLocalStorage, isExpired, removeJWTFromLocalStorage } from '@/utils/jwt.ts'
@@ -53,7 +52,6 @@ export const useAuth = () => {
     const shibbolethHandshake = async () => {
         const token = route.query.t
         const { t } = useI18n()
-        const globalStore = useGlobalStore()
 
         try {
             const response = await axiosI.post<{ access: string; refresh: string }>('/users/login-handshake/', {
@@ -63,7 +61,7 @@ export const useAuth = () => {
             await userStore.fetchUser()
             await _navToRedirectOrRoute()
         } catch {
-            globalStore.addNotify({
+            notify({
                 type: 'negative',
                 message: t('errors.unknown') + ', ' + t('errors.retry'),
             })
