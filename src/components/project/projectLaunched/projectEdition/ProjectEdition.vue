@@ -26,13 +26,15 @@ onMounted(() => {
         <div class="generic-info">
             <h3>{{ t('common.info', 2) }}</h3>
             <div class="other-infos">
+                <!-- Storage location not supported yet
                 <QChip class="chip-with-bold">
                     {{ t('project.storageLocation') }}: <span>{{ storageLocation }}</span>
-                </QChip>
+                </QChip>-->
                 <QChip
                     v-for="ctrl in ['controlBound', 'controlUnbound'] as Array<keyof Resource['validations']>"
                     :key="ctrl"
                     class="chip-with-bold"
+                    g
                 >
                     {{ t(`project.resources.status.${ctrl}`) }}:
                     <span>{{ useUtils().useIntlDateTimeFormat(resourceStore.validations[ctrl]) || '-' }}</span>
