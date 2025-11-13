@@ -11,7 +11,6 @@ const props = defineProps<{
     type?: 'text' | 'textarea' | 'email' | 'search' | 'number' | 'url' | 'password' | 'date' | 'datetime-local'
     label?: string
     clearable?: boolean
-    counter?: boolean
     disable?: boolean
     required?: boolean
     icon?: string

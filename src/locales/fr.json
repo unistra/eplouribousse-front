@@ -352,7 +352,7 @@
                 "segmentOverlap": "Chevauchement de segment",
                 "misuseOfRemediatedLibrary": "Mauvaise utilisation de la bibliothèque remédiée",
                 "confusingWording": "Formulation confuse",
-                "other": "Autre"
+                "other": "@:common.other"
             },
             "fixed": "Résolu",
             "unfixed": "Non résolu",
@@ -379,6 +379,19 @@
                 "archived": "Projets archivés"
             },
             "projectVisibility": "Visibilité du projet"
+        },
+        "contact": {
+            "title": "Contacter l'administrateur d'Eplouribousse",
+            "objects": {
+                "i": "Objet",
+                "askInfo": "Demande d'information",
+                "bug": "Bug",
+                "claim": "Réclamation",
+                "suggestion": "Suggestion",
+                "review": "Avis",
+                "other": "@:common.other"
+            },
+            "placeholder": "Votre message"
         }
     },
     "libraries": {
@@ -408,13 +421,6 @@
             "notFound": "Bibliothèque non trouvée"
         }
     },
-    "contactAdmin": {
-        "title": "Contacter l'administrateur du site",
-        "object": "Objet",
-        "message": "Message",
-        "placeholder": "Donnez ici toutes le informations utiles",
-        "send": "Envoyer"
-    },
     "logout": {
         "success": "Vous avez été déconnecté"
     },
@@ -422,9 +428,10 @@
         "validation": {
             "fieldIsRequired": "Ce champ est requis",
             "fieldLessThan255": "Ce champ doit être inférieur à 255 caractères",
-            "minLength": "Le champ doit contenir au moins {length} caractères"
+            "minLength": "Le champ doit contenir au moins {length} caractères",
+            "fieldsMustMatch": "Les champs doivent être identique",
+            "validEmail": "L'email doit être valide"
         },
-        "fieldIsRequired": "Ce champ est requis",
         "login": {
             "forgotPassword": "Mot de passe oublié ?",
             "credentialsError": "Identifiants incorrects",
@@ -547,10 +554,12 @@
         "by": "par",
         "unknown": "Inconnu",
         "preview": "Prévisualiser",
-        "download": "Télécharger",
         "filter": "Filtres",
         "private": "Privé",
-        "public": "Public"
+        "public": "Public",
+        "download": "Télécharger",
+        "other": "Autre",
+        "send": "Envoyer"
     },
     "utils": {
         "searchUser": {
@@ -565,7 +574,8 @@
         "collex": "Collex",
         "noLibrary": "Aucune bibliothèque",
         "downloadPDF": "@:common.download le PDF",
-        "noRole": "Aucun rôle sur le tenant"
+        "noRole": "Aucun rôle sur le tenant",
+        "confirmEmail": "Confirmer l'email"
     },
     "errors": {
         "unknown": "Une erreur est survenue",
