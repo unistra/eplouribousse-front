@@ -39,7 +39,7 @@ const onLogout = async () => {
         <AtomicButton
             v-else
             icon="mdi-account-circle-outline"
-            :label="`${userStore.user?.firstName} ${userStore.user?.lastName}`"
+            :label="userStore.user?.displayName"
             no-border
         >
             <QMenu>

@@ -5,24 +5,19 @@ interface UserSettings {
     locale: string
 }
 
-export interface User {
+export interface UserSummarized {
     id: string
     email: string
     firstName: string
     lastName: string
+    displayName: string
+}
+
+export interface User extends UserSummarized {
     username: string
     canAuthenticateLocally: boolean
     isProjectCreator: boolean
     isSuperuser: boolean
     projects: ProjectSummarized[]
     settings: UserSettings
-}
-
-export interface UserI {
-    id: string
-    email: string
-    username: string
-    firstName: string
-    lastName: string
-    displayName: string
 }

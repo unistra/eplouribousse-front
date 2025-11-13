@@ -4,7 +4,7 @@ import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import type { Pagination } from '#/pagination.ts'
-import type { ProjectUser } from '#/project.ts'
+import type { UserSummarized } from '#/user.ts'
 
 export function useAdmin() {
     const { t } = useI18n()
@@ -17,14 +17,14 @@ export function useAdmin() {
         { title: t('roles.projectCreator'), role: Roles.ProjectCreator },
     ]
 
-    const users = reactive<Record<Roles.ProjectCreator | Roles.TenantSuperUser, ProjectUser[]>>({
+    const users = reactive<Record<Roles.ProjectCreator | Roles.TenantSuperUser, UserSummarized[]>>({
         project_creator: [],
         tenant_super_user: [],
     })
     const getUsersWithRole = async (role: Roles.ProjectCreator | Roles.TenantSuperUser) => {
         try {
             isAddUserLoading.value = true
-            const response = await axiosI.get<Pagination<ProjectUser>>('/users/', {
+            const response = await axiosI.get<Pagination<UserSummarized>>('/users/', {
                 params: {
                     role,
                     page_size: 1000,
@@ -41,7 +41,7 @@ export function useAdmin() {
         }
     }
 
-    const onAddRole = async (user: ProjectUser, role: Roles.ProjectCreator | Roles.TenantSuperUser) => {
+    const onAddRole = async (user: UserSummarized, role: Roles.ProjectCreator | Roles.TenantSuperUser) => {
         isAddUserLoading.value = true
         try {
             await axiosI.post(`users/${user.id}/${role === Roles.ProjectCreator ? 'project-creator' : 'superuser'}/`)
@@ -56,7 +56,7 @@ export function useAdmin() {
         }
     }
 
-    const onRemoveRole = async (user: ProjectUser, role: Roles.ProjectCreator | Roles.TenantSuperUser) => {
+    const onRemoveRole = async (user: UserSummarized, role: Roles.ProjectCreator | Roles.TenantSuperUser) => {
         isAddUserLoading.value = true
         try {
             await axiosI.delete(`users/${user.id}/${role == Roles.ProjectCreator ? 'project-creator' : 'superuser'}/`)

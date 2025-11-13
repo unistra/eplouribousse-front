@@ -2,16 +2,17 @@
 import { onMounted, watch } from 'vue'
 import { type SearchUserEmitActions, useSearchUser } from './useSearchUser'
 import { useI18n } from 'vue-i18n'
-import type { ProjectInvitation, ProjectUser } from '#/project.ts'
+import type { ProjectInvitation } from '#/project.ts'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import SearchUserItem from '@/components/utils/searchUser/SearchUserItem.vue'
 import type { Roles } from '&/project'
 import { useUserStore } from '@/stores/userStore.ts'
+import type { UserSummarized } from '#/user.ts'
 
 const props = defineProps<{
     role?: Roles
-    usersSelected: ProjectUser[]
+    usersSelected: UserSummarized[]
     invitationsSelected: ProjectInvitation[]
     isAddUserLoading: boolean
     preventDeleteCurrentUser?: boolean

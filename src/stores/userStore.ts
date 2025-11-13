@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { ProjectI, ProjectRole } from '#/project.ts'
+import type { Project, ProjectRole } from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import type { Pagination } from '#/pagination.ts'
 import { type User } from '#/user'
@@ -13,7 +13,7 @@ export const useUserStore = defineStore('user', () => {
     const user = ref<User | undefined>()
     const userInProject = ref<ProjectRole>()
     const isAuth = ref<boolean>(false)
-    const projects = ref<ProjectI[]>([])
+    const projects = ref<Project[]>([])
     const projectsLoading = ref<boolean>(false)
     const userLoading = ref<boolean>(false)
     const { t } = useI18n()
@@ -47,7 +47,7 @@ export const useUserStore = defineStore('user', () => {
         if (user.value !== undefined) {
             try {
                 projectsLoading.value = true
-                const response = await axiosI.get<Pagination<ProjectI>>('/projects/', {
+                const response = await axiosI.get<Pagination<Project>>('/projects/', {
                     params: {
                         page_size: 20,
                         participant: true,

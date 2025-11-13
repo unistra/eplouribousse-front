@@ -1,27 +1,31 @@
 import type { LibraryI } from './library'
 import { type ProjectPermissions } from '#/permissions'
 import { AnomalyType, CollectionPosition, ProjectStatus, ResourceStatus, Roles, Tab } from '&/project.ts'
+import type { UserSummarized } from '#/user.ts'
 
-export interface ProjectI {
+export interface Project {
     id: string
     name: string
     description: string
-    isPrivate: boolean
-    activeAfter: string
-    isActive: boolean
-    createdBy: ProjectUser | null
     status: ProjectStatus
+    isActive: boolean
     settings: ProjectSettings
-    invitations: ProjectInvitation[]
-    roles: ProjectRole[]
-    libraries: ProjectLibrary[]
     createdAt: string
     updatedAt: string
     acl: ProjectPermissions
 }
 
-export interface Project extends ProjectI {
-    initialState: ProjectI
+export interface ProjectDetails extends Project {
+    isPrivate: boolean
+    activeAfter: string
+    createdBy: UserSummarized | null
+    invitations: ProjectInvitation[]
+    roles: ProjectRole[]
+    libraries: ProjectLibrary[]
+}
+
+export interface ProjectStoreState extends ProjectDetails {
+    initialState: ProjectDetails
     isLoading: boolean
     isInEditionMode: boolean
     tab: Tab
@@ -29,29 +33,21 @@ export interface Project extends ProjectI {
 }
 
 export interface ProjectSummarized {
-    id: string
-    name: string
+    id: Project['id']
+    name: Project['name']
     roles: Roles[]
 }
 
-export interface ProjectUser {
-    id: string
-    email: string
-    firstName: string
-    lastName: string
-    displayName: string
-}
-
 export interface ProjectRole {
-    user: ProjectUser
+    user: UserSummarized
     role: Roles
-    libraryId: string | undefined
+    libraryId?: LibraryI['id']
 }
 
 export interface ProjectInvitation {
     email: string
     role: Roles
-    libraryId: string | undefined
+    libraryId?: LibraryI['id']
 }
 
 export type ImportCSVResponse = Record<string, number>
@@ -68,8 +64,8 @@ export type Collection = {
     id: string
     title: string
     code: string
-    library: string
-    project: string
+    library: LibraryI['id']
+    project: Project['id']
     issn: string
     call_number: string
     hold_statement: string
@@ -190,7 +186,7 @@ export interface Anomaly {
     description: string
     fixed: boolean
     fixedAt: string
-    fixedBy: ProjectUser
+    fixedBy: UserSummarized
     createdAt: string
-    createdBy: ProjectUser
+    createdBy: UserSummarized
 }

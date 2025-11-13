@@ -1,23 +1,23 @@
 <script setup lang="ts">
 import type { Pagination } from '#/pagination'
 import type { QTable, QTableProps } from 'quasar'
-import type { ProjectI } from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import type { Project } from '#/project.ts'
 
 const route = useRoute()
-const projects = ref<ProjectI[]>([])
+const projects = ref<Project[]>([])
 const visibleColumns = ['project', 'description', 'createdAt']
 const columns: QTableProps['columns'] = [
     {
         name: 'id',
-        field: (row: ProjectI) => row.id,
+        field: (row: Project) => row.id,
         label: '',
     },
     {
         name: 'project',
-        field: (row: ProjectI) => row.name,
+        field: (row: Project) => row.name,
         required: true,
         label: 'Projet',
         align: 'left',
@@ -25,14 +25,14 @@ const columns: QTableProps['columns'] = [
     },
     {
         name: 'description',
-        field: (row: ProjectI) => row.description,
+        field: (row: Project) => row.description,
         required: true,
         align: 'left',
         label: 'Description',
     },
     {
         name: 'createdAt',
-        field: (row: ProjectI) => row.createdAt,
+        field: (row: Project) => row.createdAt,
         required: true,
         label: 'Crée le',
         align: 'left',
@@ -41,7 +41,7 @@ const columns: QTableProps['columns'] = [
 ]
 
 onMounted(async () => {
-    const dataProjects = await axiosI.get<Pagination<ProjectI>>('/projects/', {
+    const dataProjects = await axiosI.get<Pagination<Project>>('/projects/', {
         params: {
             page_size: 20,
         },

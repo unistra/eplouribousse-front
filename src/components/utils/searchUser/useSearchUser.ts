@@ -1,23 +1,24 @@
 import { type Comparator, UniqueSet } from '#/utils'
 import { axiosI } from '@/plugins/axios/axios'
 import { ref, watch } from 'vue'
-import type { ProjectInvitation, ProjectUser } from '#/project.ts'
+import type { ProjectInvitation } from '#/project.ts'
 import type { Pagination } from '#/pagination.ts'
+import type { UserSummarized } from '#/user.ts'
 
 export type SearchUserEmitActions = {
     (e: 'addInvitation', email: string): void
     (e: 'removeInvitation', invitation: ProjectInvitation): void
-    (e: 'addUser', user: ProjectUser): void
-    (e: 'removeUser', user: ProjectUser): void
+    (e: 'addUser', user: UserSummarized): void
+    (e: 'removeUser', user: UserSummarized): void
 }
 
 export function useSearchUser(emit: SearchUserEmitActions) {
     const username = ref<string>('')
-    const users = ref<ProjectUser[]>([])
-    const matchingUsers = ref<UniqueSet<ProjectUser>>()
-    const userAlreadySelected = ref<ProjectUser[]>([])
+    const users = ref<UserSummarized[]>([])
+    const matchingUsers = ref<UniqueSet<UserSummarized>>()
+    const userAlreadySelected = ref<UserSummarized[]>([])
 
-    const userComparator: Comparator<ProjectUser> = (a: ProjectUser, b: ProjectUser) => a.id === b.id
+    const userComparator: Comparator<UserSummarized> = (a: UserSummarized, b: UserSummarized) => a.id === b.id
     const isUserListLoading = ref<boolean>(false)
     const nextPage = ref<number | null>(1)
 
@@ -35,7 +36,7 @@ export function useSearchUser(emit: SearchUserEmitActions) {
         isUserListLoading.value = true
 
         try {
-            const response = await axiosI.get<Pagination<ProjectUser>>(`/users/`, {
+            const response = await axiosI.get<Pagination<UserSummarized>>(`/users/`, {
                 params: {
                     search: username.value,
                     exclude: userAlreadySelected.value.map((user) => user.id),
@@ -61,7 +62,7 @@ export function useSearchUser(emit: SearchUserEmitActions) {
     async function appendUsers() {
         isUserListLoading.value = true
         try {
-            const response = await axiosI.get<Pagination<ProjectUser>>(
+            const response = await axiosI.get<Pagination<UserSummarized>>(
                 `/users/?exclude=${userAlreadySelected.value.map((user) => user.id).join('&exclude=')}`,
                 {
                     params: {
@@ -98,7 +99,7 @@ export function useSearchUser(emit: SearchUserEmitActions) {
 
     const sendAction = (
         action: 'addInvitation' | 'removeInvitation' | 'addUser' | 'removeUser',
-        payload?: { invitation?: ProjectInvitation; user?: ProjectUser },
+        payload?: { invitation?: ProjectInvitation; user?: UserSummarized },
     ) => {
         if (action === 'addInvitation') emit('addInvitation', username.value)
         else if (payload?.invitation && action === 'removeInvitation') emit('removeInvitation', payload.invitation)

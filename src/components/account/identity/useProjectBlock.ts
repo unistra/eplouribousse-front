@@ -1,5 +1,5 @@
 import { computed, reactive, ref } from 'vue'
-import type { AlertKey, ProjectI, ProjectRole } from '#/project.ts'
+import type { AlertKey, Project, ProjectDetails, ProjectRole } from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { useUserStore } from '@/stores/userStore.ts'
 import { useI18n } from 'vue-i18n'
@@ -25,7 +25,7 @@ export const useProjectBlock = () => {
     // 2. We filter those alerts to keep only the one who has a true value (if false, the user can't change that)
     // 3. We copy those entries into userSettingsAlertsFormatted, to map them with toggles
     // 4. We use initialUserSettingsAlertsFormatted to calculate the changes, to display the save button
-    const selectedProject = ref<ProjectI>()
+    const selectedProject = ref<ProjectDetails>()
     const selectedProjectSettingsAlerts = computed(() => {
         if (!selectedProject.value) return {}
         return selectedProject.value.settings.alerts
@@ -70,7 +70,7 @@ export const useProjectBlock = () => {
         }
     }
 
-    const computeStatusLabel = (val: ProjectStatus, _row: ProjectI) => {
+    const computeStatusLabel = (val: ProjectStatus, _row: Project) => {
         const statusLabels: Record<ProjectStatus, string> = {
             [ProjectStatus.Draft]: t('project.status.draft'),
             [ProjectStatus.Review]: t('project.status.review'),
@@ -82,7 +82,7 @@ export const useProjectBlock = () => {
     }
 
     const table = {
-        rows: ref<ProjectI[]>([]),
+        rows: ref<Project[]>([]),
         rowsPerPage: [1, 2, 5, 10, 20, 50, 100],
         loading: ref<boolean>(false),
         filter: ref<string>(''),
@@ -105,7 +105,7 @@ export const useProjectBlock = () => {
             },
             {
                 name: 'createdAt',
-                field: (row: ProjectI) => useUtils().useIntlDateTimeFormat(row.createdAt),
+                field: (row: Project) => useUtils().useIntlDateTimeFormat(row.createdAt),
                 label: t('common.createdAt'),
                 sortable: true,
                 align: 'left',
@@ -139,7 +139,7 @@ export const useProjectBlock = () => {
                         params.ordering = `${pagination.descending ? '-' : ''}${pagination.sortBy || 'name'}`
                 }
 
-                const response = await axiosI.get<Pagination<ProjectI>>('/projects/', { params })
+                const response = await axiosI.get<Pagination<Project>>('/projects/', { params })
                 table.rows.value = response.data.results
 
                 if (props) {
@@ -160,12 +160,12 @@ export const useProjectBlock = () => {
                 table.loading.value = false
             }
         },
-        onRowClick: async (_evt: Event, row: ProjectI) => {
+        onRowClick: async (_evt: Event, row: Project) => {
             dialog.isOpen = true
             dialog.loading = true
 
             try {
-                const response = await axiosI.get<ProjectI>(`/projects/${row.id}/`)
+                const response = await axiosI.get<ProjectDetails>(`/projects/${row.id}/`)
                 selectedProject.value = response.data
 
                 const responseUserSettings = await axiosI.get<{ alerts: Partial<Record<AlertKey, boolean>> }>(

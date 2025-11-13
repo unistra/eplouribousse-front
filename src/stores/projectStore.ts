@@ -5,11 +5,12 @@ import {
     type ImportCSVError,
     type ImportCSVResponse,
     type Project,
-    type ProjectI,
+    type ProjectDetails,
     type ProjectInvitation,
     type ProjectLibrary,
     type ProjectRole,
     type ProjectSettings,
+    type ProjectStoreState,
 } from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { Notify } from 'quasar'
@@ -22,7 +23,7 @@ import { useResourceStore } from '@/stores/resourceStore.ts'
 
 const { t } = i18n.global
 
-const initialState: ProjectI = {
+const initialState: ProjectDetails = {
     id: '',
     name: '',
     description: '',
@@ -69,7 +70,7 @@ const initialState: ProjectI = {
 }
 
 export const useProjectStore = defineStore('project', {
-    state: (): Project => ({
+    state: (): ProjectStoreState => ({
         ...structuredClone(initialState),
         initialState: structuredClone(initialState),
         isLoading: false,
@@ -103,7 +104,7 @@ export const useProjectStore = defineStore('project', {
         // UTILS
         async fetchProjectById(id: string, edition?: boolean) {
             try {
-                const response = await axiosI.get<ProjectI>(`/projects/${id}/`)
+                const response = await axiosI.get<ProjectDetails>(`/projects/${id}/`)
 
                 this.$state = {
                     ...structuredClone(response.data),
@@ -125,7 +126,7 @@ export const useProjectStore = defineStore('project', {
         async _postNewProject() {
             this.isLoading = true
             try {
-                const response = await axiosI.post<ProjectI>('/projects/', {
+                const response = await axiosI.post<Project>('/projects/', {
                     name: this.name,
                     description: this.description,
                 })
@@ -190,7 +191,7 @@ export const useProjectStore = defineStore('project', {
         async removeLibrary(library: LibraryI) {
             if (!this.libraries.some((lib) => lib.id === library.id)) return
             try {
-                await axiosI.delete<ProjectI>(`/projects/${this.id}/libraries/`, {
+                await axiosI.delete<ProjectDetails>(`/projects/${this.id}/libraries/`, {
                     params: {
                         library_id: library.id,
                     },
