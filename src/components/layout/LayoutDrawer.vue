@@ -57,7 +57,7 @@ onMounted(async () => {
                 <DrawerItem
                     icon="mdi-folder-move-outline"
                     :name="!collapsed ? t('project.public.btn') : ''"
-                    :to="{ name: 'publicProjects' }"
+                    :to="{ name: 'projects' }"
                     :tooltip="collapsed ? t('project.public.btn') : undefined"
                 />
                 <div

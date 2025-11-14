@@ -54,7 +54,7 @@
         },
         "project": {
             "i": "Projet",
-            "public": "Projets publics",
+            "allProjects": "Tous les projets",
             "new": "Nouveau projet"
         },
         "myAccount": "Mon @.lower:common.account",
@@ -372,6 +372,13 @@
     "view": {
         "tenantAdmin": {
             "section2": "Gestion des rôles spécifiques"
+        },
+        "projects": {
+            "filters": {
+                "participant": "Projets où je participe",
+                "archived": "Projets archivés"
+            },
+            "projectVisibility": "Visibilité du projet"
         }
     },
     "libraries": {
@@ -532,7 +539,7 @@
         "createdAt": "Créé le",
         "status": "Statut",
         "type": "Type",
-        "description": "description",
+        "description": "Description",
         "fixed": "Corrigé",
         "created": "Créé",
         "the": "le",
@@ -540,7 +547,10 @@
         "by": "par",
         "unknown": "Inconnu",
         "preview": "Prévisualiser",
-        "download": "Télécharger"
+        "download": "Télécharger",
+        "filter": "Filtres",
+        "private": "Privé",
+        "public": "Public"
     },
     "utils": {
         "searchUser": {

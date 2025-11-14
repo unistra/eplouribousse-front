@@ -148,10 +148,10 @@ const routes: RouteRecordRaw[] = [
         children: [
             {
                 path: '',
-                name: 'publicProjects',
-                component: () => import('@/views/PublicProjects.vue'),
+                name: 'projects',
+                component: () => import('@/views/ProjectsView.vue'),
                 meta: {
-                    title: t('navigation.project.public'),
+                    title: t('navigation.project.allProjects'),
                 },
             },
             {
