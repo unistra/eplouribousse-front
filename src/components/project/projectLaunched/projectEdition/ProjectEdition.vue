@@ -113,12 +113,16 @@ onMounted(() => {
                         "
                     />
                     <QChip class="chip-with-bold">
-                        {{ t('project.resources.callNumber') }}:
-                        <span>{{ selectCollectionToShowEdition?.callNumber || '-' }}</span>
+                        <p class="word-break">
+                            {{ t('project.resources.callNumber') }}:
+                            <span>{{ selectCollectionToShowEdition?.callNumber || '-' }}</span>
+                        </p>
                     </QChip>
                     <QChip class="chip-with-bold">
-                        {{ t('project.resources.holdStatement') }}:
-                        <span>{{ selectCollectionToShowEdition?.holdStatement || '-' }}</span>
+                        <p class="word-break">
+                            {{ t('project.resources.holdStatement') }}:
+                            <span>{{ selectCollectionToShowEdition?.holdStatement || '-' }}</span>
+                        </p>
                     </QChip>
                 </div>
 
@@ -211,6 +215,7 @@ h3
 
 
     .chip-with-bold
+        height: auto
         span
             margin-left: 0.2rem
             font-weight: bold
@@ -230,4 +235,8 @@ h3
 
         .q-icon
             color: var(--color-red)
+
+.word-break
+    white-space: normal
+    word-break: break-word
 </style>
