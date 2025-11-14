@@ -113,7 +113,8 @@ export const useProjectResources = () => {
             infos.message = t('project.resources.status.positioning')
             return infos
         }
-
+        if (row.status === ResourceStatus.Excluded)
+            return { message: t('project.resources.status.excluded'), icon: 'mdi-cancel' }
         if (row.status === ResourceStatus.InstructionBound) {
             if (projectStore.tab === Tab.Positioning)
                 return {

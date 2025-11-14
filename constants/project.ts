@@ -24,6 +24,7 @@ export enum Arbitration {
 
 export enum ResourceStatus {
     Positioning = 10,
+    Excluded = 15,
     InstructionBound = 20,
     AnomalyBound = 25,
     ControlBound = 30,

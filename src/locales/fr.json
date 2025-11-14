@@ -216,6 +216,7 @@
                 "positioning": "Positionnement en cours",
                 "positioningRequired": "Positionnement requis",
                 "waitingPositioning": "En attente des autres bibliothèques",
+                "excluded": "Ressource exclue",
                 "instructionBoundButPositioningTab": "Instruction non démarrée",
                 "instructionBound": "Instruction des exemplaires reliés",
                 "controlBound": "Contrôle des exemplaires reliés",
