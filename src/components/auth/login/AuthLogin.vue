@@ -40,14 +40,14 @@ onMounted(() => {
                     v-model="email"
                     :label="t('common.email')"
                     reactive-rules
-                    :rules="[(val: string) => !!val || t('forms.fieldIsRequired')]"
+                    :rules="[(val: string) => !!val || t('forms.validation.fieldIsRequired')]"
                     type="email"
                 />
                 <div class="password">
                     <PasswordField
                         v-model="password"
                         :label="t('common.password')"
-                        :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
+                        :rules="[(val) => !!val || t('forms.validation.fieldIsRequired')]"
                     />
                     <RouterLink :to="{ name: 'requestPasswordReset' }">
                         {{ t('forms.login.forgottenPassword') }}

@@ -1,8 +1,3 @@
-export interface SelectOption {
-    label: string
-    value: string | number
-}
-
 export interface TenantConfiguration {
     id: string
     name: string

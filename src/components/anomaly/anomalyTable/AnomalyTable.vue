@@ -97,7 +97,7 @@ const { columns, anomalyDescription, anomalyOptions, onDeleteAnomaly, segmentAno
                             option-label="label"
                             option-value="value"
                             :options="anomalyOptions"
-                            :rules="[(val: string) => !!val || t('forms.fieldIsRequired')]"
+                            :rules="[(val: string) => !!val || t('forms.validation.fieldIsRequired')]"
                         />
                         <AtomicInput
                             v-if="anomalyType === AnomalyType.Other"
@@ -106,7 +106,8 @@ const { columns, anomalyDescription, anomalyOptions, onDeleteAnomaly, segmentAno
                             :label="t('common.description').capitalize()"
                             :rules="[
                                 (val: string) =>
-                                    (anomalyType === AnomalyType.Other && !!val) || t('forms.fieldIsRequired'),
+                                    (anomalyType === AnomalyType.Other && !!val) ||
+                                    t('forms.validation.fieldIsRequired'),
                             ]"
                         />
                     </div>

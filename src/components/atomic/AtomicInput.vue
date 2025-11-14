@@ -11,7 +11,6 @@ const props = defineProps<{
     type?: 'text' | 'textarea' | 'email' | 'search' | 'number' | 'url' | 'password' | 'date' | 'datetime-local'
     label?: string
     clearable?: boolean
-    counter?: boolean
     disable?: boolean
     required?: boolean
     icon?: string
@@ -19,6 +18,7 @@ const props = defineProps<{
     dataTestid?: string
     quickInput?: boolean
     rules?: QInput['rules']
+    skeleton?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -38,6 +38,7 @@ onMounted(() => {
 
 <template>
     <QInput
+        v-if="!skeleton"
         ref="input"
         v-model="model"
         :autofocus
@@ -75,6 +76,10 @@ onMounted(() => {
             />
         </template>
     </QInput>
+    <QSkeleton
+        v-else
+        type="QInput"
+    />
 </template>
 
 <style scoped lang="sass">

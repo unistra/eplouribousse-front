@@ -17,7 +17,7 @@ const { email, isLoading, sendEmail } = useAuthRequestPasswordReset()
             autofocus
             :label="t('common.email')"
             reactive-rules
-            :rules="[(val) => !!val || t('forms.fieldIsRequired')]"
+            :rules="[(val) => !!val || t('forms.validation.fieldIsRequired')]"
             type="email"
         />
         <AtomicButton

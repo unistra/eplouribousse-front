@@ -199,7 +199,7 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/contact-admin',
         name: 'contactAdmin',
-        component: () => import('@/views/ContactAdminView.vue'),
+        component: () => import('@/views/ContactView.vue'),
         meta: {
             title: 'Contact',
         },
