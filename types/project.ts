@@ -8,6 +8,7 @@ export interface Project {
     name: string
     description: string
     status: ProjectStatus
+    isPrivate: boolean
     isActive: boolean
     settings: ProjectSettings
     createdAt: string
@@ -16,7 +17,6 @@ export interface Project {
 }
 
 export interface ProjectDetails extends Project {
-    isPrivate: boolean
     activeAfter: string
     createdBy: UserSummarized | null
     invitations: ProjectInvitation[]
