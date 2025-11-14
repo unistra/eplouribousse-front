@@ -149,33 +149,12 @@
                 }
             }
         },
-        "requirements": {
-            "message": "Pour monter un nouveau projet, assurez-vous que vous disposez des éléments suivants :",
-            "email": "Adresse email de l'utilisateur",
-            "requirementsOk": "Je suis prêt",
-            "invite": "Inviter",
-            "inviteUser": "Inviter un utilisateur",
-            "inviteMessage": "Si un utilisateur n'est pas présent, cliquez sur le bouton et remplissez le formulaire d'invitation"
-        },
         "creation": {
             "title": "Création d'un projet",
             "name": "Nom du projet",
             "userAlreadyAssigned": "L'utilisateur a déjà été assigné",
             "userToAdd": "Utilisateurs à ajouter"
         },
-        "projectName": "Intitulé du projet",
-        "pilotEmails": "Email du ou des pilotes du projet",
-        "adminEmails": "Email du ou des administrateurs du projet",
-        "controllerEmail": "Email du ou des contrôlleurs du projet",
-        "libraryNames": "Nom des bibliothèques participantes",
-        "libraryRCRs": "RCR des bibliothèques participantes",
-        "libraryInstructorEmails": "Emails de leurs intructeurs respectifs",
-        "libraryCollections": "Ensemble des collections participantes de chacune des bibliothèques, sans exemplaire multiple d'une même ressource",
-        "libraryResourceTooltip": "Rappel : 1 ressource = 1 PPN. Dans le cas où une bibliothèque possède des exemplaires en double, il faudra créer une bibliothèque supplémentaire qui ne se distinguera de la principale que par un indice apposé au RCR de la principale (par exemple 674821001 pour la principale et 674821001_1 pour les exemplaires en double ; éventuellement plus s'il le faut : 674821001_2 etc...",
-        "csvFormat": "au format csv",
-        "additionalInfos": "ppn;cote;état de collection;lacunes",
-        "storageNames": "Nom des lieux de conservation alternatifs (et leur RCR le cas échéant)",
-        "storageOperatorEmails": "Identifiants et emails de leurs opérateurs respectifs",
         "searchUsers": "Vous pouvez utiliser l'outil de recherche ci-dessous pour vérifier si les utilisateurs ont déjà un compte, si ce n'est pas le cas, contactez-les pour qu'ils se connectent au site :"
     },
     "project": {
@@ -379,6 +358,28 @@
                 "archived": "Projets archivés"
             },
             "projectVisibility": "Visibilité du projet"
+        },
+        "project": {
+            "new": {
+                "requirements": {
+                    "heading": "Liste péparatoire au projet",
+                    "message": "Pour monter un nouveau projet, assurez-vous que vous disposez des éléments suivants :",
+                    "list": {
+                        "projectName": "Intitulé du projet",
+                        "managerEmails": "Email du ou des pilotes du projet",
+                        "adminEmails": "Email du ou des administrateurs du projet",
+                        "controllerEmail": "Email du ou des contrôlleurs du projet",
+                        "libraryNames": "Nom des bibliothèques participantes",
+                        "libraryRCRs": "Identifiant des bibliothèques participantes",
+                        "libraryInstructorEmails": "Emails de leurs intructeurs respectifs",
+                        "libraryCollections": "Ensemble des collections participantes de chacune des bibliothèques au format CSV",
+                        "collectionIdentified": "Identifiant de la ressource; issn ; titre ; cote ; état de collection ; lacunes",
+                        "additionalInfos": "NB : Les identifiants de ressources doivent être homogènes (i.e. issus du même système)",
+                        "storageNames": "Nom des lieux de conservation alternatifs (et leur RCR le cas échéant)",
+                        "storageOperatorEmails": "Identifiants et emails de leurs opérateurs respectifs"
+                    }
+                }
+            }
         },
         "contact": {
             "title": "Contacter l'administrateur d'Eplouribousse",
