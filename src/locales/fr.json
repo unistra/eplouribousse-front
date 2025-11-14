@@ -75,7 +75,7 @@
     },
     "roles": {
         "superUser": "Super utilisateur du tenant",
-        "projectCreator": "Créateur de projet",
+        "projectCreator": "Monteur de projet",
         "projectAdmin": "Administrateurs",
         "projectManager": "Pilotes de projet",
         "instructor": "Instructeurs",
