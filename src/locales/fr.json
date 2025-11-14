@@ -382,16 +382,17 @@
         },
         "contact": {
             "title": "Contacter l'administrateur d'Eplouribousse",
-            "objects": {
+            "subjects": {
                 "i": "Objet",
-                "askInfo": "Demande d'information",
+                "ask_info": "Demande d'information",
                 "bug": "Bug",
-                "claim": "Réclamation",
+                "complaint": "Réclamation",
                 "suggestion": "Suggestion",
                 "review": "Avis",
                 "other": "@:common.other"
             },
-            "placeholder": "Votre message"
+            "placeholder": "Votre message",
+            "messageSent": "Votre message à bien été envoyé"
         }
     },
     "libraries": {
@@ -429,6 +430,7 @@
             "fieldIsRequired": "Ce champ est requis",
             "fieldLessThan255": "Ce champ doit être inférieur à 255 caractères",
             "minLength": "Le champ doit contenir au moins {length} caractères",
+            "maxLength": "Le champ doit contenir moins de {length} caractères",
             "fieldsMustMatch": "Les champs doivent être identique",
             "validEmail": "L'email doit être valide"
         },

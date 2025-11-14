@@ -18,6 +18,7 @@ const props = defineProps<{
     dataTestid?: string
     quickInput?: boolean
     rules?: QInput['rules']
+    skeleton?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -37,6 +38,7 @@ onMounted(() => {
 
 <template>
     <QInput
+        v-if="!skeleton"
         ref="input"
         v-model="model"
         :autofocus
@@ -74,6 +76,10 @@ onMounted(() => {
             />
         </template>
     </QInput>
+    <QSkeleton
+        v-else
+        type="QInput"
+    />
 </template>
 
 <style scoped lang="sass">
