@@ -188,7 +188,8 @@ onMounted(async () => {
     &.highlighted
         background-color: var(--color-neutral-500)
 :deep(.q-table tbody .semi-highlighted)
-    background-color: var(--color-yellow)
+    background-color: var(--epl-color-light-green)
+    font-weight: bold
 
 .btn-segment
     width: fit-content
@@ -203,7 +204,6 @@ onMounted(async () => {
     margin-left: auto
 
 .highlighted
-    background-color: var(--color-black)
-    color: var(--color-white)
+    background-color: var(--epl-color-light-blue)
     font-weight: bold
 </style>

@@ -239,7 +239,7 @@
                 "i": "Résultante | Résultantes",
                 "selectCollection": "@:project.resources.resultant.i de la @.lower:project.collection.i",
                 "title": "Édition de la résultante",
-                "infos": "Les lignes impliquant la bibliothèque sélectionnée sont mises en évidence",
+                "infos": "Les lignes impliquant la collection sélectionnée sont mises en évidence",
                 "motherCollection": "Collection mère",
                 "participatingCollections": "Collections participantes",
                 "excludeCollections": "Collections exclues"
