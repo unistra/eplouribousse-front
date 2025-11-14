@@ -181,7 +181,6 @@ export const useProjectResources = () => {
                 label: t('project.resources.status.title'),
                 align: 'left',
                 field: 'status',
-                sortable: true,
             },
         ],
         pagination: ref({
