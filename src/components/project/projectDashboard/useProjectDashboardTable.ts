@@ -3,7 +3,16 @@ import { useUtils } from '@/composables/useUtils.ts'
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
-export type ProjectDashboardTableType = 'initial-data' | 'positioning-information'
+export type ProjectDashboardTableType =
+    | 'initial-data'
+    | 'positioning-information'
+    | 'exclusion-information'
+    | 'arbitration-information'
+    | 'instruction-candidates-information'
+    | 'instructions-information'
+    | 'controls-information'
+    | 'anomalies-information'
+    | 'achievements-information'
 
 type DashboardData = {
     title: string
