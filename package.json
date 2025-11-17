@@ -27,6 +27,7 @@
         "@zxcvbn-ts/core": "^3.0.4",
         "@zxcvbn-ts/language-common": "^3.0.4",
         "axios": "^1.8.4",
+        "chart.js": "^4.5.1",
         "pinia": "^3.0.1",
         "quasar": "^2.18.1",
         "vue": "^3.5.13",

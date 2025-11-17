@@ -191,6 +191,14 @@ const routes: RouteRecordRaw[] = [
                             title: t('navigation.projectAdministration'),
                         },
                     },
+                    {
+                        path: 'dashboard',
+                        name: 'projectDashboard',
+                        component: () => import('@/views/ProjectDashboardView.vue'),
+                        meta: {
+                            title: t('navigation.project.dashboard'),
+                        },
+                    },
                 ],
             },
         ],
