@@ -27,14 +27,13 @@ onMounted(() => {
             <h3>{{ t('common.info', 2) }}</h3>
             <div class="other-infos">
                 <!-- Storage location not supported yet
-                <QChip class="chip-with-bold">
+                <QChip class="chip-label-value">
                     {{ t('project.storageLocation') }}: <span>{{ storageLocation }}</span>
                 </QChip>-->
                 <QChip
                     v-for="ctrl in ['controlBound', 'controlUnbound'] as Array<keyof Resource['validations']>"
                     :key="ctrl"
-                    class="chip-with-bold"
-                    g
+                    class="chip-label-value"
                 >
                     {{ t(`project.resources.status.${ctrl}`) }}:
                     <span>{{ useUtils().useIntlDateTimeFormat(resourceStore.validations[ctrl]) || '-' }}</span>
@@ -112,17 +111,13 @@ onMounted(() => {
                             )
                         "
                     />
-                    <QChip class="chip-with-bold">
-                        <p class="word-break">
-                            {{ t('project.resources.callNumber') }}:
-                            <span>{{ selectCollectionToShowEdition?.callNumber || '-' }}</span>
-                        </p>
+                    <QChip class="chip-label-value">
+                        {{ t('project.resources.callNumber') }}:
+                        <span>{{ selectCollectionToShowEdition?.callNumber || '-' }}</span>
                     </QChip>
-                    <QChip class="chip-with-bold">
-                        <p class="word-break">
-                            {{ t('project.resources.holdStatement') }}:
-                            <span>{{ selectCollectionToShowEdition?.holdStatement || '-' }}</span>
-                        </p>
+                    <QChip class="chip-label-value">
+                        {{ t('project.resources.holdStatement') }}:
+                        <span>{{ selectCollectionToShowEdition?.holdStatement || '-' }}</span>
                     </QChip>
                 </div>
 
@@ -214,11 +209,8 @@ h3
                     max-width: 300px
 
 
-    .chip-with-bold
+    .chip-label-value
         height: auto
-        span
-            margin-left: 0.2rem
-            font-weight: bold
 
     .info
         width: fit-content
@@ -235,8 +227,4 @@ h3
 
         .q-icon
             color: var(--color-red)
-
-.word-break
-    white-space: normal
-    word-break: break-word
 </style>

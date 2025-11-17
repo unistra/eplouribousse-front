@@ -23,16 +23,15 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading,
 </script>
 
 <template>
-    <QCard
-        class="base-card library-card"
-        flat
-    >
+    <QCard flat>
         <QCardSection>
-            <p>{{ library.name }}</p>
-            <div class="container justify-between items-center less-important">
-                <p class="text-sm">{{ library.alias }}</p>
-                <p class="text-xs">{{ library.code }}</p>
-            </div>
+            <p class="library-name">{{ library.name }}</p>
+            <QChip class="chip-label-value">
+                {{ t('libraries.form.fields.alias') }}: <span>{{ library.alias }} </span>
+            </QChip>
+            <QChip class="chip-label-value">
+                {{ t('libraries.form.fields.code') }}: <span>{{ library.code }}</span>
+            </QChip>
         </QCardSection>
 
         <QCardSection>
@@ -108,17 +107,19 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading,
     </QCard>
 </template>
 
-<style scoped>
-.q-card {
-    width: 100%;
-    max-width: 400px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border: 4px solid v-bind(borderColorIsAlternativeStorageSite);
-}
+<style scoped lang="sass">
+.q-card
+    width: 100%
+    max-width: 24rem
+    display: flex
+    flex-direction: column
+    gap: 0.5rem
+    border: 2px solid v-bind(borderColorIsAlternativeStorageSite)
+    border-radius: var(--border-radius)
 
-.less-important {
-    color: var(--color-neutral-400);
-}
+    .library-name
+        font-size: var(--font-size-xl)
+
+    .chip-label-value
+        font-size: var(--font-size-sm)
 </style>
