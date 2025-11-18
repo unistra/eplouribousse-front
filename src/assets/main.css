@@ -39,3 +39,6 @@ h3 {
 .chip-label-value span {
     font-weight: bold;
 }
+.q-inner-loading {
+    z-index: 1000;
+}

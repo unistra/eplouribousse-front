@@ -17,7 +17,7 @@ watch(
         const id = route.params.id as string
 
         store.isLoading = true
-        await store.fetchProjectById(id, true).then(() => userStore.fillProjectUser(store.roles))
+        await store.fetchProjectById(id).then(() => userStore.fillProjectUser(store.roles))
         store.isLoading = false
     },
     { immediate: true },

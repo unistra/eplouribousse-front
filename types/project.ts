@@ -27,7 +27,6 @@ export interface ProjectDetails extends Project {
 export interface ProjectStoreState extends ProjectDetails {
     initialState: ProjectDetails
     isLoading: boolean
-    isInEditionMode: boolean
     tab: Tab
     librariesIdThatHaveACollectionImported: string[]
 }

@@ -17,7 +17,7 @@ const store = useProjectStore()
         >
             <p>{{ role.title }}</p>
             <SearchUser
-                :disable="role.role !== Roles.Guest && store.isInEditionMode"
+                :disable="role.role !== Roles.Guest"
                 :invitations-selected="store.invitations.filter((el) => el.role === role.role)"
                 :is-add-user-loading="isAddUserLoading"
                 :role="role.role"

@@ -297,7 +297,7 @@
             },
             "tableFields": {
                 "line": "Ligne",
-                "library": "@.capitalize:libraries.title",
+                "library": "@.capitalize:libraries.i",
                 "collection": "@.capitalize:project.collection.i",
                 "segment": "@.capitalize:project.instruction.segment.i",
                 "boundOrUnbound": "Forme reliée ou non reliée",
@@ -398,8 +398,9 @@
         }
     },
     "libraries": {
-        "title": "Bibliothèques",
+        "i": "Bibliothèques",
         "name": "Nom de la bibliothèque",
+        "list": "Liste des bibliothèques",
         "form": {
             "fields": {
                 "name": "Nom",

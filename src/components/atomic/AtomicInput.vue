@@ -54,7 +54,11 @@ onMounted(() => {
         :type="type ?? 'text'"
         @clear="emit('clear')"
     >
-        <QTooltip v-if="tooltip">{{ tooltip }}</QTooltip>
+        <QTooltip
+            v-if="tooltip"
+            :delay="1000"
+            >{{ tooltip }}</QTooltip
+        >
         <template
             v-if="icon"
             #prepend

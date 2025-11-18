@@ -125,7 +125,6 @@ defineProps<{
                     >
                         <p>{{ exclusionReason }}</p>
                         <AtomicButton
-                            v-if="!store.isInEditionMode"
                             icon="mdi-close"
                             no-border
                             size="xs"
