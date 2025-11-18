@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import type { ImportCSVErrorObject } from '#/project.ts'
-import { useProjectLibraryCollection } from '@/components/project/projectStepper/steps/projectLibraries/collections/useProjectLibraryCollection.ts'
+import { useProjectLibraryCollection } from '@/components/project/libraries/card/collectionField/useProjectLibraryCollection.ts'
 
 const props = defineProps<{
     libraryId: string

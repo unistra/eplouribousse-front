@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useProjectStore } from '@/stores/projectStore'
-import ProjectLibraryCard from '@/components/project/projectStepper/steps/projectLibraries/ProjectLibraryCard.vue'
+import ProjectLibraryCard from '@/components/project/libraries/card/ProjectLibraryCard.vue'
 import ProjectRoles from '@/components/project/projectStepper/steps/projectRoles/ProjectRoles.vue'
 import { ProjectAdministrationTab, useProjectAdmin } from '@/components/project/projectAdmin/useProjectAdmin.ts'
 import ProjectInformations from '../projectStepper/steps/projectInformations/ProjectInformations.vue'

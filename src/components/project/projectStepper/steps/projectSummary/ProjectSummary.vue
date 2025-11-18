@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
-import ProjectLibraryCard from '@/components/project/projectStepper/steps/projectLibraries/ProjectLibraryCard.vue'
+import ProjectLibraryCard from '@/components/project/libraries/card/ProjectLibraryCard.vue'
 import { useProjectRoles } from '@/components/project/projectStepper/steps/projectRoles/useProjectRoles.ts'
 import { checkValidityProjectStepper } from '@/components/project/projectStepper/useProjectStepper.ts'
 import { useUtils } from '@/composables/useUtils.ts'

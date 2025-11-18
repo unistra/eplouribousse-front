@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
-import ProjectLibraryCard from '@/components/project/projectStepper/steps/projectLibraries/ProjectLibraryCard.vue'
+import ProjectLibraryCard from '@/components/project/libraries/card/ProjectLibraryCard.vue'
 import LibraryTable from '@/components/library/libraryTable/LibraryTable.vue'
-import { useProjectLibraries } from '@/components/project/projectStepper/steps/projectLibraries/useProjectLibraries.ts'
+import { useProjectLibraries } from '@/components/project/libraries/useProjectLibraries.ts'
 
 const { t } = useI18n()
 const projectStore = useProjectStore()
