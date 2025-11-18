@@ -2,31 +2,89 @@
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import ProjectLibraryCard from '@/components/project/projectStepper/steps/projectLibraries/ProjectLibraryCard.vue'
-import ProjectLibraryAdd from '@/components/project/projectStepper/steps/projectLibraries/ProjectLibraryAdd.vue'
+import LibraryTable from '@/components/library/libraryTable/LibraryTable.vue'
+import { useProjectLibraries } from '@/components/project/projectStepper/steps/projectLibraries/useProjectLibraries.ts'
 
 const { t } = useI18n()
-const store = useProjectStore()
+const projectStore = useProjectStore()
+
+const { onAddLibrary, addLibraryDialog } = useProjectLibraries()
 </script>
 
 <template>
-    <p>{{ t('newProject.steps.libraries.description') }}</p>
     <div class="container">
-        <template v-if="store.libraries.length > 0">
-            <ProjectLibraryCard
-                v-for="library in store.libraries"
-                :key="library.id"
-                :library="library"
-            />
-        </template>
+        <p>{{ t('newProject.steps.libraries.description') }}</p>
+        <div>
+            <template v-if="projectStore.libraries.length">
+                <ProjectLibraryCard
+                    v-for="library in projectStore.libraries"
+                    :key="library.id"
+                    class="library-card selected"
+                    :library="library"
+                />
+            </template>
 
-        <ProjectLibraryAdd />
+            <QCard
+                v-if="projectStore.acl.addLibrary"
+                class="library-card add"
+                flat
+                @click="addLibraryDialog = true"
+            >
+                <QIcon
+                    name="mdi-plus-circle-outline"
+                    size="2rem"
+                />
+                <QDialog v-model="addLibraryDialog">
+                    <QCard>
+                        <QCardSection>
+                            <p>{{ t('libraries.i') }}</p>
+                        </QCardSection>
+                        <QCardSection>
+                            <p>{{ t('libraries.list') }}</p>
+                            <LibraryTable
+                                :libraries-selected="projectStore.libraries"
+                                :with-add-btn="true"
+                                @selected="onAddLibrary"
+                            />
+                        </QCardSection>
+                    </QCard>
+                </QDialog>
+            </QCard>
+        </div>
     </div>
 </template>
 
-<style scoped>
-.container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-}
+<style scoped lang="sass">
+.container
+    display: flex
+    flex-direction: column
+    gap: 1rem
+
+    &>p
+        font-size: var(--font-size-lg)
+    &>div
+        display: flex
+        flex-wrap: wrap
+        gap: 16px
+
+        .library-card
+            width: 100%
+            max-width: 24rem
+            display: flex
+
+            &.selected
+                flex-direction: column
+                gap: 0.5rem
+                border: 2px solid var(--color-neutral-200)
+                border-radius: var(--border-radius)
+            &.add
+                height: 12rem
+                justify-content: center
+                align-items: center
+                border: 4px dotted var(--color-neutral-300)
+                border-radius: var(--border-radius)
+                cursor: pointer
+
+                .q-icon
+                    color: var(--color-neutral-300)
 </style>

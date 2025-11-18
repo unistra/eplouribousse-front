@@ -169,23 +169,6 @@ export const useProjectStore = defineStore('project', {
 
             return true
         },
-
-        // LIBRARIES
-        async addLibrary(library: LibraryI) {
-            if (this.libraries.some((lib) => lib.id === library.id)) return
-            try {
-                await axiosI.post(`/projects/${this.id}/libraries/`, { library_id: library.id })
-
-                const newLibrary: ProjectLibrary = { ...library, isAlternativeStorageSite: false }
-                this.libraries.push(newLibrary)
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('newProject.steps.libraries.errors.whileAdding'),
-                })
-                return
-            }
-        },
         async removeLibrary(library: LibraryI) {
             if (!this.libraries.some((lib) => lib.id === library.id)) return
             try {

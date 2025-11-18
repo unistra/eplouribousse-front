@@ -1,14 +1,10 @@
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import type { ProjectLibrary } from '#/project.ts'
 import { Roles } from '&/project.ts'
 
 export const useProjectLibraryCard = (library: ProjectLibrary) => {
     const store = useProjectStore()
-
-    const borderColorIsAlternativeStorageSite = computed(() => {
-        return library.isAlternativeStorageSite ? 'var(--color-accent)' : 'var(--color-neutral-200)'
-    })
 
     const isLoadingDelete = ref<boolean>(false)
     const onDelete = async () => {
@@ -35,6 +31,5 @@ export const useProjectLibraryCard = (library: ProjectLibrary) => {
         onAddInvitation,
         onAddRole,
         isAddUserLoading,
-        borderColorIsAlternativeStorageSite,
     }
 }

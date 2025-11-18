@@ -7,7 +7,6 @@ import { type ProjectLibrary } from '#/project.ts'
 import { useProjectLibraryCard } from '@/components/project/projectStepper/steps/projectLibraries/useProjectLibraryCard.ts'
 import ProjectLibraryCollection from '@/components/project/projectStepper/steps/projectLibraries/collections/ProjectLibraryCollection.vue'
 import { Roles } from '&/project.ts'
-import { storeToRefs } from 'pinia'
 
 const props = defineProps<{
     library: ProjectLibrary
@@ -16,10 +15,8 @@ const props = defineProps<{
 
 const { t } = useI18n()
 const store = useProjectStore()
-const { isInEditionMode } = storeToRefs(useProjectStore())
 
-const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading, borderColorIsAlternativeStorageSite } =
-    useProjectLibraryCard(props.library)
+const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading } = useProjectLibraryCard(props.library)
 </script>
 
 <template>
@@ -35,13 +32,13 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading,
         </QCardSection>
 
         <QCardSection>
-            <p>{{ t('newProject.steps.libraries.instructors') }}</p>
             <SearchUser
                 v-if="!isSummary"
                 :invitations-selected="
                     store.invitations.filter((el) => el.role === Roles.Instructor && el.libraryId === library.id)
                 "
                 :is-add-user-loading="isAddUserLoading"
+                :label="t('newProject.steps.libraries.instructors')"
                 :users-selected="
                     store.roles
                         .filter((el) => el.role === Roles.Instructor && el.libraryId === library.id)
@@ -52,28 +49,6 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading,
                 @remove-invitation="async ({ email, role }) => await store.removeInvitation(email, role, library.id)"
                 @remove-user="async (user) => await store.removeRole(user.id, Roles.Instructor, library.id)"
             />
-            <QList
-                v-else
-                dense
-            >
-                <QItem
-                    v-for="invitation in store.invitations.filter(
-                        (el) => el.role === Roles.Instructor && el.libraryId === library.id,
-                    )"
-                    :key="invitation.email"
-                >
-                    📨 {{ invitation.email }}
-                </QItem>
-                <QItem
-                    v-for="user in store.roles
-                        .filter((el) => el.role === Roles.Instructor && el.libraryId === library.id)
-                        .map((el) => el.user)"
-                    :key="user.id"
-                >
-                    {{ user.firstName || '***' }} {{ user.lastName || `***` }} -
-                    {{ user.email || t('utils.noEmailAddress') }}
-                </QItem>
-            </QList>
         </QCardSection>
 
         <QCardSection>
@@ -81,20 +56,13 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading,
                 v-if="!library.isAlternativeStorageSite"
                 :is-summary="isSummary"
                 :library-id="library.id"
-                :project-id="store.id"
             />
         </QCardSection>
 
         <QCardActions
-            v-if="!isSummary && !isInEditionMode"
+            v-if="!isSummary"
             align="right"
         >
-            <!-- No alternative storage yet
-             <QCheckbox
-                :label="t('project.settings.alternativeStorageSite')"
-                :model-value="library.isAlternativeStorageSite"
-                @update:model-value="store.toggleIsAlternativeStorageSite(props.library)"
-            /> -->
             <AtomicButton
                 confirm-button-color="negative"
                 icon="mdi-delete"
@@ -108,18 +76,9 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading,
 </template>
 
 <style scoped lang="sass">
-.q-card
-    width: 100%
-    max-width: 24rem
-    display: flex
-    flex-direction: column
-    gap: 0.5rem
-    border: 2px solid v-bind(borderColorIsAlternativeStorageSite)
-    border-radius: var(--border-radius)
+.library-name
+    font-size: var(--font-size-xl)
 
-    .library-name
-        font-size: var(--font-size-xl)
-
-    .chip-label-value
-        font-size: var(--font-size-sm)
+.chip-label-value
+    font-size: var(--font-size-sm)
 </style>

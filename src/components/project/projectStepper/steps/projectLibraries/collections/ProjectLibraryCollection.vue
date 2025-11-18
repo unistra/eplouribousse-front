@@ -8,7 +8,6 @@ import { useProjectLibraryCollection } from '@/components/project/projectStepper
 
 const props = defineProps<{
     libraryId: string
-    projectId: string
     isSummary?: boolean
 }>()
 
