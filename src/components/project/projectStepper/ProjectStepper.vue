@@ -7,11 +7,12 @@ import { useRoute } from 'vue-router'
 import { onMounted } from 'vue'
 import ProjectInformations from '@/components/project/projectStepper/steps/projectInformations/ProjectInformations.vue'
 import ProjectRoles from '@/components/project/projectStepper/steps/projectRoles/ProjectRoles.vue'
-import ProjectLibraries from '@/components/project/projectStepper/steps/projectLibraries/ProjectLibraries.vue'
+import ProjectLibraries from '@/components/project/libraries/ProjectLibraries.vue'
 import ProjectSummary from '@/components/project/projectStepper/steps/projectSummary/ProjectSummary.vue'
+import { useProjectStore } from '@/stores/projectStore.ts'
 
 const { t } = useI18n()
-
+const projectStore = useProjectStore()
 const { step, nextStep, previousStep, buttonLabel, passToReviewLoading, passToReview } = useProjectStepper()
 
 const { checkValidityForRolesStep, checkValidityForLibraryStep } = checkValidityProjectStepper()
@@ -31,7 +32,7 @@ onMounted(async () => {
         done-color="positive"
         error-color="negative"
         flat
-        header-nav
+        :header-nav="!!projectStore.id"
     >
         <QStep
             :done="step > 1"
