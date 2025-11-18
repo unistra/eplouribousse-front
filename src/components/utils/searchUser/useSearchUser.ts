@@ -13,7 +13,7 @@ export type SearchUserEmitActions = {
 }
 
 export function useSearchUser(emit: SearchUserEmitActions) {
-    const username = ref<string>('')
+    const input = ref<string>('')
     const users = ref<UserSummarized[]>([])
     const matchingUsers = ref<UniqueSet<UserSummarized>>()
     const userAlreadySelected = ref<UserSummarized[]>([])
@@ -22,7 +22,7 @@ export function useSearchUser(emit: SearchUserEmitActions) {
     const isUserListLoading = ref<boolean>(false)
     const nextPage = ref<number | null>(1)
 
-    watch(username, async (newValue) => {
+    watch(input, async (newValue) => {
         if (newValue === '') {
             users.value = []
             matchingUsers.value?.clear()
@@ -38,20 +38,20 @@ export function useSearchUser(emit: SearchUserEmitActions) {
         try {
             const response = await axiosI.get<Pagination<UserSummarized>>(`/users/`, {
                 params: {
-                    search: username.value,
+                    search: input.value,
                     exclude: userAlreadySelected.value.map((user) => user.id),
                 },
             })
             users.value = response.data.results
             nextPage.value = response.data.next
 
-            if (username.value === '') {
+            if (input.value === '') {
                 matchingUsers.value?.clear()
                 nextPage.value = null
             } else {
                 matchingUsers.value = new UniqueSet(
                     userComparator,
-                    users.value.filter((user) => user.email.includes(username.value)),
+                    users.value.filter((user) => user.email.includes(input.value)),
                 )
             }
         } finally {
@@ -67,19 +67,19 @@ export function useSearchUser(emit: SearchUserEmitActions) {
                 {
                     params: {
                         page: nextPage.value,
-                        search: username.value,
+                        search: input.value,
                     },
                 },
             )
             nextPage.value = response.data.next
             users.value.push(...response.data.results)
-            if (username.value === '') {
+            if (input.value === '') {
                 matchingUsers.value?.clear()
                 nextPage.value = null
             } else {
                 matchingUsers.value = new UniqueSet(
                     userComparator,
-                    users.value.filter((user) => user.email.includes(username.value)),
+                    users.value.filter((user) => user.email.includes(input.value)),
                 )
             }
         } finally {
@@ -101,20 +101,20 @@ export function useSearchUser(emit: SearchUserEmitActions) {
         action: 'addInvitation' | 'removeInvitation' | 'addUser' | 'removeUser',
         payload?: { invitation?: ProjectInvitation; user?: UserSummarized },
     ) => {
-        if (action === 'addInvitation') emit('addInvitation', username.value)
+        if (action === 'addInvitation') emit('addInvitation', input.value)
         else if (payload?.invitation && action === 'removeInvitation') emit('removeInvitation', payload.invitation)
         else if (payload?.user && action === 'addUser') emit('addUser', payload.user)
         else if (payload?.user && action === 'removeUser') emit('removeUser', payload.user)
-        username.value = ''
+        input.value = ''
     }
 
     const clear = () => {
         matchingUsers.value?.clear()
-        username.value = ''
+        input.value = ''
     }
 
     return {
-        username,
+        input,
         users,
         matchingUsers,
         isUserListLoading,
