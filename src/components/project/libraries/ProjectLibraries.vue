@@ -71,6 +71,7 @@ const { onAddLibrary, addLibraryDialog } = useProjectLibraries()
             width: 100%
             max-width: 24rem
             display: flex
+            height: fit-content
 
             &.selected
                 flex-direction: column
