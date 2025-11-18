@@ -42,3 +42,8 @@ h3 {
 .q-inner-loading {
     z-index: 1000;
 }
+
+.q-dialog__inner > .q-card {
+    border-radius: var(--border-radius);
+    padding: 0.5rem;
+}

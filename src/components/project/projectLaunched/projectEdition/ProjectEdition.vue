@@ -93,7 +93,7 @@ onMounted(() => {
             </QList>
         </div>
         <div class="collection-container">
-            <h3>{{ t('project.collection.i') }}</h3>
+            <h3>{{ t('collection.i') }}</h3>
             <div class="select-and-pdf-container">
                 <div class="collection-select-and-infos">
                     <AtomicSelect

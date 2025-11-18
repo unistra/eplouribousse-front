@@ -349,6 +349,9 @@
         },
         "storageLocation": "Lieu de conservation"
     },
+    "collection": {
+        "i": "Collection"
+    },
     "view": {
         "tenantAdmin": {
             "section2": "Gestion des rôles spécifiques"
