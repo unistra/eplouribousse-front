@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import ProjectStepper from '@/components/project/projectStepper/ProjectStepper.vue'
+import ProjectStepper from '@/components/project/stepper/ProjectStepper.vue'
 import { ref } from 'vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'

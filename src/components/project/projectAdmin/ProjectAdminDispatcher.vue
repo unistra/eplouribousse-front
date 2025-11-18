@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useProjectStore } from '@/stores/projectStore'
 import ProjectLibraryCard from '@/components/project/libraries/card/ProjectLibraryCard.vue'
-import ProjectRoles from '@/components/project/projectStepper/steps/projectRoles/ProjectRoles.vue'
+import ProjectRoles from '@/components/project/stepper/steps/projectRoles/ProjectRoles.vue'
 import { ProjectAdministrationTab, useProjectAdmin } from '@/components/project/projectAdmin/useProjectAdmin.ts'
-import ProjectInformations from '../projectStepper/steps/projectInformations/ProjectInformations.vue'
+import ProjectInformations from '@/components/project/stepper/steps/projectInformations/ProjectInformations.vue'
 import AtomicToggle from '@/components/atomic/AtomicToggle.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'

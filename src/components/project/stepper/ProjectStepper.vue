@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import { QStepper } from 'quasar'
 import { useI18n } from 'vue-i18n'
-import { checkValidityProjectStepper, useProjectStepper } from '@/components/project/projectStepper/useProjectStepper'
+import { checkValidityProjectStepper, useProjectStepper } from '@/components/project/stepper/useProjectStepper'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useRoute } from 'vue-router'
 import { onMounted } from 'vue'
-import ProjectInformations from '@/components/project/projectStepper/steps/projectInformations/ProjectInformations.vue'
-import ProjectRoles from '@/components/project/projectStepper/steps/projectRoles/ProjectRoles.vue'
+import ProjectInformations from '@/components/project/stepper/steps/projectInformations/ProjectInformations.vue'
+import ProjectRoles from '@/components/project/stepper/steps/projectRoles/ProjectRoles.vue'
 import ProjectLibraries from '@/components/project/libraries/ProjectLibraries.vue'
-import ProjectSummary from '@/components/project/projectStepper/steps/projectSummary/ProjectSummary.vue'
+import ProjectSummary from '@/components/project/stepper/steps/projectSummary/ProjectSummary.vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
 
 const { t } = useI18n()
