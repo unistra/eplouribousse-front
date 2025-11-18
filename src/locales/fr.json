@@ -113,24 +113,6 @@
                 "addLibrary": "Ajouter une bibliothèque",
                 "searchLibraries": "Rechercher des bibliothèques",
                 "instructors": "Instructeurs",
-                "collection": {
-                    "title": "Collection",
-                    "dragAndDrop": "Glissez-déposez un fichier CSV, ou cliquez pour en sélectionner un",
-                    "importSuccess": "L'import du CSV s'est fait avec succès",
-                    "weFound": "Nous avons trouvé",
-                    "elementPresent": "{count} élément présent | {count} éléments présents",
-                    "times": "fois",
-                    "present": "Collection présente avec {count} élément | Collection présente avec {count} éléments",
-                    "missing": "Collection absente",
-                    "delete": {
-                        "warning": "Vous êtes sur le point de supprimer la collection associée à cette bibliothèque",
-                        "irreversible": "Cette action est irréversible"
-                    },
-                    "errors": {
-                        "wrongExtension": "Le fichier doit être au format CSV",
-                        "dialogTitle": "Nous avons détecté une ou des erreurs dans le fichier"
-                    }
-                },
                 "errors": {
                     "whileAdding": "Une erreur est survenue lors de l'ajout de la bibliothèque",
                     "whileDeleting": "Une erreur est survenue lors de la suppression de la bibliothèque"
@@ -169,9 +151,6 @@
             "alerts": "Alertes email",
             "exclusions": "Motifs d'exclusion",
             "sucessUpdate": "Projet mis à jour avec succès"
-        },
-        "collection": {
-            "i": "Collection"
         },
         "status": {
             "draft": "Brouillon",
@@ -238,7 +217,7 @@
             "comment": "Commentaire",
             "resultant": {
                 "i": "Résultante | Résultantes",
-                "selectCollection": "@:project.resources.resultant.i de la @.lower:project.collection.i",
+                "selectCollection": "@:project.resources.resultant.i de la @.lower:collection.i",
                 "title": "Édition de la résultante",
                 "infos": "Les lignes impliquant la collection sélectionnée sont mises en évidence",
                 "motherCollection": "Collection mère",
@@ -298,7 +277,7 @@
             "tableFields": {
                 "line": "Ligne",
                 "library": "@.capitalize:libraries.i",
-                "collection": "@.capitalize:project.collection.i",
+                "collection": "@.capitalize:collection.i",
                 "segment": "@.capitalize:project.instruction.segment.i",
                 "boundOrUnbound": "Forme reliée ou non reliée",
                 "improvableElements": "Éléments améliorables",
@@ -308,6 +287,27 @@
                 "anomalies": "@:project.anomaly.i"
             },
             "next": "Finir l'instruction et passer la main à la bibliothèque suivante"
+        },
+        "libraries": {
+            "card": {
+                "csv-import": {
+                    "dragAndDrop": "Glissez-déposez un fichier CSV, ou cliquez pour en sélectionner un",
+                    "present": "Collection présente avec {count} élément | Collection présente avec {count} éléments",
+                    "importSuccess": "L'import du CSV s'est fait avec succès",
+                    "weFound": "Nous avons trouvé",
+                    "elementPresent": "{count} élément présent {times} fois| {count} éléments présents {times} fois",
+                    "missing": "Collection absente",
+                    "delete": {
+                        "warning": "Vous êtes sur le point de supprimer la collection associée à cette bibliothèque",
+                        "irreversible": "Cette action est irréversible",
+                        "success": "Les collections ont bien été supprimées"
+                    },
+                    "errors": {
+                        "wrongExtension": "Le fichier doit être au format CSV",
+                        "dialogTitle": "Nous avons détecté une ou des erreurs dans le fichier"
+                    }
+                }
+            }
         },
         "control": {
             "nextPhase": "Passer à la phase suivante"

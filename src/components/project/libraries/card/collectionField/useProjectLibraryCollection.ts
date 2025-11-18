@@ -4,91 +4,122 @@ import type { Pagination } from '#/pagination.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
+import { axiosI } from '@/plugins/axios/axios.ts'
+import { useUtils } from '@/composables/useUtils.ts'
+import { isAxiosError } from 'axios'
 
 export const useProjectLibraryCollection = (libraryId: string) => {
-    const store = useProjectStore()
+    const projectStore = useProjectStore()
     const { t } = useI18n()
     const { notify } = useComposableQuasar()
+    const { useHandleError } = useUtils()
 
     const fileInput = ref<HTMLInputElement | null>(null)
-
-    const modalImportCSVResponse = ref(false)
+    const csvImportLoading = ref(false)
+    const collection = ref<Pagination<Collection> | null | undefined>(undefined)
     const importCSVResponse = ref<ImportCSVResponse | undefined>(undefined)
-    const modalImportCSVError = ref(false)
     const importCSVError = ref<ImportCSVError | undefined>(undefined)
 
-    const collection = ref<Pagination<Collection> | null | undefined>(undefined)
+    const onDrop = async (event: DragEvent) => {
+        await handleFileUpload(event.dataTransfer?.files?.[0] || null)
+    }
 
-    const isCollectionLoading = ref(false)
+    const onFileChange = async (event: Event) => {
+        const target = event.target as HTMLInputElement
+        await handleFileUpload(target.files?.[0] || null)
+    }
+
+    const onModalImportCollectionClose = () => {
+        importCSVResponse.value = undefined
+        importCSVError.value = undefined
+    }
+
     const getCollection = async () => {
-        isCollectionLoading.value = true
-        collection.value = await store.getCollection(libraryId)
-        isCollectionLoading.value = false
+        csvImportLoading.value = true
+
+        try {
+            const response = await axiosI.get<Pagination<Collection>>('/collections/', {
+                params: {
+                    library: libraryId,
+                    project: projectStore.id,
+                },
+            })
+
+            if (!projectStore.librariesIdThatHaveACollectionImported.includes(libraryId) && response.data.count)
+                projectStore.librariesIdThatHaveACollectionImported.push(libraryId)
+            collection.value = response.data
+        } catch (e) {
+            useHandleError(e)
+        } finally {
+            csvImportLoading.value = false
+        }
     }
 
     const handleFileUpload = async (file: File | null) => {
         if (!file || !(file.type === 'text/csv' || file.name.endsWith('.csv'))) {
             notify({
                 type: 'negative',
-                message: t('newProject.steps.libraries.collection.errors.wrongExtension'),
+                message: t('project.libraries.card.csv-import.errors.wrongExtension'),
             })
             return
         }
 
+        csvImportLoading.value = true
         try {
-            const response = await store.importCollection(file, libraryId)
+            const formData = new FormData()
+            formData.append('csv_file', file)
+            formData.append('library', libraryId)
+            formData.append('project', projectStore.id)
 
-            if (Array.isArray(response)) {
-                // It's of type ImportCSVError
-                importCSVError.value = response
-                modalImportCSVError.value = true
+            const response = await axiosI.post<ImportCSVResponse>('/collections/import-csv/', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+            importCSVResponse.value = response.data
+            await getCollection()
+        } catch (e) {
+            if (isAxiosError(e)) {
+                importCSVError.value = e.response?.data.csvFile
                 if (fileInput.value) fileInput.value.value = ''
             } else {
-                // It's of type ImportCSVResponse
-                importCSVResponse.value = response
-                modalImportCSVResponse.value = true
-                await getCollection()
+                useHandleError(e)
             }
-        } catch {
-            notify({
-                type: 'negative',
-                message: t('errors.unknownRetry'),
-            })
+        } finally {
+            csvImportLoading.value = false
         }
     }
 
-    const onDrop = async (event: DragEvent) => {
-        isCollectionLoading.value = true
-        event.preventDefault()
-        await handleFileUpload(event.dataTransfer?.files?.[0] || null)
-        isCollectionLoading.value = false
-    }
-
-    const onFileChange = async (event: Event) => {
-        isCollectionLoading.value = true
-        const target = event.target as HTMLInputElement
-        await handleFileUpload(target.files?.[0] || null)
-        isCollectionLoading.value = false
-    }
-
-    const onModalImportCollectionClose = () => {
-        modalImportCSVResponse.value = false
-        importCSVResponse.value = undefined
-        modalImportCSVError.value = false
-        importCSVError.value = undefined
+    const deleteCollection = async (libraryId: string) => {
+        csvImportLoading.value = true
+        try {
+            await axiosI.delete('/collections/bulk-delete/', {
+                params: {
+                    library_id: libraryId,
+                    project_id: projectStore.id,
+                },
+            })
+            collection.value = undefined
+            notify({
+                message: t('project.libraries.card.csv-import.delete.success'),
+            })
+        } catch (e) {
+            useHandleError(e)
+        } finally {
+            csvImportLoading.value = false
+        }
     }
 
     return {
         fileInput,
-        modalImportCSVResponse,
         importCSVResponse,
-        modalImportCSVError,
         importCSVError,
         collection,
         getCollection,
         onDrop,
         onFileChange,
         onModalImportCollectionClose,
-        isCollectionLoading,
+        csvImportLoading,
+        deleteCollection,
     }
 }

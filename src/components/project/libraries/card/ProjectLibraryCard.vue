@@ -54,8 +54,8 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading 
         <QCardSection>
             <ProjectLibraryCollection
                 v-if="!library.isAlternativeStorageSite"
-                :is-summary="isSummary"
                 :library-id="library.id"
+                :summary-mode="isSummary"
             />
         </QCardSection>
 

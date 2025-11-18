@@ -1,9 +1,6 @@
 import { defineStore } from 'pinia'
 import type { LibraryI } from '#/library'
 import {
-    type Collection,
-    type ImportCSVError,
-    type ImportCSVResponse,
     type Project,
     type ProjectDetails,
     type ProjectInvitation,
@@ -15,8 +12,6 @@ import {
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { Notify } from 'quasar'
 import i18n from '@/plugins/i18n'
-import type { Pagination } from '#/pagination.ts'
-import axios from 'axios'
 import { useUserStore } from '@/stores/userStore.ts'
 import { ProjectStatus, Roles, Tab } from '&/project.ts'
 import { useResourceStore } from '@/stores/resourceStore.ts'
@@ -232,49 +227,6 @@ export const useProjectStore = defineStore('project', {
                     message: t('errors.unknown'),
                 })
             }
-        },
-        async getCollection(libraryId: string): Promise<Pagination<Collection> | undefined> {
-            try {
-                const response = await axiosI.get<Pagination<Collection>>('/collections/', {
-                    params: {
-                        library: libraryId,
-                        project: this.id,
-                    },
-                })
-
-                if (!this.librariesIdThatHaveACollectionImported.includes(libraryId) && response.data.count)
-                    this.librariesIdThatHaveACollectionImported.push(libraryId)
-                return response.data
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        async importCollection(file: File, libraryId: string): Promise<ImportCSVResponse | ImportCSVError> {
-            const formData = new FormData()
-            formData.append('csv_file', file)
-            formData.append('library', libraryId)
-            formData.append('project', this.id)
-
-            try {
-                const response = await axiosI.post<ImportCSVResponse>('/collections/import-csv/', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                })
-                return response.data
-            } catch (e: unknown) {
-                if (axios.isAxiosError(e)) {
-                    return e.response?.data.csvFile as ImportCSVError
-                } else {
-                    throw new Error()
-                }
-            }
-        },
-        async deleteCollection(libraryId: string): Promise<void> {
-            console.log('Todo', libraryId)
         },
         async addInvitation(email: string, role: Roles, libraryId?: string) {
             try {
