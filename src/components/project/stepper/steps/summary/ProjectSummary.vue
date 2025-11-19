@@ -54,8 +54,8 @@ const { checkValidityForRolesStep, checkValidityForLibraryStep } = checkValidity
                 <ProjectLibraryCard
                     v-for="library in projectStore.libraries"
                     :key="library.id"
-                    is-summary
                     :library="library"
+                    summary-mode
                 />
             </div>
         </div>

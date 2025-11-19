@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { computed, reactive, ref, toRefs } from 'vue'
 import type { Collection, ImportCSVError, ImportCSVResponse } from '#/project.ts'
 import type { Pagination } from '#/pagination.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
@@ -7,16 +7,22 @@ import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { useUtils } from '@/composables/useUtils.ts'
 import { isAxiosError } from 'axios'
+import type { LibraryI } from '#/library'
 
-export const useProjectLibraryCollection = (libraryId: string) => {
+const state = reactive<{ csvImportLoading: LibraryI['id'][] }>({
+    csvImportLoading: [],
+})
+
+export const useProjectLibraryCollection = (libraryId: string = '') => {
     const projectStore = useProjectStore()
     const { t } = useI18n()
     const { notify } = useComposableQuasar()
     const { useHandleError } = useUtils()
 
     const fileInput = ref<HTMLInputElement | null>(null)
-    const csvImportLoading = ref(false)
-    const collection = ref<Pagination<Collection> | null | undefined>(undefined)
+    const collectionCount = computed<number | undefined>(() => {
+        return projectStore.collectionsCount.find((el) => el.libraryId === libraryId)?.count
+    })
     const importCSVResponse = ref<ImportCSVResponse | undefined>(undefined)
     const importCSVError = ref<ImportCSVError | undefined>(undefined)
 
@@ -35,7 +41,8 @@ export const useProjectLibraryCollection = (libraryId: string) => {
     }
 
     const getCollection = async () => {
-        csvImportLoading.value = true
+        if (projectStore.collectionsCount.some((el) => el.libraryId === libraryId)) return
+        state.csvImportLoading.push(libraryId)
 
         try {
             const response = await axiosI.get<Pagination<Collection>>('/collections/', {
@@ -47,11 +54,12 @@ export const useProjectLibraryCollection = (libraryId: string) => {
 
             if (!projectStore.librariesIdThatHaveACollectionImported.includes(libraryId) && response.data.count)
                 projectStore.librariesIdThatHaveACollectionImported.push(libraryId)
-            collection.value = response.data
+
+            projectStore.collectionsCount.push({ libraryId, count: response.data.count })
         } catch (e) {
             useHandleError(e)
         } finally {
-            csvImportLoading.value = false
+            state.csvImportLoading = state.csvImportLoading.filter((id) => id !== libraryId)
         }
     }
 
@@ -64,7 +72,7 @@ export const useProjectLibraryCollection = (libraryId: string) => {
             return
         }
 
-        csvImportLoading.value = true
+        state.csvImportLoading.push(libraryId)
         try {
             const formData = new FormData()
             formData.append('csv_file', file)
@@ -86,12 +94,12 @@ export const useProjectLibraryCollection = (libraryId: string) => {
                 useHandleError(e)
             }
         } finally {
-            csvImportLoading.value = false
+            state.csvImportLoading = state.csvImportLoading.filter((id) => id !== libraryId)
         }
     }
 
     const deleteCollection = async (libraryId: string) => {
-        csvImportLoading.value = true
+        state.csvImportLoading.push(libraryId)
         try {
             await axiosI.delete('/collections/bulk-delete/', {
                 params: {
@@ -99,14 +107,14 @@ export const useProjectLibraryCollection = (libraryId: string) => {
                     project_id: projectStore.id,
                 },
             })
-            collection.value = undefined
+            projectStore.collectionsCount = projectStore.collectionsCount.filter((el) => el.libraryId === libraryId)
             notify({
                 message: t('project.libraries.card.csv-import.delete.success'),
             })
         } catch (e) {
             useHandleError(e)
         } finally {
-            csvImportLoading.value = false
+            state.csvImportLoading = state.csvImportLoading.filter((id) => id !== libraryId)
         }
     }
 
@@ -114,12 +122,12 @@ export const useProjectLibraryCollection = (libraryId: string) => {
         fileInput,
         importCSVResponse,
         importCSVError,
-        collection,
+        collectionCount,
         getCollection,
         onDrop,
         onFileChange,
         onModalImportCollectionClose,
-        csvImportLoading,
+        ...toRefs(state),
         deleteCollection,
     }
 }

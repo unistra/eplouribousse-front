@@ -10,7 +10,7 @@ import { Roles } from '&/project.ts'
 
 const props = defineProps<{
     library: ProjectLibrary
-    isSummary?: boolean
+    summaryMode?: boolean
 }>()
 
 const { t } = useI18n()
@@ -33,7 +33,7 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading 
 
         <QCardSection>
             <SearchUser
-                v-if="!isSummary"
+                v-if="!summaryMode"
                 :invitations-selected="
                     store.invitations.filter((el) => el.role === Roles.Instructor && el.libraryId === library.id)
                 "
@@ -55,12 +55,12 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading 
             <ProjectLibraryCollection
                 v-if="!library.isAlternativeStorageSite"
                 :library-id="library.id"
-                :summary-mode="isSummary"
+                :summary-mode="summaryMode"
             />
         </QCardSection>
 
         <QCardActions
-            v-if="!isSummary"
+            v-if="!summaryMode"
             align="right"
         >
             <AtomicButton

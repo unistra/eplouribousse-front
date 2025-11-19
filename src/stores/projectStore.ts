@@ -71,6 +71,7 @@ export const useProjectStore = defineStore('project', {
         isLoading: false,
         tab: Tab.Positioning,
         librariesIdThatHaveACollectionImported: [],
+        collectionsCount: [],
     }),
     getters: {
         nameRequired: (state) => state.name.length > 0,
@@ -106,6 +107,7 @@ export const useProjectStore = defineStore('project', {
                     isLoading: false,
                     tab: Tab.Positioning,
                     librariesIdThatHaveACollectionImported: [],
+                    collectionsCount: [],
                 }
             } catch {
                 Notify.create({
@@ -179,7 +181,7 @@ export const useProjectStore = defineStore('project', {
             } catch {
                 Notify.create({
                     type: 'negative',
-                    message: t('newProject.steps.libraries.errors.whileDeleting'),
+                    message: t('view.project.new.stepper.steps.libraries.errors.whileDeleting'),
                 })
                 return
             }

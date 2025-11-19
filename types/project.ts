@@ -29,6 +29,7 @@ export interface ProjectStoreState extends ProjectDetails {
     isLoading: boolean
     tab: Tab
     librariesIdThatHaveACollectionImported: string[]
+    collectionsCount: CollectionsCountOfALibrary[]
 }
 
 export interface ProjectSummarized {
@@ -72,6 +73,11 @@ export type Collection = {
     publication_history: string
     numbering: string
     notes: string
+}
+
+export type CollectionsCountOfALibrary = {
+    libraryId: LibraryI['id']
+    count: number
 }
 
 export interface ProjectSettings {

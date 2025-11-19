@@ -13,7 +13,7 @@ const props = defineProps<{
 const { t } = useI18n()
 const {
     getCollection,
-    collection,
+    collectionCount,
     importCSVResponse,
     importCSVError,
     fileInput,
@@ -30,14 +30,14 @@ onMounted(async () => await getCollection())
 <template>
     <p>{{ t('collection.i') }}</p>
     <QCard
-        :class="['csv-card', { present: collection?.results?.length, error: !!importCSVError }]"
+        :class="['csv-card', { present: !!collectionCount, error: !!importCSVError }]"
         flat
     >
-        <QInnerLoading :showing="csvImportLoading" />
+        <QInnerLoading :showing="csvImportLoading.includes(libraryId)" />
 
         <template v-if="!summaryMode">
             <QCardSection
-                v-if="!collection?.results?.length"
+                v-if="!collectionCount"
                 class="csv-input"
                 @click="fileInput?.click()"
                 @dragover.prevent
@@ -64,7 +64,7 @@ onMounted(async () => await getCollection())
                         size="sm"
                     />
                     <p>
-                        {{ t('project.libraries.card.csv-import.present', { count: collection?.count }) }}
+                        {{ t('project.libraries.card.csv-import.present', { count: collectionCount }) }}
                     </p>
                 </QCardSection>
                 <QCardActions align="right">
@@ -158,7 +158,7 @@ onMounted(async () => await getCollection())
 
         <template v-else>
             <QCardSection
-                v-if="!!collection?.results?.length"
+                v-if="!!collectionCount"
                 flat
             >
                 <QIcon
@@ -167,7 +167,7 @@ onMounted(async () => await getCollection())
                     size="sm"
                 />
                 <p>
-                    {{ t('project.libraries.card.csv-import.present', { count: collection?.count }) }}
+                    {{ t('project.libraries.card.csv-import.present', { count: collectionCount }) }}
                 </p>
             </QCardSection>
 

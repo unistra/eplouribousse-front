@@ -6,20 +6,25 @@ import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import router from '@/router'
 import { useUserStore } from '@/stores/userStore.ts'
 import { Roles } from '&/project.ts'
+import { useProjectLibraryCollection } from '@/components/project/libraries/card/collectionField/useProjectLibraryCollection.ts'
 
 export const checkValidityProjectStepper = () => {
     const projectStore = useProjectStore()
-    const checkValidityForLibraryStep = computed(() => {
+    const { csvImportLoading } = useProjectLibraryCollection()
+    const checkValidityForLibraryStep = computed<boolean | 'pending'>(() => {
         if (!(projectStore.libraries.length >= 2)) return false
+        if (csvImportLoading.value.length) return 'pending'
 
         return projectStore.libraries.every((library) => {
-            return (
-                (projectStore.roles.some((role) => role.libraryId === library.id && role.role === Roles.Instructor) ||
-                    projectStore.invitations.some(
-                        (invitation) => invitation.role === Roles.Instructor && invitation.libraryId === library.id,
-                    )) &&
-                projectStore.librariesIdThatHaveACollectionImported.includes(library.id)
-            )
+            const hasInstructorOrInstructorInvite =
+                projectStore.roles.some((role) => role.libraryId === library.id && role.role === Roles.Instructor) ||
+                projectStore.invitations.some(
+                    (invitation) => invitation.role === Roles.Instructor && invitation.libraryId === library.id,
+                )
+            const hasCollection = projectStore.librariesIdThatHaveACollectionImported.includes(library.id)
+
+            if (!hasCollection) return csvImportLoading.value
+            return hasInstructorOrInstructorInvite
         })
     })
 
