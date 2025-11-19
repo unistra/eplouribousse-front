@@ -38,7 +38,7 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading 
                     store.invitations.filter((el) => el.role === Roles.Instructor && el.libraryId === library.id)
                 "
                 :is-add-user-loading="isAddUserLoading"
-                :label="t('newProject.steps.libraries.instructors')"
+                :label="t('view.project.new.stepper.steps.libraries.instructors')"
                 :users-selected="
                     store.roles
                         .filter((el) => el.role === Roles.Instructor && el.libraryId === library.id)

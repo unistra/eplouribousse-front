@@ -28,7 +28,7 @@ export const useProjectLibraries = () => {
         } catch {
             notify({
                 type: 'negative',
-                message: t('newProject.steps.libraries.errors.whileAdding'),
+                message: t('view.project.new.stepper.steps.libraries.errors.whileAdding'),
             })
             return
         }

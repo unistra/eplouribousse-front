@@ -13,7 +13,7 @@ const { onAddLibrary, addLibraryDialog } = useProjectLibraries()
 
 <template>
     <div class="container">
-        <p>{{ t('newProject.steps.libraries.description') }}</p>
+        <h1>{{ t('view.project.new.stepper.steps.libraries.title') }}</h1>
         <div>
             <template v-if="projectStore.libraries.length">
                 <ProjectLibraryCard
@@ -58,10 +58,10 @@ const { onAddLibrary, addLibraryDialog } = useProjectLibraries()
 .container
     display: flex
     flex-direction: column
-    gap: 1rem
+    gap: 2rem
 
-    &>p
-        font-size: var(--font-size-lg)
+    h1
+        font-size: var(--font-size-xl)
     &>div
         display: flex
         flex-wrap: wrap
