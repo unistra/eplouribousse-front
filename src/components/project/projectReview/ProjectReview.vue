@@ -3,7 +3,7 @@ import { useI18n } from 'vue-i18n'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import ProjectAdmin from '@/components/project/projectAdmin/ProjectAdmin.vue'
 import { useProjectReview } from '@/components/project/projectReview/useProjectReview.ts'
-import ProjectSummary from '@/components/project/stepper/steps/projectSummary/ProjectSummary.vue'
+import ProjectSummary from '@/components/project/stepper/steps/summary/ProjectSummary.vue'
 import ProjectReviewButton from '@/components/project/projectReview/ProjectReviewButton.vue'
 
 const { t } = useI18n()

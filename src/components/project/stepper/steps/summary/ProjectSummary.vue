@@ -2,7 +2,7 @@
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import ProjectLibraryCard from '@/components/project/libraries/card/ProjectLibraryCard.vue'
-import { useProjectRoles } from '@/components/project/stepper/steps/projectRoles/useProjectRoles.ts'
+import { useProjectRoles } from '@/components/project/stepper/steps/roles/useProjectRoles.ts'
 import { checkValidityProjectStepper } from '@/components/project/stepper/useProjectStepper.ts'
 import { useUtils } from '@/composables/useUtils.ts'
 
