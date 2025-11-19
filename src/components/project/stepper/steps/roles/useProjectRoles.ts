@@ -17,22 +17,22 @@ export const useProjectRoles = () => {
         { title: t('roles.guest'), role: Roles.Guest },
     ]
 
-    const isAddUserLoading = ref<boolean>(false)
+    const addUserLoadingBasedOnRole = ref<Roles | undefined>()
     const onAddInvitation = async (email: string, role: Roles) => {
-        isAddUserLoading.value = true
+        addUserLoadingBasedOnRole.value = role
         await store.addInvitation(email, role)
-        isAddUserLoading.value = false
+        addUserLoadingBasedOnRole.value = undefined
     }
     const onAddRole = async (userId: string, role: Roles) => {
-        isAddUserLoading.value = true
+        addUserLoadingBasedOnRole.value = role
         await store.addRole(userId, role)
-        isAddUserLoading.value = false
+        addUserLoadingBasedOnRole.value = undefined
     }
 
     return {
         roles,
         onAddRole,
         onAddInvitation,
-        isAddUserLoading,
+        addUserLoadingBasedOnRole,
     }
 }

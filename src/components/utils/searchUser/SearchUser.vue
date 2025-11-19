@@ -37,7 +37,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div>
+    <div class="search-user">
         <p v-if="label">{{ label }}</p>
         <div
             v-if="!summaryMode"
@@ -128,6 +128,8 @@ onMounted(() => {
 </template>
 
 <style lang="sass" scoped>
+.search-user
+    position: relative
 .q-chip
     background-color: var(--color-white)
 </style>
