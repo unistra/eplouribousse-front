@@ -12,7 +12,12 @@ export type SearchUserEmitActions = {
     (e: 'removeUser', user: UserSummarized): void
 }
 
-export function useSearchUser(emit: SearchUserEmitActions) {
+export type SearchUserSendAction = (
+    action: 'addInvitation' | 'removeInvitation' | 'addUser' | 'removeUser',
+    payload?: { invitation?: ProjectInvitation; user?: UserSummarized },
+) => void
+
+export const useSearchUser = (emit: SearchUserEmitActions) => {
     const input = ref<string>('')
     const users = ref<UserSummarized[]>([])
     const matchingUsers = ref<UniqueSet<UserSummarized>>()
@@ -97,7 +102,7 @@ export function useSearchUser(emit: SearchUserEmitActions) {
         }
     }
 
-    const sendAction = (
+    const sendAction: SearchUserSendAction = (
         action: 'addInvitation' | 'removeInvitation' | 'addUser' | 'removeUser',
         payload?: { invitation?: ProjectInvitation; user?: UserSummarized },
     ) => {

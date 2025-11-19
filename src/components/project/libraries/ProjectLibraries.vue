@@ -19,14 +19,13 @@ const { onAddLibrary, addLibraryDialog } = useProjectLibraries()
                 <ProjectLibraryCard
                     v-for="library in projectStore.libraries"
                     :key="library.id"
-                    class="library-card selected"
                     :library="library"
                 />
             </template>
 
             <QCard
                 v-if="projectStore.acl.addLibrary"
-                class="library-card add"
+                class="library-card-add"
                 flat
                 @click="addLibraryDialog = true"
             >
@@ -67,25 +66,17 @@ const { onAddLibrary, addLibraryDialog } = useProjectLibraries()
         flex-wrap: wrap
         gap: 16px
 
-        .library-card
+        .library-card-add
             width: 100%
             max-width: 24rem
             display: flex
-            height: fit-content
+            height: 12rem
+            justify-content: center
+            align-items: center
+            border: 4px dotted var(--color-neutral-300)
+            border-radius: var(--border-radius)
+            cursor: pointer
 
-            &.selected
-                flex-direction: column
-                gap: 0.5rem
-                border: 2px solid var(--color-neutral-200)
-                border-radius: var(--border-radius)
-            &.add
-                height: 12rem
-                justify-content: center
-                align-items: center
-                border: 4px dotted var(--color-neutral-300)
-                border-radius: var(--border-radius)
-                cursor: pointer
-
-                .q-icon
-                    color: var(--color-neutral-300)
+            .q-icon
+                color: var(--color-neutral-300)
 </style>

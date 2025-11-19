@@ -7,6 +7,7 @@ import { type ProjectLibrary } from '#/project.ts'
 import { useProjectLibraryCard } from '@/components/project/libraries/card/useProjectLibraryCard.ts'
 import ProjectLibraryCollection from '@/components/project/libraries/card/collectionField/ProjectLibraryCollection.vue'
 import { Roles } from '&/project.ts'
+import ProjectLibraryCardUserList from '@/components/project/libraries/card/ProjectLibraryCardUserList.vue'
 
 const props = defineProps<{
     library: ProjectLibrary
@@ -14,9 +15,10 @@ const props = defineProps<{
 }>()
 
 const { t } = useI18n()
-const store = useProjectStore()
+const projectStore = useProjectStore()
 
-const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading } = useProjectLibraryCard(props.library)
+const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading, invitationsSelected, usersSelected } =
+    useProjectLibraryCard(props.library)
 </script>
 
 <template>
@@ -34,20 +36,23 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading 
         <QCardSection>
             <SearchUser
                 v-if="!summaryMode"
-                :invitations-selected="
-                    store.invitations.filter((el) => el.role === Roles.Instructor && el.libraryId === library.id)
-                "
+                :invitations-selected
                 :is-add-user-loading="isAddUserLoading"
                 :label="t('view.project.new.stepper.steps.libraries.instructors')"
-                :users-selected="
-                    store.roles
-                        .filter((el) => el.role === Roles.Instructor && el.libraryId === library.id)
-                        .map((el) => el.user)
-                "
+                :users-selected
                 @add-invitation="onAddInvitation"
                 @add-user="(user) => onAddRole(user.id)"
-                @remove-invitation="async ({ email, role }) => await store.removeInvitation(email, role, library.id)"
-                @remove-user="async (user) => await store.removeRole(user.id, Roles.Instructor, library.id)"
+                @remove-invitation="
+                    async ({ email, role }) => await projectStore.removeInvitation(email, role, library.id)
+                "
+                @remove-user="async (user) => await projectStore.removeRole(user.id, Roles.Instructor, library.id)"
+            />
+
+            <ProjectLibraryCardUserList
+                v-else
+                :invitations-selected
+                summary-mode
+                :users-selected
             />
         </QCardSection>
 
@@ -76,6 +81,15 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading 
 </template>
 
 <style scoped lang="sass">
+.q-card
+    width: 100%
+    max-width: 24rem
+    display: flex
+    height: fit-content
+    flex-direction: column
+    gap: 0.5rem
+    border: 2px solid var(--color-neutral-200)
+    border-radius: var(--border-radius)
 .library-name
     font-size: var(--font-size-xl)
 
