@@ -46,7 +46,7 @@ const hasData = computed(
         chartData.value.datasets.length > 0,
 )
 
-const options = {
+const options = computed(() => ({
     responsive: true,
     plugins: {
         legend: {
@@ -57,7 +57,7 @@ const options = {
             text: chartData.value?.title || '',
         },
     },
-}
+}))
 
 onMounted(async () => {
     await getData(props.type)
