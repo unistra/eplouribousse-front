@@ -1,18 +1,29 @@
 <script setup lang="ts">
 import {
     type ProjectDashboardTableType,
-    useProjectDashboardTable,
-} from '@/components/project/projectDashboard/useProjectDashboardTable.ts'
-import { onMounted } from 'vue'
+    useProjectDashboard,
+} from '@/components/project/projectDashboard/useProjectDashboard.ts'
+import { computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useUtils } from '@/composables/useUtils.ts'
+
+type DashboardTableData = {
+    title: string
+    computedAt: string
+    [key: string]: string | number
+}
 
 const props = defineProps<{
     type: ProjectDashboardTableType
 }>()
 
 const { t } = useI18n()
-const { tableData, getData, filteredTableDataKeys, loading } = useProjectDashboardTable()
+const { data: tableData, getData, loading } = useProjectDashboard<DashboardTableData>()
+
+const filteredTableDataKeys = computed(() => {
+    if (!tableData.value) return []
+    return Object.keys(tableData.value).filter((key) => key !== 'title' && key !== 'computedAt')
+})
 
 onMounted(async () => {
     await getData(props.type)
@@ -60,7 +71,7 @@ onMounted(async () => {
         >
             <QIcon
                 name="mdi-cached"
-                size="1.5rem"
+                size="1.25rem"
             />
             {{ t('project.dashboard.computedAt') }}
             {{ useUtils().useIntlDateTimeFormat(tableData.computedAt) }}
@@ -82,7 +93,7 @@ thead tr
         border-left: none
 
 .computed-at
-    font-size: 0.875rem
+    font-size: 0.75rem
     color: grey
     font-style: italic
     margin-top: 0.5rem

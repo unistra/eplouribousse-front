@@ -1,54 +1,21 @@
-import { axiosI } from '@/plugins/axios/axios.ts'
-import { useUtils } from '@/composables/useUtils.ts'
-import { computed, ref } from 'vue'
-import { useRoute } from 'vue-router'
-
-export type ProjectDashboardTableType =
-    | 'initial-data'
-    | 'positioning-information'
-    | 'exclusion-information'
-    | 'arbitration-information'
-    | 'instruction-candidates-information'
-    | 'instructions-information'
-    | 'controls-information'
-    | 'anomalies-information'
-    | 'achievements-information'
-
-type DashboardData = {
-    title: string
-    computedAt: string
-    [value: string]: string | number
-}
+import { computed } from 'vue'
+import type { ProjectDashboardTableType, DashboardTableData } from './useProjectDashboard'
+import { useProjectDashboard } from './useProjectDashboard'
 
 export const useProjectDashboardTable = () => {
-    const route = useRoute()
-    const loading = ref<boolean>(false)
+    const { getData, data: tableData, loading } = useProjectDashboard<DashboardTableData>()
 
-    const tableData = ref<DashboardData | undefined>()
+    const getTableData = async (type: ProjectDashboardTableType) => {
+        await getData(type)
+    }
 
     const filteredTableDataKeys = computed(() => {
         if (!tableData.value) return []
         return Object.keys(tableData.value).filter((key) => key !== 'title' && key !== 'computedAt')
     })
 
-    const getData = async (type: ProjectDashboardTableType) => {
-        loading.value = true
-        try {
-            const response = await axiosI.get<DashboardData>(`/projects/${route.params.id}/dashboard/`, {
-                params: {
-                    board: type,
-                },
-            })
-            tableData.value = response.data
-        } catch (e) {
-            useUtils().useHandleError(e)
-        } finally {
-            loading.value = false
-        }
-    }
-
     return {
-        getData,
+        getData: getTableData,
         tableData,
         filteredTableDataKeys,
         loading,

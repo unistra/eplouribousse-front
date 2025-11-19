@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import ProjectDashboardTable from '@/components/project/projectDashboard/ProjectDashboardTable.vue'
+import ProjectDashboardBarChart from '@/components/project/projectDashboard/ProjectDashboardBarChart.vue'
+import ProjectDashboardDonutChart from '@/components/project/projectDashboard/ProjectDashboardDonutChart.vue'
 </script>
 
 <template>
@@ -13,6 +15,10 @@ import ProjectDashboardTable from '@/components/project/projectDashboard/Project
         <ProjectDashboardTable type="controls-information" />
         <ProjectDashboardTable type="anomalies-information" />
         <ProjectDashboardTable type="achievements-information" />
+        <ProjectDashboardBarChart type="realized-positioning-per-library" />
+        <ProjectDashboardBarChart type="resources-to-instruct-per-library" />
+        <ProjectDashboardBarChart type="collection-occurrences-per-library" />
+        <ProjectDashboardDonutChart type="collection-occurrences-per-library" />
     </QPage>
 </template>
 
