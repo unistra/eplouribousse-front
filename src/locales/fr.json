@@ -96,59 +96,6 @@
             "ready": "Je suis prêt",
             "passToReview": "Passer le projet en review"
         },
-        "steps": {
-            "informations": {
-                "title": "Informations sur le projet",
-                "name": "Nom du projet",
-                "updateNameSucceed": "Le nom du project à bien été modifié",
-                "description": "Description du projet",
-                "noDescription": "Aucun description",
-                "continue": "Continuer",
-                "back": "Retour",
-                "startInFuture": "Le projet commencera le"
-            },
-            "libraries": {
-                "title": "Bibliothèques participantes",
-                "description": "Sélectionnez les bibliothèques participant au projet, puis renseignez leurs collections ainsi que leur instructeur",
-                "addLibrary": "Ajouter une bibliothèque",
-                "searchLibraries": "Rechercher des bibliothèques",
-                "instructors": "Instructeurs",
-                "collection": {
-                    "title": "Collection",
-                    "dragAndDrop": "Glissez-déposez un fichier CSV, ou cliquez pour en sélectionner un",
-                    "importSuccess": "L'import du CSV s'est fait avec succès",
-                    "weFound": "Nous avons trouvé",
-                    "elementPresent": "{count} élément présent | {count} éléments présents",
-                    "times": "fois",
-                    "present": "Collection présente avec {count} élément | Collection présente avec {count} éléments",
-                    "missing": "Collection absente",
-                    "delete": {
-                        "warning": "Vous êtes sur le point de supprimer la collection associée à cette bibliothèque",
-                        "irreversible": "Cette action est irréversible"
-                    },
-                    "errors": {
-                        "wrongExtension": "Le fichier doit être au format CSV",
-                        "dialogTitle": "Nous avons détecté une ou des erreurs dans le fichier"
-                    }
-                },
-                "errors": {
-                    "whileAdding": "Une erreur est survenue lors de l'ajout de la bibliothèque",
-                    "whileDeleting": "Une erreur est survenue lors de la suppression de la bibliothèque"
-                }
-            },
-            "roles": {
-                "title": "Rôles des utilisateurs"
-            },
-            "summary": {
-                "title": "Récapitulatif",
-                "noUser": "Aucun utilisateur n'a été assigné ce rôle",
-                "whenConfirm": "En confirmant, les invitations seront envoyés aux emails renseignés, ainsi que les notifications aux utilisateurs participants au projet",
-                "errors": {
-                    "libraries": "Au moins deux bibliothèques doivent être renseignées, chacune devant avoir une collection importée et au moins un instructeur",
-                    "roles": "Au moins un utilisateur ou une invitation doit être renseignée pour les rôles Administrateur, Pilote et Contrôleur"
-                }
-            }
-        },
         "creation": {
             "title": "Création d'un projet",
             "name": "Nom du projet",
@@ -169,9 +116,6 @@
             "alerts": "Alertes email",
             "exclusions": "Motifs d'exclusion",
             "sucessUpdate": "Projet mis à jour avec succès"
-        },
-        "collection": {
-            "i": "Collection"
         },
         "status": {
             "draft": "Brouillon",
@@ -238,7 +182,7 @@
             "comment": "Commentaire",
             "resultant": {
                 "i": "Résultante | Résultantes",
-                "selectCollection": "@:project.resources.resultant.i de la @.lower:project.collection.i",
+                "selectCollection": "@:project.resources.resultant.i de la @.lower:collection.i",
                 "title": "Édition de la résultante",
                 "infos": "Les lignes impliquant la collection sélectionnée sont mises en évidence",
                 "motherCollection": "Collection mère",
@@ -297,8 +241,8 @@
             },
             "tableFields": {
                 "line": "Ligne",
-                "library": "@.capitalize:libraries.title",
-                "collection": "@.capitalize:project.collection.i",
+                "library": "@.capitalize:libraries.i",
+                "collection": "@.capitalize:collection.i",
                 "segment": "@.capitalize:project.instruction.segment.i",
                 "boundOrUnbound": "Forme reliée ou non reliée",
                 "improvableElements": "Éléments améliorables",
@@ -308,6 +252,27 @@
                 "anomalies": "@:project.anomaly.i"
             },
             "next": "Finir l'instruction et passer la main à la bibliothèque suivante"
+        },
+        "libraries": {
+            "card": {
+                "csv-import": {
+                    "dragAndDrop": "Glissez-déposez un fichier CSV, ou cliquez pour en sélectionner un",
+                    "present": "Collection présente avec {count} élément | Collection présente avec {count} éléments",
+                    "importSuccess": "L'import du CSV s'est fait avec succès",
+                    "weFound": "Nous avons trouvé",
+                    "elementPresent": "{count} élément présent {times} fois| {count} éléments présents {times} fois",
+                    "missing": "Collection absente",
+                    "delete": {
+                        "warning": "Vous êtes sur le point de supprimer la collection associée à cette bibliothèque",
+                        "irreversible": "Cette action est irréversible",
+                        "success": "Les collections ont bien été supprimées"
+                    },
+                    "errors": {
+                        "wrongExtension": "Le fichier doit être au format CSV",
+                        "dialogTitle": "Nous avons détecté une ou des erreurs dans le fichier"
+                    }
+                }
+            }
         },
         "control": {
             "nextPhase": "Passer à la phase suivante"
@@ -349,6 +314,9 @@
         },
         "storageLocation": "Lieu de conservation"
     },
+    "collection": {
+        "i": "Collection"
+    },
     "view": {
         "tenantAdmin": {
             "section2": "Gestion des rôles spécifiques"
@@ -362,22 +330,62 @@
         },
         "project": {
             "new": {
-                "requirements": {
-                    "heading": "Liste péparatoire au projet",
-                    "message": "Pour monter un nouveau projet, assurez-vous que vous disposez des éléments suivants :",
-                    "list": {
-                        "projectName": "Intitulé du projet",
-                        "managerEmails": "Email du ou des pilotes du projet",
-                        "adminEmails": "Email du ou des administrateurs du projet",
-                        "controllerEmail": "Email du ou des contrôlleurs du projet",
-                        "libraryNames": "Nom des bibliothèques participantes",
-                        "libraryRCRs": "Identifiant des bibliothèques participantes",
-                        "libraryInstructorEmails": "Emails de leurs intructeurs respectifs",
-                        "libraryCollections": "Ensemble des collections participantes de chacune des bibliothèques au format CSV",
-                        "collectionIdentified": "Identifiant de la ressource; issn ; titre ; cote ; état de collection ; lacunes",
-                        "additionalInfos": "NB : Les identifiants de ressources doivent être homogènes (i.e. issus du même système)",
-                        "storageNames": "Nom des lieux de conservation alternatifs (et leur RCR le cas échéant)",
-                        "storageOperatorEmails": "Identifiants et emails de leurs opérateurs respectifs"
+                "stepper": {
+                    "requirements": {
+                        "heading": "Liste péparatoire au projet",
+                        "message": "Pour monter un nouveau projet, assurez-vous que vous disposez des éléments suivants :",
+                        "list": {
+                            "projectName": "Intitulé du projet",
+                            "managerEmails": "Email du ou des pilotes du projet",
+                            "adminEmails": "Email du ou des administrateurs du projet",
+                            "controllerEmail": "Email du ou des contrôlleurs du projet",
+                            "libraryNames": "Nom des bibliothèques participantes",
+                            "libraryRCRs": "Identifiant des bibliothèques participantes",
+                            "libraryInstructorEmails": "Emails de leurs intructeurs respectifs",
+                            "libraryCollections": "Ensemble des collections participantes de chacune des bibliothèques au format CSV",
+                            "collectionIdentified": "Identifiant de la ressource; issn ; titre ; cote ; état de collection ; lacunes",
+                            "additionalInfos": "NB : Les identifiants de ressources doivent être homogènes (i.e. issus du même système)",
+                            "storageNames": "Nom des lieux de conservation alternatifs (et leur RCR le cas échéant)",
+                            "storageOperatorEmails": "Identifiants et emails de leurs opérateurs respectifs"
+                        }
+                    },
+                    "steps": {
+                        "informations": {
+                            "tab": "Informations sur le projet",
+                            "title": "Renseignez les informations générales du projet",
+                            "name": "Nom du projet",
+                            "updateNameSucceed": "Le nom du project à bien été modifié",
+                            "description": "Description du projet",
+                            "noDescription": "Aucune description",
+                            "continue": "Continuer",
+                            "back": "Retour",
+                            "startInFuture": "Le projet commencera le"
+                        },
+                        "libraries": {
+                            "tab": "Bibliothèques participantes",
+                            "title": "Sélectionnez les bibliothèques participant au projet, puis renseignez leurs collections ainsi que leur instructeurs",
+                            "addLibrary": "Ajouter une bibliothèque",
+                            "searchLibraries": "Rechercher des bibliothèques",
+                            "instructors": "Instructeurs",
+                            "errors": {
+                                "whileAdding": "Une erreur est survenue lors de l'ajout de la bibliothèque",
+                                "whileDeleting": "Une erreur est survenue lors de la suppression de la bibliothèque"
+                            }
+                        },
+                        "roles": {
+                            "tab": "Rôles des utilisateurs",
+                            "title": "Assignez ou invitez des utilisateurs aux rôles qu'ils occuperont dans ce projet"
+                        },
+                        "summary": {
+                            "tab": "Récapitulatif",
+                            "title": "Récapitulatif de la création de projet",
+                            "noUser": "Aucun utilisateur n'a été assigné ce rôle",
+                            "whenConfirm": "En confirmant, les invitations seront envoyés aux emails renseignés, ainsi que les notifications aux utilisateurs participants au projet",
+                            "errors": {
+                                "libraries": "Au moins deux bibliothèques doivent être renseignées, chacune devant avoir une collection importée et au moins un instructeur",
+                                "roles": "Au moins un utilisateur ou une invitation doit être renseignée pour les rôles Administrateur, Pilote et Contrôleur"
+                            }
+                        }
                     }
                 }
             }
@@ -398,8 +406,9 @@
         }
     },
     "libraries": {
-        "title": "Bibliothèques",
+        "i": "Bibliothèques",
         "name": "Nom de la bibliothèque",
+        "list": "Liste des bibliothèques",
         "form": {
             "fields": {
                 "name": "Nom",

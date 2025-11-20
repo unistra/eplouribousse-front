@@ -4,28 +4,33 @@ import type { ProjectLibrary } from '#/project.ts'
 import { Roles } from '&/project.ts'
 
 export const useProjectLibraryCard = (library: ProjectLibrary) => {
-    const store = useProjectStore()
+    const projectStore = useProjectStore()
 
-    const borderColorIsAlternativeStorageSite = computed(() => {
-        return library.isAlternativeStorageSite ? 'var(--color-accent)' : 'var(--color-neutral-200)'
-    })
+    const invitationsSelected = computed(() =>
+        projectStore.invitations.filter((el) => el.role === Roles.Instructor && el.libraryId === library.id),
+    )
+    const usersSelected = computed(() =>
+        projectStore.roles
+            .filter((el) => el.role === Roles.Instructor && el.libraryId === library.id)
+            .map((el) => el.user),
+    )
 
     const isLoadingDelete = ref<boolean>(false)
     const onDelete = async () => {
         isLoadingDelete.value = true
-        await store.removeLibrary(library)
+        await projectStore.removeLibrary(library)
         isLoadingDelete.value = false
     }
 
     const isAddUserLoading = ref<boolean>(false)
     const onAddInvitation = async (email: string) => {
         isAddUserLoading.value = true
-        await store.addInvitation(email, Roles.Instructor, library.id)
+        await projectStore.addInvitation(email, Roles.Instructor, library.id)
         isAddUserLoading.value = false
     }
     const onAddRole = async (userId: string) => {
         isAddUserLoading.value = true
-        await store.addRole(userId, Roles.Instructor, library.id)
+        await projectStore.addRole(userId, Roles.Instructor, library.id)
         isAddUserLoading.value = false
     }
 
@@ -35,6 +40,7 @@ export const useProjectLibraryCard = (library: ProjectLibrary) => {
         onAddInvitation,
         onAddRole,
         isAddUserLoading,
-        borderColorIsAlternativeStorageSite,
+        invitationsSelected,
+        usersSelected,
     }
 }

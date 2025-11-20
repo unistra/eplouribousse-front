@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
-import ProjectLibraryCard from '@/components/project/projectStepper/steps/projectLibraries/ProjectLibraryCard.vue'
-import { useProjectRoles } from '@/components/project/projectStepper/steps/projectRoles/useProjectRoles.ts'
-import { checkValidityProjectStepper } from '@/components/project/projectStepper/useProjectStepper.ts'
+import ProjectLibraryCard from '@/components/project/libraries/card/ProjectLibraryCard.vue'
+import { useProjectRoles } from '@/components/project/stepper/steps/roles/useProjectRoles.ts'
+import { checkValidityProjectStepper } from '@/components/project/stepper/useProjectStepper.ts'
 import { useUtils } from '@/composables/useUtils.ts'
 
 const projectStore = useProjectStore()
@@ -15,29 +15,31 @@ const { checkValidityForRolesStep, checkValidityForLibraryStep } = checkValidity
 
 <template>
     <div class="summary">
+        <h1>{{ t('view.project.new.stepper.steps.summary.title') }}</h1>
         <QChip
             v-if="projectStore.activeAfter && new Date(projectStore.activeAfter) > new Date()"
             class="info"
             icon="mdi-information"
             size="lg"
         >
-            {{ t('newProject.steps.informations.startInFuture') }}
+            {{ t('view.project.new.stepper.steps.informations.startInFuture') }}
             {{ useUtils().useIntlDateTimeFormat(projectStore.activeAfter) }}
         </QChip>
 
         <hgroup>
-            <p class="label">{{ t('newProject.steps.informations.name') }}</p>
+            <p class="label">{{ t('view.project.new.stepper.steps.informations.name') }}</p>
             <h2>{{ projectStore.name }}</h2>
         </hgroup>
+
         <div class="description">
-            <p class="label">{{ t('newProject.steps.informations.description') }}</p>
+            <p class="label">{{ t('view.project.new.stepper.steps.informations.description') }}</p>
             <p :class="{ 'no-description': !projectStore.description }">
-                {{ projectStore.description || t('newProject.steps.informations.noDescription') }}
+                {{ projectStore.description || t('view.project.new.stepper.steps.informations.noDescription') }}
             </p>
         </div>
         <QSeparator />
         <div class="libraries">
-            <p class="label">{{ t('newProject.steps.libraries.title') }}</p>
+            <p class="label">{{ t('view.project.new.stepper.steps.libraries.tab') }}</p>
             <div
                 v-if="!checkValidityForLibraryStep"
                 class="errors"
@@ -46,20 +48,20 @@ const { checkValidityForRolesStep, checkValidityForLibraryStep } = checkValidity
                     name="mdi-alert"
                     size="sm"
                 />
-                <p>{{ t('newProject.steps.summary.errors.libraries') }}</p>
+                <p>{{ t('view.project.new.stepper.steps.summary.errors.libraries') }}</p>
             </div>
             <div class="cards">
                 <ProjectLibraryCard
                     v-for="library in projectStore.libraries"
                     :key="library.id"
-                    is-summary
                     :library="library"
+                    summary-mode
                 />
             </div>
         </div>
         <QSeparator />
         <div class="roles">
-            <p class="label">{{ t('newProject.steps.roles.title') }}</p>
+            <p class="label">{{ t('view.project.new.stepper.steps.roles.title') }}</p>
             <div
                 v-if="!checkValidityForRolesStep"
                 class="errors"
@@ -68,7 +70,7 @@ const { checkValidityForRolesStep, checkValidityForLibraryStep } = checkValidity
                     name="mdi-alert"
                     size="sm"
                 />
-                <p>{{ t('newProject.steps.summary.errors.roles') }}</p>
+                <p>{{ t('view.project.new.stepper.steps.summary.errors.roles') }}</p>
             </div>
             <QList
                 v-for="role in roles"
@@ -97,7 +99,7 @@ const { checkValidityForRolesStep, checkValidityForLibraryStep } = checkValidity
                         >
                     </QItem>
                 </template>
-                <QItem v-else>{{ t('newProject.steps.summary.noUser') }}</QItem>
+                <QItem v-else>{{ t('view.project.new.stepper.steps.summary.noUser') }}</QItem>
             </QList>
         </div>
     </div>
@@ -108,7 +110,9 @@ const { checkValidityForRolesStep, checkValidityForLibraryStep } = checkValidity
     display: flex
     flex-flow: column nowrap
     gap: 2rem
-    width: 100%
+
+    h1
+        font-size: var(--font-size-xl)
 
     .info
         background-color: var(--color-info)
@@ -125,7 +129,8 @@ const { checkValidityForRolesStep, checkValidityForLibraryStep } = checkValidity
         color: var(--color-neutral-500)
 
     hgroup
-        h1
+        h2
+            font-size: var(--font-size-3xl)
             margin-left: 2rem
 
     .description
@@ -134,6 +139,7 @@ const { checkValidityForRolesStep, checkValidityForLibraryStep } = checkValidity
             padding: 1rem
             background-color: var(--color-neutral-100)
             border-radius: var(--border-radius)
+            white-space: pre-line
 
         .no-description
             font-style: italic

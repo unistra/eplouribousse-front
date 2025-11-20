@@ -1,9 +1,6 @@
 import { defineStore } from 'pinia'
 import type { LibraryI } from '#/library'
 import {
-    type Collection,
-    type ImportCSVError,
-    type ImportCSVResponse,
     type Project,
     type ProjectDetails,
     type ProjectInvitation,
@@ -15,8 +12,6 @@ import {
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { Notify } from 'quasar'
 import i18n from '@/plugins/i18n'
-import type { Pagination } from '#/pagination.ts'
-import axios from 'axios'
 import { useUserStore } from '@/stores/userStore.ts'
 import { ProjectStatus, Roles, Tab } from '&/project.ts'
 import { useResourceStore } from '@/stores/resourceStore.ts'
@@ -74,9 +69,9 @@ export const useProjectStore = defineStore('project', {
         ...structuredClone(initialState),
         initialState: structuredClone(initialState),
         isLoading: false,
-        isInEditionMode: false,
         tab: Tab.Positioning,
         librariesIdThatHaveACollectionImported: [],
+        collectionsCount: [],
     }),
     getters: {
         nameRequired: (state) => state.name.length > 0,
@@ -102,7 +97,7 @@ export const useProjectStore = defineStore('project', {
     },
     actions: {
         // UTILS
-        async fetchProjectById(id: string, edition?: boolean) {
+        async fetchProjectById(id: string) {
             try {
                 const response = await axiosI.get<ProjectDetails>(`/projects/${id}/`)
 
@@ -110,9 +105,9 @@ export const useProjectStore = defineStore('project', {
                     ...structuredClone(response.data),
                     initialState: structuredClone(response.data),
                     isLoading: false,
-                    isInEditionMode: !!edition,
                     tab: Tab.Positioning,
                     librariesIdThatHaveACollectionImported: [],
+                    collectionsCount: [],
                 }
             } catch {
                 Notify.create({
@@ -171,23 +166,6 @@ export const useProjectStore = defineStore('project', {
 
             return true
         },
-
-        // LIBRARIES
-        async addLibrary(library: LibraryI) {
-            if (this.libraries.some((lib) => lib.id === library.id)) return
-            try {
-                await axiosI.post(`/projects/${this.id}/libraries/`, { library_id: library.id })
-
-                const newLibrary: ProjectLibrary = { ...library, isAlternativeStorageSite: false }
-                this.libraries.push(newLibrary)
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('newProject.steps.libraries.errors.whileAdding'),
-                })
-                return
-            }
-        },
         async removeLibrary(library: LibraryI) {
             if (!this.libraries.some((lib) => lib.id === library.id)) return
             try {
@@ -203,7 +181,7 @@ export const useProjectStore = defineStore('project', {
             } catch {
                 Notify.create({
                     type: 'negative',
-                    message: t('newProject.steps.libraries.errors.whileDeleting'),
+                    message: t('view.project.new.stepper.steps.libraries.errors.whileDeleting'),
                 })
                 return
             }
@@ -251,49 +229,6 @@ export const useProjectStore = defineStore('project', {
                     message: t('errors.unknown'),
                 })
             }
-        },
-        async getCollection(libraryId: string): Promise<Pagination<Collection> | undefined> {
-            try {
-                const response = await axiosI.get<Pagination<Collection>>('/collections/', {
-                    params: {
-                        library: libraryId,
-                        project: this.id,
-                    },
-                })
-
-                if (!this.librariesIdThatHaveACollectionImported.includes(libraryId) && response.data.count)
-                    this.librariesIdThatHaveACollectionImported.push(libraryId)
-                return response.data
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        async importCollection(file: File, libraryId: string): Promise<ImportCSVResponse | ImportCSVError> {
-            const formData = new FormData()
-            formData.append('csv_file', file)
-            formData.append('library', libraryId)
-            formData.append('project', this.id)
-
-            try {
-                const response = await axiosI.post<ImportCSVResponse>('/collections/import-csv/', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                })
-                return response.data
-            } catch (e: unknown) {
-                if (axios.isAxiosError(e)) {
-                    return e.response?.data.csvFile as ImportCSVError
-                } else {
-                    throw new Error()
-                }
-            }
-        },
-        async deleteCollection(libraryId: string): Promise<void> {
-            console.log('Todo', libraryId)
         },
         async addInvitation(email: string, role: Roles, libraryId?: string) {
             try {

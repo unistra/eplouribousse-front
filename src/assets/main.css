@@ -28,7 +28,22 @@ h3 {
     gap: 1rem;
 }
 
+.chip-label-value {
+    height: auto;
+}
+.chip-label-value .q-chip__content {
+    display: inline;
+    white-space: normal;
+}
+
 .chip-label-value span {
-    margin-left: 0.2rem;
     font-weight: bold;
+}
+.q-inner-loading {
+    z-index: 1000;
+}
+
+.q-dialog__inner > .q-card {
+    border-radius: var(--border-radius);
+    padding: 0.5rem;
 }

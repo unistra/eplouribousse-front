@@ -7,7 +7,7 @@ const { t } = useI18n()
 
 <template>
     <QPage padding>
-        <h1>{{ t('libraries.title') }}</h1>
+        <h1>{{ t('libraries.i') }}</h1>
         <LibraryTable />
     </QPage>
 </template>

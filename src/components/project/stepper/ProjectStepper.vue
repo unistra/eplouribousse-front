@@ -1,17 +1,18 @@
 <script lang="ts" setup>
 import { QStepper } from 'quasar'
 import { useI18n } from 'vue-i18n'
-import { checkValidityProjectStepper, useProjectStepper } from '@/components/project/projectStepper/useProjectStepper'
+import { checkValidityProjectStepper, useProjectStepper } from '@/components/project/stepper/useProjectStepper'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useRoute } from 'vue-router'
 import { onMounted } from 'vue'
-import ProjectInformations from '@/components/project/projectStepper/steps/projectInformations/ProjectInformations.vue'
-import ProjectRoles from '@/components/project/projectStepper/steps/projectRoles/ProjectRoles.vue'
-import ProjectLibraries from '@/components/project/projectStepper/steps/projectLibraries/ProjectLibraries.vue'
-import ProjectSummary from '@/components/project/projectStepper/steps/projectSummary/ProjectSummary.vue'
+import ProjectInformations from '@/components/project/stepper/steps/informations/ProjectInformations.vue'
+import ProjectRoles from '@/components/project/stepper/steps/roles/ProjectRoles.vue'
+import ProjectLibraries from '@/components/project/libraries/ProjectLibraries.vue'
+import ProjectSummary from '@/components/project/stepper/steps/summary/ProjectSummary.vue'
+import { useProjectStore } from '@/stores/projectStore.ts'
 
 const { t } = useI18n()
-
+const projectStore = useProjectStore()
 const { step, nextStep, previousStep, buttonLabel, passToReviewLoading, passToReview } = useProjectStepper()
 
 const { checkValidityForRolesStep, checkValidityForLibraryStep } = checkValidityProjectStepper()
@@ -31,13 +32,13 @@ onMounted(async () => {
         done-color="positive"
         error-color="negative"
         flat
-        header-nav
+        :header-nav="!!projectStore.id"
     >
         <QStep
             :done="step > 1"
             icon="mdi-information-slab-circle-outline"
             :name="1"
-            :title="t('newProject.steps.informations.title')"
+            :title="t('view.project.new.stepper.steps.informations.tab')"
         >
             <ProjectInformations />
         </QStep>
@@ -47,7 +48,7 @@ onMounted(async () => {
             :error="step > 2 && !checkValidityForLibraryStep"
             icon="mdi-bookshelf"
             :name="2"
-            :title="t('newProject.steps.libraries.title')"
+            :title="t('view.project.new.stepper.steps.libraries.tab')"
         >
             <ProjectLibraries />
         </QStep>
@@ -57,7 +58,7 @@ onMounted(async () => {
             :error="step > 3 && !checkValidityForRolesStep"
             icon="mdi-account"
             :name="3"
-            :title="t('newProject.steps.roles.title')"
+            :title="t('view.project.new.stepper.steps.roles.tab')"
         >
             <ProjectRoles />
         </QStep>
@@ -66,7 +67,7 @@ onMounted(async () => {
             :done="step > 4"
             icon="mdi-checkbox-multiple-marked"
             :name="4"
-            :title="t('newProject.steps.summary.title')"
+            :title="t('view.project.new.stepper.steps.summary.tab')"
         >
             <ProjectSummary />
         </QStep>
@@ -75,13 +76,12 @@ onMounted(async () => {
             <QStepperNavigation>
                 <AtomicButton
                     v-if="step > 1"
-                    :label="t('newProject.steps.informations.back')"
+                    :label="t('view.project.new.stepper.steps.informations.back')"
                     @click="previousStep"
                 />
                 <AtomicButton
                     v-if="step === 4"
                     color="primary"
-                    confirm-button-color="negative"
                     :disable="!checkValidityForRolesStep || !checkValidityForLibraryStep"
                     :label="t('newProject.buttons.passToReview')"
                     :loading="passToReviewLoading"
@@ -90,8 +90,8 @@ onMounted(async () => {
                     @confirm="passToReview"
                 >
                     <template #confirmation-content>
-                        <QCardSection>
-                            <p>{{ t('newProject.steps.summary.whenConfirm') }}</p>
+                        <QCardSection class="confirmation-p">
+                            <p>{{ t('view.project.new.stepper.steps.summary.whenConfirm') }}</p>
                             <p>{{ t('confirmDialogDefault.areYouSure') }}</p>
                         </QCardSection>
                     </template>
@@ -126,4 +126,9 @@ onMounted(async () => {
         justify-content: end
         gap: 1rem
         margin-top: 1rem
+
+.confirmation-p
+    display: flex
+    flex-direction: column
+    gap: 1rem
 </style>

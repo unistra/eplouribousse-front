@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import { watch } from 'vue'
 import { useRoute } from 'vue-router'
-import ProjectStepper from '@/components/project/projectStepper/ProjectStepper.vue'
+import ProjectStepper from '@/components/project/stepper/ProjectStepper.vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
 import ProjectReview from '@/components/project/projectReview/ProjectReview.vue'
 import ProjectResources from '@/components/project/projectLaunched/ProjectResources.vue'
 import { ProjectStatus } from '&/project.ts'
-import ProjectSummary from '@/components/project/projectStepper/steps/projectSummary/ProjectSummary.vue'
+import ProjectSummary from '@/components/project/stepper/steps/summary/ProjectSummary.vue'
 
 const route = useRoute()
 const projectStore = useProjectStore()
