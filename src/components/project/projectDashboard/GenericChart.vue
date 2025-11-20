@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { type Component, computed } from 'vue'
 import { Bar, Line, Pie, Doughnut } from 'vue-chartjs'
 import {
     Chart as ChartJS,
@@ -25,7 +25,7 @@ const props = defineProps<{
     chartOptions?: ChartOptions
 }>()
 
-const chartMap: Record<ChartType, any> = {
+const chartMap: Record<ChartType, Component> = {
     bar: Bar,
     line: Line,
     pie: Pie,

@@ -36,27 +36,79 @@ const { data: chartData, getData, loading } = useProjectDashboard<DashboardChart
 
 const chartDataFormatted = computed<ChartData<typeof props.chartType>>(() => {
     const palette = [
-        '#76af8f', // vert
-        '#f3c260', // jaune
-        '#888fc2', // bleu
-        '#e38a77', // rouge
-        '#9b59b6', // violet
-        '#3498db', // bleu clair
-        '#e74c3c', // rouge vif
-        '#1abc9c', // turquoise
-        '#f39c12', // orange
-        '#34495e', // gris bleu
+        '#76af8f',
+        '#f3c260',
+        '#888fc2',
+        '#e38a77',
+        '#9b59b6',
+        '#3498db',
+        '#e74c3c',
+        '#1abc9c',
+        '#f39c12',
+        '#34495e',
     ]
+    const labels = chartData.value?.labels || []
+    const rawDatasets = chartData.value?.datasets || []
+    let datasets
 
-    const datasets = (chartData.value?.datasets || []).map((dataset) => ({
-        ...dataset,
-        backgroundColor: dataset.backgroundColor || palette,
-        borderColor: dataset.borderColor || '#ffffff',
-        borderWidth: dataset.borderWidth || 2,
-    }))
+    if (props.chartType === 'bar' && props.stacked) {
+        const baseColors = labels.map((_, idx) => palette[idx % palette.length])
+
+        // Fonction pour créer un motif de hachures
+        const createHatchPattern = (color: string) => {
+            // Crée un canvas en mémoire pour dessiner le motif
+            const patternCanvas = document.createElement('canvas')
+            const patternContext = patternCanvas.getContext('2d')
+            if (!patternContext) return color // Fallback
+
+            const size = 10
+            patternCanvas.width = size
+            patternCanvas.height = size
+
+            // Fond de la couleur de base
+            patternContext.fillStyle = color
+            patternContext.fillRect(0, 0, size, size)
+
+            // Lignes de hachure
+            patternContext.strokeStyle = 'rgba(0, 0, 0, 0.2)'
+            patternContext.lineWidth = 2
+            patternContext.beginPath()
+            patternContext.moveTo(0, size)
+            patternContext.lineTo(size, 0)
+            patternContext.stroke()
+
+            // Crée le motif répétable
+            const canvas = document.createElement('canvas')
+            const ctx = canvas.getContext('2d')
+            if (!ctx) return color // Fallback
+            return ctx.createPattern(patternCanvas, 'repeat') ?? color
+        }
+
+        datasets = rawDatasets.map((dataset, i) => {
+            const backgroundColor =
+                i === 1
+                    ? baseColors.map((color) => createHatchPattern(color)) // Applique les hachures au 2ème dataset
+                    : baseColors // Couleurs pleines pour le 1er dataset
+
+            return {
+                ...dataset,
+                backgroundColor,
+                borderColor: '#ffffff',
+                borderWidth: 2,
+            }
+        })
+    } else {
+        // Logique originale pour tous les autres graphiques
+        datasets = rawDatasets.map((dataset) => ({
+            ...dataset,
+            backgroundColor: dataset.backgroundColor || palette,
+            borderColor: dataset.borderColor || '#ffffff',
+            borderWidth: dataset.borderWidth || 2,
+        }))
+    }
 
     return {
-        labels: chartData.value?.labels || [],
+        labels,
         datasets,
     }
 })
@@ -76,6 +128,47 @@ const chartOptions = computed<ChartOptions>(() => ({
     plugins: {
         legend: {
             position: props.chartType === 'doughnut' || props.chartType === 'pie' ? 'right' : 'top',
+            // Personnalisation de la légende pour les graphiques à barres empilées
+            labels:
+                props.chartType === 'bar' && props.stacked
+                    ? {
+                          generateLabels: (chart) => {
+                              const datasets = chart.data.datasets
+                              const neutralColor = '#C0C0C0' // Une couleur grise neutre
+
+                              // Fonction pour créer un motif de hachures (doit être accessible ici)
+                              const createHatchPattern = (color: string) => {
+                                  const patternCanvas = document.createElement('canvas')
+                                  const patternContext = patternCanvas.getContext('2d')
+                                  if (!patternContext) return color
+                                  const size = 10
+                                  patternCanvas.width = size
+                                  patternCanvas.height = size
+                                  patternContext.fillStyle = color
+                                  patternContext.fillRect(0, 0, size, size)
+                                  patternContext.strokeStyle = 'rgba(0, 0, 0, 0.2)'
+                                  patternContext.lineWidth = 2
+                                  patternContext.beginPath()
+                                  patternContext.moveTo(0, size)
+                                  patternContext.lineTo(size, 0)
+                                  patternContext.stroke()
+                                  const canvas = document.createElement('canvas')
+                                  const ctx = canvas.getContext('2d')
+                                  if (!ctx) return color
+                                  return ctx.createPattern(patternCanvas, 'repeat') ?? color
+                              }
+
+                              return datasets.map((ds, i) => ({
+                                  text: ds.label || '',
+                                  fillStyle: i === 1 ? createHatchPattern(neutralColor) : neutralColor,
+                                  strokeStyle: '#ffffff',
+                                  lineWidth: 2,
+                                  hidden: !chart.isDatasetVisible(i),
+                                  datasetIndex: i,
+                              }))
+                          },
+                      }
+                    : undefined, // Utilise la légende par défaut pour les autres graphiques
         },
         title: {
             display: true,
