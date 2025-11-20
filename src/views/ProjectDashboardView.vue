@@ -1,12 +1,10 @@
-```vue
 <script setup lang="ts">
 import { watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useUserStore } from '@/stores/userStore'
 import ProjectDashboardTable from '@/components/project/projectDashboard/ProjectDashboardTable.vue'
-import ProjectDashboardBarChart from '@/components/project/projectDashboard/ProjectDashboardBarChart.vue'
-import ProjectDashboardDonutChart from '@/components/project/projectDashboard/ProjectDashboardDonutChart.vue'
+import ProjectDashboardChart from '@/components/project/projectDashboard/ProjectDashboardChart.vue'
 import { useI18n } from 'vue-i18n'
 
 const route = useRoute()
@@ -39,10 +37,23 @@ watch(
             <ProjectDashboardTable type="controls-information" />
             <ProjectDashboardTable type="anomalies-information" />
             <ProjectDashboardTable type="achievements-information" />
-            <ProjectDashboardBarChart type="realized-positioning-per-library" />
-            <ProjectDashboardBarChart type="resources-to-instruct-per-library" />
-            <ProjectDashboardBarChart type="collection-occurrences-per-library" />
-            <ProjectDashboardDonutChart type="collection-occurrences-per-library" />
+            <ProjectDashboardChart
+                chart-type="bar"
+                type="realized-positioning-per-library"
+            />
+            <ProjectDashboardChart
+                chart-type="bar"
+                :stacked="true"
+                type="resources-to-instruct-per-library"
+            />
+            <ProjectDashboardChart
+                chart-type="bar"
+                type="collection-occurrences-per-library"
+            />
+            <ProjectDashboardChart
+                chart-type="doughnut"
+                type="collection-occurrences-per-library"
+            />
         </div>
     </QPage>
 </template>
@@ -54,7 +65,6 @@ h1
     justify-content: center
 
 .dashboard
-
     display: grid
     grid-template-columns: 1fr 1fr
     gap: 1rem
