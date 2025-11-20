@@ -577,8 +577,10 @@
     "utils": {
         "searchUser": {
             "inputPlaceholder": "Rechercher un utilisateur, ou entrer son adresse e-mail pour l'inviter",
-            "inviteText": "Inviter cet utilisateur avec cet email",
-            "noUserFound": "Aucun utilisateur trouvé"
+            "noUserFound": "Aucun utilisateur trouvé",
+            "insertEmailForInvite": "Tapez un email valide pour créer une invitation",
+            "moreUsers": "Afficher plus d'utilisateurs",
+            "sendInvite": "Envoyer une invitation à"
         },
         "modificationSuccess": "Les modifications ont bien été enregistrées",
         "noEmailAddress": "Aucune @.lower:common.email",
@@ -588,7 +590,9 @@
         "noLibrary": "Aucune bibliothèque",
         "downloadPDF": "@:common.download le PDF",
         "noRole": "Aucun rôle sur le tenant",
-        "confirmEmail": "Confirmer l'email"
+        "confirmEmail": "Confirmer l'email",
+        "clearField": "Effacer le contenu du champ",
+        "addUser": "Ajouter cet utilisateur: {user}"
     },
     "errors": {
         "unknown": "Une erreur est survenue",

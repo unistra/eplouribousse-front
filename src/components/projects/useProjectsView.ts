@@ -71,8 +71,6 @@ export const useProjectsView = () => {
 
         if (!props) pagination.value.page = 1
 
-        if (props) console.log(props)
-
         const params = {
             ordering: `${props ? (props.pagination.descending ? '-' : '') : pagination.value.descending ? '-' : ''}${props?.pagination.sortBy || pagination.value.sortBy}`,
             page: props?.pagination.page || pagination.value.page,

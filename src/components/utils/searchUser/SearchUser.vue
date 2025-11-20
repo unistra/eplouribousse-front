@@ -1,104 +1,109 @@
 <script lang="ts" setup>
-import { onMounted, watch } from 'vue'
-import { type SearchUserEmitActions, useSearchUser } from './useSearchUser'
+import { type SearchUserEmitActions, type SearchUserProps, useSearchUser } from './useSearchUser'
 import { useI18n } from 'vue-i18n'
-import type { ProjectInvitation } from '#/project.ts'
-import AtomicInput from '@/components/atomic/AtomicInput.vue'
-import AtomicButton from '@/components/atomic/AtomicButton.vue'
-import type { Roles } from '&/project'
-import type { UserSummarized } from '#/user.ts'
 import ProjectLibraryCardUserList from '@/components/project/libraries/card/ProjectLibraryCardUserList.vue'
 
-const props = defineProps<{
-    role?: Roles
-    usersSelected: UserSummarized[]
-    invitationsSelected: ProjectInvitation[]
-    isAddUserLoading: boolean
-    preventDeleteCurrentUser?: boolean
-    disableInvitations?: boolean
-    label?: string
-    summaryMode?: boolean
-}>()
+const props = defineProps<SearchUserProps>()
 const { t } = useI18n()
 const emit = defineEmits<SearchUserEmitActions>()
-const { input, matchingUsers, onLoad, sendAction, clear, isUserListLoading, userAlreadySelected } = useSearchUser(emit)
-watch(
-    () => props.usersSelected,
-    () => {
-        userAlreadySelected.value = props.usersSelected
-    },
+const { model, input, options, sendAction, userListLoading, selectFilterFn, clear, onOptionSelected } = useSearchUser(
+    props,
+    emit,
 )
-
-onMounted(() => {
-    matchingUsers.value?.clear()
-    userAlreadySelected.value = props.usersSelected
-})
 </script>
 
 <template>
     <div class="search-user">
-        <div>
-            <p v-if="label">{{ label }}</p>
-            <div
-                v-if="!summaryMode"
-                class="input"
+        <p v-if="label">{{ label }}</p>
+        <div v-if="!summaryMode">
+            <!--- @input-value is used to to keep track of what is in the input field (the one used to filter) --->
+            <QSelect
+                ref="select"
+                v-model="model"
+                color="primary"
+                dense
+                hide-dropdown-icon
+                hide-selected
+                :input-debounce="500"
+                :label="t('utils.searchUser.inputPlaceholder')"
+                :loading="userListLoading"
+                multiple
+                :options="Array.from(options.values())"
+                outlined
+                rounded
+                use-input
+                @add="onOptionSelected"
+                @filter="selectFilterFn"
+                @input-value="(val) => (input = val)"
             >
-                <AtomicInput
-                    v-model="input"
-                    clearable
-                    dense
-                    icon="mdi-magnify"
-                    :label="t('utils.searchUser.inputPlaceholder')"
-                    :tooltip="t('utils.searchUser.inputPlaceholder')"
-                    type="text"
-                    @clear="clear"
-                />
-
-                <QList
-                    v-if="input.length > 0"
-                    id="scroll"
-                    bordered
-                    class="scroll"
-                    style="max-height: 10rem"
-                >
-                    <QItem v-if="matchingUsers?.size() === 0 && input.length > 0 && isUserListLoading === false">
-                        <template v-if="disableInvitations">
-                            <QItemSection>{{ t('utils.searchUser.noUserFound') }}: {{ input }}</QItemSection>
-                        </template>
-                        <template v-else>
-                            <QItemSection>{{ t('utils.searchUser.inviteText') }}: {{ input }}</QItemSection>
-                            <AtomicButton
-                                icon="mdi-plus"
-                                size="sm"
-                                @click="sendAction('addInvitation')"
-                            />
-                        </template>
-                    </QItem>
-                    <QInfiniteScroll
-                        :offset="150"
-                        scroll-target="#scroll"
-                        @load="onLoad"
+                <QTooltip :delay="1000">{{ t('utils.searchUser.inputPlaceholder') }}</QTooltip>
+                <template #prepend>
+                    <QIcon name="mdi-magnify" />
+                </template>
+                <template #append>
+                    <button
+                        v-if="input.length"
+                        :aria-label="t('utils.clearField')"
+                        class="clear-icon"
+                        @click="clear"
                     >
-                        <QItem
-                            v-for="user in matchingUsers?.values()"
-                            :key="user.id"
-                            class="container row"
-                            clickable
-                            @click="sendAction('addUser', { user: user })"
-                        >
+                        <QIcon name="mdi-close-circle" />
+                    </button>
+                </template>
+                <template #option="scope">
+                    <QItem
+                        v-if="scope.opt.displayName"
+                        v-bind="scope.itemProps"
+                        :aria-label="t('utils.addUser', { user: scope.opt.displayName })"
+                    >
+                        <QItemSection avatar>
+                            <QIcon name="mdi-account" />
+                        </QItemSection>
+                        <QItemSection>
+                            <QItemLabel>{{ scope.opt.displayName }}</QItemLabel>
+                        </QItemSection>
+                    </QItem>
+                    <QItem
+                        v-if="scope.opt.moreUsers"
+                        v-bind="scope.itemProps"
+                    >
+                        <QItemSection>
+                            {{ t('utils.searchUser.moreUsers') }}
+                        </QItemSection>
+                        <QItemSection avatar>
+                            <QIcon name="mdi-plus" />
+                        </QItemSection>
+                    </QItem>
+                    <QItem
+                        v-else-if="scope.opt.invite"
+                        v-bind="scope.itemProps"
+                    >
+                        <QItemSection avatar>
+                            <QIcon name="mdi-email-fast-outline" />
+                        </QItemSection>
+                        <QItemSection
+                            >{{ t('utils.searchUser.sendInvite') }}: <span>{{ scope.opt.string }}</span>
+                        </QItemSection>
+                    </QItem>
+                </template>
+                <template #no-option>
+                    <QItem>
+                        <QItemSection v-if="userListLoading">
                             <QItemSection>
-                                {{ user.displayName }}
+                                <QSkeleton type="text" />
                             </QItemSection>
-                        </QItem>
-                        <QItem
-                            v-if="isUserListLoading"
-                            class="container justify-center items-center"
-                        >
-                            <QSpinner size="1.5rem" />
-                        </QItem>
-                    </QInfiniteScroll>
-                </QList>
-            </div>
+                        </QItemSection>
+                        <QItemSection v-else>
+                            <QItemLabel>{{ t('utils.searchUser.noUserFound') }}</QItemLabel>
+                            <QItemLabel
+                                v-if="!disableInvitations"
+                                caption
+                                >{{ t('utils.searchUser.insertEmailForInvite') }}</QItemLabel
+                            >
+                        </QItemSection>
+                    </QItem>
+                </template>
+            </QSelect>
         </div>
 
         <QInnerLoading
@@ -120,4 +125,18 @@ onMounted(() => {
     display: flex
     flex-direction: column
     gap: 0.5rem
+
+    .clear-icon
+        opacity: 0.75
+        display: flex
+        align-items: center
+        justify-content: center
+        &:hover
+            opacity: 1
+
+    .q-item-label>span
+        font-weight: bold
+
+.q-skeleton
+    width: 16rem
 </style>
