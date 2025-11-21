@@ -191,10 +191,6 @@
                 "excludeCollections": "Collections exclues"
             }
         },
-        "dashboard": {
-            "computedAt": "Calculé le",
-            "Dashboard": "Tableau de bord"
-        },
         "settings": {
             "title": "Paramètres du projet",
             "privateMode": "Mode privé",

@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { Project, ProjectRole } from '#/project.ts'
+import type { Project } from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import type { Pagination } from '#/pagination.ts'
 import { type User } from '#/user'
@@ -11,7 +11,6 @@ import { useI18n } from 'vue-i18n'
 
 export const useUserStore = defineStore('user', () => {
     const user = ref<User | undefined>()
-    const userInProject = ref<ProjectRole>()
     const isAuth = ref<boolean>(false)
     const projects = ref<Project[]>([])
     const projectsLoading = ref<boolean>(false)
@@ -81,27 +80,20 @@ export const useUserStore = defineStore('user', () => {
         }
     }
 
-    function fillProjectUser(roles: ProjectRole[]) {
-        userInProject.value = roles.find((projectUser) => projectUser.user.id === user.value?.id)
-    }
-
     function clean() {
         isAuth.value = false
         user.value = undefined
-        userInProject.value = undefined
         projects.value = []
     }
 
     return {
         user,
-        userInProject,
         isAuth,
         projects,
         projectsLoading,
         userLoading,
         fetchUser,
         getProjects,
-        fillProjectUser,
         clean,
         updateProfile,
     }
