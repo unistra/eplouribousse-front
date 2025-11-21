@@ -2,14 +2,14 @@
 import { useProjectStore } from '@/stores/projectStore'
 import ProjectLibraryCard from '@/components/project/libraries/card/ProjectLibraryCard.vue'
 import ProjectRoles from '@/components/project/stepper/steps/roles/ProjectRoles.vue'
-import { ProjectAdministrationTab, useProjectAdmin } from '@/components/project/projectAdmin/useProjectAdmin.ts'
+import { ProjectAdministrationTab, useProjectAdmin } from '@/components/project/admin/useProjectAdmin.ts'
 import ProjectInformations from '@/components/project/stepper/steps/informations/ProjectInformations.vue'
 import AtomicToggle from '@/components/atomic/AtomicToggle.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import { Roles } from '&/project'
 import { useI18n } from 'vue-i18n'
-import ProjectAdminAlerts from '@/components/project/projectAdmin/projectAdminAlerts/ProjectAdminAlerts.vue'
+import ProjectAdminAlerts from '@/components/project/admin/projectAdminAlerts/ProjectAdminAlerts.vue'
 import { useUtils } from '@/composables/useUtils.ts'
 
 const store = useProjectStore()
