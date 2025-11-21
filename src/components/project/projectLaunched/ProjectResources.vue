@@ -39,14 +39,23 @@ onMounted(async () => {
     <div class="project-resources">
         <hgroup>
             <h1>{{ projectStore.name }}</h1>
-            <AtomicButton
-                v-if="projectStore.userIsAdmin"
-                dense
-                flat
-                icon="mdi-cog"
-                round
-                :to="{ name: 'projectAdmin' }"
-            />
+            <div>
+                <AtomicButton
+                    dense
+                    flat
+                    icon="mdi-chart-bar"
+                    round
+                    :to="{ name: 'projectDashboard' }"
+                />
+                <AtomicButton
+                    v-if="projectStore.userIsAdmin"
+                    dense
+                    flat
+                    icon="mdi-cog"
+                    round
+                    :to="{ name: 'projectAdmin' }"
+                />
+            </div>
         </hgroup>
         <div class="selects">
             <AtomicSelect
@@ -169,9 +178,6 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="sass">
-h1
-    font-size: 1.5rem
-    font-weight: bold
 .dialog
     .q-card
         display: flex

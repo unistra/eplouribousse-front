@@ -1,41 +1,16 @@
 <script lang="ts" setup>
-import { watch } from 'vue'
-import { useRoute } from 'vue-router'
 import ProjectStepper from '@/components/project/stepper/ProjectStepper.vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
-import { useUserStore } from '@/stores/userStore'
-import { storeToRefs } from 'pinia'
 import ProjectReview from '@/components/project/projectReview/ProjectReview.vue'
 import ProjectResources from '@/components/project/projectLaunched/ProjectResources.vue'
 import { ProjectStatus } from '&/project.ts'
 import ProjectSummary from '@/components/project/stepper/steps/summary/ProjectSummary.vue'
+import { useProjectView } from '@/components/project/useProjectView.ts'
 
-const route = useRoute()
 const projectStore = useProjectStore()
-const userStore = useUserStore()
-const { userInProject } = storeToRefs(userStore)
+const { watchRouteIdAndFetchProject } = useProjectView()
 
-watch(
-    () => route.params.id,
-    async () => {
-        const id = route.params.id as string
-
-        projectStore.isLoading = true
-        await projectStore.fetchProjectById(id).then(() => userStore.fillProjectUser(projectStore.roles))
-        projectStore.isLoading = false
-    },
-    { immediate: true },
-)
-
-watch(
-    userInProject,
-    () => {
-        if (userInProject.value === undefined) {
-            userStore.fillProjectUser(projectStore.roles)
-        }
-    },
-    { immediate: true },
-)
+watchRouteIdAndFetchProject()
 </script>
 
 <template>

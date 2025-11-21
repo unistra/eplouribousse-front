@@ -55,7 +55,8 @@
         "project": {
             "i": "Projet",
             "allProjects": "Tous les projets",
-            "new": "Nouveau projet"
+            "new": "Nouveau projet",
+            "dashboard": "Tableau de bord"
         },
         "myAccount": "Mon @.lower:common.account",
         "search": "Recherche",
@@ -388,6 +389,9 @@
                         }
                     }
                 }
+            },
+            "dashboard": {
+                "computedAt": "Calculé le"
             }
         },
         "contact": {
@@ -597,6 +601,7 @@
     "errors": {
         "unknown": "Une erreur est survenue",
         "retry": "veuillez réessayer",
-        "unknownRetry": "Une erreur est survenue, veuillez réessayer"
+        "unknownRetry": "Une erreur est survenue, veuillez réessayer",
+        "dataUnreachable": "Les données n'ont pas pu être chargées'"
     }
 }
