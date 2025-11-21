@@ -178,9 +178,6 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="sass">
-h1
-    font-size: 1.5rem
-    font-weight: bold
 .dialog
     .q-card
         display: flex

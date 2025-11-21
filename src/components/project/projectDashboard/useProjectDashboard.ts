@@ -71,7 +71,7 @@ export const useProjectDashboard = <T extends DashboardTableData | DashboardChar
     const chartToDisplay: ChartToDisplay = [
         { type: 'realized-positioning-per-library', chartType: 'bar' },
         { type: 'resources-to-instruct-per-library', chartType: 'bar', stacked: true },
-        { type: 'collection-occurrences-per-library', chartType: 'bar' },
+        // { type: 'collection-occurrences-per-library', chartType: 'bar' },
         { type: 'collection-occurrences-per-library', chartType: 'doughnut' },
     ]
 
