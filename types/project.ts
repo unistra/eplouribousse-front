@@ -28,7 +28,6 @@ export interface ProjectStoreState extends ProjectDetails {
     initialState: ProjectDetails
     isLoading: boolean
     tab: Tab
-    librariesIdThatHaveACollectionImported: string[]
     collectionsCount: CollectionsCountOfALibrary[]
 }
 

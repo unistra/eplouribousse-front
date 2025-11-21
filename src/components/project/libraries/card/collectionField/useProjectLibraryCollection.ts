@@ -52,10 +52,8 @@ export const useProjectLibraryCollection = (libraryId: string = '') => {
                 },
             })
 
-            if (!projectStore.librariesIdThatHaveACollectionImported.includes(libraryId) && response.data.count)
-                projectStore.librariesIdThatHaveACollectionImported.push(libraryId)
-
-            projectStore.collectionsCount.push({ libraryId, count: response.data.count })
+            if (response.data.count && !projectStore.collectionsCount.some((el) => el.libraryId === libraryId))
+                projectStore.collectionsCount.push({ libraryId, count: response.data.count })
         } catch (e) {
             useHandleError(e)
         } finally {
@@ -107,7 +105,7 @@ export const useProjectLibraryCollection = (libraryId: string = '') => {
                     project_id: projectStore.id,
                 },
             })
-            projectStore.collectionsCount = projectStore.collectionsCount.filter((el) => el.libraryId === libraryId)
+            projectStore.collectionsCount = projectStore.collectionsCount.filter((el) => el.libraryId !== libraryId)
             notify({
                 message: t('project.libraries.card.csv-import.delete.success'),
             })

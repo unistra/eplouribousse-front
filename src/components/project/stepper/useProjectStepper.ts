@@ -21,7 +21,7 @@ export const checkValidityProjectStepper = () => {
                 projectStore.invitations.some(
                     (invitation) => invitation.role === Roles.Instructor && invitation.libraryId === library.id,
                 )
-            const hasCollection = projectStore.librariesIdThatHaveACollectionImported.includes(library.id)
+            const hasCollection = projectStore.collectionsCount.some((el) => el.libraryId === library.id)
 
             if (!hasCollection) return csvImportLoading.value
             return hasInstructorOrInstructorInvite
