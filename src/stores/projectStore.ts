@@ -70,7 +70,6 @@ export const useProjectStore = defineStore('project', {
         initialState: structuredClone(initialState),
         isLoading: false,
         tab: Tab.Positioning,
-        librariesIdThatHaveACollectionImported: [],
         collectionsCount: [],
     }),
     getters: {
@@ -106,7 +105,6 @@ export const useProjectStore = defineStore('project', {
                     initialState: structuredClone(response.data),
                     isLoading: false,
                     tab: Tab.Positioning,
-                    librariesIdThatHaveACollectionImported: [],
                     collectionsCount: [],
                 }
             } catch {
@@ -178,6 +176,7 @@ export const useProjectStore = defineStore('project', {
                 this.libraries = this.libraries.filter((lib) => lib.id !== library.id)
                 this.roles = this.roles.filter((role) => role.libraryId !== library.id)
                 this.invitations = this.invitations.filter((inv) => inv.libraryId !== library.id)
+                this.collectionsCount = this.collectionsCount.filter((col) => col.libraryId === library.id)
             } catch {
                 Notify.create({
                     type: 'negative',
