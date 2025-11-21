@@ -1,43 +1,26 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
-import ProjectAdmin from '@/components/project/projectAdmin/ProjectAdmin.vue'
-import { useProjectReview } from '@/components/project/projectReview/useProjectReview.ts'
 import ProjectSummary from '@/components/project/stepper/steps/summary/ProjectSummary.vue'
 import ProjectReviewButton from '@/components/project/projectReview/ProjectReviewButton.vue'
 
 const { t } = useI18n()
-const { settingsMode, userIsAdmin } = useProjectReview()
 </script>
 
 <template>
     <div class="project-review">
         <hgroup>
-            <template v-if="!settingsMode">
-                <h1>{{ t('project.review.title') }}</h1>
-                <AtomicButton
-                    v-if="userIsAdmin"
-                    icon="mdi-cog"
-                    no-border
-                    @click="settingsMode = true"
-                />
-            </template>
-            <template v-else>
-                <h1>{{ t('project.settings.title') }}</h1>
-                <AtomicButton
-                    icon="mdi-close"
-                    no-border
-                    @click="settingsMode = false"
-                />
-            </template>
+            <h1>{{ t('project.review.title') }}</h1>
+            <AtomicButton
+                dense
+                flat
+                icon="mdi-cog"
+                round
+                :to="{ name: 'projectAdmin' }"
+            />
         </hgroup>
-
-        <KeepAlive>
-            <ProjectSummary v-if="!settingsMode" />
-            <ProjectAdmin v-else />
-        </KeepAlive>
-
-        <ProjectReviewButton v-if="!settingsMode" />
+        <ProjectSummary />
+        <ProjectReviewButton />
     </div>
 </template>
 
