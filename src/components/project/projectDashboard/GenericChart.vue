@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type Component, computed } from 'vue'
-import { Bar, Line, Pie, Doughnut } from 'vue-chartjs'
+import { Bar, Doughnut } from 'vue-chartjs'
 import {
     Chart as ChartJS,
     Title,
@@ -12,23 +12,21 @@ import {
     PointElement,
     LineElement,
     ArcElement,
+    type ChartData,
+    type ChartOptions,
 } from 'chart.js'
-import type { ChartData, ChartOptions } from 'chart.js'
+import type { ProjectDashboardChartComponentType } from '@/components/project/projectDashboard/useProjectDashboard.ts'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, ArcElement, Title, Tooltip, Legend)
 
-type ChartType = 'bar' | 'line' | 'pie' | 'doughnut'
-
 const props = defineProps<{
-    type: ChartType
-    chartData: ChartData<ChartType>
-    chartOptions?: ChartOptions
+    type: ProjectDashboardChartComponentType
+    chartData: ChartData<ProjectDashboardChartComponentType>
+    chartOptions?: ChartOptions<ProjectDashboardChartComponentType>
 }>()
 
-const chartMap: Record<ChartType, Component> = {
+const chartMap: Record<ProjectDashboardChartComponentType, Component> = {
     bar: Bar,
-    line: Line,
-    pie: Pie,
     doughnut: Doughnut,
 }
 

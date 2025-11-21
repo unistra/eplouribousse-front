@@ -1,23 +1,18 @@
 import { computed } from 'vue'
-import type { ProjectDashboardTableType, DashboardTableData } from './useProjectDashboard'
-import { useProjectDashboard } from './useProjectDashboard'
+import { type DashboardTableData, useProjectDashboard } from './useProjectDashboard'
 
 export const useProjectDashboardTable = () => {
-    const { getData, data: tableData, loading } = useProjectDashboard<DashboardTableData>()
-
-    const getTableData = async (type: ProjectDashboardTableType) => {
-        await getData(type)
-    }
+    const { getData, data, loading } = useProjectDashboard<DashboardTableData>()
 
     const filteredTableDataKeys = computed(() => {
-        if (!tableData.value) return []
-        return Object.keys(tableData.value).filter((key) => key !== 'title' && key !== 'computedAt')
+        if (!data.value) return []
+        return Object.keys(data.value).filter((key) => key !== 'title' && key !== 'computedAt')
     })
 
     return {
-        getData: getTableData,
-        tableData,
-        filteredTableDataKeys,
+        data,
         loading,
+        getData,
+        filteredTableDataKeys,
     }
 }
