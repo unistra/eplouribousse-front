@@ -6,6 +6,7 @@ import { useProjectView } from '@/components/project/useProjectView.ts'
 import { useProjectAdmin } from '@/components/project/projectAdmin/useProjectAdmin.ts'
 import { useRoute } from 'vue-router'
 import ProjectLibraryCard from '@/components/project/libraries/card/ProjectLibraryCard.vue'
+import ProjectRoles from '@/components/project/stepper/steps/roles/ProjectRoles.vue'
 
 const projectStore = useProjectStore()
 const route = useRoute()
@@ -59,6 +60,9 @@ watchRouteIdAndFetchProject()
                             :summary-mode="!projectStore.userIsAdmin"
                         />
                     </div>
+                </template>
+                <template v-if="tab.name === ProjectAdministrationTab.Users">
+                    <ProjectRoles setting-mode />
                 </template>
             </QTabPanel>
         </QTabPanels>
