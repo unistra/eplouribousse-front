@@ -2,6 +2,7 @@ import { axiosI } from '@/plugins/axios/axios.ts'
 import { useUtils } from '@/composables/useUtils.ts'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
+import type { ChartOptions } from 'chart.js'
 
 export type ProjectDashboardTableType =
     | 'initial-data'
@@ -44,11 +45,14 @@ export type DashboardChartData = {
     computedAt: string
 }
 
-export type ChartToDisplay = {
+export type ChartToDisplayObject = {
     type: ProjectDashboardChartType
     chartType: ProjectDashboardChartComponentType
     stacked?: boolean
-}[]
+    chartOptions?: ChartOptions<ProjectDashboardChartComponentType>
+}
+
+export type ChartToDisplay = ChartToDisplayObject[]
 
 export const useProjectDashboard = <T extends DashboardTableData | DashboardChartData>() => {
     const route = useRoute()
@@ -70,8 +74,21 @@ export const useProjectDashboard = <T extends DashboardTableData | DashboardChar
 
     const chartToDisplay: ChartToDisplay = [
         { type: 'realized-positioning-per-library', chartType: 'bar' },
-        { type: 'resources-to-instruct-per-library', chartType: 'bar', stacked: true },
-        // { type: 'collection-occurrences-per-library', chartType: 'bar' },
+        {
+            type: 'resources-to-instruct-per-library',
+            chartType: 'bar',
+            stacked: true,
+            chartOptions: {
+                scales: {
+                    y: {
+                        ticks: {
+                            stepSize: 1,
+                            precision: 0,
+                        },
+                    },
+                },
+            },
+        },
         { type: 'collection-occurrences-per-library', chartType: 'doughnut' },
     ]
 

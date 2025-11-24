@@ -6,11 +6,13 @@ import type {
 import { useProjectDashboard } from './useProjectDashboard'
 import { computed } from 'vue'
 import { Chart, type ChartData, type ChartOptions } from 'chart.js'
+import { merge } from 'chart.js/helpers'
 
 export type ProjectDashboardChartProps = {
     type: ProjectDashboardChartType
     chartType: ProjectDashboardChartComponentType
     stacked?: boolean
+    chartOptions?: ChartOptions<ProjectDashboardChartComponentType>
 }
 
 const CHART_COLORS = {
@@ -46,11 +48,9 @@ const createHatchPattern = (color: string): string | CanvasPattern => {
     patternCanvas.width = hatchSize
     patternCanvas.height = hatchSize
 
-    // Draw base color
     patternContext.fillStyle = color
     patternContext.fillRect(0, 0, hatchSize, hatchSize)
 
-    // Draw hatch lines
     patternContext.strokeStyle = `rgba(0, 0, 0, ${hatchOpacity})`
     patternContext.lineWidth = hatchLineWidth
     patternContext.beginPath()
@@ -58,7 +58,6 @@ const createHatchPattern = (color: string): string | CanvasPattern => {
     patternContext.lineTo(hatchSize, 0)
     patternContext.stroke()
 
-    // Create repeatable pattern
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')
     return ctx?.createPattern(patternCanvas, 'repeat') ?? color
@@ -143,7 +142,7 @@ export const useProjectDashboardChart = <T extends ProjectDashboardChartComponen
         return Boolean(chartData?.labels?.length && chartData?.datasets?.length)
     })
 
-    const chartOptions = computed(
+    const baseChartOptions = computed(
         () =>
             ({
                 responsive: true,
@@ -158,6 +157,13 @@ export const useProjectDashboardChart = <T extends ProjectDashboardChartComponen
                 scales: getScalesConfig(props.chartType, props.stacked),
             }) as ChartOptions<T>,
     )
+
+    const chartOptions = computed(() => {
+        if (props.chartOptions) {
+            return merge({}, [baseChartOptions.value, props.chartOptions]) as ChartOptions<T>
+        }
+        return baseChartOptions.value
+    })
 
     return { getData, data, loading, chartDataFormatted, hasData, chartOptions }
 }

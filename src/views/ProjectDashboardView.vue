@@ -29,6 +29,7 @@ watchRouteIdAndFetchProject()
                 <ProjectDashboardChart
                     v-for="el in chartToDisplay"
                     :key="el.type"
+                    :chart-options="el.chartOptions"
                     :chart-type="el.chartType"
                     :stacked="el.stacked"
                     :type="el.type"

@@ -32,7 +32,7 @@ onMounted(async () => {
             :chart-data="chartDataFormatted"
             :chart-options="chartOptions"
             class="chart"
-            :type="chartType"
+            :type="props.chartType"
         />
 
         <p
@@ -51,7 +51,6 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="sass">
-
 .q-skeleton, .chart
     width: 24rem
     height: 24rem
