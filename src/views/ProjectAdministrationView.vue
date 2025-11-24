@@ -5,6 +5,7 @@ import ProjectAdminTabInformation from '@/components/project/admin/tabs/ProjectA
 import { useProjectView } from '@/components/project/useProjectView.ts'
 import { useProjectAdmin } from '@/components/project/projectAdmin/useProjectAdmin.ts'
 import { useRoute } from 'vue-router'
+import ProjectLibraryCard from '@/components/project/libraries/card/ProjectLibraryCard.vue'
 
 const projectStore = useProjectStore()
 const route = useRoute()
@@ -35,8 +36,7 @@ watchRouteIdAndFetchProject()
                 :key="tab.name"
                 :label="tab.label"
                 :name="tab.name"
-            >
-            </QTab>
+            />
         </QTabs>
         <QTabPanels
             v-model="tab"
@@ -50,7 +50,16 @@ watchRouteIdAndFetchProject()
                 <template v-if="tab.name === ProjectAdministrationTab.Informations">
                     <ProjectAdminTabInformation />
                 </template>
-                <template v-if="tab.name === ProjectAdministrationTab.Libraries"> </template>
+                <template v-if="tab.name === ProjectAdministrationTab.Libraries">
+                    <div class="libraries">
+                        <ProjectLibraryCard
+                            v-for="library in projectStore.libraries"
+                            :key="library.id"
+                            :library="library"
+                            :summary-mode="!projectStore.userIsAdmin"
+                        />
+                    </div>
+                </template>
             </QTabPanel>
         </QTabPanels>
     </QPage>
@@ -63,4 +72,8 @@ h1
 
     .q-skeleton
         width: 16rem
+
+.libraries
+    display: flex
+    gap: 1rem
 </style>

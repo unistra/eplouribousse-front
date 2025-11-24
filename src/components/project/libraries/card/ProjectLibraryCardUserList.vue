@@ -4,8 +4,11 @@ import type { UserSummarized } from '#/user.ts'
 import type { SearchUserSendAction } from '@/components/utils/searchUser/useSearchUser.ts'
 import { useUserStore } from '@/stores/userStore.ts'
 import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
+import { useProjectStore } from '@/stores/projectStore.ts'
+import { ProjectStatus } from '&/project.ts'
 
-defineProps<{
+const props = defineProps<{
     usersSelected: UserSummarized[]
     invitationsSelected: ProjectInvitation[]
     summaryMode?: boolean
@@ -15,6 +18,12 @@ defineProps<{
 
 const userStore = useUserStore()
 const { t } = useI18n()
+const projectStore = useProjectStore()
+const hasAlwaysOneUserSelectedAfterProjectIsDraft = computed(() => {
+    if (projectStore.status === ProjectStatus.Draft) return true // Project is draft so we allow deletion
+
+    return props.usersSelected.length > 1
+})
 </script>
 
 <template>
@@ -26,7 +35,7 @@ const { t } = useI18n()
                 icon="mdi-email-fast-outline"
                 icon-remove="mdi-close"
                 :label="invitation.email"
-                :removable="!summaryMode"
+                :removable="!summaryMode && hasAlwaysOneUserSelectedAfterProjectIsDraft"
                 size="1rem"
                 @remove="sendAction && sendAction('removeInvitation', { invitation: invitation })"
             />
@@ -36,7 +45,11 @@ const { t } = useI18n()
                 icon="mdi-account-circle"
                 icon-remove="mdi-close"
                 :label="user.displayName"
-                :removable="!(preventDeleteCurrentUser && user.id === userStore.user?.id) && !summaryMode"
+                :removable="
+                    !(preventDeleteCurrentUser && user.id === userStore.user?.id) &&
+                    !summaryMode &&
+                    hasAlwaysOneUserSelectedAfterProjectIsDraft
+                "
                 size="1rem"
                 @remove="sendAction && sendAction('removeUser', { user: user })"
             />
