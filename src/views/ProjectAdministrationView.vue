@@ -1,20 +1,24 @@
 <script lang="ts" setup>
 import { useProjectStore } from '@/stores/projectStore.ts'
-import { ProjectAdministrationTab, } from '@/components/project/admin/useProjectAdmin.ts'
+import {
+    ProjectAdministrationTab,
+    useProjectAdminTabExclusions,
+} from '@/components/project/admin/tabs/exclusions/useProjectAdminTabExclusions.ts'
 import ProjectAdminTabInformation from '@/components/project/admin/tabs/ProjectAdminTabInformation.vue'
 import { useProjectView } from '@/components/project/useProjectView.ts'
-import { useProjectAdmin } from '@/components/project/projectAdmin/useProjectAdmin.ts'
 import { useRoute } from 'vue-router'
 import ProjectLibraryCard from '@/components/project/libraries/card/ProjectLibraryCard.vue'
 import ProjectRoles from '@/components/project/stepper/steps/roles/ProjectRoles.vue'
+import ProjectAdminTabAlerts from '@/components/project/admin/tabs/ProjectAdminTabAlerts.vue'
+import ProjectAdminTabExclusions from '@/components/project/admin/tabs/exclusions/ProjectAdminTabExclusions.vue'
 
 const projectStore = useProjectStore()
 const route = useRoute()
 
-const { tabs, tab } = useProjectAdmin()
 
 const { watchRouteIdAndFetchProject } = useProjectView()
 watchRouteIdAndFetchProject()
+const { tabs, tab } = useProjectAdminTabExclusions()
 </script>
 
 <template>
@@ -63,6 +67,12 @@ watchRouteIdAndFetchProject()
                 </template>
                 <template v-if="tab.name === ProjectAdministrationTab.Users">
                     <ProjectRoles setting-mode />
+                </template>
+                <template v-if="tab.name === ProjectAdministrationTab.Alerts">
+                    <ProjectAdminTabAlerts />
+                </template>
+                <template v-if="tab.name === ProjectAdministrationTab.Exclusions">
+                    <ProjectAdminTabExclusions />
                 </template>
             </QTabPanel>
         </QTabPanels>
