@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { useProjectStore } from '@/stores/projectStore.ts'
+import { ProjectAdministrationTab, } from '@/components/project/admin/useProjectAdmin.ts'
+import ProjectAdminTabInformation from '@/components/project/admin/tabs/ProjectAdminTabInformation.vue'
 import { useProjectView } from '@/components/project/useProjectView.ts'
-import ProjectAdminDispatcher from '@/components/project/projectAdmin/ProjectAdminDispatcher.vue'
 import { useProjectAdmin } from '@/components/project/projectAdmin/useProjectAdmin.ts'
 import { useRoute } from 'vue-router'
 
@@ -17,8 +18,11 @@ watchRouteIdAndFetchProject()
 <template>
     <QPage padding>
         <h1>
-            {{ route.meta.title }}: <span v-if="projectStore.isLoading"><QSkeleton type="text" /></span
-            ><span v-else>{{ projectStore.name }}</span>
+            {{ route.meta.title }}:
+            <span v-if="projectStore.isLoading">
+                <QSkeleton type="text" />
+            </span>
+            <span v-else>{{ projectStore.name }}</span>
         </h1>
         <QTabs
             v-model="tab"
@@ -43,7 +47,10 @@ watchRouteIdAndFetchProject()
                 :key="tab.name"
                 :name="tab.name"
             >
-                <ProjectAdminDispatcher :tab-name="tab.name" />
+                <template v-if="tab.name === ProjectAdministrationTab.Informations">
+                    <ProjectAdminTabInformation />
+                </template>
+                <template v-if="tab.name === ProjectAdministrationTab.Libraries"> </template>
             </QTabPanel>
         </QTabPanels>
     </QPage>
