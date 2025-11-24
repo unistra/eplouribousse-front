@@ -211,7 +211,8 @@
             "transferTracking": "Suivi des transferts",
             "treatmentTracking": "Suivi des traitements",
             "exclusionReason": "Raisons d'exclusion",
-            "alternativeStorageSite": "Lieu de stockage alternatif"
+            "alternativeStorageSite": "Lieu de stockage alternatif",
+            "visibility": "Visibilité du projet"
         },
         "positioning": {
             "filter": {
@@ -596,7 +597,8 @@
         "noRole": "Aucun rôle sur le tenant",
         "confirmEmail": "Confirmer l'email",
         "clearField": "Effacer le contenu du champ",
-        "addUser": "Ajouter cet utilisateur: {user}"
+        "addUser": "Ajouter cet utilisateur: {user}",
+        "noUser": "Aucun utilisateur"
     },
     "errors": {
         "unknown": "Une erreur est survenue",

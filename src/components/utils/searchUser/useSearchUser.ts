@@ -12,7 +12,7 @@ export type SearchUserProps = {
     role?: Roles
     usersSelected: UserSummarized[]
     invitationsSelected: ProjectInvitation[]
-    isAddUserLoading: boolean
+    isAddUserLoading?: boolean
     preventDeleteCurrentUser?: boolean
     disableInvitations?: boolean
     label?: string
