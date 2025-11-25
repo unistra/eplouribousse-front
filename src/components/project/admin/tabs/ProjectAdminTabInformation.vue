@@ -4,6 +4,8 @@ import { useI18n } from 'vue-i18n'
 import { useUtils } from '@/composables/useUtils.ts'
 import AtomicEditableField from '@/components/atomic/AtomicEditableField.vue'
 import AtomicToggle from '@/components/atomic/AtomicToggle.vue'
+import { axiosI } from '@/plugins/axios/axios.ts'
+import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 
 const projectStore = useProjectStore()
 const { t } = useI18n()
@@ -11,8 +13,22 @@ const { t } = useI18n()
 const onSave = async () => {
     await projectStore._patchTitleAndDescription()
 }
+const { useHandleError } = useUtils()
+const { notify } = useComposableQuasar()
 
-const setProjectVisibility = () => {}
+const setProjectVisibility = async () => {
+    try {
+        await axiosI.patch(`/projects/${projectStore.id}/`, {
+            is_private: projectStore.isPrivate,
+        })
+        notify({
+            message: t('project.settings.changeProjectVisibilitySuccess'),
+            type: 'positive',
+        })
+    } catch (e) {
+        useHandleError(e)
+    }
+}
 </script>
 
 <template>

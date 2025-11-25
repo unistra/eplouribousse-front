@@ -194,6 +194,7 @@
         "settings": {
             "title": "Paramètres du projet",
             "privateMode": "Mode privé",
+            "changeProjectVisibilitySuccess": "La visibilité du projet à bien été changé",
             "emailAlert": {
                 "title": "Alertes email",
                 "resourcesAlterts": "Opérations sur les ressources",
