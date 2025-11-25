@@ -37,7 +37,7 @@ onMounted(async () => {
 
 <template>
     <div class="project-resources">
-        <hgroup>
+        <div class="hgroup">
             <h1>{{ projectStore.name }}</h1>
             <div>
                 <AtomicButton
@@ -48,7 +48,6 @@ onMounted(async () => {
                     :to="{ name: 'projectDashboard' }"
                 />
                 <AtomicButton
-                    v-if="projectStore.userIsAdmin"
                     dense
                     flat
                     icon="mdi-cog"
@@ -56,7 +55,7 @@ onMounted(async () => {
                     :to="{ name: 'projectAdmin' }"
                 />
             </div>
-        </hgroup>
+        </div>
         <div class="selects">
             <AtomicSelect
                 v-for="(select, index) in selects"
@@ -200,7 +199,7 @@ onMounted(async () => {
     width: 100%
     gap: 1rem
 
-    hgroup
+    .hgroup
         display: flex
         align-items: center
         justify-content: space-between

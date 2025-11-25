@@ -2,15 +2,15 @@
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import ProjectLibraryCard from '@/components/project/libraries/card/ProjectLibraryCard.vue'
-import { useProjectRoles } from '@/components/project/stepper/steps/roles/useProjectRoles.ts'
 import { checkValidityProjectStepper } from '@/components/project/stepper/useProjectStepper.ts'
 import { useUtils } from '@/composables/useUtils.ts'
+import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
+import { Roles } from '&/project.ts'
 
 const projectStore = useProjectStore()
-const { roles } = useProjectRoles()
 const { t } = useI18n()
 
-const { checkValidityForRolesStep, checkValidityForLibraryStep } = checkValidityProjectStepper()
+const { checkValidityForLibraryStep } = checkValidityProjectStepper()
 </script>
 
 <template>
@@ -60,47 +60,20 @@ const { checkValidityForRolesStep, checkValidityForLibraryStep } = checkValidity
             </div>
         </div>
         <QSeparator />
+        <p class="label">{{ t('view.project.new.stepper.steps.roles.tab') }}</p>
         <div class="roles">
-            <p class="label">{{ t('view.project.new.stepper.steps.roles.title') }}</p>
-            <div
-                v-if="!checkValidityForRolesStep"
-                class="errors"
-            >
-                <QIcon
-                    name="mdi-alert"
-                    size="sm"
-                />
-                <p>{{ t('view.project.new.stepper.steps.summary.errors.roles') }}</p>
-            </div>
-            <QList
-                v-for="role in roles"
-                :key="role.role"
-            >
-                <p>{{ role.title }}</p>
-                <template
-                    v-if="
-                        projectStore.roles.filter((userRole) => role.role === userRole.role).length ||
-                        projectStore.invitations.filter((invitation) => role.role === invitation.role).length
-                    "
-                >
-                    <QItem
-                        v-for="invitation in projectStore.invitations.filter((inv) => role.role === inv.role)"
-                        :key="invitation.email"
-                    >
-                        <span>📨 {{ invitation.email }}</span>
-                    </QItem>
-                    <QItem
-                        v-for="userRole in projectStore.roles.filter((usrRole) => role.role === usrRole.role)"
-                        :key="userRole.user.id"
-                    >
-                        <span
-                            >{{ userRole.user.firstName || '***' }} {{ userRole.user.lastName || `***` }} -
-                            {{ userRole.user.email || `${t('common.none')} ${t('common.email')}` }}</span
-                        >
-                    </QItem>
-                </template>
-                <QItem v-else>{{ t('view.project.new.stepper.steps.summary.noUser') }}</QItem>
-            </QList>
+            <SearchUser
+                v-for="role in [
+                    [Roles.ProjectAdmin, t('roles.projectAdmin')],
+                    [Roles.Controller, t('roles.controller')],
+                    [Roles.Guest, t('roles.guest')],
+                ]"
+                :key="role[0]"
+                :invitations-selected="projectStore.invitations.filter((el) => el.role === role[0])"
+                :label="role[1]"
+                summary-mode
+                :users-selected="projectStore.roles.filter((el) => el.role === role[0]).map((el) => el.user)"
+            />
         </div>
     </div>
 </template>
@@ -165,7 +138,7 @@ const { checkValidityForRolesStep, checkValidityForLibraryStep } = checkValidity
         gap: 1rem
 
     .roles
-        display: flex
-        flex-direction: column
+        display: grid
+        grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr))
         gap: 1rem
 </style>

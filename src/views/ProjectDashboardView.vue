@@ -5,6 +5,7 @@ import ProjectDashboardChart from '@/components/project/projectDashboard/Project
 import { useProjectView } from '@/components/project/useProjectView.ts'
 import { useProjectDashboard } from '@/components/project/projectDashboard/useProjectDashboard.ts'
 import { useRoute } from 'vue-router'
+import BackButton from '@/components/utils/BackButton.vue'
 
 const projectStore = useProjectStore()
 const route = useRoute()
@@ -16,7 +17,10 @@ watchRouteIdAndFetchProject()
 
 <template>
     <QPage padding>
-        <h1>{{ route.meta.title }}: {{ projectStore.name }}</h1>
+        <div class="back">
+            <BackButton />
+            <h1>{{ route.meta.title }}: {{ projectStore.name }}</h1>
+        </div>
         <div class="dashboard">
             <div class="table">
                 <ProjectDashboardTable
@@ -54,4 +58,9 @@ main
         gap: 1rem
         flex-wrap: wrap
         justify-content: space-evenly
+
+.back
+    display: flex
+    gap: 1rem
+    align-items: center
 </style>

@@ -4,12 +4,15 @@ import { useI18n } from 'vue-i18n'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import type { ImportCSVErrorObject } from '#/project.ts'
 import { useProjectLibraryCollection } from '@/components/project/libraries/card/collectionField/useProjectLibraryCollection.ts'
+import { useProjectStore } from '@/stores/projectStore.ts'
+import { ProjectStatus } from '&/project.ts'
 
 const props = defineProps<{
     libraryId: string
     summaryMode?: boolean
 }>()
 
+const projectStore = useProjectStore()
 const { t } = useI18n()
 const {
     getCollection,
@@ -67,7 +70,10 @@ onMounted(async () => await getCollection())
                         {{ t('project.libraries.card.csv-import.present', { count: collectionCount }) }}
                     </p>
                 </QCardSection>
-                <QCardActions align="right">
+                <QCardActions
+                    v-if="projectStore.status === ProjectStatus.Draft && !summaryMode"
+                    align="right"
+                >
                     <AtomicButton
                         confirm-button-color="negative"
                         icon="mdi-delete-outline"

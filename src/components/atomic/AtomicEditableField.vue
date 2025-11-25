@@ -6,7 +6,7 @@ const props = defineProps<{
     modelValue: string
     label?: string
     editable?: boolean
-    type?: 'number' | 'text'
+    type?: 'number' | 'text' | 'textarea'
 }>()
 
 const emit = defineEmits<{
@@ -58,8 +58,9 @@ const cancel = () => {
                 autofocus
                 dense
                 :type="props.type || 'text'"
-                @keyup.enter="save"
+                @keyup.enter.exact="save"
                 @keyup.esc="cancel"
+                @keyup.shift.enter="undefined"
             />
             <div
                 v-else
@@ -105,10 +106,8 @@ const cancel = () => {
 
 <style scoped lang="sass">
 .display-value
-    min-height: 40px
-    display: flex
-    align-items: center
-    padding: 6px 10px
+    padding: 0.5rem
+    white-space: pre-wrap
 
 .btn
     display: flex

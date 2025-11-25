@@ -6,7 +6,7 @@ import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { type ProjectLibrary } from '#/project.ts'
 import { useProjectLibraryCard } from '@/components/project/libraries/card/useProjectLibraryCard.ts'
 import ProjectLibraryCollection from '@/components/project/libraries/card/collectionField/ProjectLibraryCollection.vue'
-import { Roles } from '&/project.ts'
+import { ProjectStatus, Roles } from '&/project.ts'
 import ProjectLibraryCardUserList from '@/components/project/libraries/card/ProjectLibraryCardUserList.vue'
 
 const props = defineProps<{
@@ -65,7 +65,7 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading,
         </QCardSection>
 
         <QCardActions
-            v-if="!summaryMode"
+            v-if="!summaryMode && projectStore.status === ProjectStatus.Draft"
             align="right"
         >
             <AtomicButton

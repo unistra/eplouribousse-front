@@ -1,4 +1,4 @@
-import { useProjectStore } from '@/stores/projectStore'
+import { useProjectStore } from '@/stores/projectStore.ts'
 import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -10,7 +10,7 @@ export enum ProjectAdministrationTab {
     Exclusions = 'exclusions',
 }
 
-export function useProjectAdmin() {
+export function useProjectAdminTabExclusions() {
     const store = useProjectStore()
     const { t } = useI18n()
 

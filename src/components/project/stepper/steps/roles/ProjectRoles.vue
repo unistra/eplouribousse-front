@@ -2,33 +2,33 @@
 import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useProjectRoles } from '@/components/project/stepper/steps/roles/useProjectRoles.ts'
-import { Roles } from '&/project'
 import { useI18n } from 'vue-i18n'
 
+defineProps<{ settingMode?: boolean }>()
 const { roles, addUserLoadingBasedOnRole, onAddInvitation, onAddRole } = useProjectRoles()
-const store = useProjectStore()
+const projectStore = useProjectStore()
 const { t } = useI18n()
 </script>
 
 <template>
     <div class="container">
-        <h1>{{ t('view.project.new.stepper.steps.roles.title') }}</h1>
+        <h1 v-if="!settingMode">{{ t('view.project.new.stepper.steps.roles.title') }}</h1>
         <div class="roles">
             <template
                 v-for="role in roles"
                 :key="role.role"
             >
                 <SearchUser
-                    :disable="role.role !== Roles.Guest"
-                    :invitations-selected="store.invitations.filter((el) => el.role === role.role)"
+                    :invitations-selected="projectStore.invitations.filter((el) => el.role === role.role)"
                     :is-add-user-loading="addUserLoadingBasedOnRole === role.role"
                     :label="role.title"
                     :role="role.role"
-                    :users-selected="store.roles.filter((el) => el.role === role.role).map((el) => el.user)"
+                    :summary-mode="!projectStore.userIsAdmin"
+                    :users-selected="projectStore.roles.filter((el) => el.role === role.role).map((el) => el.user)"
                     @add-invitation="async (email) => await onAddInvitation(email, role.role)"
                     @add-user="async (user) => await onAddRole(user.id, role.role)"
-                    @remove-invitation="async ({ email }) => await store.removeInvitation(email, role.role)"
-                    @remove-user="async (user) => await store.removeRole(user.id, role.role)"
+                    @remove-invitation="async ({ email }) => await projectStore.removeInvitation(email, role.role)"
+                    @remove-user="async (user) => await projectStore.removeRole(user.id, role.role)"
                 />
             </template>
         </div>
