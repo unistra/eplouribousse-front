@@ -17,8 +17,8 @@ const { step, nextStep, previousStep, buttonLabel, passToReviewLoading, passToRe
 
 const { checkValidityForRolesStep, checkValidityForLibraryStep } = checkValidityProjectStepper()
 
+const route = useRoute()
 onMounted(async () => {
-    const route = useRoute()
     if (route.query.page && route.query.page === '2') await nextStep()
 })
 </script>

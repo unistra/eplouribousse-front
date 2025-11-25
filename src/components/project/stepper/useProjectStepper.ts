@@ -7,6 +7,7 @@ import router from '@/router'
 import { useUserStore } from '@/stores/userStore.ts'
 import { Roles } from '&/project.ts'
 import { useProjectLibraryCollection } from '@/components/project/libraries/card/collectionField/useProjectLibraryCollection.ts'
+import { useRoute } from 'vue-router'
 
 export const checkValidityProjectStepper = () => {
     const projectStore = useProjectStore()
@@ -46,6 +47,7 @@ export const useProjectStepper = () => {
     const { t } = useI18n()
     const projectStore = useProjectStore()
     const { notify } = useComposableQuasar()
+    const route = useRoute()
 
     const step = ref(1)
     const stepper = useTemplateRef<QStepper>('stepper')
@@ -80,10 +82,10 @@ export const useProjectStepper = () => {
                 })
                 return
             }
-
-            if (router.currentRoute.value.name === 'newProject') {
+            if (route.name === 'newProject') {
                 const userStore = useUserStore()
                 await userStore.getProjects()
+                await projectStore.fetchProjectById(projectStore.id)
                 await router.push({ name: 'project', params: { id: projectStore.id }, query: { page: 2 } })
                 return
             }
