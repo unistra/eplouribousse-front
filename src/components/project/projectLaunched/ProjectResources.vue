@@ -11,6 +11,7 @@ import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useRoute } from 'vue-router'
+import { useUserStore } from '@/stores/userStore.ts'
 
 const resourceStore = useResourceStore()
 const projectStore = useProjectStore()
@@ -30,6 +31,7 @@ const {
     positioningFilter,
 } = useProjectResources()
 const { t } = useI18n()
+const userStore = useUserStore()
 
 onMounted(async () => {
     selectDefaultLibrary()
@@ -54,6 +56,7 @@ onMounted(async () => {
                     :to="{ name: 'projectDashboard' }"
                 />
                 <AtomicButton
+                    v-if="userStore.isAuth"
                     dense
                     flat
                     icon="mdi-cog"
