@@ -607,6 +607,7 @@
         "unknown": "Une erreur est survenue",
         "retry": "veuillez réessayer",
         "unknownRetry": "Une erreur est survenue, veuillez réessayer",
-        "dataUnreachable": "Les données n'ont pas pu être chargées'"
+        "dataUnreachable": "Les données n'ont pas pu être chargées'",
+        "emailValid": "Entrez une adresse e-mail valide"
     }
 }

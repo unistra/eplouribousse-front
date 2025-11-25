@@ -112,6 +112,7 @@ const { model, input, options, sendAction, userListLoading, selectFilterFn, clea
         />
         <ProjectLibraryCardUserList
             :invitations-selected
+            :prevent-delete-current-user
             :send-action="sendAction"
             :summary-mode
             :users-selected

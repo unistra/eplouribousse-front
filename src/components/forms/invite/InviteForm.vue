@@ -10,22 +10,27 @@ const { email, sendInvitation } = useInviteForm()
 </script>
 
 <template>
-    <div class="container column content-center">
-        <QForm
-            class="container column medium"
-            @submit.prevent="sendInvitation"
-        >
-            <AtomicInput
-                v-model="email"
-                autofocus
-                :label="t('forms.invite.email')"
-                type="email"
-            />
-            <AtomicButton
-                :label="t('forms.invite.send')"
-                no-caps
-                type="submit"
-            />
-        </QForm>
-    </div>
+    <QForm
+        class="container column medium"
+        @submit.prevent="sendInvitation"
+    >
+        <AtomicInput
+            v-model="email"
+            hide-bottom-space
+            :label="t('forms.invite.email')"
+            :rules="[(val, rules) => rules.email(val) || t('errors.emailValid')]"
+            type="email"
+        />
+        <AtomicButton
+            :label="t('forms.invite.send')"
+            no-caps
+            type="submit"
+        />
+    </QForm>
 </template>
+<style lang="sass" scoped>
+.q-form
+    display: flex
+    flex-direction: column
+    gap: 1rem
+</style>

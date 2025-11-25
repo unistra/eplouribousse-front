@@ -8,6 +8,7 @@ import { Roles } from '&/project.ts'
 import { useGlobalStore } from '@/stores/globalStore.ts'
 import { useI18n } from 'vue-i18n'
 import { useUtils } from '@/composables/useUtils.ts'
+import InviteForm from '@/components/forms/invite/InviteForm.vue'
 
 const route = useRoute()
 const projectStore = useProjectStore()
@@ -39,6 +40,10 @@ onMounted(async () => {
                 </QChip>
             </div>
         </div>
+        <div class="invite">
+            <h2>{{ t('forms.invite.title') }}</h2>
+            <InviteForm class="max-width-container" />
+        </div>
         <div class="roles">
             <h2>{{ t('view.tenantAdmin.section2') }}</h2>
             <div
@@ -66,7 +71,7 @@ main
     display: flex
     flex-direction: column
     gap: 2rem
-    .roles
+    .roles, .invite
         display: flex
         flex-direction: column
         gap: 1rem
@@ -74,4 +79,9 @@ main
             display: flex
             flex-direction: column
             gap: 1rem
+
+    .max-width-container
+        max-width: 24rem
+        align-self: center
+        width: 100%
 </style>

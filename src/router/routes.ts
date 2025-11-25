@@ -220,14 +220,6 @@ const routes: RouteRecordRaw[] = [
         },
     },
     {
-        path: '/invite',
-        name: 'invite',
-        component: () => import('@/views/InviteView.vue'),
-        meta: {
-            title: 'Inviter un utilisateur',
-        },
-    },
-    {
         path: '/libraries',
         name: 'libraries',
         component: () => import('@/views/LibrariesView.vue'),
