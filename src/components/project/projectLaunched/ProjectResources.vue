@@ -37,7 +37,7 @@ onMounted(async () => {
 
 <template>
     <div class="project-resources">
-        <div>
+        <div class="hgroup">
             <h1>{{ projectStore.name }}</h1>
             <div>
                 <AtomicButton
@@ -199,7 +199,7 @@ onMounted(async () => {
     width: 100%
     gap: 1rem
 
-    hgroup
+    .hgroup
         display: flex
         align-items: center
         justify-content: space-between

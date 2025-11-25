@@ -11,10 +11,10 @@ import ProjectLibraryCard from '@/components/project/libraries/card/ProjectLibra
 import ProjectRoles from '@/components/project/stepper/steps/roles/ProjectRoles.vue'
 import ProjectAdminTabAlerts from '@/components/project/admin/tabs/ProjectAdminTabAlerts.vue'
 import ProjectAdminTabExclusions from '@/components/project/admin/tabs/exclusions/ProjectAdminTabExclusions.vue'
+import BackButton from '@/components/utils/BackButton.vue'
 
 const projectStore = useProjectStore()
 const route = useRoute()
-
 
 const { watchRouteIdAndFetchProject } = useProjectView()
 watchRouteIdAndFetchProject()
@@ -23,13 +23,16 @@ const { tabs, tab } = useProjectAdminTabExclusions()
 
 <template>
     <QPage padding>
-        <h1>
-            {{ route.meta.title }}:
-            <span v-if="projectStore.isLoading">
-                <QSkeleton type="text" />
-            </span>
-            <span v-else>{{ projectStore.name }}</span>
-        </h1>
+        <div class="back">
+            <BackButton />
+            <h1>
+                {{ route.meta.title }}:
+                <span v-if="projectStore.isLoading">
+                    <QSkeleton type="text" />
+                </span>
+                <span v-else>{{ projectStore.name }}</span>
+            </h1>
+        </div>
         <QTabs
             v-model="tab"
             align="left"
@@ -80,6 +83,10 @@ const { tabs, tab } = useProjectAdminTabExclusions()
 </template>
 
 <style lang="sass" scoped>
+main
+    display: flex
+    flex-direction: column
+    gap: 1rem
 h1
     display: inline-flex
     gap: 0.5rem
@@ -90,4 +97,8 @@ h1
 .libraries
     display: flex
     gap: 1rem
+.back
+    display: flex
+    gap: 1rem
+    align-items: center
 </style>
