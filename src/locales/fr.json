@@ -577,7 +577,8 @@
         "public": "Public",
         "download": "Télécharger",
         "other": "Autre",
-        "send": "Envoyer"
+        "send": "Envoyer",
+        "addMore": "Ajouter plus"
     },
     "utils": {
         "searchUser": {

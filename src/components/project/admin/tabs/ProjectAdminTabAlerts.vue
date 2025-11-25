@@ -4,6 +4,7 @@ import { useProjectStore } from '@/stores/projectStore.ts'
 import AtomicToggle from '@/components/atomic/AtomicToggle.vue'
 import { computed, onMounted, ref } from 'vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
+import type { Project } from '#/project.ts'
 
 const { t } = useI18n()
 const projectStore = useProjectStore()
@@ -40,10 +41,8 @@ const onPatchAlerts = async () => {
                 dense
             >
                 <AtomicToggle
-                    v-model="
-                        //@ts-ignore
-                        projectStore.settings.alerts[key as keyof typeof projectStore.settings.alerts]
-                    "
+                    v-model="projectStore.settings.alerts[key as keyof Project['settings']['alerts']]"
+                    :disable="!projectStore.userIsAdmin"
                     :label="t(`project.settings.emailAlert.${key}`)"
                 />
             </QItem>

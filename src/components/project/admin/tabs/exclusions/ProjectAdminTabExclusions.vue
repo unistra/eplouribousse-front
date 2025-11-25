@@ -12,34 +12,39 @@ const { t } = useI18n()
 </script>
 
 <template>
-    <QList>
-        <QItem
+    <div class="tabs">
+        <QChip
             v-for="exclusionReason in projectStore.settings.exclusionReasons"
             :key="exclusionReason"
-        >
-            <p>{{ exclusionReason }}</p>
-            <AtomicButton
-                icon="mdi-close"
-                no-border
-                size="xs"
-                @click="projectStore.removeExclusionReason(exclusionReason)"
-            />
-        </QItem>
-        <QItem>
-            <AtomicButton
-                v-if="!addingExclusionReason"
-                icon="mdi-plus"
-                size="xs"
-                @click="addingExclusionReason = true"
-            />
-            <AtomicInput
-                v-else
-                v-model="newExclusionReason"
-                :label="t('project.settings.exclusionReason')"
-                quick-input
-                @cancel="onCancelAddExclusionReason"
-                @done="onAddExclusionReason"
-            />
-        </QItem>
-    </QList>
+            icon-remove="mdi-close"
+            :label="exclusionReason"
+            :removable="projectStore.userIsAdmin"
+            size="1rem"
+        />
+    </div>
+    <template v-if="projectStore.userIsAdmin">
+        <AtomicButton
+            v-if="!addingExclusionReason"
+            icon="mdi-plus"
+            :label="t('common.addMore')"
+            no-border
+            @click="addingExclusionReason = true"
+        />
+        <AtomicInput
+            v-else
+            v-model="newExclusionReason"
+            :label="t('project.settings.exclusionReason')"
+            quick-input
+            @cancel="onCancelAddExclusionReason"
+            @done="onAddExclusionReason"
+        />
+    </template>
 </template>
+<style lang="sass" scoped>
+.q-chip
+    background-color: var(--color-white)
+.tabs
+    display: flex
+    align-items: center
+    flex-wrap: wrap
+</style>
