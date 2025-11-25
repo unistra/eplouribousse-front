@@ -43,15 +43,10 @@ onMounted(() => {
             :rules="[() => arePasswordsMatching || t('forms.password.validation.passwordsDoNotMatch')]"
         />
 
-        <div>
-            <p>{{ t('forms.password.passwordMustContain') }}:</p>
-            <ul>
-                <li>{{ t('forms.password.minLength') }}</li>
-                <li>{{ t('forms.password.upperCase') }}</li>
-                <li>{{ t('forms.password.lowerCase') }}</li>
-                <li>{{ t('forms.password.digit') }}</li>
-                <li>{{ t('forms.password.specialChar') }}</li>
-            </ul>
+        <div class="infos">
+            <p>{{ t('forms.password.passwordInstructions.1') }}</p>
+            <p>{{ t('forms.password.passwordInstructions.2') }}</p>
+            <p>{{ t('forms.password.passwordInstructions.3') }}</p>
         </div>
         <AtomicButton
             :label="t('forms.password.reset.submit')"
@@ -60,3 +55,7 @@ onMounted(() => {
         />
     </QForm>
 </template>
+<style lang="sass" scoped>
+.infos
+    font-size: var(--font-size-sm)
+</style>

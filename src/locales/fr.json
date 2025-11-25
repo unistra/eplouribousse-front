@@ -473,6 +473,11 @@
             "passwordMustContain": "Le mot de passe devrait contenir au moins",
             "oldPasswordIncorrect": "L'ancien mot de passe est incorrect",
             "minLength": "Au moins 8 caractères",
+            "passwordInstructions": {
+                "1": "Le mot de passe doit comporter au moins 12 caractères.  Un indicateur du niveau de votre mot de passe apparait quand vous le saisissez.",
+                "2": "Tous les caractères sont acceptés : lettres (majuscules et minuscules, y compris accentuées), chiffres et symboles. ",
+                "3": "Plus la combinaison est longue et variée, plus l’entropie est élevée, ce qui renforce considérablement la sécurité."
+            },
             "upperCase": "Une lettre majuscule",
             "lowerCase": "Une lettre minuscule",
             "digit": "Un chiffre",

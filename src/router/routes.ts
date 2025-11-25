@@ -98,7 +98,6 @@ const routes: RouteRecordRaw[] = [
         path: '/reset-password',
         name: 'resetPassword',
         component: () => import('@/views/AuthView.vue'),
-        beforeEnter: [userNeedToBeAuth, userAccountNeedToBeLocal],
         meta: {
             title: t('navigation.auth.resetPassword'),
             needLocal: true,
