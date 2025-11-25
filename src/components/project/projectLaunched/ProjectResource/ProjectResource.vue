@@ -21,10 +21,10 @@ const dialogLoading = ref<boolean>(false)
 
 const onBeforeShow = async () => {
     dialogLoading.value = true
-    if (resourceStore.resourceSelected) {
+    if (resourceStore.resourceSelectedId) {
         resourceStore.collections = []
         resourceStore.segments = []
-        await resourceStore.fetchResourceAndCollections(resourceStore.resourceSelected.id)
+        await resourceStore.fetchResourceAndCollections(resourceStore.resourceSelectedId)
     }
     dialogLoading.value = false
 }
@@ -53,7 +53,7 @@ const onBeforeShow = async () => {
                 <QSpinner size="2rem" />
             </QCardSection>
             <QCardSection
-                v-else-if="!resourceStore.resourceSelected"
+                v-else-if="!resourceStore.resourceSelectedId"
                 class="centered"
             >
                 <p>{{ t('errors.unknownRetry') }}</p>

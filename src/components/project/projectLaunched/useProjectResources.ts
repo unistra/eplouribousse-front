@@ -209,7 +209,7 @@ export const useProjectResources = () => {
     const resourceDialog = ref<boolean>(false)
 
     const onRowClick = async (_: Event, row: Resource) => {
-        resourceStore.resourceSelected = row
+        resourceStore.resourceSelectedId = row.id
         resourceDialog.value = true
     }
 

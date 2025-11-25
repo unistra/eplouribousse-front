@@ -29,7 +29,7 @@ interface ResourceStoreState extends Resource {
     page: number
     resourcesCount: number
     segments: Segment[]
-    resourceSelected: Resource | null
+    resourceSelectedId: string | null
     anomalies: Anomaly[]
 }
 
@@ -80,7 +80,7 @@ export const useResourceStore = defineStore('resource', {
         page: 1,
         resourcesCount: 0,
         segments: [],
-        resourceSelected: null,
+        resourceSelectedId: null,
         anomalies: [],
     }),
     getters: {

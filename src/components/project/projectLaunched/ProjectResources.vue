@@ -10,9 +10,11 @@ import ProjectResource from '@/components/project/projectLaunched/ProjectResourc
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
+import { useRoute } from 'vue-router'
 
 const resourceStore = useResourceStore()
 const projectStore = useProjectStore()
+const route = useRoute()
 
 const {
     tabs,
@@ -32,12 +34,16 @@ const { t } = useI18n()
 onMounted(async () => {
     selectDefaultLibrary()
     await fetchResources()
+    if (route.query.resourceId) {
+        resourceStore.resourceSelectedId = route.query.resourceId as string
+        resourceDialog.value = true
+    }
 })
 </script>
 
 <template>
     <div class="project-resources">
-        <hgroup>
+        <div class="hgroup">
             <h1>{{ projectStore.name }}</h1>
             <div>
                 <AtomicButton
@@ -56,7 +62,7 @@ onMounted(async () => {
                     :to="{ name: 'projectAdmin' }"
                 />
             </div>
-        </hgroup>
+        </div>
         <div class="selects">
             <AtomicSelect
                 v-for="(select, index) in selects"
@@ -200,7 +206,7 @@ onMounted(async () => {
     width: 100%
     gap: 1rem
 
-    hgroup
+    .hgroup
         display: flex
         align-items: center
         justify-content: space-between
