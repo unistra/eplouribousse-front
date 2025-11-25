@@ -10,9 +10,11 @@ import ProjectResource from '@/components/project/projectLaunched/ProjectResourc
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
+import { useRoute } from 'vue-router'
 
 const resourceStore = useResourceStore()
 const projectStore = useProjectStore()
+const route = useRoute()
 
 const {
     tabs,
@@ -32,6 +34,10 @@ const { t } = useI18n()
 onMounted(async () => {
     selectDefaultLibrary()
     await fetchResources()
+    if (route.query.resourceId) {
+        resourceStore.resourceSelectedId = route.query.resourceId as string
+        resourceDialog.value = true
+    }
 })
 </script>
 
