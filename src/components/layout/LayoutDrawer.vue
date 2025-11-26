@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
@@ -21,10 +21,6 @@ watch(
         await userStore.getProjects()
     },
 )
-
-onMounted(async () => {
-    await userStore.fetchUser()
-})
 </script>
 
 <template>

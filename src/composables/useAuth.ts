@@ -3,7 +3,7 @@ import { type RouteLocationRaw, useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
-import { addJWTToLocalStorage, isExpired, removeJWTFromLocalStorage } from '@/utils/jwt.ts'
+import { addJWTToLocalStorage, removeJWTFromLocalStorage } from '@/utils/jwt.ts'
 import i18n from '@/plugins/i18n.ts'
 
 export const useAuth = () => {
@@ -15,17 +15,6 @@ export const useAuth = () => {
 
     const _navToRedirectOrRoute = async (routeFallback: RouteLocationRaw = { name: 'home' }) => {
         await router.push((route.query.redirect as string | undefined) ?? routeFallback)
-    }
-
-    const checkManuallyIsUserAuth = () => {
-        const access = localStorage.getItem('JWT__access__token')
-        if (!access) return false
-        if (!isExpired(access)) return true
-
-        const refresh = localStorage.getItem('JWT__refresh__token')
-        if (!refresh) return false
-
-        return !isExpired(refresh)
     }
 
     const login = async (email: string, password: string) => {

@@ -626,6 +626,9 @@
         "retry": "veuillez réessayer",
         "unknownRetry": "Une erreur est survenue, veuillez réessayer",
         "dataUnreachable": "Les données n'ont pas pu être chargées'",
-        "emailValid": "Entrez une adresse e-mail valide"
+        "emailValid": "Entrez une adresse e-mail valide",
+        "tenant": {
+            "get": "Le tenant n'a pas pu être récupéré"
+        }
     }
 }

@@ -6,13 +6,14 @@ import LayoutDrawer from './components/layout/LayoutDrawer.vue'
 import { useGlobalStore } from '@/stores/globalStore.ts'
 import LayoutHeader from '@/components/layout/LayoutHeader.vue'
 import LayoutFooter from '@/components/layout/LayoutFooter.vue'
+import { checkManuallyIsUserAuth } from '@/utils/auth.ts'
 
 const userStore = useUserStore()
 const globalStore = useGlobalStore()
 
 onMounted(async () => {
     await globalStore.fetchTenant()
-    await userStore.fetchUser()
+    if (checkManuallyIsUserAuth()) await userStore.getUser()
 })
 </script>
 

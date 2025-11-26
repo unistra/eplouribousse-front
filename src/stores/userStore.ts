@@ -4,41 +4,34 @@ import type { Project } from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import type { Pagination } from '#/pagination.ts'
 import { type User } from '#/user'
-import { getJWT, isExpired } from '@/utils/jwt.ts'
-import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { Notify } from 'quasar'
 import { useI18n } from 'vue-i18n'
+import { useUtils } from '@/composables/useUtils.ts'
+import { useAuth } from '@/composables/useAuth.ts'
 
 export const useUserStore = defineStore('user', () => {
-    const user = ref<User | undefined>()
+    const user = ref<User>()
     const isAuth = ref<boolean>(false)
     const projects = ref<Project[]>([])
     const projectsLoading = ref<boolean>(false)
     const userLoading = ref<boolean>(false)
     const { t } = useI18n()
+    const { useHandleError } = useUtils()
+    const { checkManuallyIsUserAuth } = useAuth()
 
     const fetchUser = async () => {
-        const { access } = getJWT()
+        if (!checkManuallyIsUserAuth()) return clean()
 
-        if (!!access && !isExpired(access)) {
-            try {
-                userLoading.value = true
-                const response = await axiosI.get<User>('/users/profile/')
-                isAuth.value = true
-                user.value = response.data
-                user.value.projects = user.value.projects.reverse()
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            } finally {
-                userLoading.value = false
-            }
-        }
-        if (user.value?.settings.theme === 'dark') {
-            const { dark } = useComposableQuasar()
-            dark.set(true)
+        userLoading.value = true
+        try {
+            const response = await axiosI.get<User>('/users/profile/')
+            isAuth.value = true
+            user.value = response.data
+            user.value.projects = user.value.projects.reverse()
+        } catch (e) {
+            useHandleError(e)
+        } finally {
+            userLoading.value = false
         }
     }
 
@@ -80,7 +73,7 @@ export const useUserStore = defineStore('user', () => {
         }
     }
 
-    function clean() {
+    const clean = () => {
         isAuth.value = false
         user.value = undefined
         projects.value = []
