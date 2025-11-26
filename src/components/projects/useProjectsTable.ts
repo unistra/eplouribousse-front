@@ -1,22 +1,22 @@
 import type { QTableProps } from 'quasar'
-import type { Project, ProjectDetails } from '#/project.ts'
+import type { Project } from '#/project.ts'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { axiosI } from '@/plugins/axios/axios.ts'
-import type { Pagination } from '#/pagination.ts'
-import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useUtils } from '@/composables/useUtils.ts'
 import { ProjectStatus } from '&/project.ts'
+import { useProjectsStore } from '@/stores/projectsStore.ts'
 
-export const useProjectsView = () => {
+export type ProjectsTableProps = {
+    userSpecific?: boolean
+}
+
+export const useProjectsTable = (props?: ProjectsTableProps) => {
     const { t } = useI18n()
-    const { notify } = useComposableQuasar()
+    const projectsStore = useProjectsStore()
 
-    const projects = ref<ProjectDetails[]>([])
-    const projectsUserHasARoleIn = ref<boolean>(false)
-    const showArchived = ref<boolean>(false)
-    const loading = ref<boolean>(false)
     const filter = ref<string>('')
+    const showArchived = ref<boolean>(false)
+    const projectsUserHasARoleIn = ref<boolean>(!!props?.userSpecific)
 
     const columns: QTableProps['columns'] = [
         {
@@ -66,34 +66,26 @@ export const useProjectsView = () => {
         rowsNumber: 0,
     })
 
-    const fetchProjects = async (props?: Parameters<NonNullable<QTableProps['onRequest']>>[0]) => {
-        loading.value = true
+    const getProjects = async (options?: Parameters<NonNullable<QTableProps['onRequest']>>[0]) => {
+        projectsStore.projectsLoading = true
 
-        if (!props) pagination.value.page = 1
+        if (!options) pagination.value.page = 1
 
         const params = {
-            ordering: `${props ? (props.pagination.descending ? '-' : '') : pagination.value.descending ? '-' : ''}${props?.pagination.sortBy || pagination.value.sortBy}`,
-            page: props?.pagination.page || pagination.value.page,
-            page_size: props?.pagination.rowsPerPage || pagination.value.rowsPerPage,
+            ordering: `${options ? (options.pagination.descending ? '-' : '') : pagination.value.descending ? '-' : ''}${options?.pagination.sortBy || pagination.value.sortBy}`,
+            page: options?.pagination.page || pagination.value.page,
+            page_size: options?.pagination.rowsPerPage || pagination.value.rowsPerPage,
             ...(projectsUserHasARoleIn.value && { participant: projectsUserHasARoleIn.value }),
-            search: props?.filter || filter.value,
-            ...(showArchived.value && { show_archived: showArchived.value }),
+            search: options?.filter || filter.value,
+            ...(showArchived.value && { show_archived: showArchived.value, status: ProjectStatus.Archived }),
         }
 
-        try {
-            const response = await axiosI.get<Pagination<ProjectDetails>>('/projects/', { params })
-            projects.value = response.data.results
-
-            if (props) Object.assign(pagination.value, props.pagination)
-            pagination.value.rowsNumber = response.data.count
-        } catch {
-            notify({
-                color: 'negative',
-                message: t('errors.unknownRetry'),
-            })
-        } finally {
-            loading.value = false
+        const response = await projectsStore.getProjects(params)
+        if (response?.count) {
+            if (options) Object.assign(pagination.value, options.pagination)
+            pagination.value.rowsNumber = response.count
         }
+        projectsStore.projectsLoading = false
     }
 
     const computeStatusInfos = (status: Project['status']) => {
@@ -141,11 +133,9 @@ export const useProjectsView = () => {
 
     return {
         columns,
-        projects,
-        loading,
         pagination,
         filter,
-        fetchProjects,
+        getProjects,
         projectsUserHasARoleIn,
         showArchived,
         computeStatusInfos,

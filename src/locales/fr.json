@@ -542,7 +542,8 @@
                 "positioning": "Alertes positionnement",
                 "instructions": "Alertes instructions",
                 "arbitrages": "Alertes arbitrages",
-                "results": "Alertes résultantes"
+                "results": "Alertes résultantes",
+                "noAlert": "Aucune alertes n'est activée"
             }
         }
     },

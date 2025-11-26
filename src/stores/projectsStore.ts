@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { Project } from '#/project.ts'
+import type { GetProjects, Project, ProjectDetails } from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import type { Pagination } from '#/pagination.ts'
 import { useUserStore } from '@/stores/userStore.ts'
@@ -10,46 +10,57 @@ export const useProjectsStore = defineStore('projects', () => {
     const userStore = useUserStore()
     const { useHandleError } = useUtils()
 
-    // PROJECTS ========================
-    // const projects = ref<Project[]>([])
-    // const projectsLoading = ref<boolean>(false)
+    const projects = ref<Project[]>([])
+    const projectsLoading = ref<boolean>(false)
 
-    // USER PROJECTS ========================
     const userProjects = ref<Project[]>([])
     const userProjectsLoading = ref<boolean>(false)
 
-    const getUserProjects = async () => {
-        if (!userStore.user) {
-            userProjects.value = []
-            return
-        }
+    const getProjects: GetProjects = async (params, toUserProjects = undefined) => {
+        if (toUserProjects) userProjectsLoading.value = true
+        else projectsLoading.value = true
 
-        userProjectsLoading.value = true
         try {
-            const response = await axiosI.get<Pagination<Project>>('/projects/', {
-                params: {
-                    page_size: 20,
-                    participant: true,
-                    ordering: 'created_at',
-                },
-            })
-            userProjects.value = response.data.results
+            const response = await axiosI.get<Pagination<ProjectDetails>>('/projects/', { params })
+
+            if (toUserProjects) userProjects.value = response.data.results
+            else projects.value = response.data.results
+
+            return { count: response.data.count }
         } catch (e) {
             useHandleError(e)
         } finally {
-            userProjectsLoading.value = false
+            if (toUserProjects) userProjectsLoading.value = false
+            else projectsLoading.value = false
         }
     }
 
-    const cleanUserProjects = () => (userProjects.value = [])
+    const getUserProjects = async () => {
+        if (!userStore.user) {
+            clearUserProjects()
+            return
+        }
+
+        const params = {
+            page_size: 20,
+            participant: true,
+            ordering: 'created_at',
+        }
+        await getProjects(params, true)
+    }
+
+    const clearUserProjects = () => (userProjects.value = [])
 
     return {
         // PROJECTS
+        projects,
+        projectsLoading,
+        getProjects,
 
         // USER PROJECTS
         userProjects,
         userProjectsLoading,
         getUserProjects,
-        cleanUserProjects,
+        clearUserProjects,
     }
 })

@@ -31,12 +31,6 @@ export interface ProjectStoreState extends ProjectDetails {
     collectionsCount: CollectionsCountOfALibrary[]
 }
 
-export interface ProjectSummarized {
-    id: Project['id']
-    name: Project['name']
-    roles: Roles[]
-}
-
 export interface ProjectRole {
     user: UserSummarized
     role: Roles
@@ -48,6 +42,21 @@ export interface ProjectInvitation {
     role: Roles
     libraryId?: LibraryI['id']
 }
+
+export type GetProjects = (
+    params: {
+        ordering?: string
+        page?: number
+        page_size?: number
+        library?: LibraryI['id']
+        participant?: boolean
+        search?: string
+        show_archived?: boolean
+        status?: ProjectStatus
+        user_id?: UserSummarized['id']
+    },
+    toUserProjects?: boolean,
+) => Promise<{ count: number } | undefined>
 
 export type ImportCSVResponse = Record<string, number>
 export type ImportCSVErrorObject = {

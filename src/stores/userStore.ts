@@ -15,7 +15,7 @@ export const useUserStore = defineStore('user', () => {
 
     const clear = () => {
         user.value = undefined
-        projectsStore.cleanUserProjects()
+        projectsStore.clearUserProjects()
     }
 
     const getUser = async () => {
