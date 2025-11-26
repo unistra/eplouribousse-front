@@ -1,5 +1,3 @@
-import type { ProjectSummarized } from './project.ts'
-
 interface UserSettings {
     theme: string
     locale: string
@@ -18,6 +16,5 @@ export interface User extends UserSummarized {
     canAuthenticateLocally: boolean
     isProjectCreator: boolean
     isSuperuser: boolean
-    projects: ProjectSummarized[]
     settings: UserSettings
 }

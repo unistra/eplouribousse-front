@@ -1,26 +1,21 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores/globalStore.ts'
 import DrawerItem from '../utils/drawerItem/DrawerItem.vue'
 import AtomicButton from '../atomic/AtomicButton.vue'
+import { useProjectsStore } from '@/stores/projectsStore.ts'
 
 const { t } = useI18n()
 const userStore = useUserStore()
 const globalStore = useGlobalStore()
+const projectsStore = useProjectsStore()
 const { user } = storeToRefs(userStore)
 
 const drawer = ref<boolean>(true)
 const collapsed = ref<boolean>(false)
-
-watch(
-    () => user.value,
-    async () => {
-        await userStore.getProjects()
-    },
-)
 </script>
 
 <template>
@@ -62,16 +57,16 @@ watch(
                     <p v-if="!collapsed">
                         {{ t('layout.drawer.myProjects') }}
                     </p>
-                    <div :class="['scrollable-projects', { 'min-height': userStore.projects.length > 3 }]">
+                    <div :class="['scrollable-projects', { 'min-height': projectsStore.userProjects.length > 3 }]">
                         <QItem
-                            v-if="userStore.userLoading"
+                            v-if="projectsStore.userProjectsLoading"
                             class="q-spinner-container"
                         >
                             <QSpinner />
                         </QItem>
-                        <QList v-else-if="!userStore.userLoading && user">
+                        <QList v-else-if="projectsStore.userProjects.length">
                             <DrawerItem
-                                v-for="project in user.projects"
+                                v-for="project in projectsStore.userProjects"
                                 :key="project.id"
                                 icon="mdi-book-multiple"
                                 :name="!collapsed ? project.name : ''"
@@ -79,7 +74,7 @@ watch(
                                 :tooltip="collapsed ? project.name : undefined"
                             />
                         </QList>
-                        <p v-else-if="!collapsed && !userStore.projects.length">
+                        <p v-else>
                             {{ t('navigation.noProject') }}
                         </p>
                     </div>
@@ -92,7 +87,7 @@ watch(
                         v-if="!collapsed"
                         icon="mdi-plus"
                         :label="t('newProject.buttons.create', { article: t('common.a') })"
-                        :no-border="userStore.projects.length < 0"
+                        :no-border="projectsStore.userProjects.length < 0"
                         :to="{ name: 'newProject' }"
                     />
                     <DrawerItem
