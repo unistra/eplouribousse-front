@@ -23,7 +23,7 @@ const { t } = useI18n()
                     :is-add-user-loading="addUserLoadingBasedOnRole === role.role"
                     :label="role.title"
                     :role="role.role"
-                    :summary-mode="!projectStore.userIsAdmin"
+                    :summary-mode="settingMode && !projectStore.userIsAdmin"
                     :users-selected="projectStore.roles.filter((el) => el.role === role.role).map((el) => el.user)"
                     @add-invitation="async (email) => await onAddInvitation(email, role.role)"
                     @add-user="async (user) => await onAddRole(user.id, role.role)"
