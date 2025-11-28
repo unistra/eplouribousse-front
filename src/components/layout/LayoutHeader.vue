@@ -2,23 +2,9 @@
 import { useI18n } from 'vue-i18n'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useUserStore } from '@/stores/userStore.ts'
-import { useAuth } from '@/composables/useAuth.ts'
-import { useRouter } from 'vue-router'
-import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 
 const { t } = useI18n()
 const userStore = useUserStore()
-const router = useRouter()
-const { notify } = useComposableQuasar()
-const { logout } = useAuth()
-
-const onLogout = async () => {
-    await logout()
-    notify({
-        message: t('logout.success'),
-    })
-    await router.push({ name: 'login' })
-}
 </script>
 
 <template>
@@ -62,7 +48,7 @@ const onLogout = async () => {
                     </QItem>
                     <QItem
                         clickable
-                        @click="onLogout"
+                        :to="{ name: 'logout' }"
                     >
                         <QItemSection avatar>
                             <QIcon name="mdi-logout" />

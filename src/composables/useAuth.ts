@@ -3,7 +3,7 @@ import { type RouteLocationRaw, useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
-import { addJWTToLocalStorage, removeJWTFromLocalStorage } from '@/utils/jwt.ts'
+import { addJWTToLocalStorage } from '@/utils/jwt.ts'
 import i18n from '@/plugins/i18n.ts'
 import { useUtils } from '@/composables/useUtils.ts'
 
@@ -38,13 +38,6 @@ export const useAuth = () => {
         }
     }
 
-    const logout = async (redirectTo?: RouteLocationRaw) => {
-        userStore.clear()
-        removeJWTFromLocalStorage()
-
-        await _navToRedirectOrRoute(redirectTo)
-    }
-
     const shibbolethHandshake = async () => {
         const token = route.query.t
         const { t } = useI18n()
@@ -68,7 +61,6 @@ export const useAuth = () => {
 
     return {
         login,
-        logout,
         shibbolethHandshake,
     }
 }
