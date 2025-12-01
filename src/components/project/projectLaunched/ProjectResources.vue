@@ -35,6 +35,7 @@ const userStore = useUserStore()
 
 onMounted(async () => {
     selectDefaultLibrary()
+    resourceStore.libraryIdComparedSelected = ''
     await fetchResources()
     if (route.query.resourceId) {
         resourceStore.resourceSelectedId = route.query.resourceId as string
