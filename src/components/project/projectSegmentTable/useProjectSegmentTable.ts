@@ -15,6 +15,8 @@ const state = reactive<UseProjectSegmentTableState>({
     loading: false,
 })
 
+export const NULL_SEGMENT = '~~Nihil~~'
+
 export const useProjectSegmentTable = () => {
     const resourceStore = useResourceStore()
     const projectStore = useProjectStore()

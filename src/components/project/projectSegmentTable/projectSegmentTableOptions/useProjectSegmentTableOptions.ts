@@ -4,7 +4,10 @@ import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { Roles, Tab } from '&/project.ts'
 import { useUserStore } from '@/stores/userStore.ts'
-import { useProjectSegmentTable } from '@/components/project/projectSegmentTable/useProjectSegmentTable.ts'
+import {
+    NULL_SEGMENT,
+    useProjectSegmentTable,
+} from '@/components/project/projectSegmentTable/useProjectSegmentTable.ts'
 
 export const useProjectSegmentTableOptions = () => {
     const resourceStore = useResourceStore()
@@ -115,6 +118,10 @@ export const useProjectSegmentTableOptions = () => {
         )
     })
 
+    const isPreviousSegmentANullSegment = (segment: Segment) => {
+        return resourceStore.segments.find((el) => el.order === segment.order - 1)?.content === NULL_SEGMENT
+    }
+
     return {
         displayReorderButtons,
         displayUpdateButton,
@@ -130,5 +137,6 @@ export const useProjectSegmentTableOptions = () => {
         isUserInstructorForSegment,
         areActionDisabled,
         checkACL,
+        isPreviousSegmentANullSegment,
     }
 }

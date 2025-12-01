@@ -2,7 +2,10 @@
 import type { Segment } from '#/project.ts'
 import ProjectInstructionSegmentDialog from '@/components/project/projectLaunched/projectInstruction/projectInstructionSegmentDialog/ProjectInstructionSegmentDialog.vue'
 import { useI18n } from 'vue-i18n'
-import { useProjectSegmentTable } from '@/components/project/projectSegmentTable/useProjectSegmentTable.ts'
+import {
+    NULL_SEGMENT,
+    useProjectSegmentTable,
+} from '@/components/project/projectSegmentTable/useProjectSegmentTable.ts'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { onMounted } from 'vue'
 import ProjectSegmentTableOptions from '@/components/project/projectSegmentTable/ProjectSegmentTableOptions.vue'
@@ -57,6 +60,7 @@ onMounted(async () => {
                 :class="{
                     highlighted: isHighlightedRow(props.row.collection),
                     'semi-highlighted': isSemiHighlightedRow(props.row.improvedSegment),
+                    hatched: props.row.content === NULL_SEGMENT,
                 }"
                 :props="props"
             >
@@ -67,9 +71,15 @@ onMounted(async () => {
                 >
                     <template v-if="col.name === 'options' && displayOptionsColumnBasedOnUserRole(props.row)">
                         <ProjectSegmentTableOptions
+                            v-if="props.row.content !== NULL_SEGMENT"
                             :open-dialog-create-segment
                             :row="props.row"
                             @add-anomaly="anomalyStore.onActionOnAnomaly(props, 'addAnomalySelection')"
+                        />
+                        <QIcon
+                            v-else
+                            name="mdi-lock-outline"
+                            size="1.2rem"
                         />
                     </template>
                     <template v-else-if="col.name === 'resolve'">
@@ -190,6 +200,9 @@ onMounted(async () => {
 :deep(.q-table tbody .semi-highlighted)
     background-color: var(--epl-color-light-green)
     font-weight: bold
+
+:deep(.q-table tbody .hatched)
+    background: repeating-linear-gradient(-45deg, white, white 1rem, var(--color-neutral-200) 1rem, var(--color-neutral-200) 1.5rem)
 
 .btn-segment
     width: fit-content

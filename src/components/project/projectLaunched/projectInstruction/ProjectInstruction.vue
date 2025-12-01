@@ -7,9 +7,8 @@ import ProjectInstructionSegmentDialog from '@/components/project/projectLaunche
 import ProjectSegmentTable from '@/components/project/projectSegmentTable/ProjectSegmentTable.vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import AnomalyDeclarationBtn from '@/components/anomaly/AnomalyDeclarationBtn.vue'
-import { computed, inject, type Ref } from 'vue'
+import { inject, type Ref } from 'vue'
 import { useAnomalyStore } from '@/stores/anomalyStore.ts'
-import type { CollectionsInResource } from '#/project.ts'
 
 const { t } = useI18n()
 const resourceStore = useResourceStore()
@@ -17,14 +16,14 @@ const projectStore = useProjectStore()
 const anomalyStore = useAnomalyStore()
 const dialogModal = inject<Ref<boolean>>('dialogModal')
 
-const { dialogCreateSegment, insertAfter, turnsWithNames, onConfirmAnomaliesDeclaration } =
-    useProjectInstruction(dialogModal)
-
-const collectionToBeInstructed = computed<CollectionsInResource | undefined>(() => {
-    return resourceStore.collections.find(
-        (el) => el.id === resourceStore.instructionTurns?.[`${resourceStore.statusName}`].turns[0].collection,
-    )
-})
+const {
+    dialogCreateSegment,
+    insertAfter,
+    turnsWithNames,
+    onConfirmAnomaliesDeclaration,
+    collectionToBeInstructed,
+    displayConfirmNextTurnWithoutAnySegment,
+} = useProjectInstruction(dialogModal)
 </script>
 
 <template>
@@ -98,6 +97,12 @@ const collectionToBeInstructed = computed<CollectionsInResource | undefined>(() 
                 >
                     {{ t('project.anomaly.actionBtnDisabledByAnomalySelection', 2) }}
                 </QTooltip>
+                <template
+                    v-if="displayConfirmNextTurnWithoutAnySegment"
+                    #confirmation-content
+                >
+                    <QCardSection>{{ t('project.instruction.voidSegmentCreationWarning') }}</QCardSection>
+                </template>
             </AtomicButton>
         </div>
     </div>

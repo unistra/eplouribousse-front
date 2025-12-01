@@ -1,5 +1,5 @@
 import { computed, type Ref, ref } from 'vue'
-import type { InstructionTurn } from '#/project.ts'
+import type { CollectionsInResource, InstructionTurn } from '#/project.ts'
 import { useI18n } from 'vue-i18n'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
@@ -33,10 +33,26 @@ export const useProjectInstruction = (dialogModal: Ref<boolean> | undefined) => 
         if (dialogModal) dialogModal.value = false
     }
 
+    const displayConfirmNextTurnWithoutAnySegment = computed<boolean>(() => {
+        const statusString = resourceStore.statusName === 'boundCopies' ? 'bound' : 'unbound'
+        return !resourceStore.segments.find((el) => {
+            const collectionIdInFirstPositionInInstructionTurns =
+                resourceStore.instructionTurns?.[`${resourceStore.statusName}`].turns[0].collection
+            return el.collection === collectionIdInFirstPositionInInstructionTurns && el.segmentType === statusString
+        })
+    })
+    const collectionToBeInstructed = computed<CollectionsInResource | undefined>(() => {
+        return resourceStore.collections.find(
+            (el) => el.id === resourceStore.instructionTurns?.[`${resourceStore.statusName}`].turns[0].collection,
+        )
+    })
+
     return {
         dialogCreateSegment,
         insertAfter,
         turnsWithNames,
         onConfirmAnomaliesDeclaration,
+        displayConfirmNextTurnWithoutAnySegment,
+        collectionToBeInstructed,
     }
 }

@@ -28,6 +28,7 @@ const {
     dialogUpdateSegment,
     dialogDeleteSegment,
     areActionDisabled,
+    isPreviousSegmentANullSegment,
 } = useProjectSegmentTableOptions()
 </script>
 
@@ -38,7 +39,9 @@ const {
             class="order"
         >
             <AtomicButton
-                :class="{ opacity: row.order === 1 }"
+                :class="{
+                    opacity: row.order === 1 || isPreviousSegmentANullSegment(row),
+                }"
                 :disable="areActionDisabled"
                 icon="mdi-chevron-up"
                 no-border

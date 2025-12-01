@@ -254,7 +254,8 @@
                 "resolve": "Bibliothèque remédiée",
                 "anomalies": "@:project.anomaly.i"
             },
-            "next": "Finir l'instruction et passer la main à la bibliothèque suivante"
+            "next": "Finir l'instruction et passer la main à la bibliothèque suivante",
+            "voidSegmentCreationWarning": "Attention vous n'avez rien renseigné, la ligne suivante sera ajoutée à l'instruction : ~~Nihil~~"
         },
         "libraries": {
             "card": {
