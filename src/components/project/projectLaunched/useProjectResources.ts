@@ -34,6 +34,7 @@ export const useProjectResources = () => {
             value: PositioningFilter.InstructionNotStarted,
         },
         { label: t('project.positioning.filter.arbitration'), value: PositioningFilter.Arbitation },
+        { label: t('project.positioning.filter.excluded'), value: PositioningFilter.Excluded },
     ]
     const positioningFilter = ref<PositioningFilter>(PositioningFilter.All)
 

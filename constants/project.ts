@@ -79,6 +79,7 @@ export enum AlertType {
 export enum PositioningFilter {
     All = 0,
     PositioningOnly = 10,
+    Excluded = 15,
     InstructionNotStarted = 20,
     Arbitation = 30,
 }

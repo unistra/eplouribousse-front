@@ -220,7 +220,8 @@
                 "i": "Filtrer par statut: ",
                 "positioningOnly": "Tous les types de positionnement",
                 "instructionNotStarted": "Instruction non démarrée",
-                "arbitration": "@:project.positioning.arbitration.i"
+                "arbitration": "@:project.positioning.arbitration.i",
+                "excluded": "Resources exclues"
             },
             "arbitration": {
                 "i": "Arbitrage",
