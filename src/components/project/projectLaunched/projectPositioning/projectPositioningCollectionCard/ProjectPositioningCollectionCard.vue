@@ -98,6 +98,10 @@ onMounted(() => {
                         collection.exclusionReason
                     }}</span>
                 </p>
+                <p v-if="collection.commentPositioning && collection.commentPositioning.content">
+                    {{ t('project.resources.comment') }}:
+                    {{ collection.commentPositioning.content }}
+                </p>
             </QCardSection>
         </QCardSection>
 
