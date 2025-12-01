@@ -1,0 +1,305 @@
+:root {
+    --color-black: #000000;
+    --color-white: #ffffff;
+    --color-red: #fb2c36;
+    --color-orange: #ff6900;
+    --color-yellow: #efb100;
+    --color-green: #00c951;
+    --color-blue: #2b7fff;
+
+    --epl-color-green: #76af8f;
+    --epl-color-yellow: #f3c260;
+    --epl-color-blue: #888fc2;
+    --epl-color-red: #e38a77;
+
+    --epl-color-light-green: rgba(118, 175, 143, 0.5);
+    --epl-color-light-yellow: rgba(243, 194, 96, 0.5);
+    --epl-color-light-blue: rgba(136, 143, 194, 0.5);
+    --epl-color-light-red: rgba(227, 138, 119, 0.5);
+
+    --epl-color-dark-green: #2a6246;
+    --epl-color-dark-yellow: #734d00;
+    --epl-color-dark-blue: #4b517f;
+    --epl-color-dark-red: #893929;
+
+    --color-neutral-50: #fafafa;
+    --color-neutral-100: #f3f4f6;
+    --color-neutral-200: #e5e5e5;
+    --color-neutral-300: #d4d4d4;
+    --color-neutral-400: #a1a1a1;
+    --color-neutral-500: #737373;
+    --color-neutral-600: #525252;
+    --color-neutral-700: #404040;
+    --color-neutral-800: #262626;
+    --color-neutral-900: #171717;
+    --color-neutral-950: #0a0a0a;
+
+    /* ======================================== */
+    /* Colors */
+    --color-primary: var(--color-black);
+    --color-secondary: var(--color-neutral-700);
+    --color-accent: var(--epl-color-yellow);
+
+    --color-positive: var(--color-green);
+    --color-negative: var(--color-red);
+    --color-info: var(--color-blue);
+    --color-warning: var(--color-yellow);
+
+    --text-color: var(--color-black);
+    --text-color-dark: var(--color-white);
+
+    /* Quasar colors */
+    --q-primary: var(--color-primary);
+    --q-secondary: var(--color-secondary);
+    --q-accent: var(--color-accent);
+
+    --q-positive: var(--color-positive);
+    --q-negative: var(--color-negative);
+    --q-info: var(--color-info);
+    --q-warning: var(--color-warning);
+    --q-dark: var(--color-neutral-900);
+    --q-dark-page: var(--color-black);
+
+    /* Other */
+    --border-radius: 2rem;
+    --border-radius-pills: 100rem;
+
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 1.875rem;
+    --font-size-4xl: 2.25rem;
+    --font-size-5xl: 3rem;
+    --font-size-6xl: 3.75rem;
+
+    /* Layout */
+    --layout-secondary-bg-color: var(--color-neutral-200);
+    --layout-secondary-color: var(--color-black);
+    --layout-header-bg-color: var(--layout-secondary-bg-color);
+    --layout-header-color: var(--layout-secondary-color);
+    --layout-footer-bg-color: var(--layout-secondary-bg-color);
+    --layout-footer-color: var(--layout-secondary-color);
+}
+
+/*
+Foundation inspired by Tailwind CSS Preflight. (https://tailwindcss.com/docs/preflight)
+GIST: https://gist.github.com/mvllow/b2b38d2968c1b3b6a393556530a8f65f
+*/
+
+/*
+1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
+2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
+*/
+
+*,
+::before,
+::after {
+    box-sizing: border-box; /* 1 */
+    border-width: 0; /* 2 */
+    border-style: solid; /* 2 */
+}
+
+/*
+1. Use a consistent sensible line-height in all browsers.
+2. Prevent adjustments of font size after orientation changes in iOS.
+3. Use a more readable tab size.
+4. Use the system's `sans` font-family by default.
+*/
+
+html {
+    line-height: 1.5; /* 1 */
+    -webkit-text-size-adjust: 100%; /* 2 */
+    -moz-tab-size: 4; /* 3 */
+    tab-size: 4; /* 3 */
+    font-family:
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        Roboto,
+        'Helvetica Neue',
+        Arial,
+        'Noto Sans',
+        sans-serif,
+        'Apple Color Emoji',
+        'Segoe UI Emoji',
+        'Segoe UI Symbol',
+        'Noto Color Emoji'; /* 4 */
+}
+
+/*
+1. Remove the margin in all browsers.
+2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
+*/
+
+body {
+    margin: 0; /* 1 */
+    line-height: inherit; /* 2 */
+    font-size: inherit;
+}
+
+/*
+1. Add the correct height in Firefox.
+2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)
+3. Ensure horizontal rules are visible by default.
+*/
+
+hr {
+    height: 0; /* 1 */
+    color: inherit; /* 2 */
+    border-top-width: 1px; /* 3 */
+}
+
+/*
+Remove the default font size and weight for headings.
+*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+}
+
+/*
+Reset links to optimize for opt-in styling instead of opt-out.
+*/
+
+a {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+/*
+1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
+2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
+3. Remove gaps between table borders by default.
+*/
+
+table {
+    text-indent: 0; /* 1 */
+    border-color: inherit; /* 2 */
+    border-collapse: collapse; /* 3 */
+}
+
+/*
+1. Change the font styles in all browsers.
+2. Remove the margin in Firefox and Safari.
+3. Remove default padding in all browsers.
+*/
+
+button,
+input,
+optgroup,
+select,
+textarea {
+    font-family: inherit; /* 1 */
+    font-size: 100%; /* 1 */
+    font-weight: inherit; /* 1 */
+    line-height: inherit; /* 1 */
+    color: inherit; /* 1 */
+    margin: 0; /* 2 */
+    padding: 0; /* 3 */
+}
+
+/*
+Remove the inheritance of text transform in Edge and Firefox.
+*/
+
+button,
+select {
+    text-transform: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Remove default button styles.
+*/
+
+button,
+[type='button'],
+[type='reset'],
+[type='submit'] {
+    -webkit-appearance: button; /* 1 */
+    background-color: transparent; /* 2 */
+    background-image: none; /* 2 */
+}
+
+/*
+Removes the default spacing and border for appropriate elements.
+*/
+
+blockquote,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+figure,
+p,
+pre {
+    margin: 0;
+}
+
+/*
+Prevent resizing textareas horizontally by default.
+*/
+
+textarea {
+    resize: vertical;
+}
+
+/*
+Set the default cursor for buttons.
+*/
+
+button,
+[role='button'] {
+    cursor: pointer;
+}
+
+/*
+Make sure disabled buttons don't get the pointer cursor.
+*/
+
+:disabled {
+    cursor: default;
+}
+
+/*
+1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)
+2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
+   This can trigger a poorly considered lint error in some tools but is included by design.
+*/
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+    display: block; /* 1 */
+    vertical-align: middle; /* 2 */
+}
+
+/*
+Make elements with the HTML hidden attribute stay hidden by default.
+*/
+
+[hidden] {
+    display: none;
+}

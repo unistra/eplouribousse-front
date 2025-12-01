@@ -1,0 +1,88 @@
+<script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+import AtomicButton from '@/components/atomic/AtomicButton.vue'
+import { useUserStore } from '@/stores/userStore.ts'
+import { useAuth } from '@/composables/useAuth.ts'
+import { useRouter } from 'vue-router'
+import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
+
+const { t } = useI18n()
+const userStore = useUserStore()
+const router = useRouter()
+const { notify } = useComposableQuasar()
+const { logout } = useAuth()
+
+const onLogout = async () => {
+    await logout()
+    notify({
+        message: t('logout.success'),
+    })
+    await router.push({ name: 'login' })
+}
+</script>
+
+<template>
+    <QHeader bordered>
+        <RouterLink :to="{ name: 'home' }">
+            <QImg
+                :alt="t('layout.header.logoAlt')"
+                no-spinner
+                src="/img/logo-eplouribousse.png"
+            />
+        </RouterLink>
+        <AtomicButton
+            v-if="!userStore.isAuth"
+            icon="mdi-login"
+            :label="t('auth.login.i')"
+            :to="{ name: 'login' }"
+        />
+        <AtomicButton
+            v-else
+            icon="mdi-account-circle-outline"
+            :label="userStore.user?.displayName"
+            no-border
+        >
+            <QMenu>
+                <QList>
+                    <QItem
+                        class="account"
+                        clickable
+                        :to="{ name: 'account' }"
+                    >
+                        <QItemSection avatar>
+                            <QIcon name="mdi-cog" />
+                        </QItemSection>
+                        <QItemSection>
+                            <QItemLabel>
+                                {{ userStore.user?.firstName || '' }}
+                                {{ userStore.user?.lastName || t('layout.header.account') }}
+                            </QItemLabel>
+                            <QItemLabel caption>{{ t('layout.header.manageAccount') }}</QItemLabel>
+                        </QItemSection>
+                    </QItem>
+                    <QItem
+                        clickable
+                        @click="onLogout"
+                    >
+                        <QItemSection avatar>
+                            <QIcon name="mdi-logout" />
+                        </QItemSection>
+                        <QItemSection>{{ t('auth.logout') }}</QItemSection>
+                    </QItem>
+                </QList>
+            </QMenu>
+        </AtomicButton>
+    </QHeader>
+</template>
+
+<style scoped lang="sass">
+.q-header
+    display: flex
+    justify-content: space-between
+    padding: 1rem
+    background-color: var(--layout-header-bg-color)
+    color: var(--layout-header-color)
+
+    .q-img
+        width: 300px
+</style>

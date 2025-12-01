@@ -1,0 +1,144 @@
+<script lang="ts" setup>
+import { useProjectStore } from '@/stores/projectStore.ts'
+import { useI18n } from 'vue-i18n'
+import ProjectLibraryCard from '@/components/project/libraries/card/ProjectLibraryCard.vue'
+import { checkValidityProjectStepper } from '@/components/project/stepper/useProjectStepper.ts'
+import { useUtils } from '@/composables/useUtils.ts'
+import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
+import { Roles } from '&/project.ts'
+
+const projectStore = useProjectStore()
+const { t } = useI18n()
+
+const { checkValidityForLibraryStep } = checkValidityProjectStepper()
+</script>
+
+<template>
+    <div class="summary">
+        <h1>{{ t('view.project.new.stepper.steps.summary.title') }}</h1>
+        <QChip
+            v-if="projectStore.activeAfter && new Date(projectStore.activeAfter) > new Date()"
+            class="info"
+            icon="mdi-information"
+            size="lg"
+        >
+            {{ t('view.project.new.stepper.steps.informations.startInFuture') }}
+            {{ useUtils().useIntlDateTimeFormat(projectStore.activeAfter) }}
+        </QChip>
+
+        <hgroup>
+            <p class="label">{{ t('view.project.new.stepper.steps.informations.name') }}</p>
+            <h2>{{ projectStore.name }}</h2>
+        </hgroup>
+
+        <div class="description">
+            <p class="label">{{ t('view.project.new.stepper.steps.informations.description') }}</p>
+            <p :class="{ 'no-description': !projectStore.description }">
+                {{ projectStore.description || t('view.project.new.stepper.steps.informations.noDescription') }}
+            </p>
+        </div>
+        <QSeparator />
+        <div class="libraries">
+            <p class="label">{{ t('view.project.new.stepper.steps.libraries.tab') }}</p>
+            <div
+                v-if="!checkValidityForLibraryStep"
+                class="errors"
+            >
+                <QIcon
+                    name="mdi-alert"
+                    size="sm"
+                />
+                <p>{{ t('view.project.new.stepper.steps.summary.errors.libraries') }}</p>
+            </div>
+            <div class="cards">
+                <ProjectLibraryCard
+                    v-for="library in projectStore.libraries"
+                    :key="library.id"
+                    :library="library"
+                    summary-mode
+                />
+            </div>
+        </div>
+        <QSeparator />
+        <p class="label">{{ t('view.project.new.stepper.steps.roles.tab') }}</p>
+        <div class="roles">
+            <SearchUser
+                v-for="role in [
+                    [Roles.ProjectAdmin, t('roles.projectAdmin')],
+                    [Roles.Controller, t('roles.controller')],
+                    [Roles.Guest, t('roles.guest')],
+                ]"
+                :key="role[0]"
+                :invitations-selected="projectStore.invitations.filter((el) => el.role === role[0])"
+                :label="role[1]"
+                summary-mode
+                :users-selected="projectStore.roles.filter((el) => el.role === role[0]).map((el) => el.user)"
+            />
+        </div>
+    </div>
+</template>
+
+<style lang="sass" scoped>
+.summary
+    display: flex
+    flex-flow: column nowrap
+    gap: 2rem
+
+    h1
+        font-size: var(--font-size-xl)
+
+    .info
+        background-color: var(--color-info)
+        width: fit-content
+        align-self: center
+        border-radius: var(--border-radius-pills)
+
+        &, ::v-deep(.q-icon)
+            color: var(--text-color-dark)
+
+
+    p.label
+        font-size: var(--font-size-sm)
+        color: var(--color-neutral-500)
+
+    hgroup
+        h2
+            font-size: var(--font-size-3xl)
+            margin-left: 2rem
+
+    .description
+        > :last-child
+            margin-left: 2rem
+            padding: 1rem
+            background-color: var(--color-neutral-100)
+            border-radius: var(--border-radius)
+            white-space: pre-line
+
+        .no-description
+            font-style: italic
+            color: var(--color-neutral-500)
+
+    .libraries
+        display: flex
+        flex-direction: column
+        gap: 1rem
+
+        .cards
+            display: flex
+            flex-flow: row wrap
+            justify-content: space-evenly
+            gap: 1rem
+
+    .errors
+        display: flex
+        align-items: center
+        width: fit-content
+        color: var(--color-red)
+        font-weight: bold
+        gap: 1rem
+
+    .roles
+        display: grid
+        grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr))
+        gap: 1rem
+</style>

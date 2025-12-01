@@ -1,0 +1,631 @@
+{
+    "homePage": "Accueil",
+    "home": {
+        "title": "Bienvenue sur Eplouribousse",
+        "description": "L'application web pour le dédoublonnage des périodiques",
+        "unistraAlt": "Site de l'@:utils.universityOfStrasbourg",
+        "abesAlt": "Site de l'@:utils.abes",
+        "collexAlt": "Site de @:utils.collex"
+    },
+    "layout": {
+        "header": {
+            "logoAlt": "Retour à l'acceuil d'Eplouribousse",
+            "manageAccount": "Gérer votre profil",
+            "account": "@:navigation.myAccount"
+        },
+        "footer": {
+            "legalNotice": "Mentions légales",
+            "contact": "Contact",
+            "about": "À propos"
+        },
+        "drawer": {
+            "myProjects": "Mes projets"
+        }
+    },
+    "auth": {
+        "login": {
+            "i": "Connexion",
+            "authShibboleth": "Via la fédération éducation recherche",
+            "authLocal": "Avec un compte local"
+        },
+        "logout": "Déconnexion",
+        "createAccount": {
+            "submit": "Créer mon compte",
+            "tokenRejected": "Le jeton est expiré ou invalide",
+            "accountCreated": "Votre compte a été créé avec succès, vous pouvez vous connecter",
+            "missingToken": "Le jeton est manquant"
+        }
+    },
+    "navigation": {
+        "auth": {
+            "login": "@:auth.login.i",
+            "changePassword": "Changer son mot de passe",
+            "resetPassword": "Réinitialiser son mot de passe",
+            "requestPasswordReset": "Demande de réinitialisation de mot de passe",
+            "handshake": "Handshake",
+            "createAccount": "Créer son compte"
+        },
+        "error": {
+            "needAuth": "Vous devez être connecté pour accéder à cette page",
+            "needNotAuth": "Vous devez ne pas être connecté pour accéder à cette page",
+            "needLocal": "Vous devez avoir un compte local pour accéder à cette page",
+            "notAccessibleThisWay": "Vous ne pouvez pas accéder à cette page de cette manière",
+            "unauthorize": "Vous ne pouvez pas accéder à cette page"
+        },
+        "project": {
+            "i": "Projet",
+            "allProjects": "Tous les projets",
+            "new": "Nouveau projet",
+            "dashboard": "Tableau de bord"
+        },
+        "myAccount": "Mon @.lower:common.account",
+        "search": "Recherche",
+        "supervision": "Supervision",
+        "userGuide": "Documentation",
+        "contactAdmin": "Contact",
+        "diffusionList": "Liste de diffusion",
+        "projectAdministration": "Administration du projet",
+        "newProjectRequirements": "Création d'un nouveau projet",
+        "newProject": "Nouveau projet",
+        "tenantAdmin": "Administration du tenant",
+        "hasNoPerm": "Vous avez été redirigé car vous n'avez pas accès à cette page",
+        "collapse": "Masquer",
+        "expand": "Afficher",
+        "noProject": "Aucun projet",
+        "404": "La page que vous demandez n'existe pas"
+    },
+    "roles": {
+        "superUser": "Super utilisateur du tenant",
+        "projectCreator": "Monteur de projet",
+        "projectAdmin": "Administrateurs",
+        "projectManager": "Pilotes de projet",
+        "instructor": "Instructeurs",
+        "controller": "Contrôleurs",
+        "guest": "Invités"
+    },
+    "settings": {
+        "core": "Paramètres",
+        "darkMode": "Thème sombre",
+        "account": "Mon compte",
+        "changePassword": "Changer mon mot de passe"
+    },
+    "newProject": {
+        "title": "Création d'un nouveau projet",
+        "buttons": {
+            "create": "Créer {article} projet",
+            "modify": "Modifier le projet",
+            "ready": "Je suis prêt",
+            "passToReview": "Passer le projet en review"
+        },
+        "creation": {
+            "title": "Création d'un projet",
+            "name": "Nom du projet",
+            "userAlreadyAssigned": "L'utilisateur a déjà été assigné",
+            "userToAdd": "Utilisateurs à ajouter"
+        },
+        "searchUsers": "Vous pouvez utiliser l'outil de recherche ci-dessous pour vérifier si les utilisateurs ont déjà un compte, si ce n'est pas le cas, contactez-les pour qu'ils se connectent au site :"
+    },
+    "project": {
+        "public": {
+            "btn": "Tous les projets"
+        },
+        "administration": {
+            "title": "Administration",
+            "informations": "Informations générales",
+            "libraries": "Bibliothèques",
+            "users": "Utilisateurs",
+            "alerts": "Alertes email",
+            "exclusions": "Motifs d'exclusion",
+            "sucessUpdate": "Projet mis à jour avec succès"
+        },
+        "status": {
+            "draft": "Brouillon",
+            "review": "En revue",
+            "ready": "Prêt",
+            "launched": "Démarré",
+            "archived": "Archivé"
+        },
+        "review": {
+            "title": "Vérification du projet",
+            "passToReady": "Marquer comme prêt",
+            "confirmPassToReview": "En confirmant, le projet sera démareable par un pilote de projet.",
+            "waitingForAdminToReview": "En attente de validation par les administrateurs"
+        },
+        "ready": {
+            "startTheProject": "Plannifier le démarrage du projet",
+            "defineStartDate": "Définir une date de démarrage",
+            "confirmStart": "En confirmant, le projet commencera le:",
+            "waitingForManagerToStart": "En attente de démarrage par les pilotes de projet"
+        },
+        "resources": {
+            "title": "Titre",
+            "all": "Tout",
+            "code": "Identifiant de la ressource",
+            "count": "Nombre de collections",
+            "callNumber": "Cote",
+            "noCallNumber": "Aucune cote",
+            "holdStatement": "État de la collection",
+            "noHoldStatement": "Aucun état de la collection",
+            "position": "Position",
+            "publicationHistory": "Historique de publication",
+            "collectionToBeInstructed": "Collection qui doit être instruite",
+            "infoAboutCollection": "Informations de la @.lower:project.resources.collectionToBeInstructed",
+            "status": {
+                "title": "Statut",
+                "toPosition": "Positionnements",
+                "toArbitrate": "Arbitrage",
+                "toInstructBound": "Instruction reliés",
+                "toInstructUnbound": "Instruction non-reliés",
+                "toControl": "Contrôles",
+                "toControloUnbound": "Contrôles",
+                "positioning": "Positionnement en cours",
+                "positioningRequired": "Positionnement requis",
+                "waitingPositioning": "En attente des autres bibliothèques",
+                "excluded": "Ressource exclue",
+                "instructionBoundButPositioningTab": "Instruction non démarrée",
+                "instructionBound": "Instruction des exemplaires reliés",
+                "controlBound": "Contrôle des exemplaires reliés",
+                "instructionUnbound": "Instruction des exemplaires non reliés",
+                "controlUnbound": "Contrôle des exemplaires non reliés",
+                "anomalies": "@.capitalize:project.anomaly.i",
+                "anomaliesBound": "@.capitalize:project.anomaly.i en phase reliés",
+                "anomaliesUnbound": "@.capitalize:project.anomaly.i en phase non reliés"
+            },
+
+            "youAreInstructor": "Vous êtes instructeur pour cette bibliothèque",
+            "showResources": "Voir les ressources de:",
+            "compareWith": "Comparer les ressources avec:",
+            "exclusion": {
+                "exclude": "Exclure la collection",
+                "exclusionReason": "Motif d'exclusion",
+                "excluded": "Collection exclue"
+            },
+            "comment": "Commentaire",
+            "resultant": {
+                "i": "Résultante | Résultantes",
+                "selectCollection": "@:project.resources.resultant.i de la @.lower:collection.i",
+                "title": "Édition de la résultante",
+                "infos": "Les lignes impliquant la collection sélectionnée sont mises en évidence",
+                "motherCollection": "Collection mère",
+                "participatingCollections": "Collections participantes",
+                "excludeCollections": "Collections exclues"
+            }
+        },
+        "settings": {
+            "title": "Paramètres du projet",
+            "privateMode": "Mode privé",
+            "changeProjectVisibilitySuccess": "La visibilité du projet à bien été changé",
+            "emailAlert": {
+                "title": "Alertes email",
+                "resourcesAlterts": "Opérations sur les ressources",
+                "successAlertUpdated": "Alerte mise à jour avec succès",
+                "positioning": "Positionnement",
+                "arbitration": "@.capitalize:project.positioning.arbitration.i",
+                "control": "Contrôle",
+                "instruction": "Instruction",
+                "edition": "Édition",
+                "preservation": "Préservation",
+                "results": "Résultante",
+                "transfer": "Suivi des transferts"
+            },
+            "defaultStorageLocation": "Lieu de conservation par défaut",
+            "transferTracking": "Suivi des transferts",
+            "treatmentTracking": "Suivi des traitements",
+            "exclusionReason": "Raisons d'exclusion",
+            "alternativeStorageSite": "Lieu de stockage alternatif",
+            "visibility": "Visibilité du projet"
+        },
+        "positioning": {
+            "filter": {
+                "i": "Filtrer par statut: ",
+                "positioningOnly": "Tous les types de positionnement",
+                "instructionNotStarted": "Instruction non démarrée",
+                "arbitration": "@:project.positioning.arbitration.i",
+                "excluded": "Resources exclues"
+            },
+            "arbitration": {
+                "i": "Arbitrage",
+                "currently": "Cette ressource est en cours d'@.lower:project.positioning.arbitration.i",
+                "type0": "Au moins une collection doit être positionnée en 1",
+                "type1": "Une de vos collections est en concurence pour la position 1"
+            }
+        },
+        "instruction": {
+            "turns": "Ordre de passage",
+            "segment": {
+                "i": "segment",
+                "ii": "le segment",
+                "new": "@.capitalize:common.new @.lower:project.instruction.segment.i",
+                "insertUnder": "Insérer en dessous",
+                "update": "@.capitalize:common.update @.lower:project.instruction.segment.ii",
+                "noSegment": "@.capitalize:common.none @.lower:project.instruction.segment.i",
+                "signalAnomaly": "Signaler une @.lower:project.anomaly.i",
+                "bound": "Reliée",
+                "unbound": "Non reliée"
+            },
+            "tableFields": {
+                "line": "Ligne",
+                "library": "@.capitalize:libraries.i",
+                "collection": "@.capitalize:collection.i",
+                "segment": "@.capitalize:project.instruction.segment.i",
+                "improvableElements": "Éléments améliorables",
+                "exception": "Exceptions",
+                "options": "Actions",
+                "resolve": "Bibliothèque remédiée",
+                "anomalies": "@:project.anomaly.i"
+            },
+            "next": "Finir l'instruction et passer la main à la bibliothèque suivante",
+            "voidSegmentCreationWarning": "Attention vous n'avez rien renseigné, la ligne suivante sera ajoutée à l'instruction : ~~Nihil~~"
+        },
+        "libraries": {
+            "card": {
+                "csv-import": {
+                    "dragAndDrop": "Glissez-déposez un fichier CSV, ou cliquez pour en sélectionner un",
+                    "present": "Collection présente avec {count} élément | Collection présente avec {count} éléments",
+                    "importSuccess": "L'import du CSV s'est fait avec succès",
+                    "weFound": "Nous avons trouvé",
+                    "elementPresent": "{count} élément présent {times} fois| {count} éléments présents {times} fois",
+                    "missing": "Collection absente",
+                    "delete": {
+                        "warning": "Vous êtes sur le point de supprimer la collection associée à cette bibliothèque",
+                        "irreversible": "Cette action est irréversible",
+                        "success": "Les collections ont bien été supprimées"
+                    },
+                    "errors": {
+                        "wrongExtension": "Le fichier doit être au format CSV",
+                        "dialogTitle": "Nous avons détecté une ou des erreurs dans le fichier"
+                    }
+                }
+            }
+        },
+        "control": {
+            "nextPhase": "Passer à la phase suivante"
+        },
+        "anomaly": {
+            "i": "Anomalie | Anomalies",
+            "tableField": {
+                "type": "@.capitalize:common.type d'@.lower:project.anomaly.i",
+                "description": "@.capitalize:common.description",
+                "fixed": "@.capitalize:common.fixed",
+                "fixedAt": "@.capitalize:common.fixed le",
+                "fixedBy": "@.capitalize:common.fixed par",
+                "createdAt": "@.capitalize:common.created le",
+                "createdBy": "@.capitalize:common.created par",
+                "fix": "Résoudre"
+            },
+            "type": {
+                "pubPeriodPassed": "Période de publication dépassée",
+                "discontinuousSegment": "Segment discontinu",
+                "excpImprovable": "Exception améliorable",
+                "chronologicalError": "Erreur chronologique",
+                "segmentOverlap": "Chevauchement de segment",
+                "misuseOfRemediatedLibrary": "Mauvaise utilisation de la bibliothèque remédiée",
+                "confusingWording": "Formulation confuse",
+                "other": "@:common.other"
+            },
+            "fixed": "Résolu",
+            "unfixed": "Non résolu",
+            "fixBtn": "Marquer comme @.lower:project.anomaly.fixed",
+            "declareBtn": "Finaliser la déclaration d'@.lower:project.anomaly.i",
+            "actionBtnDisabled": "Au moins une @.lower:project.anomaly.i sur un segment d'une collection ne vous appartenant pas ne sont pas résolu",
+            "actionBtnDisabledByAnomalySelection": "Une @.lower:project.anomaly.i est en cours de sélection",
+            "tab": {
+                "btnGiveTurn": "Attribuer le tour",
+                "btnReset": "Réinitialiser la fiche",
+                "btnGiveTurnDisableTooltip": "Des @.lower:project.anomaly.i ne sont pas résolues"
+            },
+            "giveTurnToAController": "Donner la main à un contrôleur"
+        },
+        "storageLocation": "Lieu de conservation"
+    },
+    "collection": {
+        "i": "Collection | Collections",
+        "position": {
+            "i": "Position",
+            "short": "Pos."
+        }
+    },
+    "segment": {
+        "i": "Segment | Segments",
+        "boundOrUnbound": "Forme reliée ou non",
+        "exception": "Exception | Exceptions",
+        "improvableElements": "Éléments améliorables",
+        "resolve": "Bibliothèque remédiée"
+    },
+    "view": {
+        "tenantAdmin": {
+            "section2": "Gestion des rôles spécifiques"
+        },
+        "projects": {
+            "filters": {
+                "participant": "Projets où je participe",
+                "archived": "Projets archivés"
+            },
+            "projectVisibility": "Visibilité du projet"
+        },
+        "project": {
+            "new": {
+                "stepper": {
+                    "requirements": {
+                        "heading": "Liste péparatoire au projet",
+                        "message": "Pour monter un nouveau projet, assurez-vous que vous disposez des éléments suivants :",
+                        "list": {
+                            "projectName": "Intitulé du projet",
+                            "managerEmails": "Email du ou des pilotes du projet",
+                            "adminEmails": "Email du ou des administrateurs du projet",
+                            "controllerEmail": "Email du ou des contrôlleurs du projet",
+                            "libraryNames": "Nom des bibliothèques participantes",
+                            "libraryRCRs": "Identifiant des bibliothèques participantes",
+                            "libraryInstructorEmails": "Emails de leurs intructeurs respectifs",
+                            "libraryCollections": "Ensemble des collections participantes de chacune des bibliothèques au format CSV",
+                            "collectionIdentified": "Identifiant de la ressource; issn ; titre ; cote ; état de collection ; lacunes",
+                            "additionalInfos": "NB : Les identifiants de ressources doivent être homogènes (i.e. issus du même système)",
+                            "storageNames": "Nom des lieux de conservation alternatifs (et leur RCR le cas échéant)",
+                            "storageOperatorEmails": "Identifiants et emails de leurs opérateurs respectifs"
+                        }
+                    },
+                    "steps": {
+                        "informations": {
+                            "tab": "Informations sur le projet",
+                            "title": "Renseignez les informations générales du projet",
+                            "name": "Nom du projet",
+                            "updateNameSucceed": "Le nom du project à bien été modifié",
+                            "description": "Description du projet",
+                            "noDescription": "Aucune description",
+                            "continue": "Continuer",
+                            "back": "Retour",
+                            "startInFuture": "Le projet commencera le"
+                        },
+                        "libraries": {
+                            "tab": "Bibliothèques participantes",
+                            "title": "Sélectionnez les bibliothèques participant au projet, puis renseignez leurs collections ainsi que leur instructeurs",
+                            "addLibrary": "Ajouter une bibliothèque",
+                            "searchLibraries": "Rechercher des bibliothèques",
+                            "instructors": "Instructeurs",
+                            "errors": {
+                                "whileAdding": "Une erreur est survenue lors de l'ajout de la bibliothèque",
+                                "whileDeleting": "Une erreur est survenue lors de la suppression de la bibliothèque"
+                            }
+                        },
+                        "roles": {
+                            "tab": "Rôles des utilisateurs",
+                            "title": "Assignez ou invitez des utilisateurs aux rôles qu'ils occuperont dans ce projet"
+                        },
+                        "summary": {
+                            "tab": "Récapitulatif",
+                            "title": "Récapitulatif de la création de projet",
+                            "noUser": "Aucun utilisateur n'a été assigné ce rôle",
+                            "whenConfirm": "En confirmant, les invitations seront envoyés aux emails renseignés, ainsi que les notifications aux utilisateurs participants au projet",
+                            "errors": {
+                                "libraries": "Au moins deux bibliothèques doivent être renseignées, chacune devant avoir une collection importée et au moins un instructeur",
+                                "roles": "Au moins un utilisateur ou une invitation doit être renseignée pour les rôles Administrateur, Pilote et Contrôleur"
+                            }
+                        }
+                    }
+                }
+            },
+            "dashboard": {
+                "computedAt": "Calculé le"
+            }
+        },
+        "contact": {
+            "title": "Contacter l'administrateur d'Eplouribousse",
+            "subjects": {
+                "i": "Objet",
+                "ask_info": "Demande d'information",
+                "bug": "Bug",
+                "complaint": "Réclamation",
+                "suggestion": "Suggestion",
+                "review": "Avis",
+                "other": "@:common.other"
+            },
+            "placeholder": "Votre message",
+            "messageSent": "Votre message à bien été envoyé"
+        }
+    },
+    "libraries": {
+        "i": "Bibliothèque | Bibliothèques",
+        "name": "Nom de la bibliothèque",
+        "list": "Liste des bibliothèques",
+        "form": {
+            "fields": {
+                "name": "Nom",
+                "alias": "Alias",
+                "code": "Code ou identifiant"
+            },
+            "add": "Ajouter",
+            "edit": "Modifier",
+            "cancel": "Annuler",
+            "aLibrary": "une bibliothèque",
+            "theLibrary": "la bibliothèque",
+            "delete": {
+                "i": "Supprimer",
+                "youAreAboutToDelete": "Vous êtes sur le point de supprimer",
+                "thisActionCannotBeUndone": "Cette action ne peut pas être annulée"
+            }
+        },
+        "table": {
+            "search": "Rechercher"
+        },
+        "errors": {
+            "notFound": "Bibliothèque non trouvée"
+        }
+    },
+    "logout": {
+        "success": "Vous avez été déconnecté"
+    },
+    "forms": {
+        "validation": {
+            "fieldIsRequired": "Ce champ est requis",
+            "fieldLessThan255": "Ce champ doit être inférieur à 255 caractères",
+            "minLength": "Le champ doit contenir au moins {length} caractères",
+            "maxLength": "Le champ doit contenir moins de {length} caractères",
+            "fieldsMustMatch": "Les champs doivent être identique",
+            "validEmail": "L'email doit être valide"
+        },
+        "login": {
+            "forgotPassword": "Mot de passe oublié ?",
+            "credentialsError": "Identifiants incorrects",
+            "forgottenPassword": "Mot de passe oublié ?",
+            "success": "Vous êtes désormais connecté"
+        },
+        "password": {
+            "isVisibleTooltip": {
+                "false": "Afficher le mot de passe",
+                "true": "Masquer le mot de passe"
+            },
+            "passwordStrength": "Robustesse du mot de passe",
+            "weak": "Faible",
+            "oldPassword": "Ancien mot de passe",
+            "newPassword": "Nouveau mot de passe",
+            "confirmNewPassword": "Confirmer le nouveau mot de passe",
+            "confirmPassword": "Confirmer le mot de passe",
+            "validation": {
+                "passwordRequirements": "Le mot de passe ne respecte pas les critères de sécurité",
+                "passwordsDoNotMatch": "Les mots de passe ne correspondent pas"
+            },
+            "passwordMustContain": "Le mot de passe devrait contenir au moins",
+            "oldPasswordIncorrect": "L'ancien mot de passe est incorrect",
+            "minLength": "Au moins 8 caractères",
+            "passwordInstructions": {
+                "1": "Le mot de passe doit comporter au moins 12 caractères.  Un indicateur du niveau de votre mot de passe apparait quand vous le saisissez.",
+                "2": "Tous les caractères sont acceptés : lettres (majuscules et minuscules, y compris accentuées), chiffres et symboles. ",
+                "3": "Plus la combinaison est longue et variée, plus l’entropie est élevée, ce qui renforce considérablement la sécurité."
+            },
+            "upperCase": "Une lettre majuscule",
+            "lowerCase": "Une lettre minuscule",
+            "digit": "Un chiffre",
+            "specialChar": "Un caractère spécial",
+            "change": {
+                "title": "Changer de mot de passe",
+                "submit": "Changer mon mot de passe",
+                "success": "Votre mot de passe a été changé avec succès"
+            },
+            "reset": {
+                "i": "Réinitialiser le @.lower:common.password",
+                "request": "Demande de réinitialisation de @.lower:common.password",
+                "confirmPassword": "Confirmer le nouveau mot de passe",
+                "submit": "Réinitialiser mon mot de passe",
+                "success": "Votre mot de passe a été réinitialisé avec succès",
+                "sendEmail": "Envoyer l'email",
+                "emailSent": "Si un compte est trouvé à l'adresse \"{email}\", vous allez recevoir un email pour réinitialiser votre mot de passe",
+                "emailNotSent": "Problème lors de l'envoi de l'email",
+                "incorrectEmail": "L'adresse mail n'est     associée à aucun compte existant",
+                "token": "Jeton de validation",
+                "tokenRejected": "Le jeton est expiré ou invalide"
+            }
+        },
+        "invite": {
+            "title": "Inviter quelqu'un à rejoindre Eplouribousse",
+            "email": "Adresse e-mail",
+            "send": "Envoyer",
+            "inviteSentTo": "L'invitation a bien été envoyée à",
+            "emailAlreadyLinked": "Cette adresse e-mail est déjà liée à un compte",
+            "emailNotSent": "l'invitation n'a pas pu être envoyée"
+        }
+    },
+    "confirmDialogDefault": {
+        "irreversible": "Cette action est irréversible",
+        "areYouSure": "Êtes-vous sûr de vouloir continuer ?"
+    },
+    "account": {
+        "local": "Local",
+        "federation": "Fédération ESR",
+        "tenantRole": "Rôle spécifique sur le tenant",
+        "projects": {
+            "myProjects": "Mes @.lower:common.project",
+            "forLibrary": "pour la @.lower:common.library",
+            "rolesInProject": "Vos rôles dans le projet",
+            "alerts": {
+                "info": "Si les alertes sont désactivées au niveau du projet, alors elle ne seront pas visible ici",
+                "title": "Alertes associées au projet",
+                "positioning": "Alertes positionnement",
+                "instructions": "Alertes instructions",
+                "arbitrages": "Alertes arbitrages",
+                "results": "Alertes résultantes"
+            }
+        }
+    },
+    "common": {
+        "yes": "Oui",
+        "no": "Non",
+        "cancel": "Annuler",
+        "confirm": "Confirmer",
+        "delete": "Supprimer",
+        "edit": "Modifier",
+        "save": "Enregistrer",
+        "close": "Fermer",
+        "search": "Rechercher",
+        "loading": "Chargement",
+        "success": "Succès",
+        "error": "Erreur",
+        "info": "Information | Informations",
+        "continue": "Continuer",
+        "back": "Retour",
+        "row": "Ligne",
+        "on": "Sur",
+        "none": "Aucun",
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "email": "Adresse email",
+        "password": "Mot de passe",
+        "or": "ou",
+        "waiting": "En attente",
+        "all": "Tous",
+        "new": "Nouveau",
+        "update": "Modifier",
+        "undefined": "Non renseigné",
+        "account": "Compte",
+        "name": "Nom",
+        "project": "Projet | Projets",
+        "library": "Bibliothèque | Bibliothèques",
+        "createdAt": "Créé le",
+        "status": "Statut",
+        "type": "Type",
+        "description": "Description",
+        "fixed": "Corrigé",
+        "created": "Créé",
+        "the": "le",
+        "a": "un",
+        "by": "par",
+        "unknown": "Inconnu",
+        "preview": "Prévisualiser",
+        "filter": "Filtres",
+        "private": "Privé",
+        "public": "Public",
+        "download": "Télécharger",
+        "other": "Autre",
+        "send": "Envoyer",
+        "addMore": "Ajouter plus",
+        "line": "Ligne | Lignes"
+    },
+    "utils": {
+        "searchUser": {
+            "inputPlaceholder": "Rechercher un utilisateur, ou entrer son adresse e-mail pour l'inviter",
+            "noUserFound": "Aucun utilisateur trouvé",
+            "insertEmailForInvite": "Tapez un email valide pour créer une invitation",
+            "moreUsers": "Afficher plus d'utilisateurs",
+            "sendInvite": "Envoyer une invitation à"
+        },
+        "modificationSuccess": "Les modifications ont bien été enregistrées",
+        "noEmailAddress": "Aucune @.lower:common.email",
+        "universityOfStrasbourg": "Université de Strasbourg",
+        "abes": "Agence bibliographique de l'enseignement supérieur",
+        "collex": "Collex",
+        "noLibrary": "Aucune bibliothèque",
+        "downloadPDF": "@:common.download le PDF",
+        "noRole": "Aucun rôle sur le tenant",
+        "confirmEmail": "Confirmer l'email",
+        "clearField": "Effacer le contenu du champ",
+        "addUser": "Ajouter cet utilisateur: {user}",
+        "noUser": "Aucun utilisateur",
+        "backNavigation": "Retour à la page précédente"
+    },
+    "errors": {
+        "unknown": "Une erreur est survenue",
+        "retry": "veuillez réessayer",
+        "unknownRetry": "Une erreur est survenue, veuillez réessayer",
+        "dataUnreachable": "Les données n'ont pas pu être chargées'",
+        "emailValid": "Entrez une adresse e-mail valide"
+    }
+}
