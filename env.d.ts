@@ -9,6 +9,15 @@ interface ImportMetaEnv {
     readonly VITE_I18N_LOCALE: string
 }
 
+export type MatomoConfigType = Record<
+    string,
+    {
+        server: string
+        id: number
+        debug?: boolean
+    }
+>
+
 export {}
 
 declare global {
