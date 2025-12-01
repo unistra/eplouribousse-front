@@ -23,7 +23,11 @@ import '@quasar/extras/mdi-v7/mdi-v7.css'
 
 const app = createApp(App)
 
-if (import.meta.env.VITE_ENV !== 'prod') {
+if (
+    import.meta.env.VITE_MATOMO_SERVER &&
+    import.meta.env.VITE_MATOMO_SITE_ID &&
+    (import.meta.env.VITE_ENV === 'prod' || import.meta.env.VITE_ENV === 'pprd')
+) {
     app.use(VueMatomo, {
         router,
         host: import.meta.env.VITE_MATOMO_SERVER,
