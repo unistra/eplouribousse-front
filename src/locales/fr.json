@@ -248,7 +248,6 @@
                 "library": "@.capitalize:libraries.i",
                 "collection": "@.capitalize:collection.i",
                 "segment": "@.capitalize:project.instruction.segment.i",
-                "boundOrUnbound": "Forme reliée ou non reliée",
                 "improvableElements": "Éléments améliorables",
                 "exception": "Exceptions",
                 "options": "Actions",
@@ -320,7 +319,18 @@
         "storageLocation": "Lieu de conservation"
     },
     "collection": {
-        "i": "Collection"
+        "i": "Collection | Collections",
+        "position": {
+            "i": "Position",
+            "short": "Pos."
+        }
+    },
+    "segment": {
+        "i": "Segment | Segments",
+        "boundOrUnbound": "Forme reliée ou non",
+        "exception": "Exception | Exceptions",
+        "improvableElements": "Éléments améliorables",
+        "resolve": "Bibliothèque remédiée"
     },
     "view": {
         "tenantAdmin": {
@@ -414,7 +424,7 @@
         }
     },
     "libraries": {
-        "i": "Bibliothèques",
+        "i": "Bibliothèque | Bibliothèques",
         "name": "Nom de la bibliothèque",
         "list": "Liste des bibliothèques",
         "form": {
@@ -586,7 +596,8 @@
         "download": "Télécharger",
         "other": "Autre",
         "send": "Envoyer",
-        "addMore": "Ajouter plus"
+        "addMore": "Ajouter plus",
+        "line": "Ligne | Lignes"
     },
     "utils": {
         "searchUser": {

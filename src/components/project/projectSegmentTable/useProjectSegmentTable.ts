@@ -56,13 +56,13 @@ export const useProjectSegmentTable = () => {
     const columns: QTableColumn[] = [
         {
             name: 'order',
-            label: t('project.instruction.tableFields.line'),
+            label: t('common.line'),
             field: 'order',
             align: 'center',
         },
         {
             name: 'library',
-            label: t('project.instruction.tableFields.library'),
+            label: t('libraries.i'),
             field: 'library',
             format(_val: unknown, row: Segment) {
                 const libraryId = resourceStore.collections.find((el) => el.id === row.collection)?.library || null
@@ -73,7 +73,7 @@ export const useProjectSegmentTable = () => {
         },
         {
             name: 'collection',
-            label: t('project.instruction.tableFields.collection'),
+            label: t('collection.i'),
             field: 'collection',
             format(_val: unknown, row: Segment): string {
                 const collection = resourceStore.collections.find((el) => el.id === row.collection)
@@ -83,7 +83,7 @@ export const useProjectSegmentTable = () => {
         },
         {
             name: 'segmentType',
-            label: t('project.instruction.tableFields.boundOrUnbound'),
+            label: t('segment.boundOrUnbound'),
             field: 'segmentType',
             align: 'center',
             format(val: 'bound' | 'unbound') {
@@ -94,25 +94,25 @@ export const useProjectSegmentTable = () => {
         },
         {
             name: 'content',
-            label: t('project.instruction.tableFields.segment'),
+            label: t('segment.i'),
             field: 'content',
             align: 'center',
         },
         {
             name: 'exception',
-            label: t('project.instruction.tableFields.exception'),
+            label: t('segment.exception'),
             field: 'exception',
             align: 'center',
         },
         {
             name: 'improvableElements',
-            label: t('project.instruction.tableFields.improvableElements'),
+            label: t('segment.improvableElements'),
             field: 'improvableElements',
             align: 'center',
         },
         {
             name: 'resolve',
-            label: t('project.instruction.tableFields.resolve'),
+            label: t('segment.resolve'),
             field: 'resolve',
             format(_val: unknown, row: Segment) {
                 const segmentImproved = resourceStore.segments.find((el) => el.id === row.improvedSegment)

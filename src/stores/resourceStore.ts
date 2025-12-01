@@ -508,9 +508,8 @@ export const useResourceStore = defineStore('resource', {
             }
         },
         formatCollectionToString(collection: CollectionsInResource | '') {
-            const projectStore = useProjectStore()
             return collection
-                ? `${projectStore.libraries.find((library) => library.id === collection.library)?.name || '-'} (${t('project.resources.position')}: ${collection.position} | ${t('project.resources.callNumber')}: ${collection.callNumber})`
+                ? `${t('collection.position.short')} ${collection.position} | ${collection.callNumber}`
                 : ''
         },
     },

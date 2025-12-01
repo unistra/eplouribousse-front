@@ -192,16 +192,16 @@ onMounted(async () => {
     .forbidden
         text-align: right
 
-:deep(.q-table tbody .resolved)
+:deep(.resolved)
     background-color: var(--color-neutral-300)
 
     &.highlighted
         background-color: var(--color-neutral-500)
-:deep(.q-table tbody .semi-highlighted)
+:deep(.semi-highlighted)
     background-color: var(--epl-color-light-green)
     font-weight: bold
 
-:deep(.q-table tbody .hatched)
+:deep(.hatched)
     background: repeating-linear-gradient(-45deg, white, white 1rem, var(--color-neutral-200) 1rem, var(--color-neutral-200) 1.5rem)
 
 .btn-segment
