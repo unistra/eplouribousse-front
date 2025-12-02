@@ -91,7 +91,7 @@ export const useProjectStepper = () => {
             if (route.name === 'newProject') {
                 const projectsStore = useProjectsStore()
                 await projectsStore.getUserProjects()
-                await projectStore.fetchProjectById(projectStore.project?.id || '')
+                await projectStore.getProject(projectStore.project?.id || '')
                 await router.push({
                     name: 'project',
                     params: { id: projectStore.project?.id || '' },

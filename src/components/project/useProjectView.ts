@@ -14,7 +14,7 @@ export const useProjectView = () => {
                 if (projectStore.project && projectStore.project.id === id) return
 
                 projectStore.projectLoading = true
-                await projectStore.fetchProjectById(id)
+                await projectStore.getProject(id)
                 projectStore.projectLoading = false
             },
             { immediate: true },

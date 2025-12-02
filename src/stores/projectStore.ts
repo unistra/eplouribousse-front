@@ -16,9 +16,11 @@ import { ProjectStatus, Roles, Tab } from '&/project.ts'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useUtils } from '@/composables/useUtils.ts'
 
 export const useProjectStore = defineStore('project', () => {
     const { t } = useI18n()
+    const { useHandleError } = useUtils()
     const userStore = useUserStore()
 
     // STATE ========================
@@ -53,19 +55,19 @@ export const useProjectStore = defineStore('project', () => {
     })
 
     // ACTIONS ========================
-    const fetchProjectById = async (id: string) => {
+    const getProject = async (id: string) => {
+        projectLoading.value = true
         try {
             const response = await axiosI.get<ProjectDetails>(`/projects/${id}/`)
+
             project.value = structuredClone(response.data)
             initialProject.value = structuredClone(response.data)
+            tab.value = Tab.Positioning // TODO: to move
+            collectionsCount.value = [] // TODO: to move
+        } catch (e) {
+            useHandleError(e)
+        } finally {
             projectLoading.value = false
-            tab.value = Tab.Positioning
-            collectionsCount.value = []
-        } catch {
-            Notify.create({
-                type: 'negative',
-                message: t('errors.unknownRetry'),
-            })
         }
     }
 
@@ -316,7 +318,7 @@ export const useProjectStore = defineStore('project', () => {
             await axiosI.patch<{ activeAfter: string }>(`/projects/${project.value?.id}/launch/`, {
                 active_after,
             })
-            if (project.value?.id) await fetchProjectById(project.value.id)
+            if (project.value?.id) await getProject(project.value.id)
         } catch {
             Notify.create({
                 type: 'negative',
@@ -386,7 +388,7 @@ export const useProjectStore = defineStore('project', () => {
         userIsController,
         userIsInstructorForLibrarySelected,
         // Actions
-        fetchProjectById,
+        getProject,
         patchTitleAndDescription,
         validateAndProceedTitleAndDescription,
         removeLibrary,
