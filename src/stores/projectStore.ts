@@ -71,7 +71,7 @@ export const useProjectStore = defineStore('project', () => {
         }
     }
 
-    const _postNewProject = async () => {
+    const postProject = async () => {
         projectLoading.value = true
         try {
             const response = await axiosI.post<Project>('/projects/', {
@@ -79,17 +79,14 @@ export const useProjectStore = defineStore('project', () => {
                 description: project.value?.description || '',
             })
 
-            if (project.value) project.value.id = response.data.id
-            if (initialProject.value) {
-                initialProject.value.id = response.data.id
-                initialProject.value.name = project.value?.name || ''
-                initialProject.value.description = project.value?.description || ''
-            }
-        } catch {
-            Notify.create({
-                type: 'negative',
-                message: t('errors.unknown'),
-            })
+            // We can give the ID returned by the backend to project, so the redirection can be handled in component ProjectStepper (a refetch of the project will be triggered after the redirection, so we can give the wrong type
+            project.value = {
+                id: response.data.id,
+                name: response.data.name,
+                description: response.data.description,
+            } as ProjectDetails
+        } catch (e) {
+            useHandleError(e)
         } finally {
             projectLoading.value = false
         }
@@ -118,7 +115,7 @@ export const useProjectStore = defineStore('project', () => {
         if (!nameRequired.value || !nameLengthValid.value) return false
 
         if (!project.value?.id) {
-            await _postNewProject()
+            await postProject()
         } else if (
             project.value?.name !== initialProject.value?.name ||
             project.value?.description !== initialProject.value?.description
