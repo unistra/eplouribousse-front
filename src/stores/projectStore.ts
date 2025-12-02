@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import type { LibraryI } from '#/library'
 import {
     type CollectionsCountOfALibrary,
     type Project,
@@ -17,11 +16,13 @@ import { useResourceStore } from '@/stores/resourceStore.ts'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useUtils } from '@/composables/useUtils.ts'
+import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 
 export const useProjectStore = defineStore('project', () => {
     const { t } = useI18n()
     const { useHandleError } = useUtils()
     const userStore = useUserStore()
+    const { notify } = useComposableQuasar()
 
     // STATE ========================
     const project = ref<ProjectDetails>()
@@ -106,51 +107,40 @@ export const useProjectStore = defineStore('project', () => {
         }
     }
 
-    const addRole = async (userId: string, role: Roles, libraryId?: string) => {
-        const data: {
-            user_id: string
-            role: Roles
-            library_id?: string
-        } = {
-            user_id: userId,
-            role,
-            ...(libraryId && { library_id: libraryId }),
-        }
+    const postProjectUserRole = async (userId: string, role: Roles, libraryId?: string) => {
         try {
-            const response = await axiosI.post<ProjectRole>(`/projects/${project.value?.id}/roles/`, data)
-            project.value?.roles.push(response.data)
-        } catch {
-            Notify.create({
-                type: 'negative',
-                message: t('errors.unknown'),
+            const response = await axiosI.post<ProjectRole>(`/projects/${project.value?.id}/roles/`, {
+                user_id: userId,
+                role,
+                ...(libraryId && { library_id: libraryId }),
             })
+            project.value?.roles.push(response.data)
+        } catch (e) {
+            useHandleError(e)
         }
     }
 
-    const removeRole = async (userId: string, role: Roles, libraryId?: string) => {
-        const data: {
-            user_id: string
-            role: Roles
-            library_id?: string
-        } = {
-            user_id: userId,
-            role,
-            ...(libraryId && { library_id: libraryId }),
-        }
+    const deleteProjectUserRole = async (userId: string, role: Roles, libraryId?: string) => {
         try {
             await axiosI.delete(`/projects/${project.value?.id}/roles/`, {
-                params: data,
+                params: {
+                    user_id: userId,
+                    role,
+                    ...(libraryId && { library_id: libraryId }),
+                },
             })
-            if (project.value) {
-                project.value.roles = project.value.roles.filter(
-                    (el) => !(el.role === role && el.libraryId === (libraryId || null) && el.user.id === userId),
-                )
+            if (!project.value) {
+                notify({
+                    message: t('errors.dataUnreachable'),
+                    color: 'negative',
+                })
+                return
             }
-        } catch {
-            Notify.create({
-                type: 'negative',
-                message: t('errors.unknown'),
-            })
+            project.value.roles = project.value.roles.filter(
+                (el) => !(el.role === role && el.libraryId === (libraryId || null) && el.user.id === userId),
+            )
+        } catch (e) {
+            useHandleError(e)
         }
     }
 
@@ -345,8 +335,8 @@ export const useProjectStore = defineStore('project', () => {
         getProject,
         postProject,
         patchProjectTitleAndDescription,
-        addRole,
-        removeRole,
+        postProjectUserRole,
+        deleteProjectUserRole,
         addInvitation,
         removeInvitation,
         passToReview,

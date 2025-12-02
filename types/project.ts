@@ -24,13 +24,6 @@ export interface ProjectDetails extends Project {
     libraries: ProjectLibrary[]
 }
 
-export interface ProjectStoreState extends ProjectDetails {
-    initialState: ProjectDetails
-    isLoading: boolean
-    tab: Tab
-    collectionsCount: CollectionsCountOfALibrary[]
-}
-
 export interface ProjectRole {
     user: UserSummarized
     role: Roles

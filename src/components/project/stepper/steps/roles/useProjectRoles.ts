@@ -25,7 +25,7 @@ export const useProjectRoles = () => {
     }
     const onAddRole = async (userId: string, role: Roles) => {
         addUserLoadingBasedOnRole.value = role
-        await projectStore.addRole(userId, role)
+        await projectStore.postProjectUserRole(userId, role)
         addUserLoadingBasedOnRole.value = undefined
     }
 

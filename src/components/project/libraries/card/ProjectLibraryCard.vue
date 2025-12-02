@@ -45,7 +45,9 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading,
                 @remove-invitation="
                     async ({ email, role }) => await projectStore.removeInvitation(email, role, library.id)
                 "
-                @remove-user="async (user) => await projectStore.removeRole(user.id, Roles.Instructor, library.id)"
+                @remove-user="
+                    async (user) => await projectStore.deleteProjectUserRole(user.id, Roles.Instructor, library.id)
+                "
             />
 
             <ProjectLibraryCardUserList
