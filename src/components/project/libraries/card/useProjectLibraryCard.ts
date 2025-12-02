@@ -51,7 +51,7 @@ export const useProjectLibraryCard = (library: ProjectLibrary) => {
     const isAddUserLoading = ref<boolean>(false)
     const onAddInvitation = async (email: string) => {
         isAddUserLoading.value = true
-        await projectStore.addInvitation(email, Roles.Instructor, library.id)
+        await projectStore.postProjectInvitation(email, Roles.Instructor, library.id)
         isAddUserLoading.value = false
     }
     const onAddRole = async (userId: string) => {

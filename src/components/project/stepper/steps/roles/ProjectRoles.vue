@@ -32,7 +32,9 @@ const { t } = useI18n()
                     "
                     @add-invitation="async (email) => await onAddInvitation(email, role.role)"
                     @add-user="async (user) => await onAddRole(user.id, role.role)"
-                    @remove-invitation="async ({ email }) => await projectStore.removeInvitation(email, role.role)"
+                    @remove-invitation="
+                        async ({ email }) => await projectStore.deleteProjectInvitation(email, role.role)
+                    "
                     @remove-user="async (user) => await projectStore.deleteProjectUserRole(user.id, role.role)"
                 />
             </template>

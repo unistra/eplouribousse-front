@@ -129,6 +129,7 @@ export const useProjectStore = defineStore('project', () => {
                     ...(libraryId && { library_id: libraryId }),
                 },
             })
+
             if (!project.value) {
                 notify({
                     message: t('errors.dataUnreachable'),
@@ -136,6 +137,7 @@ export const useProjectStore = defineStore('project', () => {
                 })
                 return
             }
+
             project.value.roles = project.value.roles.filter(
                 (el) => !(el.role === role && el.libraryId === (libraryId || null) && el.user.id === userId),
             )
@@ -144,23 +146,29 @@ export const useProjectStore = defineStore('project', () => {
         }
     }
 
-    const addInvitation = async (email: string, role: Roles, libraryId?: string) => {
+    const postProjectInvitation = async (email: string, role: Roles, libraryId?: string) => {
         try {
             const response = await axiosI.post<ProjectInvitation>(`/projects/${project.value?.id}/invitations/`, {
                 email,
                 role,
                 ...(libraryId && { library_id: libraryId }),
             })
-            project.value?.invitations.push(response.data)
-        } catch {
-            Notify.create({
-                type: 'negative',
-                message: t('errors.unknown'),
-            })
+
+            if (!project.value) {
+                notify({
+                    message: t('errors.dataUnreachable'),
+                    color: 'negative',
+                })
+                return
+            }
+
+            project.value.invitations.push(response.data)
+        } catch (e) {
+            useHandleError(e)
         }
     }
 
-    const removeInvitation = async (email: string, role: Roles, libraryId: string | null = null) => {
+    const deleteProjectInvitation = async (email: string, role: Roles, libraryId: string | null = null) => {
         try {
             await axiosI.delete(`/projects/${project.value?.id}/invitations/`, {
                 params: {
@@ -169,16 +177,20 @@ export const useProjectStore = defineStore('project', () => {
                     ...(libraryId && { library_id: libraryId }),
                 },
             })
-            if (project.value) {
-                project.value.invitations = project.value.invitations.filter(
-                    (el) => !(el.role === role && el.libraryId === libraryId && el.email === email),
-                )
+
+            if (!project.value) {
+                notify({
+                    message: t('errors.dataUnreachable'),
+                    color: 'negative',
+                })
+                return
             }
-        } catch {
-            Notify.create({
-                type: 'negative',
-                message: t('errors.unknown'),
-            })
+
+            project.value.invitations = project.value.invitations.filter(
+                (el) => !(el.role === role && el.libraryId === libraryId && el.email === email),
+            )
+        } catch (e) {
+            useHandleError(e)
         }
     }
 
@@ -337,8 +349,8 @@ export const useProjectStore = defineStore('project', () => {
         patchProjectTitleAndDescription,
         postProjectUserRole,
         deleteProjectUserRole,
-        addInvitation,
-        removeInvitation,
+        postProjectInvitation,
+        deleteProjectInvitation,
         passToReview,
         addExclusionReason,
         removeExclusionReason,

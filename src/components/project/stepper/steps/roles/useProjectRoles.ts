@@ -20,7 +20,7 @@ export const useProjectRoles = () => {
     const addUserLoadingBasedOnRole = ref<Roles | undefined>()
     const onAddInvitation = async (email: string, role: Roles) => {
         addUserLoadingBasedOnRole.value = role
-        await projectStore.addInvitation(email, role)
+        await projectStore.postProjectInvitation(email, role)
         addUserLoadingBasedOnRole.value = undefined
     }
     const onAddRole = async (userId: string, role: Roles) => {
