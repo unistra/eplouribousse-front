@@ -10,7 +10,16 @@ import { ProjectStatus } from '&/project.ts'
 const { t } = useI18n()
 
 const projectStore = useProjectStore()
-const { dateModal, onConfirm, dateString, date, userIsAdmin, userIsManager, nowString } = useProjectReview()
+const {
+    dateModal,
+    dateString,
+    date,
+    userIsAdmin,
+    userIsManager,
+    nowString,
+    passProjectToReady,
+    passProjectToLaunched,
+} = useProjectReview()
 
 const waitingMessage = computed(() => {
     if (!projectStore.project) return t('errors.unknown')
@@ -28,7 +37,7 @@ const waitingMessage = computed(() => {
             :label="t('project.review.passToReady')"
             no-border
             require-confirmation
-            @confirm="projectStore.passToReady"
+            @confirm="passProjectToReady"
         >
             <template #confirmation-content>
                 <QCardSection>
@@ -72,7 +81,7 @@ const waitingMessage = computed(() => {
                             :label="t('common.confirm')"
                             no-border
                             require-confirmation
-                            @confirm="onConfirm"
+                            @confirm="passProjectToLaunched"
                         >
                             <template #confirmation-content>
                                 <QCardSection>

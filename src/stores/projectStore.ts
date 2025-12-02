@@ -4,14 +4,13 @@ import {
     type Project,
     type ProjectDetails,
     type ProjectInvitation,
-    type ProjectLibrary,
     type ProjectRole,
     type ProjectSettings,
 } from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { Notify } from 'quasar'
 import { useUserStore } from '@/stores/userStore.ts'
-import { ProjectStatus, Roles, Tab } from '&/project.ts'
+import { Roles, Tab } from '&/project.ts'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -194,48 +193,20 @@ export const useProjectStore = defineStore('project', () => {
         }
     }
 
-    const toggleIsAlternativeStorageSite = async (library: ProjectLibrary) => {
-        try {
-            await axiosI.patch(`/projects/${project.value?.id}/libraries/${library.id}/`, {
-                is_alternative_storage_site: !library.isAlternativeStorageSite,
-            })
-            const libraryToUpdate = project.value?.libraries.find((el) => el.id === library.id)
-            if (libraryToUpdate) libraryToUpdate.isAlternativeStorageSite = !library.isAlternativeStorageSite
-        } catch {
-            Notify.create({
-                type: 'negative',
-                message: t('errors.unknown'),
-            })
-        }
-    }
-
-    const passToReady = async () => {
-        try {
-            const response = await axiosI.patch(`/projects/${project.value?.id}/status/`, {
-                status: ProjectStatus.Ready,
-            })
-            if (project.value) project.value.status = response.data.status
-        } catch {
-            Notify.create({
-                type: 'negative',
-                message: t('errors.unknown'),
-            })
-        }
-    }
-
-    const startTheProject = async (active_after: string) => {
-        try {
-            await axiosI.patch<{ activeAfter: string }>(`/projects/${project.value?.id}/launch/`, {
-                active_after,
-            })
-            if (project.value?.id) await getProject(project.value.id)
-        } catch {
-            Notify.create({
-                type: 'negative',
-                message: t('errors.unknown'),
-            })
-        }
-    }
+    // const toggleIsAlternativeStorageSite = async (library: ProjectLibrary) => {
+    //     try {
+    //         await axiosI.patch(`/projects/${project.value?.id}/libraries/${library.id}/`, {
+    //             is_alternative_storage_site: !library.isAlternativeStorageSite,
+    //         })
+    //         const libraryToUpdate = project.value?.libraries.find((el) => el.id === library.id)
+    //         if (libraryToUpdate) libraryToUpdate.isAlternativeStorageSite = !library.isAlternativeStorageSite
+    //     } catch {
+    //         Notify.create({
+    //             type: 'negative',
+    //             message: t('errors.unknown'),
+    //         })
+    //     }
+    // }
 
     const isRole = (role: Roles, libraryId?: string) => {
         const userStore = useUserStore()
@@ -305,9 +276,6 @@ export const useProjectStore = defineStore('project', () => {
         deleteProjectUserRole,
         postProjectInvitation,
         deleteProjectInvitation,
-        toggleIsAlternativeStorageSite,
-        passToReady,
-        startTheProject,
         isRole,
         fetchAlerts,
         patchAlerts,
