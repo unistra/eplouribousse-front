@@ -106,29 +106,6 @@ export const useProjectStore = defineStore('project', () => {
         }
     }
 
-    const removeLibrary = async (library: LibraryI) => {
-        if (!project.value?.libraries.some((lib) => lib.id === library.id)) return
-        try {
-            await axiosI.delete<ProjectDetails>(`/projects/${project.value?.id}/libraries/`, {
-                params: {
-                    library_id: library.id,
-                },
-            })
-
-            if (project.value) {
-                project.value.libraries = project.value.libraries.filter((lib) => lib.id !== library.id)
-                project.value.roles = project.value.roles.filter((role) => role.libraryId !== library.id)
-                project.value.invitations = project.value.invitations.filter((inv) => inv.libraryId !== library.id)
-            }
-            collectionsCount.value = collectionsCount.value.filter((col) => col.libraryId === library.id)
-        } catch {
-            Notify.create({
-                type: 'negative',
-                message: t('view.project.new.stepper.steps.libraries.errors.whileDeleting'),
-            })
-        }
-    }
-
     const addRole = async (userId: string, role: Roles, libraryId?: string) => {
         const data: {
             user_id: string
@@ -368,7 +345,6 @@ export const useProjectStore = defineStore('project', () => {
         getProject,
         postProject,
         patchProjectTitleAndDescription,
-        removeLibrary,
         addRole,
         removeRole,
         addInvitation,
