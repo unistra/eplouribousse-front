@@ -78,23 +78,42 @@ export const useProjectStepper = () => {
     })
 
     const nextStep = async () => {
-        if (!stepper.value) throw new Error()
+        if (!stepper.value) {
+            notify({
+                message: t('errors.unknownRetry'),
+                color: 'negative',
+            })
+            return
+        }
 
         if (step.value === 1) {
-            if (!(await projectStore.validateAndProceedTitleAndDescription())) {
-                notify({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-                return
+            if (!projectStore.nameRequired || !projectStore.nameLengthValid) return
+            let newProjectId: string | undefined
+
+            if (!projectStore.project?.id) {
+                newProjectId = await projectStore.postProject()
+            } else if (
+                projectStore.project.name !== projectStore.initialProject?.name ||
+                projectStore.project.description !== projectStore.initialProject.description
+            ) {
+                await projectStore.patchProjectTitleAndDescription()
             }
+
             if (route.name === 'newProject') {
+                if (!newProjectId) {
+                    notify({
+                        message: t('errors.dataUnreachable'),
+                        color: 'negative',
+                    })
+
+                    return
+                }
+
                 const projectsStore = useProjectsStore()
                 await projectsStore.getUserProjects()
-                await projectStore.getProject(projectStore.project?.id || '')
                 await router.push({
                     name: 'project',
-                    params: { id: projectStore.project?.id || '' },
+                    params: { id: newProjectId },
                     query: { page: 2 },
                 })
                 return

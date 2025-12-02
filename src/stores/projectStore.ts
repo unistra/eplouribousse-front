@@ -33,8 +33,8 @@ export const useProjectStore = defineStore('project', () => {
     const collectionsCount = ref<CollectionsCountOfALibrary[]>([])
 
     // GETTERS ========================
-    const nameRequired = computed(() => (project.value?.name ? project.value.name.length > 0 : false))
-    const nameLengthValid = computed(() => (project.value?.name ? project.value.name.length <= 255 : false))
+    const nameRequired = computed(() => project.value && project.value.name.length > 0)
+    const nameLengthValid = computed(() => project.value && project.value.name.length <= 255)
 
     const userIsAdmin = computed(() => {
         return !!project.value?.roles.find((el) => el.role === Roles.ProjectAdmin && el.user.id === userStore.user?.id)
@@ -71,7 +71,7 @@ export const useProjectStore = defineStore('project', () => {
         }
     }
 
-    const postProject = async () => {
+    const postProject = async (): Promise<string | undefined> => {
         projectLoading.value = true
         try {
             const response = await axiosI.post<Project>('/projects/', {
@@ -79,12 +79,7 @@ export const useProjectStore = defineStore('project', () => {
                 description: project.value?.description || '',
             })
 
-            // We can give the ID returned by the backend to project, so the redirection can be handled in component ProjectStepper (a refetch of the project will be triggered after the redirection, so we can give the wrong type
-            project.value = {
-                id: response.data.id,
-                name: response.data.name,
-                description: response.data.description,
-            } as ProjectDetails
+            return response.data.id
         } catch (e) {
             useHandleError(e)
         } finally {
@@ -109,21 +104,6 @@ export const useProjectStore = defineStore('project', () => {
         } finally {
             projectLoading.value = false
         }
-    }
-
-    const validateAndProceedTitleAndDescription = async (): Promise<boolean> => {
-        if (!nameRequired.value || !nameLengthValid.value) return false
-
-        if (!project.value?.id) {
-            await postProject()
-        } else if (
-            project.value?.name !== initialProject.value?.name ||
-            project.value?.description !== initialProject.value?.description
-        ) {
-            await patchProjectTitleAndDescription()
-        }
-
-        return true
     }
 
     const removeLibrary = async (library: LibraryI) => {
@@ -386,8 +366,8 @@ export const useProjectStore = defineStore('project', () => {
         userIsInstructorForLibrarySelected,
         // Actions
         getProject,
+        postProject,
         patchProjectTitleAndDescription,
-        validateAndProceedTitleAndDescription,
         removeLibrary,
         addRole,
         removeRole,
