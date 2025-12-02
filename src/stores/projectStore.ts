@@ -194,20 +194,6 @@ export const useProjectStore = defineStore('project', () => {
         }
     }
 
-    const passToReview = async () => {
-        try {
-            const response = await axiosI.patch(`/projects/${project.value?.id}/status/`, {
-                status: ProjectStatus.Review,
-            })
-            if (project.value) project.value.status = response.data.status
-        } catch {
-            Notify.create({
-                type: 'negative',
-                message: t('errors.unknown'),
-            })
-        }
-    }
-
     const addExclusionReason = async (exclusionReason: string) => {
         try {
             await axiosI.post(`/projects/${project.value?.id}/exclusion_reason/`, {
@@ -351,7 +337,6 @@ export const useProjectStore = defineStore('project', () => {
         deleteProjectUserRole,
         postProjectInvitation,
         deleteProjectInvitation,
-        passToReview,
         addExclusionReason,
         removeExclusionReason,
         toggleIsAlternativeStorageSite,

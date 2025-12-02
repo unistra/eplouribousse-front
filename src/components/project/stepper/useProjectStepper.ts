@@ -1,13 +1,15 @@
 import { computed, ref, useTemplateRef } from 'vue'
-import { QStepper } from 'quasar'
+import { Notify, QStepper } from 'quasar'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import router from '@/router'
-import { Roles } from '&/project.ts'
+import { ProjectStatus, Roles } from '&/project.ts'
 import { useProjectLibraryCollection } from '@/components/project/libraries/card/collectionField/useProjectLibraryCollection.ts'
 import { useRoute } from 'vue-router'
 import { useProjectsStore } from '@/stores/projectsStore.ts'
+import { axiosI } from '@/plugins/axios/axios.ts'
+import { useUtils } from '@/composables/useUtils.ts'
 
 export const checkValidityProjectStepper = () => {
     const projectStore = useProjectStore()
@@ -54,14 +56,31 @@ export const useProjectStepper = () => {
     const projectStore = useProjectStore()
     const { notify } = useComposableQuasar()
     const route = useRoute()
+    const { useHandleError } = useUtils()
 
     const step = ref(1)
     const stepper = useTemplateRef<QStepper>('stepper')
     const passToReviewLoading = ref<boolean>(false)
     const passToReview = async () => {
         passToReviewLoading.value = true
-        await projectStore.passToReview()
-        passToReviewLoading.value = false
+        try {
+            const response = await axiosI.patch(`/projects/${projectStore.project?.id}/status/`, {
+                status: ProjectStatus.Review,
+            })
+            if (!projectStore.project) {
+                notify({
+                    message: t('errors.dataUnreachable'),
+                    color: 'negative',
+                })
+                return
+            }
+
+            projectStore.project.status = response.data.status
+        } catch (e) {
+            useHandleError(e)
+        } finally {
+            passToReviewLoading.value = false
+        }
     }
 
     const buttonLabel = computed(() => {
