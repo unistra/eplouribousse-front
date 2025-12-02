@@ -5,10 +5,8 @@ import {
     type ProjectDetails,
     type ProjectInvitation,
     type ProjectRole,
-    type ProjectSettings,
 } from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
-import { Notify } from 'quasar'
 import { useUserStore } from '@/stores/userStore.ts'
 import { Roles, Tab } from '&/project.ts'
 import { useResourceStore } from '@/stores/resourceStore.ts'
@@ -55,6 +53,8 @@ export const useProjectStore = defineStore('project', () => {
     })
 
     // ACTIONS ========================
+
+    // API
     const getProject = async (id: string) => {
         projectLoading.value = true
         try {
@@ -208,6 +208,7 @@ export const useProjectStore = defineStore('project', () => {
     //     }
     // }
 
+    // Utils
     const isRole = (role: Roles, libraryId?: string) => {
         const userStore = useUserStore()
         return (
@@ -218,41 +219,6 @@ export const useProjectStore = defineStore('project', () => {
                     ((!libraryId && role !== Roles.Instructor) || el.libraryId === libraryId),
             ) || false
         )
-    }
-
-    const fetchAlerts = async () => {
-        try {
-            const response = await axiosI.get<{ alerts: ProjectSettings['alerts'] }>(
-                `/projects/${project.value?.id}/alerts/`,
-            )
-            if (project.value) project.value.settings.alerts = structuredClone(response.data.alerts)
-            if (initialProject.value) initialProject.value.settings.alerts = structuredClone(response.data.alerts)
-        } catch {
-            Notify.create({
-                type: 'negative',
-                message: t('errors.unknown'),
-            })
-        }
-    }
-
-    const patchAlerts = async () => {
-        try {
-            const response = await axiosI.patch<{ alerts: ProjectSettings['alerts'] }>(
-                `/projects/${project.value?.id}/alerts/`,
-                { alerts: { ...project.value?.settings.alerts } },
-            )
-            if (project.value) project.value.settings.alerts = structuredClone(response.data.alerts)
-            if (initialProject.value) initialProject.value.settings.alerts = structuredClone(response.data.alerts)
-            Notify.create({
-                type: 'positive',
-                message: t('project.settings.emailAlert.successAlertUpdated'),
-            })
-        } catch {
-            Notify.create({
-                type: 'negative',
-                message: t('errors.unknown'),
-            })
-        }
     }
 
     return {
@@ -277,7 +243,5 @@ export const useProjectStore = defineStore('project', () => {
         postProjectInvitation,
         deleteProjectInvitation,
         isRole,
-        fetchAlerts,
-        patchAlerts,
     }
 })

@@ -4,16 +4,39 @@ import { useProjectStore } from '@/stores/projectStore.ts'
 import AtomicToggle from '@/components/atomic/AtomicToggle.vue'
 import { computed, onMounted, ref } from 'vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
-import type { Project } from '#/project.ts'
+import type { Project, ProjectSettings } from '#/project.ts'
+import { useUtils } from '@/composables/useUtils.ts'
+import { axiosI } from '@/plugins/axios/axios.ts'
+import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 
 const { t } = useI18n()
+const { useHandleError } = useUtils()
+const { notify } = useComposableQuasar()
 const projectStore = useProjectStore()
 const loading = ref<boolean>(false)
 const saveLoading = ref<boolean>(false)
+
 onMounted(async () => {
     loading.value = true
-    await projectStore.fetchAlerts()
-    loading.value = false
+    try {
+        const response = await axiosI.get<{ alerts: ProjectSettings['alerts'] }>(
+            `/projects/${projectStore.project?.id}/alerts/`,
+        )
+        if (!projectStore.project || !projectStore.initialProject) {
+            notify({
+                message: t('errors.dataUnreachable'),
+                color: 'negative',
+            })
+            return
+        }
+
+        projectStore.project.settings.alerts = structuredClone(response.data.alerts)
+        projectStore.initialProject.settings.alerts = structuredClone(response.data.alerts)
+    } catch (e) {
+        useHandleError(e)
+    } finally {
+        loading.value = false
+    }
 })
 const isDifferenceBetweenSettingsAndInitial = computed(() => {
     if (!projectStore.project) return false
@@ -24,10 +47,24 @@ const isDifferenceBetweenSettingsAndInitial = computed(() => {
     ][]
     return !entries.every(([key, value]) => projectStore.initialProject?.settings.alerts[key] === value)
 })
-const onPatchAlerts = async () => {
+const patchProjectAlerts = async () => {
     saveLoading.value = false
     if (!isDifferenceBetweenSettingsAndInitial.value) return
-    await projectStore.patchAlerts()
+    try {
+        const response = await axiosI.patch<{ alerts: ProjectSettings['alerts'] }>(
+            `/projects/${projectStore.project?.id}/alerts/`,
+            { alerts: { ...projectStore.project?.settings.alerts } },
+        )
+        if (projectStore.project) projectStore.project.settings.alerts = structuredClone(response.data.alerts)
+        if (projectStore.initialProject)
+            projectStore.initialProject.settings.alerts = structuredClone(response.data.alerts)
+        notify({
+            type: 'positive',
+            message: t('project.settings.emailAlert.successAlertUpdated'),
+        })
+    } catch (e) {
+        useHandleError(e)
+    }
     saveLoading.value = false
 }
 </script>
@@ -57,7 +94,7 @@ const onPatchAlerts = async () => {
         v-if="isDifferenceBetweenSettingsAndInitial"
         :label="t('common.save')"
         :loading="saveLoading"
-        @click="onPatchAlerts"
+        @click="patchProjectAlerts"
     />
 </template>
 
