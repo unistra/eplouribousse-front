@@ -13,13 +13,17 @@ export const checkValidityProjectStepper = () => {
     const projectStore = useProjectStore()
     const { csvImportLoading } = useProjectLibraryCollection()
     const checkValidityForLibraryStep = computed<boolean | 'pending'>(() => {
-        if (!(projectStore.libraries.length >= 2)) return false
+        if (!projectStore.project) return false
+        if (!(projectStore.project.libraries.length >= 2)) return false
         if (csvImportLoading.value.length) return 'pending'
 
-        return projectStore.libraries.every((library) => {
+        return projectStore.project.libraries.every((library) => {
+            if (!projectStore.project) return false
             const hasInstructorOrInstructorInvite =
-                projectStore.roles.some((role) => role.libraryId === library.id && role.role === Roles.Instructor) ||
-                projectStore.invitations.some(
+                projectStore.project.roles.some(
+                    (role) => role.libraryId === library.id && role.role === Roles.Instructor,
+                ) ||
+                projectStore.project.invitations.some(
                     (invitation) => invitation.role === Roles.Instructor && invitation.libraryId === library.id,
                 )
             const hasCollection = projectStore.collectionsCount.some((el) => el.libraryId === library.id)
@@ -31,11 +35,13 @@ export const checkValidityProjectStepper = () => {
 
     const checkValidityForRolesStep = computed(() => {
         const requiredRoles = [Roles.ProjectManager, Roles.ProjectAdmin, Roles.Controller]
-        return requiredRoles.every(
-            (required) =>
-                projectStore.roles.some((role) => role.role === required) ||
-                projectStore.invitations.some((invitation) => invitation.role === required),
-        )
+        return requiredRoles.every((required) => {
+            if (!projectStore.project) return false
+            return (
+                projectStore.project.roles.some((role) => role.role === required) ||
+                projectStore.project.invitations.some((invitation) => invitation.role === required)
+            )
+        })
     })
 
     return {
@@ -60,11 +66,11 @@ export const useProjectStepper = () => {
 
     const buttonLabel = computed(() => {
         if (step.value === 1) {
-            if (!projectStore.id) return t('newProject.buttons.create')
+            if (!projectStore.project || !projectStore.initialProject) return t('newProject.buttons.create')
             if (
-                projectStore.id &&
-                (projectStore.name !== projectStore.initialState.name ||
-                    projectStore.description !== projectStore.initialState.description)
+                projectStore.project.id &&
+                (projectStore.project.name !== projectStore.initialProject.name ||
+                    projectStore.project.description !== projectStore.initialProject.description)
             )
                 return t('newProject.buttons.modify')
         }
@@ -85,8 +91,12 @@ export const useProjectStepper = () => {
             if (route.name === 'newProject') {
                 const projectsStore = useProjectsStore()
                 await projectsStore.getUserProjects()
-                await projectStore.fetchProjectById(projectStore.id)
-                await router.push({ name: 'project', params: { id: projectStore.id }, query: { page: 2 } })
+                await projectStore.fetchProjectById(projectStore.project?.id || '')
+                await router.push({
+                    name: 'project',
+                    params: { id: projectStore.project?.id || '' },
+                    query: { page: 2 },
+                })
                 return
             }
         }

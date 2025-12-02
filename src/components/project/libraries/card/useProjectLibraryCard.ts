@@ -6,14 +6,19 @@ import { Roles } from '&/project.ts'
 export const useProjectLibraryCard = (library: ProjectLibrary) => {
     const projectStore = useProjectStore()
 
-    const invitationsSelected = computed(() =>
-        projectStore.invitations.filter((el) => el.role === Roles.Instructor && el.libraryId === library.id),
-    )
-    const usersSelected = computed(() =>
-        projectStore.roles
+    const invitationsSelected = computed(() => {
+        if (!projectStore.project) return []
+        return projectStore.project.invitations.filter(
+            (el) => el.role === Roles.Instructor && el.libraryId === library.id,
+        )
+    })
+
+    const usersSelected = computed(() => {
+        if (!projectStore.project) return []
+        return projectStore.project.roles
             .filter((el) => el.role === Roles.Instructor && el.libraryId === library.id)
-            .map((el) => el.user),
-    )
+            .map((el) => el.user)
+    })
 
     const isLoadingDelete = ref<boolean>(false)
     const onDelete = async () => {

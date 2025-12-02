@@ -71,7 +71,7 @@ onMounted(async () => await getCollection())
                     </p>
                 </QCardSection>
                 <QCardActions
-                    v-if="projectStore.status === ProjectStatus.Draft && !summaryMode"
+                    v-if="projectStore.project?.status === ProjectStatus.Draft && !summaryMode"
                     align="right"
                 >
                     <AtomicButton

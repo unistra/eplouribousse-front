@@ -34,7 +34,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <QCard v-if="collection">
+    <QCard v-if="collection && projectStore.project">
         <QCardSection
             class="q-card-section-horizontal"
             horizontal
@@ -77,7 +77,7 @@ onMounted(() => {
                         v-if="exclude"
                         v-model="exclusionReason"
                         :label="t('project.resources.exclusion.exclusionReason')"
-                        :options="projectStore.settings.exclusionReasons"
+                        :options="projectStore.project.settings.exclusionReasons"
                     />
                     <AtomicInput
                         v-model="comment"

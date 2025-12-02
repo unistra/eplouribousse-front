@@ -82,13 +82,15 @@ export const useProjectResources = () => {
     })
 
     const librariesOptions = computed(() => {
-        return [...projectStore.libraries, { name: t('common.all'), id: '' }]
+        if (!projectStore.project) return []
+        return [...projectStore.project.libraries, { name: t('common.all'), id: '' }]
     })
 
     const librariesComparedOptions = computed(() => {
+        if (!projectStore.project) return []
         return [
             { name: t('common.all'), id: '' },
-            ...projectStore.libraries.filter((lib) => lib.id !== resourceStore.libraryIdSelected),
+            ...projectStore.project.libraries.filter((lib) => lib.id !== resourceStore.libraryIdSelected),
         ]
     })
 
@@ -200,9 +202,10 @@ export const useProjectResources = () => {
             return
         }
 
-        const librariesIdWhereUserIsInstructor = projectStore.roles
-            .filter((el) => el.user.id === userStore.user?.id && el.role === Roles.Instructor)
-            .map((el) => el.libraryId)
+        const librariesIdWhereUserIsInstructor =
+            projectStore.project?.roles
+                .filter((el) => el.user.id === userStore.user?.id && el.role === Roles.Instructor)
+                .map((el) => el.libraryId) || []
 
         resourceStore.libraryIdSelected = librariesIdWhereUserIsInstructor[0] || ''
     }

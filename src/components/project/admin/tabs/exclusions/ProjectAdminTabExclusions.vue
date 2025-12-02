@@ -12,9 +12,12 @@ const { t } = useI18n()
 </script>
 
 <template>
-    <div class="tabs">
+    <div
+        v-if="projectStore.project"
+        class="tabs"
+    >
         <QChip
-            v-for="exclusionReason in projectStore.settings.exclusionReasons"
+            v-for="exclusionReason in projectStore.project.settings.exclusionReasons"
             :key="exclusionReason"
             icon-remove="mdi-close"
             :label="exclusionReason"

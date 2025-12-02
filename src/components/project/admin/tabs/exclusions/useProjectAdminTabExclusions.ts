@@ -11,7 +11,7 @@ export enum ProjectAdministrationTab {
 }
 
 export function useProjectAdminTabExclusions() {
-    const store = useProjectStore()
+    const projectStore = useProjectStore()
     const { t } = useI18n()
 
     const tabs: {
@@ -51,7 +51,7 @@ export function useProjectAdminTabExclusions() {
     const addingExclusionReason = ref<boolean>(false)
     const newExclusionReason = ref<string>('')
     const onAddExclusionReason = async () => {
-        await store.addExclusionReason(newExclusionReason.value)
+        await projectStore.addExclusionReason(newExclusionReason.value)
         addingExclusionReason.value = false
         newExclusionReason.value = ''
     }

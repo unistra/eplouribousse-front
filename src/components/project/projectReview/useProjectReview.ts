@@ -11,12 +11,18 @@ export const useProjectReview = () => {
     const settingsMode = ref<boolean>(false)
     const dateModal = ref<boolean>(false)
 
-    const userIsAdmin: ComputedRef<boolean> = computed(() =>
-        projectStore.roles.some((el) => el.user.id === userStore.user?.id && el.role === Roles.ProjectAdmin),
-    )
-    const userIsManager: ComputedRef<boolean> = computed(() =>
-        projectStore.roles.some((el) => el.user.id === userStore.user?.id && el.role === Roles.ProjectManager),
-    )
+    const userIsAdmin: ComputedRef<boolean> = computed(() => {
+        if (!projectStore.project) return false
+        return projectStore.project.roles.some(
+            (el) => el.user.id === userStore.user?.id && el.role === Roles.ProjectAdmin,
+        )
+    })
+    const userIsManager: ComputedRef<boolean> = computed(() => {
+        if (!projectStore.project) return false
+        return projectStore.project.roles.some(
+            (el) => el.user.id === userStore.user?.id && el.role === Roles.ProjectManager,
+        )
+    })
 
     const nowString = new Date().toLocaleString('sv-SE', { timeZone: 'Europe/Paris' }).replace(' ', 'T').slice(0, -3) // 'sv-SE' match the format for the input + the datetime of Paris
     const date = ref<string>(nowString)

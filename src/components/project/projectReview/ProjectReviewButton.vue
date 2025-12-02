@@ -9,93 +9,94 @@ import { ProjectStatus } from '&/project.ts'
 
 const { t } = useI18n()
 
-const store = useProjectStore()
+const projectStore = useProjectStore()
 const { dateModal, onConfirm, dateString, date, userIsAdmin, userIsManager, nowString } = useProjectReview()
 
 const waitingMessage = computed(() => {
-    if (store.status === ProjectStatus.Review) return t('project.review.waitingForAdminToReview')
-    if (store.status === ProjectStatus.Ready) return t('project.ready.waitingForManagerToStart')
+    if (!projectStore.project) return t('errors.unknown')
+    if (projectStore.project.status === ProjectStatus.Review) return t('project.review.waitingForAdminToReview')
+    if (projectStore.project.status === ProjectStatus.Ready) return t('project.ready.waitingForManagerToStart')
     return t('common.waiting')
 })
 </script>
-
 <template>
-    <AtomicButton
-        v-if="store.status === ProjectStatus.Review && userIsAdmin"
-        color="primary"
-        confirm-button-color="primary"
-        :label="t('project.review.passToReady')"
-        no-border
-        require-confirmation
-        @confirm="store.passToReady"
-    >
-        <template #confirmation-content>
-            <QCardSection>
-                <p>{{ t('project.review.confirmPassToReview') }}</p>
-                <p>{{ t('confirmDialogDefault.irreversible') }}</p>
-            </QCardSection>
-        </template>
-    </AtomicButton>
-    <template v-else-if="store.status === ProjectStatus.Ready && userIsManager">
+    <template v-if="projectStore.project">
         <AtomicButton
+            v-if="projectStore.project.status === ProjectStatus.Review && userIsAdmin"
             color="primary"
-            :label="t('project.ready.startTheProject')"
+            confirm-button-color="primary"
+            :label="t('project.review.passToReady')"
             no-border
-            @click="dateModal = true"
-        />
-        <QDialog
-            v-model="dateModal"
-            persistent
+            require-confirmation
+            @confirm="projectStore.passToReady"
         >
-            <QCard>
+            <template #confirmation-content>
                 <QCardSection>
-                    <p>{{ t('project.ready.defineStartDate') }}</p>
-                    <AtomicInput
-                        v-model="date"
-                        :min="nowString"
-                        outlined
-                        rounded
-                        type="datetime-local"
-                        :value="nowString"
-                    >
-                    </AtomicInput>
+                    <p>{{ t('project.review.confirmPassToReview') }}</p>
+                    <p>{{ t('confirmDialogDefault.irreversible') }}</p>
                 </QCardSection>
-                <QCardActions align="right">
-                    <AtomicButton
-                        :label="t('common.cancel')"
-                        @click="dateModal = false"
-                    />
-                    <AtomicButton
-                        color="primary"
-                        confirm-button-color="primary"
-                        :label="t('common.confirm')"
-                        no-border
-                        require-confirmation
-                        @confirm="onConfirm"
-                    >
-                        <template #confirmation-content>
-                            <QCardSection>
-                                <p>
-                                    {{ t('project.ready.confirmStart') }} <strong>{{ dateString }}</strong>
-                                </p>
-                                <p>{{ t('confirmDialogDefault.irreversible') }}</p>
-                            </QCardSection>
-                        </template>
-                    </AtomicButton>
-                </QCardActions>
-            </QCard>
-        </QDialog>
+            </template>
+        </AtomicButton>
+        <template v-else-if="projectStore.project.status === ProjectStatus.Ready && userIsManager">
+            <AtomicButton
+                color="primary"
+                :label="t('project.ready.startTheProject')"
+                no-border
+                @click="dateModal = true"
+            />
+            <QDialog
+                v-model="dateModal"
+                persistent
+            >
+                <QCard>
+                    <QCardSection>
+                        <p>{{ t('project.ready.defineStartDate') }}</p>
+                        <AtomicInput
+                            v-model="date"
+                            :min="nowString"
+                            outlined
+                            rounded
+                            type="datetime-local"
+                            :value="nowString"
+                        >
+                        </AtomicInput>
+                    </QCardSection>
+                    <QCardActions align="right">
+                        <AtomicButton
+                            :label="t('common.cancel')"
+                            @click="dateModal = false"
+                        />
+                        <AtomicButton
+                            color="primary"
+                            confirm-button-color="primary"
+                            :label="t('common.confirm')"
+                            no-border
+                            require-confirmation
+                            @confirm="onConfirm"
+                        >
+                            <template #confirmation-content>
+                                <QCardSection>
+                                    <p>
+                                        {{ t('project.ready.confirmStart') }} <strong>{{ dateString }}</strong>
+                                    </p>
+                                    <p>{{ t('confirmDialogDefault.irreversible') }}</p>
+                                </QCardSection>
+                            </template>
+                        </AtomicButton>
+                    </QCardActions>
+                </QCard>
+            </QDialog>
+        </template>
+        <AtomicButton
+            v-else
+            class="align-end"
+            disable
+            icon-right="mdi-timer-sand"
+            :label="waitingMessage"
+            no-border
+        />
     </template>
-    <AtomicButton
-        v-else
-        class="align-end"
-        disable
-        icon-right="mdi-timer-sand"
-        :label="waitingMessage"
-        no-border
-    />
 </template>
-
 <style lang="sass" scoped>
 .project-review
     > .q-btn, .align-end

@@ -65,8 +65,9 @@ export const useProjectSegmentTable = () => {
             label: t('libraries.i'),
             field: 'library',
             format(_val: unknown, row: Segment) {
+                if (!projectStore.project) return t('common.error')
                 const libraryId = resourceStore.collections.find((el) => el.id === row.collection)?.library || null
-                const library = projectStore.libraries.find((el) => el.id === libraryId) || null
+                const library = projectStore.project.libraries.find((el) => el.id === libraryId) || null
                 return library?.name || t('common.error')
             },
             align: 'center',
@@ -115,6 +116,8 @@ export const useProjectSegmentTable = () => {
             label: t('segment.resolve'),
             field: 'resolve',
             format(_val: unknown, row: Segment) {
+                if (!projectStore.project) return t('errors.dataUnreachable')
+
                 const segmentImproved = resourceStore.segments.find((el) => el.id === row.improvedSegment)
                 if (!segmentImproved) return '-'
 
@@ -125,7 +128,7 @@ export const useProjectSegmentTable = () => {
                 )
 
                 const libraryString =
-                    projectStore.libraries.find((library) => library.id === collection?.library)?.name ||
+                    projectStore.project.libraries.find((library) => library.id === collection?.library)?.name ||
                     t('utils.noLibrary')
                 return `${libraryString} | ${t('project.instruction.tableFields.line')}: ${segmentString}`
             },

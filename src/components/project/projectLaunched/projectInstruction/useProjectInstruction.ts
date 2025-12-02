@@ -14,6 +14,7 @@ export const useProjectInstruction = (dialogModal: Ref<boolean> | undefined) => 
     const insertAfter = ref<string | undefined>()
 
     const turnsWithNames = computed(() => {
+        if (!projectStore.project) return null
         if (resourceStore.status === ResourceStatus.Positioning) return null
 
         const retrieveCollectionName = (el: InstructionTurn): string => {
@@ -22,7 +23,9 @@ export const useProjectInstruction = (dialogModal: Ref<boolean> | undefined) => 
         }
 
         return resourceStore.instructionTurns?.turns.map((el: InstructionTurn) => ({
-            library: projectStore.libraries.find((library) => library.id === el.library)?.name,
+            library: projectStore.project
+                ? projectStore.project.libraries.find((library) => library.id === el.library)?.name
+                : '',
             collection: retrieveCollectionName(el),
             collectiondId: el.collection,
         }))

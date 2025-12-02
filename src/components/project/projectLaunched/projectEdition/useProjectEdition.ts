@@ -31,10 +31,12 @@ export const useProjectEdition = () => {
     })
 
     const storageLocation = computed(() => {
-        const alternativeStorageSite = projectStore.libraries.find((library) => library.isAlternativeStorageSite)
+        const alternativeStorageSite = projectStore.project?.libraries.find(
+            (library) => library.isAlternativeStorageSite,
+        )
         return (
             alternativeStorageSite?.name ||
-            projectStore.libraries.find(
+            projectStore.project?.libraries.find(
                 (library) => library.id === resourceStore.collectionsSortedByOrderInInstructionTurns[0].library,
             )?.name ||
             t('common.none')

@@ -14,27 +14,30 @@ const { checkValidityForLibraryStep } = checkValidityProjectStepper()
 </script>
 
 <template>
-    <div class="summary">
+    <div
+        v-if="projectStore.project"
+        class="summary"
+    >
         <h1>{{ t('view.project.new.stepper.steps.summary.title') }}</h1>
         <QChip
-            v-if="projectStore.activeAfter && new Date(projectStore.activeAfter) > new Date()"
+            v-if="projectStore.project.activeAfter && new Date(projectStore.project.activeAfter) > new Date()"
             class="info"
             icon="mdi-information"
             size="lg"
         >
             {{ t('view.project.new.stepper.steps.informations.startInFuture') }}
-            {{ useUtils().useIntlDateTimeFormat(projectStore.activeAfter) }}
+            {{ useUtils().useIntlDateTimeFormat(projectStore.project.activeAfter) }}
         </QChip>
 
         <hgroup>
             <p class="label">{{ t('view.project.new.stepper.steps.informations.name') }}</p>
-            <h2>{{ projectStore.name }}</h2>
+            <h2>{{ projectStore.project.name }}</h2>
         </hgroup>
 
         <div class="description">
             <p class="label">{{ t('view.project.new.stepper.steps.informations.description') }}</p>
-            <p :class="{ 'no-description': !projectStore.description }">
-                {{ projectStore.description || t('view.project.new.stepper.steps.informations.noDescription') }}
+            <p :class="{ 'no-description': !projectStore.project.description }">
+                {{ projectStore.project.description || t('view.project.new.stepper.steps.informations.noDescription') }}
             </p>
         </div>
         <QSeparator />
@@ -52,7 +55,7 @@ const { checkValidityForLibraryStep } = checkValidityProjectStepper()
             </div>
             <div class="cards">
                 <ProjectLibraryCard
-                    v-for="library in projectStore.libraries"
+                    v-for="library in projectStore.project.libraries"
                     :key="library.id"
                     :library="library"
                     summary-mode
@@ -70,10 +73,10 @@ const { checkValidityForLibraryStep } = checkValidityProjectStepper()
                     [Roles.Guest, t('roles.guest')],
                 ]"
                 :key="role[0]"
-                :invitations-selected="projectStore.invitations.filter((el) => el.role === role[0])"
+                :invitations-selected="projectStore.project.invitations.filter((el) => el.role === role[0])"
                 :label="role[1]"
                 summary-mode
-                :users-selected="projectStore.roles.filter((el) => el.role === role[0]).map((el) => el.user)"
+                :users-selected="projectStore.project.roles.filter((el) => el.role === role[0]).map((el) => el.user)"
             />
         </div>
     </div>

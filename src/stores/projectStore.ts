@@ -93,7 +93,7 @@ export const useProjectStore = defineStore('project', () => {
         }
     }
 
-    const _patchTitleAndDescription = async () => {
+    const patchTitleAndDescription = async () => {
         try {
             await axiosI.patch(`/projects/${project.value?.id}/`, {
                 name: project.value?.name,
@@ -121,7 +121,7 @@ export const useProjectStore = defineStore('project', () => {
             project.value?.name !== initialProject.value?.name ||
             project.value?.description !== initialProject.value?.description
         ) {
-            await _patchTitleAndDescription()
+            await patchTitleAndDescription()
         }
 
         return true
@@ -387,6 +387,7 @@ export const useProjectStore = defineStore('project', () => {
         userIsInstructorForLibrarySelected,
         // Actions
         fetchProjectById,
+        patchTitleAndDescription,
         validateAndProceedTitleAndDescription,
         removeLibrary,
         addRole,

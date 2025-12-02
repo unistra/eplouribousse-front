@@ -32,7 +32,7 @@ onMounted(async () => {
         done-color="positive"
         error-color="negative"
         flat
-        :header-nav="!!projectStore.id"
+        :header-nav="!!projectStore.project?.id"
     >
         <QStep
             :done="step > 1"

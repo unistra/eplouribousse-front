@@ -2,17 +2,29 @@
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
+import { onMounted } from 'vue'
+import type { ProjectDetails } from '#/project.ts'
 
 const { t } = useI18n()
 const projectStore = useProjectStore()
+
+onMounted(() => {
+    // Create project in store to ensure display
+    if (!projectStore.project) {
+        projectStore.project = {
+            name: '',
+            description: '',
+        } as ProjectDetails
+    }
+})
 </script>
 
 <template>
-    <div>
+    <div v-if="projectStore.project">
         <h1>{{ t('view.project.new.stepper.steps.informations.title') }}</h1>
         <QForm>
             <AtomicInput
-                v-model="projectStore.name"
+                v-model="projectStore.project.name"
                 :label="t('view.project.new.stepper.steps.informations.name')"
                 required
                 :rules="[
@@ -22,7 +34,7 @@ const projectStore = useProjectStore()
                 type="text"
             />
             <AtomicInput
-                v-model="projectStore.description"
+                v-model="projectStore.project.description"
                 :label="t('view.project.new.stepper.steps.informations.description')"
                 type="textarea"
             />

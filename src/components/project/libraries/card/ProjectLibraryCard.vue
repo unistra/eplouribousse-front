@@ -65,7 +65,7 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading,
         </QCardSection>
 
         <QCardActions
-            v-if="!summaryMode && projectStore.status === ProjectStatus.Draft"
+            v-if="!summaryMode && projectStore.project?.status === ProjectStatus.Draft"
             align="right"
         >
             <AtomicButton

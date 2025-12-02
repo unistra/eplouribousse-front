@@ -8,8 +8,8 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 const isRequirementValidated = ref<boolean>(false)
-const store = useProjectStore()
-store.$reset()
+const projectStore = useProjectStore()
+projectStore.project = undefined
 </script>
 
 <template>

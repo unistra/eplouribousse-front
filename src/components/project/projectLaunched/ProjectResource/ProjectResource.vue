@@ -32,6 +32,7 @@ const onBeforeShow = async () => {
 
 <template>
     <QDialog
+        v-if="projectStore.project"
         v-model="dialogModal"
         class="dialog"
         full-height
@@ -63,9 +64,10 @@ const onBeforeShow = async () => {
                     <template v-if="projectStore.tab === Tab.Edition">
                         <h2>
                             {{
-                                projectStore.libraries.find((el) => el.id === resourceStore.libraryIdSelected)
-                                    ? projectStore.libraries.find((el) => el.id === resourceStore.libraryIdSelected)
-                                          ?.name + ':'
+                                projectStore.project.libraries.find((el) => el.id === resourceStore.libraryIdSelected)
+                                    ? projectStore.project.libraries.find(
+                                          (el) => el.id === resourceStore.libraryIdSelected,
+                                      )?.name + ':'
                                     : ''
                             }}
                             {{ t('project.resources.resultant.title') }}

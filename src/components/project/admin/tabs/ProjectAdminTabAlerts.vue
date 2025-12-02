@@ -16,11 +16,13 @@ onMounted(async () => {
     loading.value = false
 })
 const isDifferenceBetweenSettingsAndInitial = computed(() => {
-    return !Object.entries(projectStore.settings.alerts).every(
-        ([key, value]) =>
-            projectStore.initialState.settings.alerts[key as keyof typeof projectStore.initialState.settings.alerts] ===
-            value,
-    )
+    if (!projectStore.project) return false
+
+    const entries = Object.entries(projectStore.project.settings.alerts) as [
+        keyof Project['settings']['alerts'],
+        boolean,
+    ][]
+    return !entries.every(([key, value]) => projectStore.initialProject?.settings.alerts[key] === value)
 })
 const onPatchAlerts = async () => {
     saveLoading.value = false
@@ -31,9 +33,12 @@ const onPatchAlerts = async () => {
 </script>
 
 <template>
-    <QList denses>
+    <QList
+        v-if="projectStore.project"
+        denses
+    >
         <template
-            v-for="key in Object.keys(projectStore.settings.alerts)"
+            v-for="key in Object.keys(projectStore.project.settings.alerts)"
             :key="key"
         >
             <QItem
@@ -41,7 +46,7 @@ const onPatchAlerts = async () => {
                 dense
             >
                 <AtomicToggle
-                    v-model="projectStore.settings.alerts[key as keyof Project['settings']['alerts']]"
+                    v-model="projectStore.project.settings.alerts[key as keyof Project['settings']['alerts']]"
                     :disable="!projectStore.userIsAdmin"
                     :label="t(`project.settings.emailAlert.${key}`)"
                 />

@@ -19,7 +19,8 @@ watchRouteIdAndFetchProject()
     <QPage padding>
         <div class="back">
             <BackButton />
-            <h1>{{ route.meta.title }}: {{ projectStore.name }}</h1>
+            <h1 v-if="projectStore.project">{{ route.meta.title }}: {{ projectStore.project.name }}</h1>
+            <h1 v-else>{{ route.meta.title }}: <QSkeleton type="text" /></h1>
         </div>
         <div class="dashboard">
             <div class="table">
@@ -48,6 +49,10 @@ main
     display: flex
     flex-direction: column
     gap: 1rem
+
+    .q-skeleton
+        max-width: 24rem
+        width: 100%
 .dashboard
     display: flex
     flex-direction: column

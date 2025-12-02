@@ -45,9 +45,12 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="project-resources">
+    <div
+        v-if="projectStore.project"
+        class="project-resources"
+    >
         <div class="hgroup">
-            <h1>{{ projectStore.name }}</h1>
+            <h1>{{ projectStore.project.name }}</h1>
             <div>
                 <AtomicButton
                     dense
