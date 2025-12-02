@@ -6,8 +6,13 @@ import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 
 const projectStore = useProjectStore()
-const { addingExclusionReason, newExclusionReason, onAddExclusionReason, onCancelAddExclusionReason } =
-    useProjectAdminTabExclusions()
+const {
+    addingExclusionReason,
+    newExclusionReason,
+    postProjectExclusionReason,
+    deleteProjectExclusionReason,
+    onCancelAddExclusionReason,
+} = useProjectAdminTabExclusions()
 const { t } = useI18n()
 </script>
 
@@ -23,6 +28,7 @@ const { t } = useI18n()
             :label="exclusionReason"
             :removable="projectStore.userIsAdmin"
             size="1rem"
+            @remove="deleteProjectExclusionReason(exclusionReason)"
         />
     </div>
     <template v-if="projectStore.userIsAdmin">
@@ -39,7 +45,7 @@ const { t } = useI18n()
             :label="t('project.settings.exclusionReason')"
             quick-input
             @cancel="onCancelAddExclusionReason"
-            @done="onAddExclusionReason"
+            @done="postProjectExclusionReason"
         />
     </template>
 </template>

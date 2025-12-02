@@ -194,38 +194,6 @@ export const useProjectStore = defineStore('project', () => {
         }
     }
 
-    const addExclusionReason = async (exclusionReason: string) => {
-        try {
-            await axiosI.post(`/projects/${project.value?.id}/exclusion_reason/`, {
-                exclusion_reason: exclusionReason,
-            })
-
-            project.value?.settings.exclusionReasons.push(exclusionReason)
-        } catch {
-            Notify.create({
-                type: 'negative',
-                message: t('errors.unknown'),
-            })
-        }
-    }
-
-    const removeExclusionReason = async (exclusionReason: string) => {
-        try {
-            await axiosI.delete(`/projects/${project.value?.id}/exclusion_reason/`, {
-                params: {
-                    exclusion_reason: exclusionReason,
-                },
-            })
-
-            if (project.value) {
-                project.value.settings.exclusionReasons =
-                    project.value.settings.exclusionReasons?.filter((reason) => reason !== exclusionReason) || []
-            }
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
     const toggleIsAlternativeStorageSite = async (library: ProjectLibrary) => {
         try {
             await axiosI.patch(`/projects/${project.value?.id}/libraries/${library.id}/`, {
@@ -337,8 +305,6 @@ export const useProjectStore = defineStore('project', () => {
         deleteProjectUserRole,
         postProjectInvitation,
         deleteProjectInvitation,
-        addExclusionReason,
-        removeExclusionReason,
         toggleIsAlternativeStorageSite,
         passToReady,
         startTheProject,
