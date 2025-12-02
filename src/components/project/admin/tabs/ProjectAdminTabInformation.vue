@@ -11,7 +11,7 @@ const projectStore = useProjectStore()
 const { t } = useI18n()
 
 const onSave = async () => {
-    await projectStore.patchTitleAndDescription()
+    await projectStore.patchProjectTitleAndDescription()
 }
 const { useHandleError } = useUtils()
 const { notify } = useComposableQuasar()

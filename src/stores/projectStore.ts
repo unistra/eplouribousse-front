@@ -92,22 +92,22 @@ export const useProjectStore = defineStore('project', () => {
         }
     }
 
-    const patchTitleAndDescription = async () => {
+    const patchProjectTitleAndDescription = async () => {
+        projectLoading.value = true
         try {
-            await axiosI.patch(`/projects/${project.value?.id}/`, {
-                name: project.value?.name,
-                description: project.value?.description,
+            const response = await axiosI.patch<Project>(`/projects/${project.value?.id}/`, {
+                name: project.value?.name || '',
+                description: project.value?.description || '',
             })
 
             if (initialProject.value) {
-                initialProject.value.name = project.value?.name || ''
-                initialProject.value.description = project.value?.description || ''
+                initialProject.value.name = response.data.name
+                initialProject.value.description = response.data.description
             }
-        } catch {
-            Notify.create({
-                type: 'negative',
-                message: t('errors.unknown'),
-            })
+        } catch (e) {
+            useHandleError(e)
+        } finally {
+            projectLoading.value = false
         }
     }
 
@@ -120,7 +120,7 @@ export const useProjectStore = defineStore('project', () => {
             project.value?.name !== initialProject.value?.name ||
             project.value?.description !== initialProject.value?.description
         ) {
-            await patchTitleAndDescription()
+            await patchProjectTitleAndDescription()
         }
 
         return true
@@ -386,7 +386,7 @@ export const useProjectStore = defineStore('project', () => {
         userIsInstructorForLibrarySelected,
         // Actions
         getProject,
-        patchTitleAndDescription,
+        patchProjectTitleAndDescription,
         validateAndProceedTitleAndDescription,
         removeLibrary,
         addRole,
