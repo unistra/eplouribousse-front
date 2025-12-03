@@ -37,6 +37,7 @@
         "vue-router": "^4.5.0"
     },
     "devDependencies": {
+        "@faker-js/faker": "^10.1.0",
         "@quasar/vite-plugin": "^1.9.0",
         "@tsconfig/node22": "^22.0.1",
         "@types/jsdom": "^21.1.7",
@@ -69,5 +70,5 @@
             "esbuild"
         ]
     },
-    "packageManager": "pnpm@10.8.0+sha512.0e82714d1b5b43c74610193cb20734897c1d00de89d0e18420aebc5977fa13d780a9cb05734624e81ebd81cc876cd464794850641c48b9544326b5622ca29971"
+    "packageManager": "pnpm@10.24.0+sha512.01ff8ae71b4419903b65c60fb2dc9d34cf8bb6e06d03bde112ef38f7a34d6904c424ba66bea5cdcf12890230bf39f9580473140ed9c946fef328b6e5238a345a"
 }
