@@ -1,5 +1,5 @@
 import { computed, ref, useTemplateRef } from 'vue'
-import { Notify, QStepper } from 'quasar'
+import { QStepper } from 'quasar'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'

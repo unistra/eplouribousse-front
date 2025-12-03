@@ -42,11 +42,11 @@ export const createMockProjectDetails = (): ProjectDetails => ({
 export const createMockProjectRole = (): ProjectRole => ({
     user: createMockUserSummarized(),
     role: Roles.ProjectAdmin,
-    libraryId: undefined,
+    libraryId: null,
 })
 
 export const createMockProjectInvitation = (): ProjectInvitation => ({
     email: faker.internet.email(),
     role: Roles.Controller,
-    libraryId: undefined,
+    libraryId: null,
 })

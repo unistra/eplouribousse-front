@@ -36,11 +36,11 @@ export const useProjectStore = defineStore('project', () => {
 
     const userIsAdmin = computed(() => {
         return !!project.value?.roles.find((el) => el.role === Roles.ProjectAdmin && el.user.id === userStore.user?.id)
-    })
+    }) // TODO: delete and replace by isRole
 
     const userIsController = computed(() => {
         return !!project.value?.roles.find((el) => el.role === Roles.Controller && el.user.id === userStore.user?.id)
-    })
+    }) // TODO: delete and replace by isRole
 
     const userIsInstructorForLibrarySelected = computed((): boolean => {
         const resourceStore = useResourceStore()
@@ -119,7 +119,7 @@ export const useProjectStore = defineStore('project', () => {
         }
     }
 
-    const deleteProjectUserRole = async (userId: string, role: Roles, libraryId?: string) => {
+    const deleteProjectUserRole = async (userId: string, role: Roles, libraryId: string | null = null) => {
         try {
             await axiosI.delete(`/projects/${project.value?.id}/roles/`, {
                 params: {
@@ -138,7 +138,7 @@ export const useProjectStore = defineStore('project', () => {
             }
 
             project.value.roles = project.value.roles.filter(
-                (el) => !(el.role === role && el.libraryId === (libraryId || null) && el.user.id === userId),
+                (el) => !(el.role === role && el.libraryId === libraryId && el.user.id === userId),
             )
         } catch (e) {
             useHandleError(e)
