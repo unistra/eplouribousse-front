@@ -88,11 +88,11 @@ onMounted(async () => await getData(props.type))
                 </tbody>
             </QMarkupTable>
             <div
-                v-if="loading || data"
+                v-if="loading || (data && data.computedAt)"
                 class="computed-at"
             >
                 <QIcon
-                    name="mdi-cached"
+                    name="mdi-timer-sand"
                     size="1.25rem"
                 />
                 <QSkeleton
