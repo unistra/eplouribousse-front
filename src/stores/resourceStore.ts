@@ -35,7 +35,7 @@ interface ExcludeCollectionResponse extends CollectionPositionAndExcludeResponse
 }
 
 export const useResourceStore = defineStore('resource', () => {
-    const projectStore = useProjectStore()
+    const resourcesStore = useResourcesStore()
     const { useHandleError } = useUtils()
 
     // STATE
@@ -44,12 +44,9 @@ export const useResourceStore = defineStore('resource', () => {
 
     const collections = ref<CollectionsInResource[]>([])
     const resourcesNumber = ref<number>(0)
-    const libraryIdSelected = ref<string>('')
-    const libraryIdComparedSelected = ref<string>('')
-    const page = ref<number>(1)
-    const segments = ref<Segment[]>([])
-    const resourceSelectedId = ref<string | null>(null)
-    const anomalies = ref<Anomaly[]>([])
+
+    const segments = ref<Segment[]>([]) // TODO: Move to specific store
+    const anomalies = ref<Anomaly[]>([]) // TODO: Move to specific store
 
     // GETTERS
     const librariesAssociated = computed<ProjectLibrary[]>(() => {
@@ -129,9 +126,9 @@ export const useResourceStore = defineStore('resource', () => {
             resource.value = response.data.resource
 
             collections.value = response.data.collections.sort((a: CollectionsInResource, b: CollectionsInResource) => {
-                if (!libraryIdSelected.value) return 0
-                const aMatch = a.library === libraryIdSelected.value
-                const bMatch = b.library === libraryIdSelected.value
+                if (!resourcesStore.libraryIdSelected) return 0
+                const aMatch = a.library === resourcesStore.libraryIdSelected
+                const bMatch = b.library === resourcesStore.libraryIdSelected
                 return bMatch ? (aMatch ? 0 : 1) : aMatch ? -1 : 0
             })
         } catch (e) {
@@ -380,9 +377,6 @@ export const useResourceStore = defineStore('resource', () => {
         initialResource,
         collections,
         resourcesNumber,
-        libraryIdSelected,
-        libraryIdComparedSelected,
-        page,
         segments,
         resourceSelectedId,
         anomalies,

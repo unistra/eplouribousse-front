@@ -8,9 +8,11 @@ import {
     NULL_SEGMENT,
     useProjectSegmentTable,
 } from '@/components/project/projectSegmentTable/useProjectSegmentTable.ts'
+import { useResourcesStore } from '@/stores/resourcesStore.ts'
 
 export const useProjectSegmentTableOptions = () => {
     const resourceStore = useResourceStore()
+    const resourcesStore = useResourcesStore()
     const projectStore = useProjectStore()
     const userStore = useUserStore()
     const dialogUpdateSegment = ref<boolean>(false)
@@ -35,7 +37,7 @@ export const useProjectSegmentTableOptions = () => {
 
     const doesSegmentBelongToSelectedLibrary = (row: Segment) => {
         return (
-            resourceStore.libraryIdSelected ===
+            resourcesStore.libraryIdSelected ===
             resourceStore.collections.find((el) => el.id === row.collection)?.library
         )
     }
@@ -109,7 +111,7 @@ export const useProjectSegmentTableOptions = () => {
                 )
             })
 
-            return collectionThatIsAssociatedWithAnomaly?.library === resourceStore.libraryIdSelected && !anomaly.fixed
+            return collectionThatIsAssociatedWithAnomaly?.library === resourcesStore.libraryIdSelected && !anomaly.fixed
         })
 
         return !(

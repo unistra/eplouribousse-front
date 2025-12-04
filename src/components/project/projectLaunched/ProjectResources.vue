@@ -2,10 +2,8 @@
 import { onMounted } from 'vue'
 import { useProjectResources } from '@/components/project/projectLaunched/useProjectResources.ts'
 import { useI18n } from 'vue-i18n'
-import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { Roles, Tab } from '&/project.ts'
-import type { QTable } from 'quasar'
 import ProjectResource from '@/components/project/projectLaunched/ProjectResource/ProjectResource.vue'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
@@ -39,7 +37,7 @@ const userStore = useUserStore()
 
 onMounted(async () => {
     selectDefaultLibrary()
-    resourceStore.libraryIdComparedSelected = ''
+    resourcesStore.libraryIdComparedSelected = ''
     await fetchResources()
     if (route.query.resourceId) {
         resourceStore.resourceSelectedId = route.query.resourceId as string
@@ -77,7 +75,7 @@ onMounted(async () => {
             <AtomicSelect
                 v-for="(select, index) in selects"
                 :key="index"
-                v-model="select.model.value"
+                v-model="select.model"
                 color="primary"
                 :disable="disableLibrarySelectedSelect"
                 emit-value

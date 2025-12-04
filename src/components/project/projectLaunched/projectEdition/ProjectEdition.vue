@@ -8,15 +8,17 @@ import { useProjectEdition } from '@/components/project/projectLaunched/projectE
 import { onMounted } from 'vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useUtils } from '@/composables/useUtils.ts'
+import { useResourcesStore } from '@/stores/resourcesStore.ts'
 
 const resourceStore = useResourceStore()
+const resourcesStore = useResourcesStore()
 const { t } = useI18n()
 
 const { selectCollectionToShowEdition, motherCollectionString, pdfPreviewURL } = useProjectEdition()
 
 onMounted(() => {
     selectCollectionToShowEdition.value = resourceStore.collectionsSortedByOrderInInstructionTurns.filter((el) =>
-        resourceStore.libraryIdSelected ? el.library === resourceStore.libraryIdSelected : true,
+        resourcesStore.libraryIdSelected ? el.library === resourcesStore.libraryIdSelected : true,
     )[0]
 })
 </script>
@@ -110,7 +112,9 @@ onMounted(() => {
                         :option-value="(el: CollectionsInResource) => el"
                         :options="
                             resourceStore.collectionsSortedByOrderInInstructionTurns.filter((el) =>
-                                resourceStore.libraryIdSelected ? el.library === resourceStore.libraryIdSelected : true,
+                                resourcesStore.libraryIdSelected
+                                    ? el.library === resourcesStore.libraryIdSelected
+                                    : true,
                             )
                         "
                     />

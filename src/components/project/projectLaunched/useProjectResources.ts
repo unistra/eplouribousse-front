@@ -5,8 +5,6 @@ import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/userStore.ts'
 import type { QTableProps } from 'quasar'
-import { useResourceStore } from '@/stores/resourceStore.ts'
-import { storeToRefs } from 'pinia'
 import { useResourcesStore } from '@/stores/resourcesStore.ts'
 
 type useProjectResourceTab = {
@@ -20,11 +18,9 @@ type StatusInfo = { message: string; icon: string; color?: string }
 
 export const useProjectResources = () => {
     const projectStore = useProjectStore()
-    const resourceStore = useResourceStore()
     const resourcesStore = useResourcesStore()
     const userStore = useUserStore()
     const { t } = useI18n()
-    const { libraryIdSelected, libraryIdComparedSelected } = storeToRefs(useResourceStore())
 
     // REFS
     const disableLibrarySelectedSelect = ref<boolean>(false)
@@ -58,7 +54,7 @@ export const useProjectResources = () => {
         if (!projectStore.project) return []
         return [
             { name: t('common.all'), id: '' },
-            ...projectStore.project.libraries.filter((lib) => lib.id !== resourceStore.libraryIdSelected),
+            ...projectStore.project.libraries.filter((lib) => lib.id !== resourcesStore.libraryIdSelected),
         ]
     })
 
@@ -78,7 +74,7 @@ export const useProjectResources = () => {
                 infos.color = 'primary'
                 return infos
             }
-            if (projectStore.isRole(Roles.Instructor, resourceStore.libraryIdSelected)) {
+            if (projectStore.isRole(Roles.Instructor, resourcesStore.libraryIdSelected)) {
                 infos.message = t('project.resources.status.waitingPositioning')
                 return infos
             }
@@ -124,7 +120,8 @@ export const useProjectResources = () => {
 
     const selectDefaultLibrary = () => {
         if (!userStore.user?.id) {
-            resourceStore.libraryIdSelected = ''
+            resourcesStore.libraryIdSelected = ''
+            resourcesStore.libraryIdComparedSelected = ''
             return
         }
 
@@ -133,7 +130,7 @@ export const useProjectResources = () => {
                 .filter((el) => el.user.id === userStore.user?.id && el.role === Roles.Instructor)
                 .map((el) => el.libraryId) || []
 
-        resourceStore.libraryIdSelected = librariesIdWhereUserIsInstructor[0] || ''
+        resourcesStore.libraryIdSelected = librariesIdWhereUserIsInstructor[0] || ''
     }
 
     const onRowClick = async (_: Event, row: Resource) => {
@@ -145,17 +142,15 @@ export const useProjectResources = () => {
         if (!options) pagination.value.page = 1
 
         if (projectStore.tab === Tab.Anomalies) {
-            libraryIdSelected.value = ''
-            libraryIdComparedSelected.value = ''
+            resourcesStore.libraryIdSelected = ''
+            resourcesStore.libraryIdComparedSelected = ''
             disableLibrarySelectedSelect.value = true
         } else {
             disableLibrarySelectedSelect.value = false
         }
 
         const params: Parameters<typeof resourcesStore.getResources>[0] = {
-            ...(libraryIdComparedSelected.value && { against: libraryIdComparedSelected.value }),
             ...(positioningFilter.value === PositioningFilter.Arbitation && { arbitration: 'all' }),
-            ...(libraryIdSelected.value && { library: libraryIdSelected.value }),
             ordering: `${options ? (options.pagination.descending ? '-' : '') : pagination.value.descending ? '-' : ''}${options?.pagination.sortBy || pagination.value.sortBy}`,
             page: options?.pagination.page || pagination.value.page,
             page_size: options?.pagination.rowsPerPage || pagination.value.rowsPerPage,
@@ -221,13 +216,13 @@ export const useProjectResources = () => {
 
     const selects = [
         {
-            model: libraryIdSelected,
+            model: resourcesStore.libraryIdSelected,
             label: t('project.resources.showResources'),
             options: librariesOptions.value,
             name: 'librariesSelection',
         },
         {
-            model: libraryIdComparedSelected,
+            model: resourcesStore.libraryIdComparedSelected,
             label: t('project.resources.compareWith'),
             options: librariesComparedOptions.value,
             name: 'librariesComparison',

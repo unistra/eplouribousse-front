@@ -15,11 +15,17 @@ export const useResourcesStore = defineStore('resources', () => {
     const resources = ref<Resource[]>([])
     const resourcesLoading = ref<boolean>(false)
 
+    const libraryIdSelected = ref<string>('')
+    const libraryIdComparedSelected = ref<string>('')
+
     // ACTIONS ========================
     const getResources: GetResources = async (params) => {
         resourcesLoading.value = true
         try {
             if (!params.project) params.project = projectStore.project?.id || ''
+            if (!params.library && libraryIdSelected.value !== '') params.library = libraryIdSelected.value
+            if (!params.against && libraryIdComparedSelected.value !== '')
+                params.against = libraryIdComparedSelected.value
 
             const response = await axiosI.get<Pagination<Resource>>('/resources/', { params })
             resources.value = response.data.results
@@ -36,6 +42,8 @@ export const useResourcesStore = defineStore('resources', () => {
         // State
         resources,
         resourcesLoading,
+        libraryIdSelected,
+        libraryIdComparedSelected,
         // Actions
         getResources,
     }

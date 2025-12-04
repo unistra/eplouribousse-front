@@ -64,9 +64,9 @@ const onBeforeShow = async () => {
                     <template v-if="projectStore.tab === Tab.Edition">
                         <h2>
                             {{
-                                projectStore.project.libraries.find((el) => el.id === resourceStore.libraryIdSelected)
+                                projectStore.project.libraries.find((el) => el.id === resourcesStore.libraryIdSelected)
                                     ? projectStore.project.libraries.find(
-                                          (el) => el.id === resourceStore.libraryIdSelected,
+                                          (el) => el.id === resourcesStore.libraryIdSelected,
                                       )?.name + ':'
                                     : ''
                             }}
