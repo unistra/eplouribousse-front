@@ -40,8 +40,8 @@ onMounted(async () => {
             class="computed-at"
         >
             <QIcon
-                name="mdi-cached"
-                size="1.25rem"
+                name="mdi-timer-sand"
+                size="1rem"
             />
             {{ t('view.project.dashboard.computedAt') }}
             {{ utils.useIntlDateTimeFormat(data.computedAt) }}
