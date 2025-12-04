@@ -2,63 +2,32 @@ import { defineStore } from 'pinia'
 import {
     type Anomaly,
     type CollectionsInResource,
-    type CollectionsWithResource,
-    type CommentPositioning,
     type Resource,
     type Segment,
     type SegmentNoCollection,
 } from '#/project.ts'
-import { AnomalyType, Arbitration, CollectionPosition, PositioningFilter, ResourceStatus } from '&/project.ts'
+import { AnomalyType, ResourceStatus } from '&/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import i18n from '@/plugins/i18n'
-import { useProjectStore } from '@/stores/projectStore.ts'
 import { useResourcesStore } from '@/stores/resourcesStore.ts'
 import { computed, ref } from 'vue'
 import { useUtils } from '@/composables/useUtils.ts'
-import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 
 const { t } = i18n.global
 
-interface CollectionPositionAndExcludeResponse {
-    arbitration: Arbitration
-    status: ResourceStatus
-    shouldInstruct: boolean
-    shouldPosition: boolean
-}
-
-interface UpdateCollectionPositionResponse extends CollectionPositionAndExcludeResponse {
-    position: CollectionPosition
-}
-
-interface ExcludeCollectionResponse extends CollectionPositionAndExcludeResponse {
-    exclusionReason: string
-}
-
 export const useResourceStore = defineStore('resource', () => {
     const { useHandleError } = useUtils()
-    const { notify } = useComposableQuasar()
-    const resourcesStore = useResourcesStore()
 
+    // RESOURCE RELATED ================
     // STATE
     const resource = ref<Resource>()
     const initialResource = ref<Resource>()
 
-    const collections = ref<CollectionsInResource[]>([]) // TODO: Move to specific store
-
-    const segments = ref<Segment[]>([]) // TODO: Move to specific store
-    const anomalies = ref<Anomaly[]>([]) // TODO: Move to specific store
+    // COLLECTION RELATED ================
+    // STATE
+    const collections = ref<CollectionsInResource[]>([])
 
     // GETTERS
-    const statusName = computed<'boundCopies' | 'unboundCopies'>(() => {
-        if (!resource.value) return 'boundCopies'
-        return resource.value.status <= ResourceStatus.ControlBound ? 'boundCopies' : 'unboundCopies'
-    })
-
-    const anomaliesUnfixed = computed<Anomaly[]>(() => {
-        if (!resource.value) return []
-        return anomalies.value.filter((anomaly) => !anomaly.fixed)
-    })
-
     const collectionsSortedByOrderInInstructionTurns = computed(() => {
         if (
             !resource.value ||
@@ -74,121 +43,26 @@ export const useResourceStore = defineStore('resource', () => {
             .filter((item): item is (typeof collections.value)[0] => item !== undefined)
     })
 
+    // SEGMENTS RELATED ================
+    const segments = ref<Segment[]>([])
+
+    // ANOMALIES RELATED ================
+    const anomalies = ref<Anomaly[]>([])
+
+    const anomaliesUnfixed = computed<Anomaly[]>(() => {
+        if (!resource.value) return []
+        return anomalies.value.filter((anomaly) => !anomaly.fixed)
+    })
+
+    // ====================================================================================
+
+    // GETTERS
+    const statusName = computed<'boundCopies' | 'unboundCopies'>(() => {
+        if (!resource.value) return 'boundCopies'
+        return resource.value.status <= ResourceStatus.ControlBound ? 'boundCopies' : 'unboundCopies'
+    })
+
     // ACTIONS
-    const _findCollection = (collectionId: string) => {
-        const collection = collections.value.find((col) => col.id === collectionId)
-        if (!collection) throw new Error('collection does not exist')
-        return collection
-    }
-
-    const _applyResourceUpdate = async (response: CollectionPositionAndExcludeResponse) => {
-        const resourcesStore = useResourcesStore()
-        if (!resource.value) {
-            notify({
-                message: t('errors.dataUnreachable'),
-                color: 'negative',
-            })
-            return
-        }
-
-        resource.value.arbitration = response.arbitration
-        resource.value.status = response.status
-        resource.value.shouldPosition = response.shouldPosition
-        resource.value.shouldInstruct = response.shouldInstruct
-
-        const resourceInResources = resourcesStore.resources.find((el) => el.id === resource.value?.id)
-        if (resourceInResources) {
-            resourceInResources.arbitration = response.arbitration
-            resourceInResources.status = response.status
-            resourceInResources.shouldPosition = response.shouldPosition
-            resourceInResources.shouldInstruct = response.shouldInstruct
-
-            // _applyResourceUpdate is only called from positioning tab so we can pass status Positioning
-            if (resourcesStore.positioningFilter !== PositioningFilter.All)
-                await resourcesStore.getResources({ status: [ResourceStatus.Positioning] })
-        }
-    }
-
-    const fetchResourceAndCollections = async (resourceId: string) => {
-        const projectStore = useProjectStore()
-
-        try {
-            const response = await axiosI.get<CollectionsWithResource>(`/resources/${resourceId}/collections/`, {
-                params: {
-                    project_id: projectStore.project?.id,
-                },
-            })
-
-            resource.value = response.data.resource
-
-            collections.value = response.data.collections.sort((a: CollectionsInResource, b: CollectionsInResource) => {
-                if (!resourcesStore.libraryIdSelected) return 0
-                const aMatch = a.library === resourcesStore.libraryIdSelected
-                const bMatch = b.library === resourcesStore.libraryIdSelected
-                return bMatch ? (aMatch ? 0 : 1) : aMatch ? -1 : 0
-            })
-        } catch (e) {
-            useHandleError(e)
-        }
-    }
-
-    const updatePosition = async (collectionId: string, newPosition: CollectionPosition) => {
-        try {
-            const response = await axiosI.patch<UpdateCollectionPositionResponse>(
-                `collections/${collectionId}/position/`,
-                {
-                    position: newPosition,
-                },
-            )
-
-            const collection = _findCollection(collectionId)
-            collection.position = response.data.position
-            collection.exclusionReason = ''
-
-            await _applyResourceUpdate({
-                arbitration: response.data.arbitration,
-                status: response.data.status,
-                shouldPosition: response.data.shouldPosition,
-                shouldInstruct: response.data.shouldInstruct,
-            })
-        } catch (e) {
-            useHandleError(e)
-        }
-    }
-    const excludeCollection = async (collectionId: string, exclusionReason: string) => {
-        try {
-            const response = await axiosI.patch<ExcludeCollectionResponse>(`collections/${collectionId}/exclude/`, {
-                exclusion_reason: exclusionReason,
-            })
-            const collection = _findCollection(collectionId)
-            collection.position = CollectionPosition.Excluded
-            collection.exclusionReason = response.data.exclusionReason
-
-            await _applyResourceUpdate({
-                arbitration: response.data.arbitration,
-                status: response.data.status,
-                shouldPosition: response.data.shouldPosition,
-                shouldInstruct: response.data.shouldInstruct,
-            })
-        } catch (e) {
-            useHandleError(e)
-        }
-    }
-    const commentPositioning = async (collectionId: string, content: string) => {
-        try {
-            const collection = _findCollection(collectionId)
-
-            const method = collection.commentPositioning?.id ? 'patch' : 'post'
-            const response = await axiosI[method]<CommentPositioning>(
-                `collections/${collectionId}/comment-positioning/`,
-                { content },
-            )
-
-            collection.commentPositioning = response.data
-        } catch (e) {
-            useHandleError(e)
-        }
-    }
 
     const fetchSegments = async () => {
         try {
@@ -379,10 +253,6 @@ export const useResourceStore = defineStore('resource', () => {
         anomaliesUnfixed,
         collectionsSortedByOrderInInstructionTurns,
         // ACTIONS
-        fetchResourceAndCollections,
-        updatePosition,
-        excludeCollection,
-        commentPositioning,
         fetchSegments,
         orderSegment,
         deleteSegment,

@@ -11,12 +11,16 @@ import ProjectAnomalies from '@/components/project/projectLaunched/projectAnomal
 import { Tab } from '&/project.ts'
 import ProjectEdition from '@/components/project/projectLaunched/projectEdition/ProjectEdition.vue'
 import { useResourcesStore } from '@/stores/resourcesStore.ts'
+import { axiosI } from '@/plugins/axios/axios.ts'
+import type { CollectionsInResource, CollectionsWithResource } from '#/project.ts'
+import { useUtils } from '@/composables/useUtils.ts'
 
 const props = defineProps<{
     resourceIdSelected: string
 }>()
 
 const { t } = useI18n()
+const { useHandleError } = useUtils()
 const resourceStore = useResourceStore()
 const resourcesStore = useResourcesStore()
 const projectStore = useProjectStore()
@@ -25,12 +29,39 @@ const dialogModal = defineModel<boolean>()
 provide('dialogModal', dialogModal)
 const dialogLoading = ref<boolean>(false)
 
+const getResourceAndRelatedCollections = async () => {
+    try {
+        const response = await axiosI.get<CollectionsWithResource>(
+            `/resources/${props.resourceIdSelected}/collections/`,
+            {
+                params: {
+                    project_id: projectStore.project?.id,
+                },
+            },
+        )
+
+        resourceStore.resource = response.data.resource
+
+        resourceStore.collections = response.data.collections.sort(
+            (a: CollectionsInResource, b: CollectionsInResource) => {
+                if (!resourcesStore.libraryIdSelected) return 0
+                const aMatch = a.library === resourcesStore.libraryIdSelected
+                const bMatch = b.library === resourcesStore.libraryIdSelected
+                return bMatch ? (aMatch ? 0 : 1) : aMatch ? -1 : 0
+            },
+        )
+    } catch (e) {
+        useHandleError(e)
+    }
+}
+
 const onBeforeShow = async () => {
     dialogLoading.value = true
 
     resourceStore.collections = []
     resourceStore.segments = []
-    await resourceStore.fetchResourceAndCollections(props.resourceIdSelected)
+
+    await getResourceAndRelatedCollections()
 
     dialogLoading.value = false
 }
