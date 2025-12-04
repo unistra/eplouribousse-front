@@ -21,7 +21,6 @@ const {
     resourceIdSelected,
     resourceDialog,
     columns,
-    pagination,
     selectDefaultLibrary,
     openResourceDialog,
     fetchResources,
@@ -29,8 +28,6 @@ const {
     disableLibrarySelectedSelect,
     computeStatusInfos,
     selectFilterOnPositioning,
-    positioningFilter,
-    filter,
 } = useProjectResources()
 const { t } = useI18n()
 const userStore = useUserStore()
@@ -117,7 +114,7 @@ onMounted(async () => {
             >
                 <AtomicSelect
                     v-if="projectStore.tab === Tab.Positioning"
-                    v-model="positioningFilter"
+                    v-model="resourcesStore.positioningFilter"
                     class="filter-positioning"
                     dense
                     :disable="disableLibrarySelectedSelect"
@@ -132,10 +129,10 @@ onMounted(async () => {
                 />
                 <QTable
                     ref="qTable"
-                    v-model:pagination="pagination"
+                    v-model:pagination="resourcesStore.pagination"
                     binary-state-sort
                     :columns
-                    :filter
+                    :filter="resourcesStore.filter"
                     flat
                     :loading="resourcesStore.resourcesLoading"
                     row-key="id"
@@ -146,7 +143,7 @@ onMounted(async () => {
                 >
                     <template #top-right>
                         <AtomicInput
-                            v-model="filter"
+                            v-model="resourcesStore.filter"
                             clearable
                             debounce="1500"
                             dense

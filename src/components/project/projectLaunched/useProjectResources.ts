@@ -27,18 +27,6 @@ export const useProjectResources = () => {
     // REFS
     const disableLibrarySelectedSelect = ref<boolean>(false)
 
-    const filter = ref<string>('')
-
-    const positioningFilter = ref<PositioningFilter>(PositioningFilter.All)
-
-    const pagination = ref<NonNullable<QTableProps['pagination']>>({
-        sortBy: 'title',
-        descending: false,
-        page: 1,
-        rowsPerPage: 10,
-        rowsNumber: 0,
-    })
-
     const resourceIdSelected = ref<string>('')
     const resourceDialog = ref<boolean>(false)
 
@@ -129,7 +117,7 @@ export const useProjectResources = () => {
     }
 
     const fetchResources = async (options?: Parameters<NonNullable<QTableProps['onRequest']>>[0]) => {
-        if (!options) pagination.value.page = 1
+        if (!options) resourcesStore.pagination.page = 1
 
         if (projectStore.tab === Tab.Anomalies) {
             libraryIdSelected.value = ''
@@ -140,17 +128,15 @@ export const useProjectResources = () => {
         }
 
         const params: Parameters<typeof resourcesStore.getResources>[0] = {
-            ...(positioningFilter.value === PositioningFilter.Arbitation && { arbitration: 'all' }),
-            ordering: `${options ? (options.pagination.descending ? '-' : '') : pagination.value.descending ? '-' : ''}${options?.pagination.sortBy || pagination.value.sortBy}`,
-            page: options?.pagination.page || pagination.value.page,
-            page_size: options?.pagination.rowsPerPage || pagination.value.rowsPerPage,
-            ...(tabStatus.value === ResourceStatus.Positioning && { positioning_filter: positioningFilter.value }),
-            search: options?.filter || filter.value,
+            ...(options && {
+                ordering: `${options.pagination.descending ? '-' : ''}${options.pagination.sortBy}`,
+                page: options?.pagination.page,
+                page_size: options?.pagination.rowsPerPage,
+            }),
+
             status: [tabStatus.value].flat(),
         }
-        const response = await resourcesStore.getResources(params)
-
-        pagination.value.rowsNumber = response?.count || 0
+        await resourcesStore.getResources(params)
     }
 
     // STATICS
@@ -259,10 +245,8 @@ export const useProjectResources = () => {
     ]
 
     return {
-        filter,
         tabs,
         columns,
-        pagination,
         resourceIdSelected,
         resourceDialog,
         openResourceDialog,
@@ -272,6 +256,5 @@ export const useProjectResources = () => {
         disableLibrarySelectedSelect,
         computeStatusInfos,
         selectFilterOnPositioning,
-        positioningFilter,
     }
 }

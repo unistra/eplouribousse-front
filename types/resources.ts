@@ -13,4 +13,4 @@ export type GetResources = (params: {
     project?: Project['id']
     search?: string
     status: ResourceStatus[]
-}) => Promise<{ count: number } | undefined>
+}) => Promise<void>

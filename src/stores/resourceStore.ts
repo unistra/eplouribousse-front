@@ -8,13 +8,14 @@ import {
     type Segment,
     type SegmentNoCollection,
 } from '#/project.ts'
-import { AnomalyType, Arbitration, CollectionPosition, ResourceStatus } from '&/project.ts'
+import { AnomalyType, Arbitration, CollectionPosition, PositioningFilter, ResourceStatus } from '&/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import i18n from '@/plugins/i18n'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useResourcesStore } from '@/stores/resourcesStore.ts'
 import { computed, ref } from 'vue'
 import { useUtils } from '@/composables/useUtils.ts'
+import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 
 const { t } = i18n.global
 
@@ -34,8 +35,9 @@ interface ExcludeCollectionResponse extends CollectionPositionAndExcludeResponse
 }
 
 export const useResourceStore = defineStore('resource', () => {
-    const resourcesStore = useResourcesStore()
     const { useHandleError } = useUtils()
+    const { notify } = useComposableQuasar()
+    const resourcesStore = useResourcesStore()
 
     // STATE
     const resource = ref<Resource>()
@@ -79,9 +81,15 @@ export const useResourceStore = defineStore('resource', () => {
         return collection
     }
 
-    const _applyResourceUpdate = (response: CollectionPositionAndExcludeResponse) => {
+    const _applyResourceUpdate = async (response: CollectionPositionAndExcludeResponse) => {
         const resourcesStore = useResourcesStore()
-        if (!resource.value) throw new Error('no resource')
+        if (!resource.value) {
+            notify({
+                message: t('errors.dataUnreachable'),
+                color: 'negative',
+            })
+            return
+        }
 
         resource.value.arbitration = response.arbitration
         resource.value.status = response.status
@@ -94,6 +102,10 @@ export const useResourceStore = defineStore('resource', () => {
             resourceInResources.status = response.status
             resourceInResources.shouldPosition = response.shouldPosition
             resourceInResources.shouldInstruct = response.shouldInstruct
+
+            // _applyResourceUpdate is only called from positioning tab so we can pass status Positioning
+            if (resourcesStore.positioningFilter !== PositioningFilter.All)
+                await resourcesStore.getResources({ status: [ResourceStatus.Positioning] })
         }
     }
 
@@ -133,7 +145,7 @@ export const useResourceStore = defineStore('resource', () => {
             collection.position = response.data.position
             collection.exclusionReason = ''
 
-            _applyResourceUpdate({
+            await _applyResourceUpdate({
                 arbitration: response.data.arbitration,
                 status: response.data.status,
                 shouldPosition: response.data.shouldPosition,
@@ -152,7 +164,7 @@ export const useResourceStore = defineStore('resource', () => {
             collection.position = CollectionPosition.Excluded
             collection.exclusionReason = response.data.exclusionReason
 
-            _applyResourceUpdate({
+            await _applyResourceUpdate({
                 arbitration: response.data.arbitration,
                 status: response.data.status,
                 shouldPosition: response.data.shouldPosition,
@@ -367,8 +379,6 @@ export const useResourceStore = defineStore('resource', () => {
         anomaliesUnfixed,
         collectionsSortedByOrderInInstructionTurns,
         // ACTIONS
-        _findCollection,
-        _applyResourceUpdate,
         fetchResourceAndCollections,
         updatePosition,
         excludeCollection,
