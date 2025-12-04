@@ -35,7 +35,7 @@ export type Computation = {
 export type DashboardTableData = {
     title: string
     computations: Computation[]
-    computed_at?: string
+    computedAt?: string
 }
 
 type ChartDataset = {

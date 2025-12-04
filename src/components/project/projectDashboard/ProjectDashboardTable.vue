@@ -80,7 +80,7 @@ onMounted(async () => await getData(props.type))
                 </tbody>
             </QMarkupTable>
             <div
-                v-if="data.computed_at"
+                v-if="data.computedAt"
                 class="computed-at"
             >
                 <QIcon
@@ -89,7 +89,7 @@ onMounted(async () => await getData(props.type))
                 />
                 <p>
                     {{ t('view.project.dashboard.computedAt') }}
-                    {{ useUtils().useIntlDateTimeFormat(data.computed_at) }}
+                    {{ useUtils().useIntlDateTimeFormat(data.computedAt) }}
                 </p>
             </div>
         </template>
