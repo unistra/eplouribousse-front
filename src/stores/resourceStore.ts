@@ -41,8 +41,7 @@ export const useResourceStore = defineStore('resource', () => {
     const resource = ref<Resource>()
     const initialResource = ref<Resource>()
 
-    const collections = ref<CollectionsInResource[]>([])
-    const resourcesNumber = ref<number>(0)
+    const collections = ref<CollectionsInResource[]>([]) // TODO: Move to specific store
 
     const segments = ref<Segment[]>([]) // TODO: Move to specific store
     const anomalies = ref<Anomaly[]>([]) // TODO: Move to specific store
@@ -361,7 +360,6 @@ export const useResourceStore = defineStore('resource', () => {
         resource,
         initialResource,
         collections,
-        resourcesNumber,
         segments,
         anomalies,
         // GETTERS
