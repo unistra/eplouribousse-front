@@ -72,7 +72,7 @@ onMounted(async () => {
             <AtomicSelect
                 v-for="(select, index) in selects"
                 :key="index"
-                v-model="select.model"
+                v-model="select.model.value"
                 color="primary"
                 :disable="disableLibrarySelectedSelect"
                 emit-value
@@ -84,7 +84,7 @@ onMounted(async () => {
                         `${el.name}${projectStore.isRole(Roles.Instructor, el.id) ? ' - ' + t('project.resources.youAreInstructor') : ''}`
                 "
                 option-value="id"
-                :options="select.options"
+                :options="select.options.value"
                 @update:model-value="fetchResources()"
             />
         </div>

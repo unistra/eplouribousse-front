@@ -6,6 +6,7 @@ import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/userStore.ts'
 import type { QTableProps } from 'quasar'
 import { useResourcesStore } from '@/stores/resourcesStore.ts'
+import { storeToRefs } from 'pinia'
 
 type useProjectResourceTab = {
     name: string
@@ -17,10 +18,11 @@ type useProjectResourceTab = {
 type StatusInfo = { message: string; icon: string; color?: string }
 
 export const useProjectResources = () => {
-    const projectStore = useProjectStore()
-    const resourcesStore = useResourcesStore()
-    const userStore = useUserStore()
     const { t } = useI18n()
+    const projectStore = useProjectStore()
+    const userStore = useUserStore()
+    const resourcesStore = useResourcesStore()
+    const { libraryIdSelected, libraryIdComparedSelected } = storeToRefs(useResourcesStore())
 
     // REFS
     const disableLibrarySelectedSelect = ref<boolean>(false)
@@ -46,19 +48,6 @@ export const useProjectResources = () => {
         return tab ? tab.status : ResourceStatus.Positioning
     })
 
-    const librariesOptions = computed(() => {
-        if (!projectStore.project) return []
-        return [...projectStore.project.libraries, { name: t('common.all'), id: '' }]
-    })
-
-    const librariesComparedOptions = computed(() => {
-        if (!projectStore.project) return []
-        return [
-            { name: t('common.all'), id: '' },
-            ...projectStore.project.libraries.filter((lib) => lib.id !== resourcesStore.libraryIdSelected),
-        ]
-    })
-
     // FUNCTIONS
     const computeStatusInfos = (row: Resource): StatusInfo => {
         if (row.arbitration !== 2)
@@ -75,7 +64,7 @@ export const useProjectResources = () => {
                 infos.color = 'primary'
                 return infos
             }
-            if (projectStore.isRole(Roles.Instructor, resourcesStore.libraryIdSelected)) {
+            if (projectStore.isRole(Roles.Instructor, libraryIdSelected.value)) {
                 infos.message = t('project.resources.status.waitingPositioning')
                 return infos
             }
@@ -121,8 +110,8 @@ export const useProjectResources = () => {
 
     const selectDefaultLibrary = () => {
         if (!userStore.user?.id) {
-            resourcesStore.libraryIdSelected = ''
-            resourcesStore.libraryIdComparedSelected = ''
+            libraryIdSelected.value = ''
+            libraryIdComparedSelected.value = ''
             return
         }
 
@@ -131,7 +120,7 @@ export const useProjectResources = () => {
                 .filter((el) => el.user.id === userStore.user?.id && el.role === Roles.Instructor)
                 .map((el) => el.libraryId) || []
 
-        resourcesStore.libraryIdSelected = librariesIdWhereUserIsInstructor[0] || ''
+        libraryIdSelected.value = librariesIdWhereUserIsInstructor[0] || ''
     }
 
     const openResourceDialog = (resourceId: string) => {
@@ -143,8 +132,8 @@ export const useProjectResources = () => {
         if (!options) pagination.value.page = 1
 
         if (projectStore.tab === Tab.Anomalies) {
-            resourcesStore.libraryIdSelected = ''
-            resourcesStore.libraryIdComparedSelected = ''
+            libraryIdSelected.value = ''
+            libraryIdComparedSelected.value = ''
             disableLibrarySelectedSelect.value = true
         } else {
             disableLibrarySelectedSelect.value = false
@@ -217,15 +206,24 @@ export const useProjectResources = () => {
 
     const selects = [
         {
-            model: resourcesStore.libraryIdSelected,
+            model: libraryIdSelected,
             label: t('project.resources.showResources'),
-            options: librariesOptions.value,
+            options: computed(() => {
+                if (!projectStore.project) return []
+                return [...projectStore.project.libraries, { name: t('common.all'), id: '' }]
+            }),
             name: 'librariesSelection',
         },
         {
-            model: resourcesStore.libraryIdComparedSelected,
+            model: libraryIdComparedSelected,
             label: t('project.resources.compareWith'),
-            options: librariesComparedOptions.value,
+            options: computed(() => {
+                if (!projectStore.project) return []
+                return [
+                    { name: t('common.all'), id: '' },
+                    ...projectStore.project.libraries.filter((lib) => lib.id !== libraryIdSelected.value),
+                ]
+            }),
             name: 'librariesComparison',
         },
     ]
