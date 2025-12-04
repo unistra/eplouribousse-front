@@ -66,6 +66,7 @@ const { checkValidityForLibraryStep } = checkValidityProjectStepper()
                 v-for="role in [
                     [Roles.ProjectAdmin, t('roles.projectAdmin')],
                     [Roles.Controller, t('roles.controller')],
+                    [Roles.ProjectManager, t('roles.projectManager')],
                     [Roles.Guest, t('roles.guest')],
                 ]"
                 :key="role[0]"
