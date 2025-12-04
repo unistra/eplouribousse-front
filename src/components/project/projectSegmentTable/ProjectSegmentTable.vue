@@ -154,7 +154,7 @@ onMounted(async () => {
             </QTr>
         </template>
         <template
-            v-if="resourceStore.shouldInstruct && projectStore.userIsInstructorForLibrarySelected"
+            v-if="resourceStore.resource?.shouldInstruct && projectStore.userIsInstructorForLibrarySelected"
             #no-data="{ message }"
         >
             <div class="no-data">

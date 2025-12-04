@@ -39,7 +39,8 @@ const {
                         :class="{
                             bold:
                                 turn.collectiondId ===
-                                resourceStore.instructionTurns?.[`${resourceStore.statusName}`].turns[0].collection,
+                                resourceStore.resource?.instructionTurns?.[`${resourceStore.statusName}`].turns[0]
+                                    .collection,
                         }"
                     >
                         {{ turn.library }}
@@ -68,7 +69,7 @@ const {
         </div>
         <ProjectSegmentTable />
         <div
-            v-if="resourceStore.shouldInstruct && projectStore.userIsInstructorForLibrarySelected"
+            v-if="resourceStore.resource?.shouldInstruct && projectStore.userIsInstructorForLibrarySelected"
             class="buttons"
         >
             <AnomalyDeclarationBtn

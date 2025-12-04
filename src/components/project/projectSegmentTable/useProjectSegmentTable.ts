@@ -44,7 +44,7 @@ export const useProjectSegmentTable = () => {
 
     const displayNewSegmentButton = computed(
         () =>
-            (resourceStore.shouldInstruct &&
+            (resourceStore.resource?.shouldInstruct &&
                 projectStore.userIsInstructorForLibrarySelected &&
                 (projectStore.tab === Tab.InstructionBound || projectStore.tab === Tab.InstructionUnbound)) ||
             (projectStore.userIsAdmin && projectStore.tab === Tab.Anomalies),

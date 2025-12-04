@@ -22,7 +22,10 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="edition">
+    <div
+        v-if="resourceStore.resource"
+        class="edition"
+    >
         <div class="generic-info">
             <h3>{{ t('common.info', 2) }}</h3>
             <div class="other-infos">
@@ -36,7 +39,7 @@ onMounted(() => {
                     class="chip-label-value"
                 >
                     {{ t(`project.resources.status.${ctrl}`) }}:
-                    <span>{{ useUtils().useIntlDateTimeFormat(resourceStore.validations[ctrl]) || '-' }}</span>
+                    <span>{{ useUtils().useIntlDateTimeFormat(resourceStore.resource.validations[ctrl]) || '-' }}</span>
                 </QChip>
             </div>
             <QList class="collection-lists">

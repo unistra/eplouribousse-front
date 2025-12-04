@@ -11,24 +11,13 @@ import {
 } from '#/project.ts'
 import { AnomalyType, Arbitration, CollectionPosition, ResourceStatus } from '&/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
-import { Notify } from 'quasar'
 import i18n from '@/plugins/i18n'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useResourcesStore } from '@/stores/resourcesStore.ts'
+import { computed, ref } from 'vue'
+import { useUtils } from '@/composables/useUtils.ts'
 
 const { t } = i18n.global
-
-interface ResourceStoreState extends Resource {
-    collections: CollectionsInResource[]
-    resourcesNumber: number
-    initialState: Resource
-    libraryIdSelected: string
-    libraryIdComparedSelected: string
-    page: number
-    segments: Segment[]
-    resourceSelectedId: string | null
-    anomalies: Anomaly[]
-}
 
 interface CollectionPositionAndExcludeResponse {
     arbitration: Arbitration
@@ -45,405 +34,382 @@ interface ExcludeCollectionResponse extends CollectionPositionAndExcludeResponse
     exclusionReason: string
 }
 
-const initialState: Resource = {
-    id: '',
-    title: '',
-    code: '',
-    count: 0,
-    callNumbers: '',
-    shouldInstruct: false,
-    shouldPosition: false,
-    status: ResourceStatus.Positioning,
-    arbitration: 2,
-    acl: {},
-    instructionTurns: undefined,
-    issn: '',
-    publicationHistory: '',
-    validations: {
-        controlBound: '',
-        controlUnbound: '',
-    },
-}
+export const useResourceStore = defineStore('resource', () => {
+    const projectStore = useProjectStore()
+    const { useHandleError } = useUtils()
 
-export const useResourceStore = defineStore('resource', {
-    state: (): ResourceStoreState => ({
-        ...structuredClone(initialState),
-        initialState: structuredClone(initialState),
-        collections: [],
-        resourcesNumber: 0,
-        libraryIdSelected: '',
-        libraryIdComparedSelected: '',
-        page: 1,
-        segments: [],
-        resourceSelectedId: null,
-        anomalies: [],
-    }),
-    getters: {
-        librariesAssociated(): ProjectLibrary[] {
-            const projectStore = useProjectStore()
-            return (
-                projectStore.project?.libraries
-                    .filter((lib) => this.collections.some((el: CollectionsInResource) => el.library === lib.id))
-                    .sort((a: ProjectLibrary, b: ProjectLibrary) => {
-                        const aIsSelected = a.id === this.libraryIdSelected
-                        const bIsSelected = b.id === this.libraryIdSelected
+    // STATE
+    const resource = ref<Resource>()
+    const initialResource = ref<Resource>()
 
-                        if (aIsSelected === bIsSelected) return 0
-                        return aIsSelected ? -1 : 1
-                    }) || []
+    const collections = ref<CollectionsInResource[]>([])
+    const resourcesNumber = ref<number>(0)
+    const libraryIdSelected = ref<string>('')
+    const libraryIdComparedSelected = ref<string>('')
+    const page = ref<number>(1)
+    const segments = ref<Segment[]>([])
+    const resourceSelectedId = ref<string | null>(null)
+    const anomalies = ref<Anomaly[]>([])
+
+    // GETTERS
+    const librariesAssociated = computed<ProjectLibrary[]>(() => {
+        if (!projectStore.project) return []
+        return (
+            projectStore.project.libraries
+                .filter((lib) => collections.value.some((el: CollectionsInResource) => el.library === lib.id))
+                .sort((a: ProjectLibrary, b: ProjectLibrary) => {
+                    const aIsSelected = a.id === libraryIdSelected.value
+                    const bIsSelected = b.id === libraryIdSelected.value
+
+                    if (aIsSelected === bIsSelected) return 0
+                    return aIsSelected ? -1 : 1
+                }) || []
+        )
+    })
+    const statusName = computed<'boundCopies' | 'unboundCopies'>(() => {
+        if (!resource.value) return 'boundCopies'
+        return resource.value.status <= ResourceStatus.ControlBound ? 'boundCopies' : 'unboundCopies'
+    })
+
+    const anomaliesUnfixed = computed<Anomaly[]>(() => {
+        if (!resource.value) return []
+        return anomalies.value.filter((anomaly) => !anomaly.fixed)
+    })
+
+    const collectionsSortedByOrderInInstructionTurns = computed(() => {
+        if (
+            !resource.value ||
+            !resource.value.instructionTurns ||
+            !resource.value.instructionTurns.turns ||
+            !collections.value
+        ) {
+            return []
+        }
+        const turns = resource.value?.instructionTurns.turns
+        return turns
+            .map((turn) => collections.value.find((collection) => collection.id === turn.collection))
+            .filter((item): item is (typeof collections.value)[0] => item !== undefined)
+    })
+
+    // ACTIONS
+    const _findCollection = (collectionId: string) => {
+        const collection = collections.value.find((col) => col.id === collectionId)
+        if (!collection) throw new Error('collection does not exist')
+        return collection
+    }
+
+    const _applyResourceUpdate = (response: CollectionPositionAndExcludeResponse) => {
+        const resourcesStore = useResourcesStore()
+        if (!resource.value) throw new Error('no resource')
+
+        resource.value.arbitration = response.arbitration
+        resource.value.status = response.status
+        resource.value.shouldPosition = response.shouldPosition
+        resource.value.shouldInstruct = response.shouldInstruct
+
+        const resourceInResources = resourcesStore.resources.find((el) => el.id === resource.value?.id)
+        if (resourceInResources) {
+            resourceInResources.arbitration = response.arbitration
+            resourceInResources.status = response.status
+            resourceInResources.shouldPosition = response.shouldPosition
+            resourceInResources.shouldInstruct = response.shouldInstruct
+        }
+    }
+
+    const fetchResourceAndCollections = async (resourceId: string) => {
+        const projectStore = useProjectStore()
+
+        try {
+            const response = await axiosI.get<CollectionsWithResource>(`/resources/${resourceId}/collections/`, {
+                params: {
+                    project_id: projectStore.project?.id,
+                },
+            })
+
+            resource.value = response.data.resource
+
+            collections.value = response.data.collections.sort((a: CollectionsInResource, b: CollectionsInResource) => {
+                if (!libraryIdSelected.value) return 0
+                const aMatch = a.library === libraryIdSelected.value
+                const bMatch = b.library === libraryIdSelected.value
+                return bMatch ? (aMatch ? 0 : 1) : aMatch ? -1 : 0
+            })
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
+
+    const updatePosition = async (collectionId: string, newPosition: CollectionPosition) => {
+        try {
+            const response = await axiosI.patch<UpdateCollectionPositionResponse>(
+                `collections/${collectionId}/position/`,
+                {
+                    position: newPosition,
+                },
             )
-        },
-        statusName(this: ResourceStoreState): 'boundCopies' | 'unboundCopies' {
-            return this.status <= ResourceStatus.ControlBound ? 'boundCopies' : 'unboundCopies'
-        },
-        anomaliesUnfixed(this: ResourceStoreState): Anomaly[] {
-            return this.anomalies.filter((anomaly) => !anomaly.fixed)
-        },
-        collectionsSortedByOrderInInstructionTurns(this: ResourceStoreState) {
-            if (!this.instructionTurns || !this.instructionTurns.turns || !this.collections) {
-                return []
-            }
-            const turns = this.instructionTurns.turns
-            return turns
-                .map((turn) => this.collections.find((collection) => collection.id === turn.collection))
-                .filter((item): item is (typeof this.collections)[0] => item !== undefined)
-        },
-    },
-    actions: {
-        _findCollection(collectionId: string) {
-            const collection = this.collections.find((col) => col.id === collectionId)
-            if (!collection) throw new Error('collection does not exist')
-            return collection
-        },
-        _applyResourceUpdate(response: CollectionPositionAndExcludeResponse) {
-            const resourcesStore = useResourcesStore()
 
-            this.arbitration = response.arbitration
-            this.status = response.status
-            this.shouldPosition = response.shouldPosition
-            this.shouldInstruct = response.shouldInstruct
+            const collection = _findCollection(collectionId)
+            collection.position = response.data.position
+            collection.exclusionReason = ''
 
-            const resource = resourcesStore.resources.find((el) => el.id === this.id)
-            if (resource) {
-                resource.arbitration = response.arbitration
-                resource.status = response.status
-                resource.shouldPosition = response.shouldPosition
-                resource.shouldInstruct = response.shouldInstruct
-            }
-        },
-        async fetchResourceAndCollections(resourceId: string) {
-            const projectStore = useProjectStore()
+            _applyResourceUpdate({
+                arbitration: response.data.arbitration,
+                status: response.data.status,
+                shouldPosition: response.data.shouldPosition,
+                shouldInstruct: response.data.shouldInstruct,
+            })
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
+    const excludeCollection = async (collectionId: string, exclusionReason: string) => {
+        try {
+            const response = await axiosI.patch<ExcludeCollectionResponse>(`collections/${collectionId}/exclude/`, {
+                exclusion_reason: exclusionReason,
+            })
+            const collection = _findCollection(collectionId)
+            collection.position = CollectionPosition.Excluded
+            collection.exclusionReason = response.data.exclusionReason
 
-            try {
-                const response = await axiosI.get<CollectionsWithResource>(`/resources/${resourceId}/collections/`, {
-                    params: {
-                        project_id: projectStore.project?.id,
-                    },
-                })
+            _applyResourceUpdate({
+                arbitration: response.data.arbitration,
+                status: response.data.status,
+                shouldPosition: response.data.shouldPosition,
+                shouldInstruct: response.data.shouldInstruct,
+            })
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
+    const commentPositioning = async (collectionId: string, content: string) => {
+        try {
+            const collection = _findCollection(collectionId)
 
-                this.id = response.data.resource.id
-                this.title = response.data.resource.title
-                this.code = response.data.resource.code
-                this.count = response.data.resource.count
-                this.callNumbers = response.data.resource.callNumbers
-                this.shouldInstruct = response.data.resource.shouldInstruct
-                this.status = response.data.resource.status
-                this.arbitration = response.data.resource.arbitration
-                this.acl = response.data.resource.acl
-                this.collections = response.data.collections
-                this.instructionTurns = response.data.resource.instructionTurns
-                this.issn = response.data.resource.issn
-                this.publicationHistory = response.data.resource.publicationHistory
-                this.validations = response.data.resource.validations
+            const method = collection.commentPositioning?.id ? 'patch' : 'post'
+            const response = await axiosI[method]<CommentPositioning>(
+                `collections/${collectionId}/comment-positioning/`,
+                { content },
+            )
 
-                this.collections = response.data.collections.sort(
-                    (a: CollectionsInResource, b: CollectionsInResource) => {
-                        if (!this.libraryIdSelected) return 0
-                        const aMatch = a.library === this.libraryIdSelected
-                        const bMatch = b.library === this.libraryIdSelected
-                        return bMatch ? (aMatch ? 0 : 1) : aMatch ? -1 : 0
-                    },
-                )
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
+            collection.commentPositioning = response.data
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
 
-        async updatePosition(collectionId: string, newPosition: CollectionPosition) {
-            try {
-                const response = await axiosI.patch<UpdateCollectionPositionResponse>(
-                    `collections/${collectionId}/position/`,
-                    {
-                        position: newPosition,
-                    },
-                )
+    const fetchSegments = async () => {
+        try {
+            const response = await axiosI.get(`/segments/`, { params: { resource_id: resource.value?.id } })
 
-                const collection = this._findCollection(collectionId)
-                collection.position = response.data.position
-                collection.exclusionReason = ''
+            segments.value = response.data
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
+    const orderSegment = async (segment: Segment, direction: 'up' | 'down') => {
+        if (direction == 'up' && segment.order === 1) return
+        if (direction == 'down' && segment.order === segments.value.length) return
 
-                this._applyResourceUpdate({
-                    arbitration: response.data.arbitration,
-                    status: response.data.status,
-                    shouldPosition: response.data.shouldPosition,
-                    shouldInstruct: response.data.shouldInstruct,
-                })
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        async excludeCollection(collectionId: string, exclusionReason: string) {
-            try {
-                const response = await axiosI.patch<ExcludeCollectionResponse>(`collections/${collectionId}/exclude/`, {
-                    exclusion_reason: exclusionReason,
-                })
-                const collection = this._findCollection(collectionId)
-                collection.position = CollectionPosition.Excluded
-                collection.exclusionReason = response.data.exclusionReason
-
-                this._applyResourceUpdate({
-                    arbitration: response.data.arbitration,
-                    status: response.data.status,
-                    shouldPosition: response.data.shouldPosition,
-                    shouldInstruct: response.data.shouldInstruct,
-                })
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        async commentPositioning(collectionId: string, content: string) {
-            try {
-                const collection = this._findCollection(collectionId)
-
-                const method = collection.commentPositioning?.id ? 'patch' : 'post'
-                const response = await axiosI[method]<CommentPositioning>(
-                    `collections/${collectionId}/comment-positioning/`,
-                    { content },
-                )
-
-                collection.commentPositioning = response.data
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        async fetchSegments() {
-            try {
-                const response = await axiosI.get(`/segments/`, { params: { resource_id: this.id } })
-
-                this.segments = response.data
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        async orderSegment(segment: Segment, direction: 'up' | 'down') {
-            if (direction == 'up' && segment.order === 1) return
-            if (direction == 'down' && segment.order === this.segments.length) return
-
-            try {
-                const response = await axiosI.patch<{
-                    currentSegment: {
-                        id: string
-                        order: number
-                    }
-                    previousSegment: {
-                        id: string
-                        order: number
-                    }
-                    nextSegment: {
-                        id: string
-                        order: number
-                    }
-                }>(`/segments/${segment.id}/${direction}/`)
-
-                const currentSegment = this.segments.find((el) => el.id === segment.id)
-                const targetSegment = this.segments.find(
-                    (el) =>
-                        el.id ===
-                        (direction === 'up' ? response.data.previousSegment.id : response.data.nextSegment.id),
-                )
-
-                if (currentSegment && targetSegment) {
-                    currentSegment.order = response.data.currentSegment.order
-                    targetSegment.order =
-                        direction === 'up' ? response.data.previousSegment.order : response.data.nextSegment.order
+        try {
+            const response = await axiosI.patch<{
+                currentSegment: {
+                    id: string
+                    order: number
                 }
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        async deleteSegment(segmentId: string) {
-            try {
-                await axiosI.delete(`/segments/${segmentId}/`)
-                await this.fetchSegments()
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        async createSegment(segment: SegmentNoCollection, afterSegment?: string) {
-            try {
-                const response = await axiosI.post<Segment>('/segments/', {
-                    content: segment.content,
-                    ...(segment.improvableElements && { improvable_elements: segment.improvableElements }),
-                    ...(segment.exception && { exception: segment.exception }),
-                    ...(segment.improvedSegment && { improved_segment: segment.improvedSegment }),
-                    collection: this.instructionTurns?.[this.statusName].turns[0].collection,
-                    ...(afterSegment && { after_segment: afterSegment }),
-                })
-                if (afterSegment) {
-                    await this.fetchSegments()
-                } else {
-                    this.segments.push(response.data)
+                previousSegment: {
+                    id: string
+                    order: number
                 }
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        async updateSegment(segmentId: string, updatedFields: Partial<SegmentNoCollection>) {
-            try {
-                const response = await axiosI.patch<Segment>(`/segments/${segmentId}/`, updatedFields)
-                const index = this.segments.findIndex((seg) => seg.id === segmentId)
-                if (index !== -1) {
-                    this.segments[index] = response.data
+                nextSegment: {
+                    id: string
+                    order: number
                 }
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        async finishTurn() {
-            const resourcesStore = useResourcesStore()
+            }>(`/segments/${segment.id}/${direction}/`)
 
-            try {
-                if (!this.shouldInstruct || !this.instructionTurns) throw new Error('Instruction is not allowed')
-                const collectionId = this.instructionTurns[this.statusName].turns[0].collection
+            const currentSegment = segments.value.find((el) => el.id === segment.id)
+            const targetSegment = segments.value.find(
+                (el) =>
+                    el.id === (direction === 'up' ? response.data.previousSegment.id : response.data.nextSegment.id),
+            )
 
-                await axiosI.post<Segment>(`/collections/${collectionId}/finish_turn/`)
-                await resourcesStore.getResources({ status: [this.status] })
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
+            if (currentSegment && targetSegment) {
+                currentSegment.order = response.data.currentSegment.order
+                targetSegment.order =
+                    direction === 'up' ? response.data.previousSegment.order : response.data.nextSegment.order
             }
-        },
-        async fetchAnomalies() {
-            try {
-                const response = await axiosI.get<Anomaly[]>(`/anomalies/`, {
-                    params: {
-                        resource: this.id,
-                    },
-                })
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
+    const deleteSegment = async (segmentId: string) => {
+        try {
+            await axiosI.delete(`/segments/${segmentId}/`)
+            await fetchSegments()
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
+    const createSegment = async (segment: SegmentNoCollection, afterSegment?: string) => {
+        try {
+            const response = await axiosI.post<Segment>('/segments/', {
+                content: segment.content,
+                ...(segment.improvableElements && { improvable_elements: segment.improvableElements }),
+                ...(segment.exception && { exception: segment.exception }),
+                ...(segment.improvedSegment && { improved_segment: segment.improvedSegment }),
+                collection:
+                    resource.value && resource.value.instructionTurns
+                        ? resource.value.instructionTurns[statusName.value].turns[0].collection
+                        : undefined,
+                ...(afterSegment && { after_segment: afterSegment }),
+            })
+            if (afterSegment) {
+                await fetchSegments()
+            } else {
+                segments.value.push(response.data)
+            }
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
+    const updateSegment = async (segmentId: string, updatedFields: Partial<SegmentNoCollection>) => {
+        try {
+            const response = await axiosI.patch<Segment>(`/segments/${segmentId}/`, updatedFields)
+            const index = segments.value.findIndex((seg) => seg.id === segmentId)
+            if (index !== -1) {
+                segments.value[index] = response.data
+            }
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
+    const finishTurn = async () => {
+        const resourcesStore = useResourcesStore()
 
-                this.anomalies = response.data
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        async postAnomaly(segmentId: string, type: string, description?: string) {
-            try {
-                const response = await axiosI.post<Anomaly>(`/anomalies/`, {
-                    segmentId,
-                    type,
-                    ...(description && type === AnomalyType.Other && { description }),
-                })
+        try {
+            if (!resource.value?.shouldInstruct || !resource.value?.instructionTurns)
+                throw new Error('Instruction is not allowed')
+            const collectionId =
+                resource.value && resource.value.instructionTurns
+                    ? resource.value.instructionTurns[statusName.value].turns[0].collection
+                    : undefined
 
-                this.anomalies.push(response.data)
-                const segment = this.segments.find((el) => el.id === segmentId)
-                if (segment) segment.anomalies.unfixed += 1
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        async fixAnomaly(id: string) {
-            try {
-                const response = await axiosI.patch<Anomaly>(`/anomalies/${id}/fix/`)
+            await axiosI.post<Segment>(`/collections/${collectionId}/finish_turn/`)
+            await resourcesStore.getResources({ status: [resource.value?.status] })
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
+    const fetchAnomalies = async () => {
+        try {
+            const response = await axiosI.get<Anomaly[]>(`/anomalies/`, {
+                params: {
+                    resource: resource.value?.id,
+                },
+            })
 
-                this.anomalies = this.anomalies.map((a) => (a.id === id ? response.data : a))
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        async deleteAnomaly(id: string) {
-            try {
-                const anomaly = this.anomalies.find((a) => a.id === id)
-                await axiosI.delete<Anomaly>(`/anomalies/${id}/`)
+            anomalies.value = response.data
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
+    const postAnomaly = async (segmentId: string, type: string, description?: string) => {
+        try {
+            const response = await axiosI.post<Anomaly>(`/anomalies/`, {
+                segmentId,
+                type,
+                ...(description && type === AnomalyType.Other && { description }),
+            })
 
-                this.anomalies = this.anomalies.filter((a) => a.id !== id)
+            anomalies.value.push(response.data)
+            const segment = segments.value.find((el) => el.id === segmentId)
+            if (segment) segment.anomalies.unfixed += 1
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
+    const fixAnomaly = async (id: string) => {
+        try {
+            const response = await axiosI.patch<Anomaly>(`/anomalies/${id}/fix/`)
 
-                const segment = this.segments.find((el) => el.id === anomaly?.segment.id)
-                if (segment) segment.anomalies[anomaly?.fixed ? 'fixed' : 'unfixed'] -= 1
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        async declareAnomaly() {
-            const resourcesStore = useResourcesStore()
-            try {
-                await axiosI.patch<Anomaly>(`/resources/${this.id}/report-anomalies/`)
-                await resourcesStore.getResources({ status: [this.status] })
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        async validateControl() {
-            const resourcesStore = useResourcesStore()
-            try {
-                await axiosI.post<unknown>(`/resources/${this.id}/control/`, {
-                    validation: true,
-                })
-                await resourcesStore.getResources({ status: [this.status] })
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        formatCollectionToString(collection: CollectionsInResource | '') {
-            return collection
-                ? `${t('collection.position.short')} ${collection.position} | ${collection.callNumber}`
-                : ''
-        },
-    },
+            anomalies.value = anomalies.value.map((a) => (a.id === id ? response.data : a))
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
+    const deleteAnomaly = async (id: string) => {
+        try {
+            const anomaly = anomalies.value.find((a) => a.id === id)
+            await axiosI.delete<Anomaly>(`/anomalies/${id}/`)
+
+            anomalies.value = anomalies.value.filter((a) => a.id !== id)
+
+            const segment = segments.value.find((el) => el.id === anomaly?.segment.id)
+            if (segment) segment.anomalies[anomaly?.fixed ? 'fixed' : 'unfixed'] -= 1
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
+    const declareAnomaly = async () => {
+        const resourcesStore = useResourcesStore()
+        try {
+            await axiosI.patch<Anomaly>(`/resources/${resource.value?.id}/report-anomalies/`)
+            await resourcesStore.getResources({ status: [resource.value?.status || ResourceStatus.Positioning] })
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
+    const validateControl = async () => {
+        const resourcesStore = useResourcesStore()
+        try {
+            await axiosI.post<unknown>(`/resources/${resource.value?.id}/control/`, {
+                validation: true,
+            })
+            await resourcesStore.getResources({ status: [resource.value?.status || ResourceStatus.Positioning] })
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
+
+    const formatCollectionToString = (collection: CollectionsInResource | '') => {
+        return collection ? `${t('collection.position.short')} ${collection.position} | ${collection.callNumber}` : ''
+    }
+
+    return {
+        // STATE
+        resource,
+        initialResource,
+        collections,
+        resourcesNumber,
+        libraryIdSelected,
+        libraryIdComparedSelected,
+        page,
+        segments,
+        resourceSelectedId,
+        anomalies,
+        // GETTERS
+        librariesAssociated,
+        statusName,
+        anomaliesUnfixed,
+        collectionsSortedByOrderInInstructionTurns,
+        // ACTIONS
+        _findCollection,
+        _applyResourceUpdate,
+        fetchResourceAndCollections,
+        updatePosition,
+        excludeCollection,
+        commentPositioning,
+        fetchSegments,
+        orderSegment,
+        deleteSegment,
+        createSegment,
+        updateSegment,
+        finishTurn,
+        fetchAnomalies,
+        postAnomaly,
+        fixAnomaly,
+        deleteAnomaly,
+        declareAnomaly,
+        validateControl,
+        formatCollectionToString,
+    }
 })

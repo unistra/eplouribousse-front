@@ -11,7 +11,7 @@ const { t } = useI18n()
 <template>
     <div class="project-positioning">
         <QCard
-            v-if="resourceStore.arbitration !== Arbitration.NoArbitration"
+            v-if="resourceStore.resource?.arbitration !== Arbitration.NoArbitration"
             class="arbitration-card"
             dark
             flat
@@ -23,7 +23,7 @@ const { t } = useI18n()
                 <p>{{ t('project.positioning.arbitration.currently') }}</p>
                 <p>
                     {{
-                        resourceStore.arbitration == Arbitration.NoPosition1
+                        resourceStore.resource?.arbitration == Arbitration.NoPosition1
                             ? t('project.positioning.arbitration.type0')
                             : t('project.positioning.arbitration.type1')
                     }}

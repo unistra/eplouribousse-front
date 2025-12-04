@@ -14,21 +14,23 @@ export const useProjectInstruction = (dialogModal: Ref<boolean> | undefined) => 
     const insertAfter = ref<string | undefined>()
 
     const turnsWithNames = computed(() => {
-        if (!projectStore.project) return null
-        if (resourceStore.status === ResourceStatus.Positioning) return null
+        if (!projectStore.project || !resourceStore.resource) return null
+        if (resourceStore.resource.status === ResourceStatus.Positioning) return null
 
         const retrieveCollectionName = (el: InstructionTurn): string => {
             const collection = resourceStore.collections.find((collection) => collection.id === el.collection)
             return `${t('project.resources.callNumber')}: ${collection?.callNumber} - ${t('project.resources.holdStatement')}: ${collection?.holdStatement} - ${t('project.resources.position')}: ${collection?.position}`
         }
 
-        return resourceStore.instructionTurns?.turns.map((el: InstructionTurn) => ({
-            library: projectStore.project
-                ? projectStore.project.libraries.find((library) => library.id === el.library)?.name
-                : '',
-            collection: retrieveCollectionName(el),
-            collectiondId: el.collection,
-        }))
+        return (
+            resourceStore.resource.instructionTurns?.turns.map((el: InstructionTurn) => ({
+                library: projectStore.project
+                    ? projectStore.project.libraries.find((library) => library.id === el.library)?.name
+                    : '',
+                collection: retrieveCollectionName(el),
+                collectiondId: el.collection,
+            })) || []
+        )
     })
 
     const onConfirmAnomaliesDeclaration = async () => {
@@ -40,13 +42,14 @@ export const useProjectInstruction = (dialogModal: Ref<boolean> | undefined) => 
         const statusString = resourceStore.statusName === 'boundCopies' ? 'bound' : 'unbound'
         return !resourceStore.segments.find((el) => {
             const collectionIdInFirstPositionInInstructionTurns =
-                resourceStore.instructionTurns?.[`${resourceStore.statusName}`].turns[0].collection
+                resourceStore.resource?.instructionTurns?.[`${resourceStore.statusName}`].turns[0].collection
             return el.collection === collectionIdInFirstPositionInInstructionTurns && el.segmentType === statusString
         })
     })
     const collectionToBeInstructed = computed<CollectionsInResource | undefined>(() => {
         return resourceStore.collections.find(
-            (el) => el.id === resourceStore.instructionTurns?.[`${resourceStore.statusName}`].turns[0].collection,
+            (el) =>
+                el.id === resourceStore.resource?.instructionTurns?.[`${resourceStore.statusName}`].turns[0].collection,
         )
     })
 

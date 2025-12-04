@@ -72,19 +72,19 @@ const onBeforeShow = async () => {
                             }}
                             {{ t('project.resources.resultant.title') }}
                         </h2>
-                        <h3>{{ resourceStore.title }}</h3>
+                        <h3>{{ resourceStore.resource?.title }}</h3>
                     </template>
-                    <h2 v-else>{{ resourceStore.title }}</h2>
+                    <h2 v-else>{{ resourceStore.resource?.title }}</h2>
 
                     <QChip class="chip-label-value">
-                        {{ t('project.resources.code') }}: <span>{{ resourceStore.code || '-' }}</span>
+                        {{ t('project.resources.code') }}: <span>{{ resourceStore.resource?.code || '-' }}</span>
                     </QChip>
                     <QChip class="chip-label-value">
-                        ISSN: <span>{{ resourceStore.issn || '-' }}</span>
+                        ISSN: <span>{{ resourceStore.resource?.issn || '-' }}</span>
                     </QChip>
                     <QChip class="chip-label-value">
                         {{ t('project.resources.publicationHistory') }}:
-                        <span>{{ resourceStore.publicationHistory || '-' }}</span>
+                        <span>{{ resourceStore.resource?.publicationHistory || '-' }}</span>
                     </QChip>
                 </QCardSection>
                 <QCardSection class="content">
