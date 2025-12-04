@@ -12,18 +12,18 @@ import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/userStore.ts'
 import { useResourcesStore } from '@/stores/resourcesStore.ts'
 
-const resourceStore = useResourceStore()
 const resourcesStore = useResourcesStore()
 const projectStore = useProjectStore()
 const route = useRoute()
 
 const {
     tabs,
+    resourceIdSelected,
     resourceDialog,
     columns,
     pagination,
     selectDefaultLibrary,
-    onRowClick,
+    openResourceDialog,
     fetchResources,
     selects,
     disableLibrarySelectedSelect,
@@ -39,10 +39,7 @@ onMounted(async () => {
     selectDefaultLibrary()
     resourcesStore.libraryIdComparedSelected = ''
     await fetchResources()
-    if (route.query.resourceId) {
-        resourceStore.resourceSelectedId = route.query.resourceId as string
-        resourceDialog.value = true
-    }
+    if (route.query.resourceId) openResourceDialog(route.query.resourceId as string)
 })
 </script>
 
@@ -145,7 +142,7 @@ onMounted(async () => {
                     :rows="resourcesStore.resources"
                     :rows-per-page-options="[5, 10, 20, 50, 100]"
                     @request="fetchResources"
-                    @row-click="onRowClick"
+                    @row-click="(_, row) => openResourceDialog(row.id)"
                 >
                     <template #top-right>
                         <AtomicInput
@@ -185,7 +182,10 @@ onMounted(async () => {
                         </QTd>
                     </template>
                 </QTable>
-                <ProjectResource v-model="resourceDialog" />
+                <ProjectResource
+                    v-model="resourceDialog"
+                    :resource-id-selected="resourceIdSelected"
+                />
             </QTabPanel>
         </QTabPanels>
     </div>

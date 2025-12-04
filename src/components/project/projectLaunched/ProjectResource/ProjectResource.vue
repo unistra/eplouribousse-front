@@ -10,9 +10,15 @@ import { useProjectStore } from '@/stores/projectStore.ts'
 import ProjectAnomalies from '@/components/project/projectLaunched/projectAnomalies/ProjectAnomalies.vue'
 import { Tab } from '&/project.ts'
 import ProjectEdition from '@/components/project/projectLaunched/projectEdition/ProjectEdition.vue'
+import { useResourcesStore } from '@/stores/resourcesStore.ts'
+
+const props = defineProps<{
+    resourceIdSelected: string
+}>()
 
 const { t } = useI18n()
 const resourceStore = useResourceStore()
+const resourcesStore = useResourcesStore()
 const projectStore = useProjectStore()
 
 const dialogModal = defineModel<boolean>()
@@ -21,11 +27,11 @@ const dialogLoading = ref<boolean>(false)
 
 const onBeforeShow = async () => {
     dialogLoading.value = true
-    if (resourceStore.resourceSelectedId) {
-        resourceStore.collections = []
-        resourceStore.segments = []
-        await resourceStore.fetchResourceAndCollections(resourceStore.resourceSelectedId)
-    }
+
+    resourceStore.collections = []
+    resourceStore.segments = []
+    await resourceStore.fetchResourceAndCollections(props.resourceIdSelected)
+
     dialogLoading.value = false
 }
 </script>
@@ -54,7 +60,7 @@ const onBeforeShow = async () => {
                 <QSpinner size="2rem" />
             </QCardSection>
             <QCardSection
-                v-else-if="!resourceStore.resourceSelectedId"
+                v-else-if="resourceIdSelected === ''"
                 class="centered"
             >
                 <p>{{ t('errors.unknownRetry') }}</p>

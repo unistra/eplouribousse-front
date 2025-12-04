@@ -4,7 +4,6 @@ import {
     type CollectionsInResource,
     type CollectionsWithResource,
     type CommentPositioning,
-    type ProjectLibrary,
     type Resource,
     type Segment,
     type SegmentNoCollection,
@@ -49,20 +48,6 @@ export const useResourceStore = defineStore('resource', () => {
     const anomalies = ref<Anomaly[]>([]) // TODO: Move to specific store
 
     // GETTERS
-    const librariesAssociated = computed<ProjectLibrary[]>(() => {
-        if (!projectStore.project) return []
-        return (
-            projectStore.project.libraries
-                .filter((lib) => collections.value.some((el: CollectionsInResource) => el.library === lib.id))
-                .sort((a: ProjectLibrary, b: ProjectLibrary) => {
-                    const aIsSelected = a.id === libraryIdSelected.value
-                    const bIsSelected = b.id === libraryIdSelected.value
-
-                    if (aIsSelected === bIsSelected) return 0
-                    return aIsSelected ? -1 : 1
-                }) || []
-        )
-    })
     const statusName = computed<'boundCopies' | 'unboundCopies'>(() => {
         if (!resource.value) return 'boundCopies'
         return resource.value.status <= ResourceStatus.ControlBound ? 'boundCopies' : 'unboundCopies'
@@ -378,10 +363,8 @@ export const useResourceStore = defineStore('resource', () => {
         collections,
         resourcesNumber,
         segments,
-        resourceSelectedId,
         anomalies,
         // GETTERS
-        librariesAssociated,
         statusName,
         anomaliesUnfixed,
         collectionsSortedByOrderInInstructionTurns,

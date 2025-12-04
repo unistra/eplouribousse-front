@@ -37,6 +37,7 @@ export const useProjectResources = () => {
         rowsNumber: 0,
     })
 
+    const resourceIdSelected = ref<string>('')
     const resourceDialog = ref<boolean>(false)
 
     // COMPUTED
@@ -133,8 +134,8 @@ export const useProjectResources = () => {
         resourcesStore.libraryIdSelected = librariesIdWhereUserIsInstructor[0] || ''
     }
 
-    const onRowClick = async (_: Event, row: Resource) => {
-        resourceStore.resourceSelectedId = row.id
+    const openResourceDialog = (resourceId: string) => {
+        resourceIdSelected.value = resourceId
         resourceDialog.value = true
     }
 
@@ -264,9 +265,10 @@ export const useProjectResources = () => {
         tabs,
         columns,
         pagination,
+        resourceIdSelected,
         resourceDialog,
+        openResourceDialog,
         selectDefaultLibrary,
-        onRowClick,
         selects,
         fetchResources,
         disableLibrarySelectedSelect,
