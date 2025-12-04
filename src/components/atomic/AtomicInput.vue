@@ -27,6 +27,11 @@ const emit = defineEmits<{
     (e: 'cancel'): void
 }>()
 const input = useTemplateRef<QInput>('input')
+defineExpose({
+    resetValidation: () => {
+        if (input.value) input.value.resetValidation()
+    },
+})
 
 const computedLabel = computed(() => (props.label ? `${props.label}${props.required ? ' *' : ''}` : undefined))
 onMounted(() => {

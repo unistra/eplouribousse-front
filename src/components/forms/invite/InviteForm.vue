@@ -15,6 +15,7 @@ const { email, sendInvitation } = useInviteForm()
         @submit.prevent="sendInvitation"
     >
         <AtomicInput
+            ref="input"
             v-model="email"
             hide-bottom-space
             :label="t('forms.invite.email')"
