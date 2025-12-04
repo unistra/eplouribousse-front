@@ -12,15 +12,18 @@ import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/userStore.ts'
+import { useResourcesStore } from '@/stores/resourcesStore.ts'
 
 const resourceStore = useResourceStore()
+const resourcesStore = useResourcesStore()
 const projectStore = useProjectStore()
 const route = useRoute()
 
 const {
     tabs,
     resourceDialog,
-    table,
+    columns,
+    pagination,
     selectDefaultLibrary,
     onRowClick,
     fetchResources,
@@ -29,6 +32,7 @@ const {
     computeStatusInfos,
     selectFilterOnPositioning,
     positioningFilter,
+    filter,
 } = useProjectResources()
 const { t } = useI18n()
 const userStore = useUserStore()
@@ -86,7 +90,7 @@ onMounted(async () => {
                 "
                 option-value="id"
                 :options="select.options"
-                @update:model-value="select.callback"
+                @update:model-value="fetchResources()"
             />
         </div>
         <div>
@@ -96,7 +100,7 @@ onMounted(async () => {
                 dense
                 inline-label
                 no-caps
-                @update:model-value="fetchResources(undefined, true)"
+                @update:model-value="fetchResources()"
             >
                 <QTab
                     v-for="(value, index) in tabs"
@@ -129,25 +133,25 @@ onMounted(async () => {
                     option-label="label"
                     option-value="value"
                     :options="selectFilterOnPositioning"
-                    @update:model-value="fetchResources(undefined, false)"
+                    @update:model-value="fetchResources()"
                 />
                 <QTable
                     ref="qTable"
-                    v-model:pagination="table.pagination.value"
+                    v-model:pagination="pagination"
                     binary-state-sort
-                    :columns="table.columns as QTable['columns']"
-                    :filter="table.filter"
+                    :columns
+                    :filter
                     flat
-                    :loading="table.loading.value"
+                    :loading="resourcesStore.resourcesLoading"
                     row-key="id"
-                    :rows="resourceStore.getAll(table)"
+                    :rows="resourcesStore.resources"
                     :rows-per-page-options="[5, 10, 20, 50, 100]"
                     @request="fetchResources"
                     @row-click="onRowClick"
                 >
                     <template #top-right>
                         <AtomicInput
-                            v-model="table.filter.value"
+                            v-model="filter"
                             clearable
                             debounce="1500"
                             dense

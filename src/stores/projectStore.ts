@@ -235,6 +235,7 @@ export const useProjectStore = defineStore('project', () => {
         userIsController,
         userIsInstructorForLibrarySelected,
         // Actions
+        //// API
         getProject,
         postProject,
         patchProjectTitleAndDescription,
@@ -242,6 +243,7 @@ export const useProjectStore = defineStore('project', () => {
         deleteProjectUserRole,
         postProjectInvitation,
         deleteProjectInvitation,
+        //// Utils
         isRole,
     }
 })

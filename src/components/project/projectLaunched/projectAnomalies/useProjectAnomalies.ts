@@ -4,11 +4,13 @@ import type { CollectionsInResource, Resource } from '#/project.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useI18n } from 'vue-i18n'
 import { useResourceStore } from '@/stores/resourceStore.ts'
+import { useResourcesStore } from '@/stores/resourcesStore.ts'
 
 export const useProjectAnomalies = (dialogModal: Ref<boolean, boolean> | undefined) => {
     const { notify } = useComposableQuasar()
     const { t } = useI18n()
     const resourceStore = useResourceStore()
+    const resourcesStore = useResourcesStore()
     const resetInstruction = async () => {
         try {
             const response = await axiosI.patch<Pick<Resource, 'id' | 'status' | 'instructionTurns'>>(
@@ -19,7 +21,7 @@ export const useProjectAnomalies = (dialogModal: Ref<boolean, boolean> | undefin
             resourceStore.status = response.data.status
             resourceStore.instructionTurns = response.data.instructionTurns
             if (dialogModal) dialogModal.value = false
-            await resourceStore.fetchResources(oldStatus)
+            await resourcesStore.getResources({ status: [oldStatus] })
         } catch {
             notify({
                 type: 'negative',
@@ -51,7 +53,7 @@ export const useProjectAnomalies = (dialogModal: Ref<boolean, boolean> | undefin
             resourceStore.status = response.data.status
             resourceStore.instructionTurns = response.data.instructionTurns
             if (dialogModal) dialogModal.value = false
-            await resourceStore.fetchResources(oldStatus)
+            await resourcesStore.getResources({ status: [oldStatus] })
         } catch {
             notify({
                 type: 'negative',

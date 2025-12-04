@@ -9,25 +9,22 @@ import {
     type Segment,
     type SegmentNoCollection,
 } from '#/project.ts'
-import { AnomalyType, Arbitration, CollectionPosition, PositioningFilter, ResourceStatus } from '&/project.ts'
+import { AnomalyType, Arbitration, CollectionPosition, ResourceStatus } from '&/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
-import { Notify, type QTableProps } from 'quasar'
+import { Notify } from 'quasar'
 import i18n from '@/plugins/i18n'
-import type { Pagination } from '#/pagination.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
-import type { TableProjectResources } from '#/table'
+import { useResourcesStore } from '@/stores/resourcesStore.ts'
 
 const { t } = i18n.global
 
 interface ResourceStoreState extends Resource {
     collections: CollectionsInResource[]
-    resources: Resource[]
     resourcesNumber: number
     initialState: Resource
     libraryIdSelected: string
     libraryIdComparedSelected: string
     page: number
-    resourcesCount: number
     segments: Segment[]
     resourceSelectedId: string | null
     anomalies: Anomaly[]
@@ -73,12 +70,10 @@ export const useResourceStore = defineStore('resource', {
         ...structuredClone(initialState),
         initialState: structuredClone(initialState),
         collections: [],
-        resources: [],
         resourcesNumber: 0,
         libraryIdSelected: '',
         libraryIdComparedSelected: '',
         page: 1,
-        resourcesCount: 0,
         segments: [],
         resourceSelectedId: null,
         anomalies: [],
@@ -120,17 +115,15 @@ export const useResourceStore = defineStore('resource', {
             if (!collection) throw new Error('collection does not exist')
             return collection
         },
-        getAll(table: TableProjectResources) {
-            table.pagination.value.rowsNumber = this.resourcesCount
-            return this.resources
-        },
         _applyResourceUpdate(response: CollectionPositionAndExcludeResponse) {
+            const resourcesStore = useResourcesStore()
+
             this.arbitration = response.arbitration
             this.status = response.status
             this.shouldPosition = response.shouldPosition
             this.shouldInstruct = response.shouldInstruct
 
-            const resource = this.resources.find((el) => el.id === this.id)
+            const resource = resourcesStore.resources.find((el) => el.id === this.id)
             if (resource) {
                 resource.arbitration = response.arbitration
                 resource.status = response.status
@@ -178,73 +171,7 @@ export const useResourceStore = defineStore('resource', {
                 })
             }
         },
-        async fetchResources(
-            status: ResourceStatus | ResourceStatus[],
-            options?: {
-                props: Omit<Parameters<NonNullable<QTableProps['onRequest']>>[0], 'getCellValue'>
-                table: TableProjectResources
-                positioningFilter?: PositioningFilter
-            },
-        ) {
-            const projectStore = useProjectStore()
-            try {
-                if (options) options.table.loading.value = true
 
-                const params: Record<string, string | ResourceStatus[] | number> = {
-                    project: projectStore.project?.id || '',
-                    library:
-                        status === ResourceStatus.AnomalyBound || status === ResourceStatus.AnomalyUnbound
-                            ? ''
-                            : this.libraryIdSelected,
-                    status: Array.isArray(status) ? status : [status],
-                }
-
-                if (this.libraryIdComparedSelected && this.libraryIdSelected)
-                    params.against = this.libraryIdComparedSelected
-
-                if (options?.props) {
-                    const { pagination, filter } = options.props
-                    params.page = pagination?.page
-                    params.page_size =
-                        pagination?.rowsPerPage === 0 ? pagination.rowsNumber || 0 : pagination?.rowsPerPage
-                    params.search = filter.value
-
-                    if (pagination) {
-                        params.ordering = `${pagination.descending ? '-' : ''}${pagination.sortBy || 'name'}`
-                    }
-                }
-
-                if (options?.positioningFilter && status === ResourceStatus.Positioning) {
-                    if (options?.positioningFilter == PositioningFilter.Arbitation) params.arbitration = 'all'
-                    else params.positioning_filter = options.positioningFilter
-                }
-
-                const response = await axiosI.get<Pagination<Resource>>('/resources/', { params })
-                this.resources = response.data.results
-                this.resourcesCount = response.data.count
-
-                if (options?.props?.pagination) {
-                    const { pagination } = options.props
-                    options.table.pagination.value = {
-                        page: pagination.page,
-                        rowsPerPage: pagination.rowsPerPage,
-                        sortBy: pagination.sortBy || 'name',
-                        descending: pagination.descending,
-                        rowsNumber: response.data.count,
-                    }
-                }
-                if (options) {
-                    options.table.pagination.value.rowsNumber = response.data.count
-                }
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            } finally {
-                if (options) options.table.loading.value = false
-            }
-        },
         async updatePosition(collectionId: string, newPosition: CollectionPosition) {
             try {
                 const response = await axiosI.patch<UpdateCollectionPositionResponse>(
@@ -410,12 +337,14 @@ export const useResourceStore = defineStore('resource', {
             }
         },
         async finishTurn() {
+            const resourcesStore = useResourcesStore()
+
             try {
                 if (!this.shouldInstruct || !this.instructionTurns) throw new Error('Instruction is not allowed')
                 const collectionId = this.instructionTurns[this.statusName].turns[0].collection
 
                 await axiosI.post<Segment>(`/collections/${collectionId}/finish_turn/`)
-                await this.fetchResources(this.status)
+                await resourcesStore.getResources({ status: [this.status] })
             } catch {
                 Notify.create({
                     type: 'negative',
@@ -486,9 +415,10 @@ export const useResourceStore = defineStore('resource', {
             }
         },
         async declareAnomaly() {
+            const resourcesStore = useResourcesStore()
             try {
                 await axiosI.patch<Anomaly>(`/resources/${this.id}/report-anomalies/`)
-                await this.fetchResources(this.status)
+                await resourcesStore.getResources({ status: [this.status] })
             } catch {
                 Notify.create({
                     type: 'negative',
@@ -497,11 +427,12 @@ export const useResourceStore = defineStore('resource', {
             }
         },
         async validateControl() {
+            const resourcesStore = useResourcesStore()
             try {
                 await axiosI.post<unknown>(`/resources/${this.id}/control/`, {
                     validation: true,
                 })
-                await this.fetchResources(this.status)
+                await resourcesStore.getResources({ status: [this.status] })
             } catch {
                 Notify.create({
                     type: 'negative',
