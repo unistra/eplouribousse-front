@@ -2,10 +2,9 @@ import axios from 'axios'
 import { addJWTToLocalStorage, getJWT } from '@/utils/jwt.ts'
 
 const defineBackendBaseURL = () => {
-    const prefix = import.meta.env.DEV
-        ? new URL(location.href).host.split('.epl', 1)[0]
-        : new URL(location.href).host.split('-eplouribousse', 1)[0]
-    return import.meta.env.VITE_BACK_URL.replace('[tenant]', prefix)
+    const host = new URL(location.href).host.split('.')
+    const apiTenant = host.shift() + '-api.'
+    return apiTenant + host.join('.')
 }
 
 export const backendBaseURL = defineBackendBaseURL()
