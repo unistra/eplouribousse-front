@@ -86,6 +86,14 @@ const routes: RouteRecordRaw[] = [
         },
     },
     {
+        path: '/logout',
+        name: 'logout',
+        component: () => import('@/views/AuthView.vue'),
+        meta: {
+            title: t('navigation.auth.logout'),
+        },
+    },
+    {
         path: '/change-password',
         name: 'changePassword',
         component: () => import('@/views/AuthView.vue'),

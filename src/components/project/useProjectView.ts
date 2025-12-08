@@ -11,11 +11,11 @@ export const useProjectView = () => {
             () => route.params.id,
             async () => {
                 const id = route.params.id as string
-                if (projectStore.id === id) return
+                if (projectStore.project && projectStore.project.id === id) return
 
-                projectStore.isLoading = true
-                await projectStore.fetchProjectById(id)
-                projectStore.isLoading = false
+                projectStore.projectLoading = true
+                await projectStore.getProject(id)
+                projectStore.projectLoading = false
             },
             { immediate: true },
         )

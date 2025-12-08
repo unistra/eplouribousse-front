@@ -41,8 +41,9 @@ export const useProjectSegmentTableOptions = () => {
     }
 
     const isUserInstructorForSegment = (row: Segment): boolean => {
+        if (!projectStore.project) return false
         const segmentCollectionLibraryId = resourceStore.collections.find((el) => el.id === row.collection)?.library
-        return !!projectStore.roles.find(
+        return !!projectStore.project.roles.find(
             (el) =>
                 el.role === Roles.Instructor &&
                 el.user.id === userStore.user?.id &&

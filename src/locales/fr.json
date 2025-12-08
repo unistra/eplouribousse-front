@@ -39,6 +39,7 @@
     "navigation": {
         "auth": {
             "login": "@:auth.login.i",
+            "logout": "@:auth.logout",
             "changePassword": "Changer son mot de passe",
             "resetPassword": "Réinitialiser son mot de passe",
             "requestPasswordReset": "Demande de réinitialisation de mot de passe",

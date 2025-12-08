@@ -84,17 +84,19 @@ export const useResourceStore = defineStore('resource', {
         anomalies: [],
     }),
     getters: {
-        librariesAssociated(this: ResourceStoreState) {
+        librariesAssociated(): ProjectLibrary[] {
             const projectStore = useProjectStore()
-            return projectStore.libraries
-                .filter((lib) => this.collections.some((el: CollectionsInResource) => el.library === lib.id))
-                .sort((a: ProjectLibrary, b: ProjectLibrary) => {
-                    const aIsSelected = a.id === this.libraryIdSelected
-                    const bIsSelected = b.id === this.libraryIdSelected
+            return (
+                projectStore.project?.libraries
+                    .filter((lib) => this.collections.some((el: CollectionsInResource) => el.library === lib.id))
+                    .sort((a: ProjectLibrary, b: ProjectLibrary) => {
+                        const aIsSelected = a.id === this.libraryIdSelected
+                        const bIsSelected = b.id === this.libraryIdSelected
 
-                    if (aIsSelected === bIsSelected) return 0
-                    return aIsSelected ? -1 : 1
-                })
+                        if (aIsSelected === bIsSelected) return 0
+                        return aIsSelected ? -1 : 1
+                    }) || []
+            )
         },
         statusName(this: ResourceStoreState): 'boundCopies' | 'unboundCopies' {
             return this.status <= ResourceStatus.ControlBound ? 'boundCopies' : 'unboundCopies'
@@ -142,7 +144,7 @@ export const useResourceStore = defineStore('resource', {
             try {
                 const response = await axiosI.get<CollectionsWithResource>(`/resources/${resourceId}/collections/`, {
                     params: {
-                        project_id: projectStore.id,
+                        project_id: projectStore.project?.id,
                     },
                 })
 
@@ -189,7 +191,7 @@ export const useResourceStore = defineStore('resource', {
                 if (options) options.table.loading.value = true
 
                 const params: Record<string, string | ResourceStatus[] | number> = {
-                    project: projectStore.id,
+                    project: projectStore.project?.id || '',
                     library:
                         status === ResourceStatus.AnomalyBound || status === ResourceStatus.AnomalyUnbound
                             ? ''

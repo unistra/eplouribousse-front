@@ -43,9 +43,11 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading,
                 @add-invitation="onAddInvitation"
                 @add-user="(user) => onAddRole(user.id)"
                 @remove-invitation="
-                    async ({ email, role }) => await projectStore.removeInvitation(email, role, library.id)
+                    async ({ email, role }) => await projectStore.deleteProjectInvitation(email, role, library.id)
                 "
-                @remove-user="async (user) => await projectStore.removeRole(user.id, Roles.Instructor, library.id)"
+                @remove-user="
+                    async (user) => await projectStore.deleteProjectUserRole(user.id, Roles.Instructor, library.id)
+                "
             />
 
             <ProjectLibraryCardUserList
@@ -65,7 +67,7 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading,
         </QCardSection>
 
         <QCardActions
-            v-if="!summaryMode && projectStore.status === ProjectStatus.Draft"
+            v-if="!summaryMode && projectStore.project?.status === ProjectStatus.Draft"
             align="right"
         >
             <AtomicButton

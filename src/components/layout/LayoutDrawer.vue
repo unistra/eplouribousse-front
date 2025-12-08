@@ -16,6 +16,13 @@ const { user } = storeToRefs(userStore)
 
 const drawer = ref<boolean>(true)
 const collapsed = ref<boolean>(false)
+
+watch(
+    () => user.value,
+    async () => {
+        await userStore.getProjects()
+    },
+)
 </script>
 
 <template>

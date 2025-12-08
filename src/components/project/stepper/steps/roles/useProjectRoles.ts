@@ -5,7 +5,7 @@ import { useProjectStore } from '@/stores/projectStore.ts'
 
 export const useProjectRoles = () => {
     const { t } = useI18n()
-    const store = useProjectStore()
+    const projectStore = useProjectStore()
 
     const roles: {
         title: string
@@ -20,12 +20,12 @@ export const useProjectRoles = () => {
     const addUserLoadingBasedOnRole = ref<Roles | undefined>()
     const onAddInvitation = async (email: string, role: Roles) => {
         addUserLoadingBasedOnRole.value = role
-        await store.addInvitation(email, role)
+        await projectStore.postProjectInvitation(email, role)
         addUserLoadingBasedOnRole.value = undefined
     }
     const onAddRole = async (userId: string, role: Roles) => {
         addUserLoadingBasedOnRole.value = role
-        await store.addRole(userId, role)
+        await projectStore.postProjectUserRole(userId, role)
         addUserLoadingBasedOnRole.value = undefined
     }
 

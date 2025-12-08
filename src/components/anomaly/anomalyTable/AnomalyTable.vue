@@ -117,7 +117,7 @@ const { columns, anomalyDescription, anomalyOptions, onDeleteAnomaly, segmentAno
                             @click="emit('cancelAddAnomaly')"
                         />
                         <AtomicButton
-                            :color="!!anomalyType ? 'primary' : ''"
+                            :color="!!anomalyType ? 'primary' : undefined"
                             :label="t('common.save')"
                             :no-border="!!anomalyType"
                             type="submit"

@@ -1,12 +1,17 @@
-import type { User } from '#/user.ts'
+import type { User, UserSummarized } from '#/user.ts'
+import { faker } from '@faker-js/faker'
+
+export const createMockUserSummarized = (): UserSummarized => ({
+    id: faker.string.uuid(),
+    firstName: faker.person.firstName(),
+    lastName: faker.person.lastName(),
+    email: faker.internet.email(),
+    displayName: faker.person.fullName(),
+})
 
 export const createMockUser = (): User => ({
-    id: '950b2854-35f4-4883-825d-71475321647f',
-    email: 'test@test.com',
-    firstName: 'John',
-    lastName: 'Doe',
-    displayName: 'John Doe',
-    username: 'test@test.com',
+    ...createMockUserSummarized(),
+    username: faker.internet.username(),
     canAuthenticateLocally: true,
     isProjectCreator: false,
     isSuperuser: false,

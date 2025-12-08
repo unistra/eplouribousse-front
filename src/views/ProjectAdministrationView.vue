@@ -27,10 +27,10 @@ const { tabs, tab } = useProjectAdminTabExclusions()
             <BackButton />
             <h1>
                 {{ route.meta.title }}:
-                <span v-if="projectStore.isLoading">
+                <span v-if="projectStore.projectLoading || !projectStore.project">
                     <QSkeleton type="text" />
                 </span>
-                <span v-else>{{ projectStore.name }}</span>
+                <span v-else>{{ projectStore.project.name }}</span>
             </h1>
         </div>
         <QTabs
@@ -59,9 +59,12 @@ const { tabs, tab } = useProjectAdminTabExclusions()
                     <ProjectAdminTabInformation />
                 </template>
                 <template v-if="tab.name === ProjectAdministrationTab.Libraries">
-                    <div class="libraries">
+                    <div
+                        v-if="projectStore.project"
+                        class="libraries"
+                    >
                         <ProjectLibraryCard
-                            v-for="library in projectStore.libraries"
+                            v-for="library in projectStore.project.libraries"
                             :key="library.id"
                             :library="library"
                             :summary-mode="!projectStore.userIsAdmin"

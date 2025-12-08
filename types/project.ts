@@ -1,6 +1,6 @@
 import type { LibraryI } from './library'
 import { type ProjectPermissions } from '#/permissions'
-import { AnomalyType, CollectionPosition, ProjectStatus, ResourceStatus, Roles, Tab } from '&/project.ts'
+import { AnomalyType, CollectionPosition, ProjectStatus, ResourceStatus, Roles } from '&/project.ts'
 import type { UserSummarized } from '#/user.ts'
 
 export interface Project {
@@ -24,23 +24,16 @@ export interface ProjectDetails extends Project {
     libraries: ProjectLibrary[]
 }
 
-export interface ProjectStoreState extends ProjectDetails {
-    initialState: ProjectDetails
-    isLoading: boolean
-    tab: Tab
-    collectionsCount: CollectionsCountOfALibrary[]
-}
-
 export interface ProjectRole {
     user: UserSummarized
     role: Roles
-    libraryId?: LibraryI['id']
+    libraryId: LibraryI['id'] | null
 }
 
 export interface ProjectInvitation {
     email: string
     role: Roles
-    libraryId?: LibraryI['id']
+    libraryId: LibraryI['id'] | null
 }
 
 export type GetProjects = (
