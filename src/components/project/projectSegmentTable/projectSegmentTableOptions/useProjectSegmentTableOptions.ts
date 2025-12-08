@@ -9,20 +9,57 @@ import {
     useProjectSegmentTable,
 } from '@/components/project/projectSegmentTable/useProjectSegmentTable.ts'
 import { useResourcesStore } from '@/stores/resourcesStore.ts'
+import { axiosI } from '@/plugins/axios/axios.ts'
+import { useUtils } from '@/composables/useUtils.ts'
 
 export const useProjectSegmentTableOptions = () => {
+    const { useHandleError } = useUtils()
+    const { loading } = useProjectSegmentTable()
     const resourceStore = useResourceStore()
     const resourcesStore = useResourcesStore()
     const projectStore = useProjectStore()
     const userStore = useUserStore()
+
     const dialogUpdateSegment = ref<boolean>(false)
     const dialogDeleteSegment = ref<boolean>(false)
-    const { loading } = useProjectSegmentTable()
 
-    const orderSegment = async (row: Segment, direction: 'up' | 'down') => {
+    const orderSegment = async (segment: Segment, direction: 'up' | 'down') => {
+        if (direction == 'up' && segment.order === 1) return
+        if (direction == 'down' && segment.order === resourceStore.segments.length) return
+
         loading.value = true
-        await resourceStore.orderSegment(row, direction)
-        loading.value = false
+        try {
+            const response = await axiosI.patch<{
+                currentSegment: {
+                    id: string
+                    order: number
+                }
+                previousSegment: {
+                    id: string
+                    order: number
+                }
+                nextSegment: {
+                    id: string
+                    order: number
+                }
+            }>(`/segments/${segment.id}/${direction}/`)
+
+            const currentSegment = resourceStore.segments.find((el) => el.id === segment.id)
+            const targetSegment = resourceStore.segments.find(
+                (el) =>
+                    el.id === (direction === 'up' ? response.data.previousSegment.id : response.data.nextSegment.id),
+            )
+
+            if (currentSegment && targetSegment) {
+                currentSegment.order = response.data.currentSegment.order
+                targetSegment.order =
+                    direction === 'up' ? response.data.previousSegment.order : response.data.nextSegment.order
+            }
+        } catch (e) {
+            useHandleError(e)
+        } finally {
+            loading.value = false
+        }
     }
 
     const checkACL = (row: Segment, keys: string[]) => {
@@ -125,6 +162,15 @@ export const useProjectSegmentTableOptions = () => {
         return resourceStore.segments.find((el) => el.order === segment.order - 1)?.content === NULL_SEGMENT
     }
 
+    const deleteSegment = async (segmentId: string) => {
+        try {
+            await axiosI.delete(`/segments/${segmentId}/`)
+            await resourceStore.getSegments()
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
+
     return {
         displayReorderButtons,
         displayUpdateButton,
@@ -141,5 +187,6 @@ export const useProjectSegmentTableOptions = () => {
         areActionDisabled,
         checkACL,
         isPreviousSegmentANullSegment,
+        deleteSegment,
     }
 }
