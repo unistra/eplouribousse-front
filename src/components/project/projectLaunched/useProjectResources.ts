@@ -17,6 +17,8 @@ type useProjectResourceTab = {
 
 type StatusInfo = { message: string; icon: string; color?: string }
 
+export const RESOURCE_QUERY_PARAM = 'resource'
+
 export const useProjectResources = () => {
     const { t } = useI18n()
     const projectStore = useProjectStore()
