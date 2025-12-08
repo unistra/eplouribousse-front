@@ -1,18 +1,25 @@
 import { computed, type Ref, ref } from 'vue'
-import type { CollectionsInResource, InstructionTurn } from '#/project.ts'
+import type { CollectionsInResource, InstructionTurn, Segment } from '#/project.ts'
 import { useI18n } from 'vue-i18n'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { ResourceStatus } from '&/project.ts'
+import { axiosI } from '@/plugins/axios/axios.ts'
+import { useResourcesStore } from '@/stores/resourcesStore.ts'
+import { useUtils } from '@/composables/useUtils.ts'
 
 export const useProjectInstruction = (dialogModal: Ref<boolean> | undefined) => {
     const { t } = useI18n()
+    const { useHandleError } = useUtils()
+    const resourcesStore = useResourcesStore()
     const resourceStore = useResourceStore()
     const projectStore = useProjectStore()
 
+    // REFS
     const dialogCreateSegment = ref<boolean>(false)
     const insertAfter = ref<string | undefined>()
 
+    // COMPUTED
     const turnsWithNames = computed(() => {
         if (!projectStore.project || !resourceStore.resource) return null
         if (resourceStore.resource.status === ResourceStatus.Positioning) return null
@@ -33,11 +40,6 @@ export const useProjectInstruction = (dialogModal: Ref<boolean> | undefined) => 
         )
     })
 
-    const onConfirmAnomaliesDeclaration = async () => {
-        await resourceStore.finishTurn()
-        if (dialogModal) dialogModal.value = false
-    }
-
     const displayConfirmNextTurnWithoutAnySegment = computed<boolean>(() => {
         const statusString = resourceStore.statusName === 'boundCopies' ? 'bound' : 'unbound'
         return !resourceStore.segments.find((el) => {
@@ -52,6 +54,28 @@ export const useProjectInstruction = (dialogModal: Ref<boolean> | undefined) => 
                 el.id === resourceStore.resource?.instructionTurns?.[`${resourceStore.statusName}`].turns[0].collection,
         )
     })
+
+    // FUNCTIONS
+    const finishTurn = async () => {
+        try {
+            if (!resourceStore.resource?.shouldInstruct || !resourceStore.resource?.instructionTurns)
+                throw new Error('Instruction is not allowed')
+            const collectionId =
+                resourceStore.resource && resourceStore.resource.instructionTurns
+                    ? resourceStore.resource.instructionTurns[resourceStore.statusName].turns[0].collection
+                    : undefined
+
+            await axiosI.post<Segment>(`/collections/${collectionId}/finish_turn/`)
+            await resourcesStore.getResources({ status: [resourceStore.resource?.status] })
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
+
+    const onConfirmAnomaliesDeclaration = async () => {
+        await finishTurn()
+        if (dialogModal) dialogModal.value = false
+    }
 
     return {
         dialogCreateSegment,
