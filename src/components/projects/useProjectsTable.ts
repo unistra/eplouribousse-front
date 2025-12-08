@@ -71,7 +71,7 @@ export const useProjectsTable = (props?: ProjectsTableProps) => {
 
         if (!options) pagination.value.page = 1
 
-        const params = {
+        const params: Parameters<typeof projectsStore.getProjects>[0] = {
             ordering: `${options ? (options.pagination.descending ? '-' : '') : pagination.value.descending ? '-' : ''}${options?.pagination.sortBy || pagination.value.sortBy}`,
             page: options?.pagination.page || pagination.value.page,
             page_size: options?.pagination.rowsPerPage || pagination.value.rowsPerPage,

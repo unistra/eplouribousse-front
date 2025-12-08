@@ -2,45 +2,41 @@
 import { onMounted } from 'vue'
 import { useProjectResources } from '@/components/project/projectLaunched/useProjectResources.ts'
 import { useI18n } from 'vue-i18n'
-import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { Roles, Tab } from '&/project.ts'
-import type { QTable } from 'quasar'
 import ProjectResource from '@/components/project/projectLaunched/ProjectResource/ProjectResource.vue'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/userStore.ts'
+import { useResourcesStore } from '@/stores/resourcesStore.ts'
 
-const resourceStore = useResourceStore()
+const resourcesStore = useResourcesStore()
 const projectStore = useProjectStore()
 const route = useRoute()
 
 const {
     tabs,
+    resourceIdSelected,
     resourceDialog,
-    table,
+    columns,
     selectDefaultLibrary,
-    onRowClick,
+    openResourceDialog,
     fetchResources,
     selects,
     disableLibrarySelectedSelect,
     computeStatusInfos,
     selectFilterOnPositioning,
-    positioningFilter,
 } = useProjectResources()
 const { t } = useI18n()
 const userStore = useUserStore()
 
 onMounted(async () => {
     selectDefaultLibrary()
-    resourceStore.libraryIdComparedSelected = ''
+    resourcesStore.libraryIdComparedSelected = ''
     await fetchResources()
-    if (route.query.resourceId) {
-        resourceStore.resourceSelectedId = route.query.resourceId as string
-        resourceDialog.value = true
-    }
+    if (route.query.resourceId) openResourceDialog(route.query.resourceId as string)
 })
 </script>
 
@@ -85,8 +81,8 @@ onMounted(async () => {
                         `${el.name}${projectStore.isRole(Roles.Instructor, el.id) ? ' - ' + t('project.resources.youAreInstructor') : ''}`
                 "
                 option-value="id"
-                :options="select.options"
-                @update:model-value="select.callback"
+                :options="select.options.value"
+                @update:model-value="fetchResources()"
             />
         </div>
         <div>
@@ -96,7 +92,7 @@ onMounted(async () => {
                 dense
                 inline-label
                 no-caps
-                @update:model-value="fetchResources(undefined, true)"
+                @update:model-value="fetchResources()"
             >
                 <QTab
                     v-for="(value, index) in tabs"
@@ -118,7 +114,7 @@ onMounted(async () => {
             >
                 <AtomicSelect
                     v-if="projectStore.tab === Tab.Positioning"
-                    v-model="positioningFilter"
+                    v-model="resourcesStore.positioningFilter"
                     class="filter-positioning"
                     dense
                     :disable="disableLibrarySelectedSelect"
@@ -129,25 +125,25 @@ onMounted(async () => {
                     option-label="label"
                     option-value="value"
                     :options="selectFilterOnPositioning"
-                    @update:model-value="fetchResources(undefined, false)"
+                    @update:model-value="fetchResources()"
                 />
                 <QTable
                     ref="qTable"
-                    v-model:pagination="table.pagination.value"
+                    v-model:pagination="resourcesStore.pagination"
                     binary-state-sort
-                    :columns="table.columns as QTable['columns']"
-                    :filter="table.filter"
+                    :columns
+                    :filter="resourcesStore.filter"
                     flat
-                    :loading="table.loading.value"
+                    :loading="resourcesStore.resourcesLoading"
                     row-key="id"
-                    :rows="resourceStore.getAll(table)"
+                    :rows="resourcesStore.resources"
                     :rows-per-page-options="[5, 10, 20, 50, 100]"
                     @request="fetchResources"
-                    @row-click="onRowClick"
+                    @row-click="(_, row) => openResourceDialog(row.id)"
                 >
                     <template #top-right>
                         <AtomicInput
-                            v-model="table.filter.value"
+                            v-model="resourcesStore.filter"
                             clearable
                             debounce="1500"
                             dense
@@ -183,7 +179,10 @@ onMounted(async () => {
                         </QTd>
                     </template>
                 </QTable>
-                <ProjectResource v-model="resourceDialog" />
+                <ProjectResource
+                    v-model="resourceDialog"
+                    :resource-id-selected="resourceIdSelected"
+                />
             </QTabPanel>
         </QTabPanels>
     </div>

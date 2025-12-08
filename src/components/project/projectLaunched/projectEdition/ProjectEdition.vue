@@ -8,21 +8,26 @@ import { useProjectEdition } from '@/components/project/projectLaunched/projectE
 import { onMounted } from 'vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useUtils } from '@/composables/useUtils.ts'
+import { useResourcesStore } from '@/stores/resourcesStore.ts'
 
 const resourceStore = useResourceStore()
+const resourcesStore = useResourcesStore()
 const { t } = useI18n()
 
 const { selectCollectionToShowEdition, motherCollectionString, pdfPreviewURL } = useProjectEdition()
 
 onMounted(() => {
     selectCollectionToShowEdition.value = resourceStore.collectionsSortedByOrderInInstructionTurns.filter((el) =>
-        resourceStore.libraryIdSelected ? el.library === resourceStore.libraryIdSelected : true,
+        resourcesStore.libraryIdSelected ? el.library === resourcesStore.libraryIdSelected : true,
     )[0]
 })
 </script>
 
 <template>
-    <div class="edition">
+    <div
+        v-if="resourceStore.resource"
+        class="edition"
+    >
         <div class="generic-info">
             <h3>{{ t('common.info', 2) }}</h3>
             <div class="other-infos">
@@ -36,7 +41,7 @@ onMounted(() => {
                     class="chip-label-value"
                 >
                     {{ t(`project.resources.status.${ctrl}`) }}:
-                    <span>{{ useUtils().useIntlDateTimeFormat(resourceStore.validations[ctrl]) || '-' }}</span>
+                    <span>{{ useUtils().useIntlDateTimeFormat(resourceStore.resource.validations[ctrl]) || '-' }}</span>
                 </QChip>
             </div>
             <QList class="collection-lists">
@@ -107,7 +112,9 @@ onMounted(() => {
                         :option-value="(el: CollectionsInResource) => el"
                         :options="
                             resourceStore.collectionsSortedByOrderInInstructionTurns.filter((el) =>
-                                resourceStore.libraryIdSelected ? el.library === resourceStore.libraryIdSelected : true,
+                                resourcesStore.libraryIdSelected
+                                    ? el.library === resourcesStore.libraryIdSelected
+                                    : true,
                             )
                         "
                     />

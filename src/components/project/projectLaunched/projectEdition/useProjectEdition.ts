@@ -15,9 +15,9 @@ export const useProjectEdition = () => {
     const { t, locale } = useI18n()
 
     const pdfPreviewURL = (preview: boolean = true) => {
-        if (!resourceStore.id || !state.selectCollectionToShowEdition?.id) return ''
+        if (!resourceStore.resource?.id || !state.selectCollectionToShowEdition?.id) return ''
 
-        const url = new URL(`${backendBaseURL}/api/resources/${resourceStore.id}/resultant-report/`)
+        const url = new URL(`${backendBaseURL}/api/resources/${resourceStore.resource.id}/resultant-report/`)
         url.search = new URLSearchParams({
             collection: state.selectCollectionToShowEdition?.id,
             preview: preview.toString(),

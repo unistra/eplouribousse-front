@@ -31,12 +31,13 @@ const {
     displayNewSegmentButton,
     isHighlightedRow,
     isSemiHighlightedRow,
+    getAnomalies,
 } = useProjectSegmentTable()
 
 onMounted(async () => {
     loading.value = true
-    await resourceStore.fetchSegments()
-    await resourceStore.fetchAnomalies()
+    await resourceStore.getSegments()
+    await getAnomalies()
     loading.value = false
 })
 </script>
@@ -154,7 +155,7 @@ onMounted(async () => {
             </QTr>
         </template>
         <template
-            v-if="resourceStore.shouldInstruct && projectStore.userIsInstructorForLibrarySelected"
+            v-if="resourceStore.resource?.shouldInstruct && projectStore.userIsInstructorForLibrarySelected"
             #no-data="{ message }"
         >
             <div class="no-data">

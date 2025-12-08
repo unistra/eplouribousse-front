@@ -10,22 +10,59 @@ import { useProjectStore } from '@/stores/projectStore.ts'
 import ProjectAnomalies from '@/components/project/projectLaunched/projectAnomalies/ProjectAnomalies.vue'
 import { Tab } from '&/project.ts'
 import ProjectEdition from '@/components/project/projectLaunched/projectEdition/ProjectEdition.vue'
+import { useResourcesStore } from '@/stores/resourcesStore.ts'
+import { axiosI } from '@/plugins/axios/axios.ts'
+import type { CollectionsInResource, CollectionsWithResource } from '#/project.ts'
+import { useUtils } from '@/composables/useUtils.ts'
+
+const props = defineProps<{
+    resourceIdSelected: string
+}>()
 
 const { t } = useI18n()
+const { useHandleError } = useUtils()
 const resourceStore = useResourceStore()
+const resourcesStore = useResourcesStore()
 const projectStore = useProjectStore()
 
 const dialogModal = defineModel<boolean>()
 provide('dialogModal', dialogModal)
 const dialogLoading = ref<boolean>(false)
 
+const getResourceAndRelatedCollections = async () => {
+    try {
+        const response = await axiosI.get<CollectionsWithResource>(
+            `/resources/${props.resourceIdSelected}/collections/`,
+            {
+                params: {
+                    project_id: projectStore.project?.id,
+                },
+            },
+        )
+
+        resourceStore.resource = response.data.resource
+
+        resourceStore.collections = response.data.collections.sort(
+            (a: CollectionsInResource, b: CollectionsInResource) => {
+                if (!resourcesStore.libraryIdSelected) return 0
+                const aMatch = a.library === resourcesStore.libraryIdSelected
+                const bMatch = b.library === resourcesStore.libraryIdSelected
+                return bMatch ? (aMatch ? 0 : 1) : aMatch ? -1 : 0
+            },
+        )
+    } catch (e) {
+        useHandleError(e)
+    }
+}
+
 const onBeforeShow = async () => {
     dialogLoading.value = true
-    if (resourceStore.resourceSelectedId) {
-        resourceStore.collections = []
-        resourceStore.segments = []
-        await resourceStore.fetchResourceAndCollections(resourceStore.resourceSelectedId)
-    }
+
+    resourceStore.collections = []
+    resourceStore.segments = []
+
+    await getResourceAndRelatedCollections()
+
     dialogLoading.value = false
 }
 </script>
@@ -54,7 +91,7 @@ const onBeforeShow = async () => {
                 <QSpinner size="2rem" />
             </QCardSection>
             <QCardSection
-                v-else-if="!resourceStore.resourceSelectedId"
+                v-else-if="resourceIdSelected === ''"
                 class="centered"
             >
                 <p>{{ t('errors.unknownRetry') }}</p>
@@ -64,27 +101,27 @@ const onBeforeShow = async () => {
                     <template v-if="projectStore.tab === Tab.Edition">
                         <h2>
                             {{
-                                projectStore.project.libraries.find((el) => el.id === resourceStore.libraryIdSelected)
+                                projectStore.project.libraries.find((el) => el.id === resourcesStore.libraryIdSelected)
                                     ? projectStore.project.libraries.find(
-                                          (el) => el.id === resourceStore.libraryIdSelected,
+                                          (el) => el.id === resourcesStore.libraryIdSelected,
                                       )?.name + ':'
                                     : ''
                             }}
                             {{ t('project.resources.resultant.title') }}
                         </h2>
-                        <h3>{{ resourceStore.title }}</h3>
+                        <h3>{{ resourceStore.resource?.title }}</h3>
                     </template>
-                    <h2 v-else>{{ resourceStore.title }}</h2>
+                    <h2 v-else>{{ resourceStore.resource?.title }}</h2>
 
                     <QChip class="chip-label-value">
-                        {{ t('project.resources.code') }}: <span>{{ resourceStore.code || '-' }}</span>
+                        {{ t('project.resources.code') }}: <span>{{ resourceStore.resource?.code || '-' }}</span>
                     </QChip>
                     <QChip class="chip-label-value">
-                        ISSN: <span>{{ resourceStore.issn || '-' }}</span>
+                        ISSN: <span>{{ resourceStore.resource?.issn || '-' }}</span>
                     </QChip>
                     <QChip class="chip-label-value">
                         {{ t('project.resources.publicationHistory') }}:
-                        <span>{{ resourceStore.publicationHistory || '-' }}</span>
+                        <span>{{ resourceStore.resource?.publicationHistory || '-' }}</span>
                     </QChip>
                 </QCardSection>
                 <QCardSection class="content">

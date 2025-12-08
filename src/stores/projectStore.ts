@@ -9,17 +9,18 @@ import {
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { useUserStore } from '@/stores/userStore.ts'
 import { Roles, Tab } from '&/project.ts'
-import { useResourceStore } from '@/stores/resourceStore.ts'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useUtils } from '@/composables/useUtils.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
+import { useResourcesStore } from '@/stores/resourcesStore.ts'
 
 export const useProjectStore = defineStore('project', () => {
     const { t } = useI18n()
     const { useHandleError } = useUtils()
-    const userStore = useUserStore()
     const { notify } = useComposableQuasar()
+    const userStore = useUserStore()
+    const resourcesStore = useResourcesStore()
 
     // STATE ========================
     const project = ref<ProjectDetails>()
@@ -43,12 +44,11 @@ export const useProjectStore = defineStore('project', () => {
     }) // TODO: delete and replace by isRole
 
     const userIsInstructorForLibrarySelected = computed((): boolean => {
-        const resourceStore = useResourceStore()
         return !!project.value?.roles.find(
             (el) =>
                 el.user.id === userStore.user?.id &&
                 el.role === Roles.Instructor &&
-                el.libraryId === resourceStore.libraryIdSelected,
+                el.libraryId === resourcesStore.libraryIdSelected,
         )
     })
 
@@ -235,6 +235,7 @@ export const useProjectStore = defineStore('project', () => {
         userIsController,
         userIsInstructorForLibrarySelected,
         // Actions
+        //// API
         getProject,
         postProject,
         patchProjectTitleAndDescription,
@@ -242,6 +243,7 @@ export const useProjectStore = defineStore('project', () => {
         deleteProjectUserRole,
         postProjectInvitation,
         deleteProjectInvitation,
+        //// Utils
         isRole,
     }
 })

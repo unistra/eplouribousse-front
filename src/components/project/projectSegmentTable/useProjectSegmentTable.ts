@@ -2,10 +2,12 @@ import { computed, reactive, ref, toRefs } from 'vue'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import type { QTableColumn } from 'quasar'
 import { useI18n } from 'vue-i18n'
-import type { Segment } from '#/project.ts'
+import type { Anomaly, Segment } from '#/project.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { Tab } from '&/project.ts'
 import { useProjectEdition } from '@/components/project/projectLaunched/projectEdition/useProjectEdition.ts'
+import { axiosI } from '@/plugins/axios/axios.ts'
+import { useUtils } from '@/composables/useUtils.ts'
 
 interface UseProjectSegmentTableState {
     loading: boolean
@@ -18,10 +20,55 @@ const state = reactive<UseProjectSegmentTableState>({
 export const NULL_SEGMENT = '~~Nihil~~'
 
 export const useProjectSegmentTable = () => {
+    const { t } = useI18n()
+    const { useHandleError } = useUtils()
     const resourceStore = useResourceStore()
     const projectStore = useProjectStore()
-    const { t } = useI18n()
+    const { selectCollectionToShowEdition } = useProjectEdition()
+
+    // REFS ===================
     const improvedSegmentIdHovered = ref<string | null>(null)
+    const dialogCreateSegment = ref<boolean>(false)
+    const insertAfter = ref<string>()
+
+    // COMPUTED ===================
+    const orderedRows = computed<Segment[]>(() => [...resourceStore.segments].sort((a, b) => a.order - b.order))
+
+    const displayNewSegmentButton = computed(
+        () =>
+            (resourceStore.resource?.shouldInstruct &&
+                projectStore.userIsInstructorForLibrarySelected &&
+                (projectStore.tab === Tab.InstructionBound || projectStore.tab === Tab.InstructionUnbound)) ||
+            (projectStore.userIsAdmin && projectStore.tab === Tab.Anomalies),
+    )
+
+    // FUNCTIONS ===================
+    const getAnomalies = async () => {
+        try {
+            const response = await axiosI.get<Anomaly[]>(`/anomalies/`, {
+                params: {
+                    resource: resourceStore.resource?.id,
+                },
+            })
+
+            resourceStore.anomalies = response.data
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
+
+    // UTILS ===================
+    const isHighlightedRow = (collectionId: string) => {
+        if (!selectCollectionToShowEdition.value) return false
+        return collectionId === selectCollectionToShowEdition.value?.id
+    }
+
+    const isSemiHighlightedRow = (improvedSegmentId: string) => {
+        if (!selectCollectionToShowEdition.value) return false
+
+        const segment = resourceStore.segments.find((segment) => segment.id === improvedSegmentId)
+        return segment?.collection === selectCollectionToShowEdition.value.id
+    }
 
     const isSegmentTypeSameAsInstructionTab = (segment: Segment) => {
         return (
@@ -42,17 +89,7 @@ export const useProjectSegmentTable = () => {
         )
     }
 
-    const displayNewSegmentButton = computed(
-        () =>
-            (resourceStore.shouldInstruct &&
-                projectStore.userIsInstructorForLibrarySelected &&
-                (projectStore.tab === Tab.InstructionBound || projectStore.tab === Tab.InstructionUnbound)) ||
-            (projectStore.userIsAdmin && projectStore.tab === Tab.Anomalies),
-    )
-
-    const dialogCreateSegment = ref<boolean>(false)
-    const insertAfter = ref<string>()
-
+    // TABLE RELATED ===================
     const columns: QTableColumn[] = [
         {
             name: 'order',
@@ -153,24 +190,9 @@ export const useProjectSegmentTable = () => {
         })
     }
 
-    const orderedRows = computed<Segment[]>(() => [...resourceStore.segments].sort((a, b) => a.order - b.order))
-
     const openDialogCreateSegment = (insertAfterId: string | undefined = undefined) => {
         dialogCreateSegment.value = true
         insertAfter.value = insertAfterId
-    }
-
-    const { selectCollectionToShowEdition } = useProjectEdition()
-
-    const isHighlightedRow = (collectionId: string) => {
-        if (!selectCollectionToShowEdition.value) return false
-        return collectionId === selectCollectionToShowEdition.value?.id
-    }
-    const isSemiHighlightedRow = (improvedSegmentId: string) => {
-        if (!selectCollectionToShowEdition.value) return false
-
-        const segment = resourceStore.segments.find((segment) => segment.id === improvedSegmentId)
-        return segment?.collection === selectCollectionToShowEdition.value.id
     }
 
     return {
@@ -185,5 +207,6 @@ export const useProjectSegmentTable = () => {
         displayNewSegmentButton,
         isHighlightedRow,
         isSemiHighlightedRow,
+        getAnomalies,
     }
 }

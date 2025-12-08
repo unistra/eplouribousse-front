@@ -28,6 +28,7 @@ const {
     dialogUpdateSegment,
     dialogDeleteSegment,
     areActionDisabled,
+    deleteSegment,
     isPreviousSegmentANullSegment,
 } = useProjectSegmentTableOptions()
 </script>
@@ -110,7 +111,7 @@ const {
                         </QItemSection>
                         <AtomicConfirmationDialog
                             v-model="dialogDeleteSegment"
-                            @confirm="resourceStore.deleteSegment(row.id)"
+                            @confirm="deleteSegment(row.id)"
                         />
                         <QTooltip
                             v-if="areActionDisabled"
@@ -156,7 +157,7 @@ const {
             />
             <AtomicConfirmationDialog
                 v-model="dialogDeleteSegment"
-                @confirm="resourceStore.deleteSegment(row.id)"
+                @confirm="deleteSegment(row.id)"
             />
         </AtomicButton>
     </div>
