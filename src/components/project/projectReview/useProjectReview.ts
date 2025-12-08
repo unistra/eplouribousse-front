@@ -61,7 +61,7 @@ export const useProjectReview = () => {
             await axiosI.patch<{ activeAfter: string }>(`/projects/${projectStore.project?.id}/launch/`, {
                 active_after: date.value,
             })
-            if (route.query.id) await projectStore.getProject(route.query.id as string)
+            if (route.params.id) await projectStore.getProject(route.params.id as string)
             dateModal.value = false
         } catch (e) {
             useHandleError(e)
