@@ -35,7 +35,7 @@ const {
 
 onMounted(async () => {
     loading.value = true
-    await resourceStore.fetchSegments()
+    await resourceStore.getSegments()
     await resourceStore.fetchAnomalies()
     loading.value = false
 })

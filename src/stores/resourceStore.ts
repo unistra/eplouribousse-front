@@ -18,14 +18,15 @@ const { t } = i18n.global
 export const useResourceStore = defineStore('resource', () => {
     const { useHandleError } = useUtils()
 
-    // RESOURCE RELATED ================
     // STATE
     const resource = ref<Resource>()
     const initialResource = ref<Resource>()
 
-    // COLLECTION RELATED ================
-    // STATE
     const collections = ref<CollectionsInResource[]>([])
+
+    const segments = ref<Segment[]>([])
+
+    const anomalies = ref<Anomaly[]>([])
 
     // GETTERS
     const collectionsSortedByOrderInInstructionTurns = computed(() => {
@@ -43,28 +44,18 @@ export const useResourceStore = defineStore('resource', () => {
             .filter((item): item is (typeof collections.value)[0] => item !== undefined)
     })
 
-    // SEGMENTS RELATED ================
-    const segments = ref<Segment[]>([])
-
-    // ANOMALIES RELATED ================
-    const anomalies = ref<Anomaly[]>([])
-
     const anomaliesUnfixed = computed<Anomaly[]>(() => {
         if (!resource.value) return []
         return anomalies.value.filter((anomaly) => !anomaly.fixed)
     })
 
-    // ====================================================================================
-
-    // GETTERS
     const statusName = computed<'boundCopies' | 'unboundCopies'>(() => {
         if (!resource.value) return 'boundCopies'
         return resource.value.status <= ResourceStatus.ControlBound ? 'boundCopies' : 'unboundCopies'
     })
 
     // ACTIONS
-
-    const fetchSegments = async () => {
+    const getSegments = async () => {
         try {
             const response = await axiosI.get(`/segments/`, { params: { resource_id: resource.value?.id } })
 
@@ -111,7 +102,7 @@ export const useResourceStore = defineStore('resource', () => {
     const deleteSegment = async (segmentId: string) => {
         try {
             await axiosI.delete(`/segments/${segmentId}/`)
-            await fetchSegments()
+            await getSegments()
         } catch (e) {
             useHandleError(e)
         }
@@ -130,7 +121,7 @@ export const useResourceStore = defineStore('resource', () => {
                 ...(afterSegment && { after_segment: afterSegment }),
             })
             if (afterSegment) {
-                await fetchSegments()
+                await getSegments()
             } else {
                 segments.value.push(response.data)
             }
@@ -253,7 +244,7 @@ export const useResourceStore = defineStore('resource', () => {
         anomaliesUnfixed,
         collectionsSortedByOrderInInstructionTurns,
         // ACTIONS
-        fetchSegments,
+        getSegments,
         orderSegment,
         deleteSegment,
         createSegment,
