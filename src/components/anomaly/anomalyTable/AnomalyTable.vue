@@ -16,15 +16,22 @@ import { useAnomalyStore } from '@/stores/anomalyStore.ts'
 import { useUtils } from '@/composables/useUtils.ts'
 
 const { t } = useI18n()
-const resourceStore = useResourceStore()
 const projectStore = useProjectStore()
 const anomalyStore = useAnomalyStore()
 const userStore = useUserStore()
 const props = defineProps<AnomalyTableProps>()
 const emit = defineEmits<AnomalyTableEmits>()
 
-const { columns, anomalyDescription, anomalyOptions, onDeleteAnomaly, segmentAnomalies, onPostAnomaly, anomalyType } =
-    useAnomalyTable(props, emit)
+const {
+    columns,
+    anomalyDescription,
+    anomalyOptions,
+    onDeleteAnomaly,
+    segmentAnomalies,
+    onPostAnomaly,
+    anomalyType,
+    fixAnomaly,
+} = useAnomalyTable(props, emit)
 </script>
 
 <template>
@@ -68,7 +75,7 @@ const { columns, anomalyDescription, anomalyOptions, onDeleteAnomaly, segmentAno
                 <AtomicButton
                     v-if="!row.fixed && projectStore.userIsAdmin && projectStore.tab === Tab.Anomalies"
                     :label="t('project.anomaly.fixBtn')"
-                    @click="resourceStore.fixAnomaly(row.id)"
+                    @click="fixAnomaly(row.id)"
                 />
                 <AtomicButton
                     v-else-if="row.createdBy.id === userStore.user?.id && projectStore.tab !== Tab.Anomalies"
