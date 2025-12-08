@@ -31,12 +31,13 @@ const {
     displayNewSegmentButton,
     isHighlightedRow,
     isSemiHighlightedRow,
+    getAnomalies,
 } = useProjectSegmentTable()
 
 onMounted(async () => {
     loading.value = true
     await resourceStore.getSegments()
-    await resourceStore.fetchAnomalies()
+    await getAnomalies()
     loading.value = false
 })
 </script>
