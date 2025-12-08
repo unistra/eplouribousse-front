@@ -14,7 +14,7 @@ router.beforeEach(async (to) => {
         await useAuth().logout({ name: 'login', query: { redirect: to.fullPath } })
     }
 
-    document.title = to.meta.title || import.meta.env.VITE_SITE_NAME
+    document.title = (to.meta.title as string) || 'Eplouribousse'
 })
 
 export default router

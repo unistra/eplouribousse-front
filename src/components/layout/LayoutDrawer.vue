@@ -6,7 +6,6 @@ import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores/globalStore.ts'
 import DrawerItem from '../utils/drawerItem/DrawerItem.vue'
 import AtomicButton from '../atomic/AtomicButton.vue'
-import { Roles } from '&/project'
 
 const { t } = useI18n()
 const userStore = useUserStore()
