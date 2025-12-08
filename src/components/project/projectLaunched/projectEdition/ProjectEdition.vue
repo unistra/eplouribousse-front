@@ -12,7 +12,7 @@ import { useUtils } from '@/composables/useUtils.ts'
 const resourceStore = useResourceStore()
 const { t } = useI18n()
 
-const { selectCollectionToShowEdition, motherCollectionString, pdfPreviewURL, storageLocation } = useProjectEdition()
+const { selectCollectionToShowEdition, motherCollectionString, pdfPreviewURL } = useProjectEdition()
 
 onMounted(() => {
     selectCollectionToShowEdition.value = resourceStore.collectionsSortedByOrderInInstructionTurns.filter((el) =>
