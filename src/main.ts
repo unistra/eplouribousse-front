@@ -29,7 +29,7 @@ const app = createApp(App)
 const MatomoConfig = MatomoConfigJson as unknown as MatomoConfigType
 const tenantSubdomain = location.hostname.match(/^([^.]+)\.eplouribousse\.fr$/)?.[1]
 
-if (import.meta.env.VITE_ENV === 'prod' && tenantSubdomain && MatomoConfig[tenantSubdomain]) {
+if (tenantSubdomain && MatomoConfig[tenantSubdomain]) {
     app.use(VueMatomo, {
         router,
         host: MatomoConfig[tenantSubdomain].server,
