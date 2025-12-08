@@ -4,10 +4,10 @@ import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import router from '@/router'
-import { useUserStore } from '@/stores/userStore.ts'
 import { Roles } from '&/project.ts'
 import { useProjectLibraryCollection } from '@/components/project/libraries/card/collectionField/useProjectLibraryCollection.ts'
 import { useRoute } from 'vue-router'
+import { useProjectsStore } from '@/stores/projectsStore.ts'
 
 export const checkValidityProjectStepper = () => {
     const projectStore = useProjectStore()
@@ -83,8 +83,8 @@ export const useProjectStepper = () => {
                 return
             }
             if (route.name === 'newProject') {
-                const userStore = useUserStore()
-                await userStore.getProjects()
+                const projectsStore = useProjectsStore()
+                await projectsStore.getUserProjects()
                 await projectStore.fetchProjectById(projectStore.id)
                 await router.push({ name: 'project', params: { id: projectStore.id }, query: { page: 2 } })
                 return

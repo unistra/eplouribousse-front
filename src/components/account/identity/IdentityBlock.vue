@@ -34,7 +34,7 @@ onMounted(() => {
 const saveFirstName = async (value: string) => {
     if (value === userStore.user?.firstName) return
     try {
-        await userStore.updateProfile({ firstName: value })
+        await userStore.patchUser({ firstName: value })
     } catch (err) {
         console.error('Error updating first name:', err)
     }
@@ -43,7 +43,7 @@ const saveFirstName = async (value: string) => {
 const saveLastName = async (value: string) => {
     if (value === userStore.user?.lastName) return
     try {
-        await userStore.updateProfile({ lastName: value })
+        await userStore.patchUser({ lastName: value })
     } catch (err) {
         console.error('Error updating last name:', err)
     }

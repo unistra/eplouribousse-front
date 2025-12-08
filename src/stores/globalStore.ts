@@ -2,18 +2,21 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import type { Tenant } from '#/global'
-import { Notify } from 'quasar'
+import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
+import { useI18n } from 'vue-i18n'
 
-export const useGlobalStore = defineStore('globalStore', () => {
-    const tenant = ref<Tenant | undefined>(undefined)
+export const useGlobalStore = defineStore('global', () => {
+    const { notify } = useComposableQuasar()
+    const { t } = useI18n()
+    const tenant = ref<Tenant>()
     const fetchTenant = async () => {
         try {
             const response = await axiosI.get<Tenant>('/consortium/')
             tenant.value = response.data
         } catch {
-            Notify.create({
+            notify({
                 type: 'negative',
-                message: 'Error while fetching tenant',
+                message: t('errors.tenant.get'),
             })
         }
     }
