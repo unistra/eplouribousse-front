@@ -7,9 +7,6 @@ export const usePasswordField = () => {
     const defaultLabel = t('common.password')
     const isPasswordVisible = ref<boolean>(false)
     const icon = computed(() => (isPasswordVisible.value ? 'mdi-eye-off-outline' : 'mdi-eye-outline'))
-    const passwordVisibilityLabel = computed(
-        () => `forms.password.isVisibleTooltip.${isPasswordVisible.value.toString()}`,
-    )
     const passwordStrength = ref(0)
     const isInputFocused = ref<boolean>(false)
 
@@ -17,7 +14,6 @@ export const usePasswordField = () => {
         defaultLabel,
         isPasswordVisible,
         icon,
-        passwordVisibilityLabel,
         passwordStrength,
         isInputFocused,
     }

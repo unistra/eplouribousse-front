@@ -18,8 +18,7 @@ const props = defineProps<{
     autofocus?: boolean
     rules?: ValidationRule[]
 }>()
-const { isInputFocused, passwordStrength, isPasswordVisible, passwordVisibilityLabel, defaultLabel, icon } =
-    usePasswordField()
+const { isInputFocused, passwordStrength, isPasswordVisible, defaultLabel, icon } = usePasswordField()
 
 const emit = defineEmits<{
     'update:modelValue': [value: string]
@@ -63,7 +62,7 @@ watch(
                     @click="() => (isPasswordVisible = !isPasswordVisible)"
                 >
                     <QTooltip>
-                        {{ t(passwordVisibilityLabel) }}
+                        {{ t(`forms.password.isVisibleTooltip.${isPasswordVisible.toString()}`) }}
                     </QTooltip>
                 </AtomicButton>
             </template>

@@ -49,6 +49,7 @@ vi.mock('vue-router', async () => {
         useRoute: () => ({
             query: mock.routeQuery,
         }),
+        useRouter: () => undefined,
     }
 })
 

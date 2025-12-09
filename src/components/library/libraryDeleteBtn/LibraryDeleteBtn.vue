@@ -31,7 +31,7 @@ onMounted(() => {
     >
         <QBtn
             :icon="'mdi-delete'"
-            :label="t('libraries.form.delete')"
+            :label="t('common.delete')"
             @click="dialog.open"
         />
     </slot>

@@ -1,5 +1,4 @@
 {
-    "homePage": "Accueil",
     "home": {
         "title": "Bienvenue sur Eplouribousse",
         "description": "L'application web pour le dédoublonnage des périodiques",
@@ -37,6 +36,7 @@
         }
     },
     "navigation": {
+        "404": "La page que vous demandez n'existe pas",
         "auth": {
             "login": "@:auth.login.i",
             "logout": "@:auth.logout",
@@ -60,64 +60,45 @@
             "dashboard": "Tableau de bord"
         },
         "myAccount": "Mon @.lower:common.account",
-        "search": "Recherche",
-        "supervision": "Supervision",
         "userGuide": "Documentation",
         "contactAdmin": "Contact",
-        "diffusionList": "Liste de diffusion",
         "projectAdministration": "Administration du projet",
-        "newProjectRequirements": "Création d'un nouveau projet",
-        "newProject": "Nouveau projet",
         "tenantAdmin": "Administration du tenant",
-        "hasNoPerm": "Vous avez été redirigé car vous n'avez pas accès à cette page",
         "collapse": "Masquer",
         "expand": "Afficher",
-        "noProject": "Aucun projet",
-        "404": "La page que vous demandez n'existe pas"
+        "noProject": "Aucun projet"
     },
     "roles": {
         "superUser": "Super utilisateur du tenant",
         "projectCreator": "Monteur de projet",
         "projectAdmin": "Administrateurs",
         "projectManager": "Pilotes de projet",
-        "instructor": "Instructeurs",
         "controller": "Contrôleurs",
         "guest": "Invités"
     },
     "settings": {
         "core": "Paramètres",
-        "darkMode": "Thème sombre",
         "account": "Mon compte",
         "changePassword": "Changer mon mot de passe"
     },
     "newProject": {
-        "title": "Création d'un nouveau projet",
         "buttons": {
             "create": "Créer {article} projet",
             "modify": "Modifier le projet",
             "ready": "Je suis prêt",
             "passToReview": "Passer le projet en review"
-        },
-        "creation": {
-            "title": "Création d'un projet",
-            "name": "Nom du projet",
-            "userAlreadyAssigned": "L'utilisateur a déjà été assigné",
-            "userToAdd": "Utilisateurs à ajouter"
-        },
-        "searchUsers": "Vous pouvez utiliser l'outil de recherche ci-dessous pour vérifier si les utilisateurs ont déjà un compte, si ce n'est pas le cas, contactez-les pour qu'ils se connectent au site :"
+        }
     },
     "project": {
         "public": {
             "btn": "Tous les projets"
         },
         "administration": {
-            "title": "Administration",
             "informations": "Informations générales",
             "libraries": "Bibliothèques",
             "users": "Utilisateurs",
             "alerts": "Alertes email",
-            "exclusions": "Motifs d'exclusion",
-            "sucessUpdate": "Projet mis à jour avec succès"
+            "exclusions": "Motifs d'exclusion"
         },
         "status": {
             "draft": "Brouillon",
@@ -140,7 +121,6 @@
         },
         "resources": {
             "title": "Titre",
-            "all": "Tout",
             "code": "Identifiant de la ressource",
             "count": "Nombre de collections",
             "callNumber": "Cote",
@@ -158,7 +138,6 @@
                 "toInstructBound": "Instruction reliés",
                 "toInstructUnbound": "Instruction non-reliés",
                 "toControl": "Contrôles",
-                "toControloUnbound": "Contrôles",
                 "positioning": "Positionnement en cours",
                 "positioningRequired": "Positionnement requis",
                 "waitingPositioning": "En attente des autres bibliothèques",
@@ -172,7 +151,6 @@
                 "anomaliesBound": "@.capitalize:project.anomaly.i en phase reliés",
                 "anomaliesUnbound": "@.capitalize:project.anomaly.i en phase non reliés"
             },
-
             "youAreInstructor": "Vous êtes instructeur pour cette bibliothèque",
             "showResources": "Voir les ressources de:",
             "compareWith": "Comparer les ressources avec:",
@@ -193,27 +171,12 @@
             }
         },
         "settings": {
-            "title": "Paramètres du projet",
             "privateMode": "Mode privé",
             "changeProjectVisibilitySuccess": "La visibilité du projet à bien été changé",
             "emailAlert": {
-                "title": "Alertes email",
-                "resourcesAlterts": "Opérations sur les ressources",
-                "successAlertUpdated": "Alerte mise à jour avec succès",
-                "positioning": "Positionnement",
-                "arbitration": "@.capitalize:project.positioning.arbitration.i",
-                "control": "Contrôle",
-                "instruction": "Instruction",
-                "edition": "Édition",
-                "preservation": "Préservation",
-                "results": "Résultante",
-                "transfer": "Suivi des transferts"
+                "successAlertUpdated": "Alerte mise à jour avec succès"
             },
-            "defaultStorageLocation": "Lieu de conservation par défaut",
-            "transferTracking": "Suivi des transferts",
-            "treatmentTracking": "Suivi des traitements",
             "exclusionReason": "Raisons d'exclusion",
-            "alternativeStorageSite": "Lieu de stockage alternatif",
             "visibility": "Visibilité du projet"
         },
         "positioning": {
@@ -234,8 +197,6 @@
         "instruction": {
             "turns": "Ordre de passage",
             "segment": {
-                "i": "segment",
-                "ii": "le segment",
                 "new": "@.capitalize:common.new @.lower:project.instruction.segment.i",
                 "insertUnder": "Insérer en dessous",
                 "update": "@.capitalize:common.update @.lower:project.instruction.segment.ii",
@@ -246,14 +207,11 @@
             },
             "tableFields": {
                 "line": "Ligne",
-                "library": "@.capitalize:libraries.i",
-                "collection": "@.capitalize:collection.i",
                 "segment": "@.capitalize:project.instruction.segment.i",
                 "improvableElements": "Éléments améliorables",
                 "exception": "Exceptions",
                 "options": "Actions",
-                "resolve": "Bibliothèque remédiée",
-                "anomalies": "@:project.anomaly.i"
+                "resolve": "Bibliothèque remédiée"
             },
             "next": "Finir l'instruction et passer la main à la bibliothèque suivante",
             "voidSegmentCreationWarning": "Attention vous n'avez rien renseigné, la ligne suivante sera ajoutée à l'instruction : ~~Nihil~~"
@@ -268,8 +226,6 @@
                     "elementPresent": "{count} élément présent {times} fois| {count} éléments présents {times} fois",
                     "missing": "Collection absente",
                     "delete": {
-                        "warning": "Vous êtes sur le point de supprimer la collection associée à cette bibliothèque",
-                        "irreversible": "Cette action est irréversible",
                         "success": "Les collections ont bien été supprimées"
                     },
                     "errors": {
@@ -286,22 +242,10 @@
             "i": "Anomalie | Anomalies",
             "tableField": {
                 "type": "@.capitalize:common.type d'@.lower:project.anomaly.i",
-                "description": "@.capitalize:common.description",
                 "fixed": "@.capitalize:common.fixed",
-                "fixedAt": "@.capitalize:common.fixed le",
-                "fixedBy": "@.capitalize:common.fixed par",
-                "createdAt": "@.capitalize:common.created le",
-                "createdBy": "@.capitalize:common.created par",
-                "fix": "Résoudre"
+                "createdAt": "@.capitalize:common.created le"
             },
             "type": {
-                "pubPeriodPassed": "Période de publication dépassée",
-                "discontinuousSegment": "Segment discontinu",
-                "excpImprovable": "Exception améliorable",
-                "chronologicalError": "Erreur chronologique",
-                "segmentOverlap": "Chevauchement de segment",
-                "misuseOfRemediatedLibrary": "Mauvaise utilisation de la bibliothèque remédiée",
-                "confusingWording": "Formulation confuse",
                 "other": "@:common.other"
             },
             "fixed": "Résolu",
@@ -322,7 +266,6 @@
     "collection": {
         "i": "Collection | Collections",
         "position": {
-            "i": "Position",
             "short": "Pos."
         }
     },
@@ -360,9 +303,7 @@
                             "libraryInstructorEmails": "Emails de leurs intructeurs respectifs",
                             "libraryCollections": "Ensemble des collections participantes de chacune des bibliothèques au format CSV",
                             "collectionIdentified": "Identifiant de la ressource; issn ; titre ; cote ; état de collection ; lacunes",
-                            "additionalInfos": "NB : Les identifiants de ressources doivent être homogènes (i.e. issus du même système)",
-                            "storageNames": "Nom des lieux de conservation alternatifs (et leur RCR le cas échéant)",
-                            "storageOperatorEmails": "Identifiants et emails de leurs opérateurs respectifs"
+                            "additionalInfos": "NB : Les identifiants de ressources doivent être homogènes (i.e. issus du même système)"
                         }
                     },
                     "steps": {
@@ -370,22 +311,17 @@
                             "tab": "Informations sur le projet",
                             "title": "Renseignez les informations générales du projet",
                             "name": "Nom du projet",
-                            "updateNameSucceed": "Le nom du project à bien été modifié",
                             "description": "Description du projet",
                             "noDescription": "Aucune description",
-                            "continue": "Continuer",
                             "back": "Retour",
                             "startInFuture": "Le projet commencera le"
                         },
                         "libraries": {
                             "tab": "Bibliothèques participantes",
                             "title": "Sélectionnez les bibliothèques participant au projet, puis renseignez leurs collections ainsi que leur instructeurs",
-                            "addLibrary": "Ajouter une bibliothèque",
-                            "searchLibraries": "Rechercher des bibliothèques",
                             "instructors": "Instructeurs",
                             "errors": {
-                                "whileAdding": "Une erreur est survenue lors de l'ajout de la bibliothèque",
-                                "whileDeleting": "Une erreur est survenue lors de la suppression de la bibliothèque"
+                                "whileAdding": "Une erreur est survenue lors de l'ajout de la bibliothèque"
                             }
                         },
                         "roles": {
@@ -395,11 +331,9 @@
                         "summary": {
                             "tab": "Récapitulatif",
                             "title": "Récapitulatif de la création de projet",
-                            "noUser": "Aucun utilisateur n'a été assigné ce rôle",
                             "whenConfirm": "En confirmant, les invitations seront envoyés aux emails renseignés, ainsi que les notifications aux utilisateurs participants au projet",
                             "errors": {
-                                "libraries": "Au moins deux bibliothèques doivent être renseignées, chacune devant avoir une collection importée et au moins un instructeur",
-                                "roles": "Au moins un utilisateur ou une invitation doit être renseignée pour les rôles Administrateur, Pilote et Contrôleur"
+                                "libraries": "Au moins deux bibliothèques doivent être renseignées, chacune devant avoir une collection importée et au moins un instructeur"
                             }
                         }
                     }
@@ -412,13 +346,7 @@
         "contact": {
             "title": "Contacter l'administrateur d'Eplouribousse",
             "subjects": {
-                "i": "Objet",
-                "ask_info": "Demande d'information",
-                "bug": "Bug",
-                "complaint": "Réclamation",
-                "suggestion": "Suggestion",
-                "review": "Avis",
-                "other": "@:common.other"
+                "i": "Objet"
             },
             "placeholder": "Votre message",
             "messageSent": "Votre message à bien été envoyé"
@@ -426,7 +354,6 @@
     },
     "libraries": {
         "i": "Bibliothèque | Bibliothèques",
-        "name": "Nom de la bibliothèque",
         "list": "Liste des bibliothèques",
         "form": {
             "fields": {
@@ -465,7 +392,6 @@
             "validEmail": "L'email doit être valide"
         },
         "login": {
-            "forgotPassword": "Mot de passe oublié ?",
             "credentialsError": "Identifiants incorrects",
             "forgottenPassword": "Mot de passe oublié ?",
             "success": "Vous êtes désormais connecté"
@@ -475,8 +401,6 @@
                 "false": "Afficher le mot de passe",
                 "true": "Masquer le mot de passe"
             },
-            "passwordStrength": "Robustesse du mot de passe",
-            "weak": "Faible",
             "oldPassword": "Ancien mot de passe",
             "newPassword": "Nouveau mot de passe",
             "confirmNewPassword": "Confirmer le nouveau mot de passe",
@@ -498,21 +422,15 @@
             "digit": "Un chiffre",
             "specialChar": "Un caractère spécial",
             "change": {
-                "title": "Changer de mot de passe",
                 "submit": "Changer mon mot de passe",
                 "success": "Votre mot de passe a été changé avec succès"
             },
             "reset": {
-                "i": "Réinitialiser le @.lower:common.password",
-                "request": "Demande de réinitialisation de @.lower:common.password",
-                "confirmPassword": "Confirmer le nouveau mot de passe",
                 "submit": "Réinitialiser mon mot de passe",
                 "success": "Votre mot de passe a été réinitialisé avec succès",
                 "sendEmail": "Envoyer l'email",
                 "emailSent": "Si un compte est trouvé à l'adresse \"{email}\", vous allez recevoir un email pour réinitialiser votre mot de passe",
                 "emailNotSent": "Problème lors de l'envoi de l'email",
-                "incorrectEmail": "L'adresse mail n'est     associée à aucun compte existant",
-                "token": "Jeton de validation",
                 "tokenRejected": "Le jeton est expiré ou invalide"
             }
         },
@@ -520,9 +438,7 @@
             "title": "Inviter quelqu'un à rejoindre Eplouribousse",
             "email": "Adresse e-mail",
             "send": "Envoyer",
-            "inviteSentTo": "L'invitation a bien été envoyée à",
-            "emailAlreadyLinked": "Cette adresse e-mail est déjà liée à un compte",
-            "emailNotSent": "l'invitation n'a pas pu être envoyée"
+            "inviteSentTo": "L'invitation a bien été envoyée à"
         }
     },
     "confirmDialogDefault": {
@@ -540,30 +456,20 @@
             "alerts": {
                 "info": "Si les alertes sont désactivées au niveau du projet, alors elle ne seront pas visible ici",
                 "title": "Alertes associées au projet",
-                "positioning": "Alertes positionnement",
-                "instructions": "Alertes instructions",
-                "arbitrages": "Alertes arbitrages",
-                "results": "Alertes résultantes",
                 "noAlert": "Aucune alertes n'est activée"
             }
         }
     },
     "common": {
-        "yes": "Oui",
-        "no": "Non",
         "cancel": "Annuler",
         "confirm": "Confirmer",
         "delete": "Supprimer",
         "edit": "Modifier",
         "save": "Enregistrer",
-        "close": "Fermer",
         "search": "Rechercher",
-        "loading": "Chargement",
-        "success": "Succès",
         "error": "Erreur",
         "info": "Information | Informations",
         "continue": "Continuer",
-        "back": "Retour",
         "row": "Ligne",
         "on": "Sur",
         "none": "Aucun",
@@ -574,29 +480,21 @@
         "or": "ou",
         "waiting": "En attente",
         "all": "Tous",
-        "new": "Nouveau",
         "update": "Modifier",
         "undefined": "Non renseigné",
         "account": "Compte",
         "name": "Nom",
         "project": "Projet | Projets",
-        "library": "Bibliothèque | Bibliothèques",
         "createdAt": "Créé le",
         "status": "Statut",
-        "type": "Type",
         "description": "Description",
-        "fixed": "Corrigé",
-        "created": "Créé",
         "the": "le",
         "a": "un",
         "by": "par",
         "unknown": "Inconnu",
-        "preview": "Prévisualiser",
         "filter": "Filtres",
         "private": "Privé",
         "public": "Public",
-        "download": "Télécharger",
-        "other": "Autre",
         "send": "Envoyer",
         "addMore": "Ajouter plus",
         "line": "Ligne | Lignes"
@@ -610,10 +508,7 @@
             "sendInvite": "Envoyer une invitation à"
         },
         "modificationSuccess": "Les modifications ont bien été enregistrées",
-        "noEmailAddress": "Aucune @.lower:common.email",
         "universityOfStrasbourg": "Université de Strasbourg",
-        "abes": "Agence bibliographique de l'enseignement supérieur",
-        "collex": "Collex",
         "noLibrary": "Aucune bibliothèque",
         "downloadPDF": "@:common.download le PDF",
         "noRole": "Aucun rôle sur le tenant",
@@ -625,7 +520,6 @@
     },
     "errors": {
         "unknown": "Une erreur est survenue",
-        "retry": "veuillez réessayer",
         "unknownRetry": "Une erreur est survenue, veuillez réessayer",
         "dataUnreachable": "Les données n'ont pas pu être chargées'",
         "emailValid": "Entrez une adresse e-mail valide",
