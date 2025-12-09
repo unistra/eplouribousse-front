@@ -19,7 +19,9 @@
         "lint": "run-s lint:*",
         "format": "prettier --write src/",
         "format:silent": "prettier --log-level error --write src/",
-        "prepare": "husky"
+        "prepare": "husky",
+        "i18n-report": "pnpm dlx vue-i18n-extract report --vueFiles './src/**/*.?(ts|vue)' --languageFiles './src/locales/*.json'",
+        "i18n-remove-unused-keys": "pnpm dlx vue-i18n-extract report --vueFiles './src/**/*.?(ts|vue)' --languageFiles './src/locales/*.json' --remove"
     },
     "dependencies": {
         "@quasar/extras": "^1.16.17",
