@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { useProjectResources } from '@/components/project/projectLaunched/useProjectResources.ts'
+import { RESOURCE_QUERY_PARAM, useProjectResources } from '@/components/project/projectLaunched/useProjectResources.ts'
 import { useI18n } from 'vue-i18n'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { Roles, Tab } from '&/project.ts'
@@ -11,8 +11,10 @@ import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/userStore.ts'
 import { useResourcesStore } from '@/stores/resourcesStore.ts'
+import { useResourceStore } from '@/stores/resourceStore.ts'
 
 const resourcesStore = useResourcesStore()
+const resourceStore = useResourceStore()
 const projectStore = useProjectStore()
 const route = useRoute()
 
@@ -28,15 +30,23 @@ const {
     disableLibrarySelectedSelect,
     computeStatusInfos,
     selectFilterOnPositioning,
+    researchFetchedResourcesWhenQueryParam,
 } = useProjectResources()
 const { t } = useI18n()
 const userStore = useUserStore()
 
 onMounted(async () => {
-    selectDefaultLibrary()
     resourcesStore.libraryIdComparedSelected = ''
+
+    if (route.query[RESOURCE_QUERY_PARAM]) {
+        await resourceStore.getResourceAndRelatedCollections(route.query[RESOURCE_QUERY_PARAM] as string)
+        researchFetchedResourcesWhenQueryParam()
+        openResourceDialog(route.query[RESOURCE_QUERY_PARAM] as string)
+        return
+    }
+
+    selectDefaultLibrary()
     await fetchResources()
-    if (route.query.resourceId) openResourceDialog(route.query.resourceId as string)
 })
 </script>
 
@@ -182,6 +192,7 @@ onMounted(async () => {
                 <ProjectResource
                     v-model="resourceDialog"
                     :resource-id-selected="resourceIdSelected"
+                    @update:resources="researchFetchedResourcesWhenQueryParam"
                 />
             </QTabPanel>
         </QTabPanels>

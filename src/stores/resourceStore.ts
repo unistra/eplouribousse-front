@@ -1,15 +1,22 @@
 import { defineStore } from 'pinia'
-import { type Anomaly, type CollectionsInResource, type Resource, type Segment } from '#/project.ts'
-import i18n from '@/plugins/i18n'
+import {
+    type Anomaly,
+    type CollectionsInResource,
+    type CollectionsWithResource,
+    type Resource,
+    type Segment,
+} from '#/project.ts'
 import { computed, ref } from 'vue'
 import { ResourceStatus } from '&/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { useUtils } from '@/composables/useUtils.ts'
-
-const { t } = i18n.global
+import { useProjectStore } from '@/stores/projectStore.ts'
+import { useI18n } from 'vue-i18n'
 
 export const useResourceStore = defineStore('resource', () => {
     const { useHandleError } = useUtils()
+    const { t } = useI18n()
+    const projectStore = useProjectStore()
 
     // STATE
     const resource = ref<Resource>()
@@ -52,6 +59,24 @@ export const useResourceStore = defineStore('resource', () => {
         return collection ? `${t('collection.position.short')} ${collection.position} | ${collection.callNumber}` : ''
     }
 
+    const getResourceAndRelatedCollections = async (resourceIdSelected: string) => {
+        try {
+            const response = await axiosI.get<CollectionsWithResource>(
+                `/resources/${resourceIdSelected}/collections/`,
+                {
+                    params: {
+                        project_id: projectStore.project?.id,
+                    },
+                },
+            )
+
+            resource.value = response.data.resource
+            collections.value = response.data.collections
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
+
     const getSegments = async () => {
         try {
             const response = await axiosI.get(`/segments/`, { params: { resource_id: resource.value?.id } })
@@ -75,6 +100,7 @@ export const useResourceStore = defineStore('resource', () => {
         collectionsSortedByOrderInInstructionTurns,
         // ACTIONS
         formatCollectionToString,
+        getResourceAndRelatedCollections,
         getSegments,
     }
 })

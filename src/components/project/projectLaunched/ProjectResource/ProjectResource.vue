@@ -4,67 +4,29 @@ import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import ProjectPositioning from '@/components/project/projectLaunched/projectPositioning/ProjectPositioning.vue'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useI18n } from 'vue-i18n'
-import { provide, ref } from 'vue'
 import ProjectControl from '@/components/project/projectLaunched/projectControl/ProjectControl.vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import ProjectAnomalies from '@/components/project/projectLaunched/projectAnomalies/ProjectAnomalies.vue'
 import { Tab } from '&/project.ts'
 import ProjectEdition from '@/components/project/projectLaunched/projectEdition/ProjectEdition.vue'
 import { useResourcesStore } from '@/stores/resourcesStore.ts'
-import { axiosI } from '@/plugins/axios/axios.ts'
-import type { CollectionsInResource, CollectionsWithResource } from '#/project.ts'
-import { useUtils } from '@/composables/useUtils.ts'
+import {
+    type ProjectResourceProps,
+    useProjectResource,
+} from '@/components/project/projectLaunched/ProjectResource/useProjectResource.ts'
+import { provide } from 'vue'
 
-const props = defineProps<{
-    resourceIdSelected: string
-}>()
+const props = defineProps<ProjectResourceProps>()
 
 const { t } = useI18n()
-const { useHandleError } = useUtils()
 const resourceStore = useResourceStore()
 const resourcesStore = useResourcesStore()
 const projectStore = useProjectStore()
 
 const dialogModal = defineModel<boolean>()
 provide('dialogModal', dialogModal)
-const dialogLoading = ref<boolean>(false)
 
-const getResourceAndRelatedCollections = async () => {
-    try {
-        const response = await axiosI.get<CollectionsWithResource>(
-            `/resources/${props.resourceIdSelected}/collections/`,
-            {
-                params: {
-                    project_id: projectStore.project?.id,
-                },
-            },
-        )
-
-        resourceStore.resource = response.data.resource
-
-        resourceStore.collections = response.data.collections.sort(
-            (a: CollectionsInResource, b: CollectionsInResource) => {
-                if (!resourcesStore.libraryIdSelected) return 0
-                const aMatch = a.library === resourcesStore.libraryIdSelected
-                const bMatch = b.library === resourcesStore.libraryIdSelected
-                return bMatch ? (aMatch ? 0 : 1) : aMatch ? -1 : 0
-            },
-        )
-    } catch (e) {
-        useHandleError(e)
-    }
-}
-
-const onBeforeShow = async () => {
-    dialogLoading.value = true
-
-    resourceStore.collections = []
-    resourceStore.segments = []
-
-    await getResourceAndRelatedCollections()
-
-    dialogLoading.value = false
-}
+const { dialogLoading, onBeforeShow, onModalClose } = useProjectResource(props)
 </script>
 
 <template>
@@ -75,6 +37,7 @@ const onBeforeShow = async () => {
         full-height
         full-width
         @before-show="onBeforeShow"
+        @hide="onModalClose"
     >
         <QCard>
             <QCardActions>

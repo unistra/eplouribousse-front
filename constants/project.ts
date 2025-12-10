@@ -65,6 +65,18 @@ export enum Tab {
     Edition = 'edition',
 }
 
+export const ResourceStatusToTab: Record<ResourceStatus, Tab> = {
+    [ResourceStatus.Positioning]: Tab.Positioning,
+    [ResourceStatus.Excluded]: Tab.Positioning,
+    [ResourceStatus.InstructionBound]: Tab.InstructionBound,
+    [ResourceStatus.InstructionUnbound]: Tab.InstructionUnbound,
+    [ResourceStatus.ControlBound]: Tab.Control,
+    [ResourceStatus.ControlUnbound]: Tab.Control,
+    [ResourceStatus.AnomalyBound]: Tab.Anomalies,
+    [ResourceStatus.AnomalyUnbound]: Tab.Anomalies,
+    [ResourceStatus.Edition]: Tab.Edition,
+}
+
 export enum AlertType {
     Positioning = 'positioning',
     Arbitration = 'arbitration',
