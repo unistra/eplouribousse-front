@@ -24,7 +24,7 @@ export function useAuthChangePassword() {
         if (!isPasswordStrongEnough.value) {
             notify({
                 type: 'negative',
-                message: t('forms.password.validation.passwordRequirements'),
+                message: t('errors.form.password.requirements'),
             })
             return
         }
@@ -32,7 +32,7 @@ export function useAuthChangePassword() {
         if (!arePasswordsMatching.value) {
             notify({
                 type: 'negative',
-                message: t('forms.password.validation.passwordsDoNotMatch'),
+                message: t('errors.form.password.doesNotMatch'),
             })
             return
         }
@@ -48,7 +48,7 @@ export function useAuthChangePassword() {
 
             notify({
                 type: 'positive',
-                message: t('forms.password.change.success'),
+                message: t('successes.auth.password.changed'),
             })
 
             await router.push({ path: '/' })
@@ -56,7 +56,7 @@ export function useAuthChangePassword() {
             if (e instanceof AxiosError && e.response?.status === 400) {
                 notify({
                     type: 'negative',
-                    message: t('forms.password.oldPasswordIncorrect'),
+                    message: t('errors.form.password.oldIncorrect'),
                 })
             } else {
                 notify({

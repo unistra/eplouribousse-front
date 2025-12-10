@@ -10,7 +10,7 @@ const { t } = useI18n()
 <template>
     <div class="project-review">
         <hgroup>
-            <h1>{{ t('project.review.title') }}</h1>
+            <h1>{{ t('views.project.review.title') }}</h1>
             <AtomicButton
                 dense
                 flat

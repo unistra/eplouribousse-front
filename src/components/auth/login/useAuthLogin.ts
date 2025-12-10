@@ -25,7 +25,7 @@ export function useAuthLogin() {
             if (e instanceof AxiosError && e.response?.status === 401) {
                 notify({
                     type: 'negative',
-                    message: t('forms.login.credentialsError'),
+                    message: t('errors.auth.credentialsError'),
                 })
             } else {
                 notify({

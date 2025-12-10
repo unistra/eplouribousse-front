@@ -28,7 +28,7 @@ export const useAuth = () => {
             addJWTToLocalStorage(response.data.access, response.data.refresh)
             notify({
                 type: 'positive',
-                message: t('forms.login.success'),
+                message: t('successes.auth.login'),
             })
 
             await userStore.getUser()
@@ -49,7 +49,7 @@ export const useAuth = () => {
             addJWTToLocalStorage(response.data.access, response.data.refresh)
             notify({
                 type: 'positive',
-                message: t('forms.login.success'),
+                message: t('successes.auth.login'),
             })
 
             await userStore.getUser()

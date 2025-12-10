@@ -30,7 +30,7 @@ const {
     <div class="instruction">
         <div>
             <div class="turns">
-                <p>{{ t('project.instruction.turns') }}:</p>
+                <p>{{ t('views.project.instruction.turns') }}:</p>
                 <p
                     v-for="(turn, index) in turnsWithNames"
                     :key="index"
@@ -49,20 +49,20 @@ const {
                     <QTooltip v-if="turn.collectiondId !== collectionToBeInstructed?.id">
                         {{ turn.collection }}
                     </QTooltip>
-                    <QTooltip v-else> {{ t('project.resources.collectionToBeInstructed') }} </QTooltip>
+                    <QTooltip v-else> {{ t('fn.collection.toBeInstructed.i') }} </QTooltip>
                 </p>
             </div>
             <div
                 v-if="collectionToBeInstructed"
                 class="collection-infos"
             >
-                <p>{{ t('project.resources.infoAboutCollection') }}:</p>
+                <p>{{ t('fn.collection.toBeInstructed.info') }}:</p>
                 <QChip class="chip-label-value">
-                    {{ t('project.resources.callNumber') }}:
+                    {{ t('fn.collection.fields.callNumber.i') }}:
                     <span>{{ collectionToBeInstructed.callNumber || '-' }}</span>
                 </QChip>
                 <QChip class="chip-label-value">
-                    {{ t('project.resources.holdStatement') }}:
+                    {{ t('fn.collection.fields.holdStatement.i') }}:
                     <span>{{ collectionToBeInstructed.holdStatement || '-' }}</span>
                 </QChip>
             </div>
@@ -81,7 +81,7 @@ const {
                 confirm-button-color="primary"
                 :disable="!!resourceStore.anomaliesUnfixed.length || !!anomalyStore.anomalyAddForSegment.length"
                 icon="mdi-content-save-move"
-                :label="t('project.instruction.next')"
+                :label="t('views.project.instruction.next')"
                 no-border
                 require-confirmation
                 @confirm="onConfirmAnomaliesDeclaration"
@@ -90,19 +90,19 @@ const {
                     v-if="!!resourceStore.anomaliesUnfixed.length"
                     :delay="1000"
                 >
-                    {{ t('project.anomaly.actionBtnDisabled', 2) }}
+                    {{ t('views.project.anomaly.actionBtnDisabled', 2) }}
                 </QTooltip>
                 <QTooltip
                     v-if="!!anomalyStore.anomalyAddForSegment.length"
                     :delay="1000"
                 >
-                    {{ t('project.anomaly.actionBtnDisabledByAnomalySelection', 2) }}
+                    {{ t('views.project.anomaly.actionBtnDisabledByAnomalySelection', 2) }}
                 </QTooltip>
                 <template
                     v-if="displayConfirmNextTurnWithoutAnySegment"
                     #confirmation-content
                 >
-                    <QCardSection>{{ t('project.instruction.voidSegmentCreationWarning') }}</QCardSection>
+                    <QCardSection>{{ t('views.project.instruction.voidSegmentCreationWarning') }}</QCardSection>
                 </template>
             </AtomicButton>
         </div>

@@ -6,13 +6,13 @@ const { t } = useI18n()
 
 <template>
     <QFooter bordered>
-        <p>{{ new Date().getFullYear() }} - {{ t('utils.universityOfStrasbourg') }}</p>
+        <p>{{ new Date().getFullYear() }} - {{ t('common.unistra') }}</p>
         <div class="links">
-            <RouterLink to="/">{{ t('layout.footer.legalNotice') }}</RouterLink>
+            <RouterLink to="/">{{ t('views.layout.footer.legalNotice') }}</RouterLink>
             -
-            <RouterLink to="/">{{ t('layout.footer.contact') }}</RouterLink>
+            <RouterLink to="/">{{ t('views.layout.footer.contact') }}</RouterLink>
             -
-            <RouterLink to="/">{{ t('layout.footer.about') }}</RouterLink>
+            <RouterLink to="/">{{ t('views.layout.footer.about') }}</RouterLink>
         </div>
     </QFooter>
 </template>

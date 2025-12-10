@@ -38,37 +38,37 @@ onMounted(async () => {
         <AtomicInput
             v-model="email"
             disable
-            :label="t('common.email')"
+            :label="t('common.emailAddress')"
             type="email"
         />
         <AtomicInput
             v-model="firstName"
             :hide-bottom-space="true"
             :label="t('common.firstName')"
-            :rules="[() => isFirstNameValid || t('forms.validation.minLength', { length: 2 })]"
+            :rules="[() => isFirstNameValid || t('errors.form.minLength', { length: 2 })]"
             type="text"
         />
         <AtomicInput
             v-model="lastName"
             :hide-bottom-space="true"
             :label="t('common.lastName')"
-            :rules="[() => isLastNameValid || t('forms.validation.minLength', { length: 2 })]"
+            :rules="[() => isLastNameValid || t('errors.form.minLength', { length: 2 })]"
             type="text"
         />
         <PasswordField
             v-model="password"
             :label="t('common.password')"
             :linear-progress="true"
-            :rules="[() => isPasswordStrongEnough || t('forms.password.validation.passwordRequirements')]"
+            :rules="[() => isPasswordStrongEnough || t('errors.form.password.requirements')]"
         />
         <PasswordField
             v-model="confirmPassword"
-            :label="t('forms.password.confirmPassword')"
-            :rules="[() => arePasswordsMatching || t('forms.password.validation.passwordsDoNotMatch')]"
+            :label="t('views.auth.password.confirm.i')"
+            :rules="[() => arePasswordsMatching || t('errors.form.password.doesNotMatch')]"
         />
 
         <AtomicButton
-            :label="t('auth.createAccount.submit')"
+            :label="t('views.auth.createAccount')"
             :loading="buttonSubmitLoading"
             type="submit"
         />

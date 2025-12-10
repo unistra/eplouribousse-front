@@ -54,7 +54,7 @@ const hasAlwaysOneUserSelectedAfterProjectIsDraft = computed(() => {
                 @remove="sendAction && sendAction('removeUser', { user: user })"
             />
         </template>
-        <QChip v-else>{{ t('utils.noUser') }}</QChip>
+        <QChip v-else>{{ t('views.project.libraries.card.noUser') }}</QChip>
     </div>
 </template>
 

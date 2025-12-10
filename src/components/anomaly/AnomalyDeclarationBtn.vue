@@ -35,7 +35,7 @@ const onConfirm = async () => {
         color="primary"
         confirm-button-color="primary"
         icon="mdi-alert-circle"
-        :label="t('project.anomaly.declareBtn', 2)"
+        :label="t('views.project.anomaly.declareBtn', 2)"
         no-border
         requireConfirmation
         @confirm="onConfirm"

@@ -19,28 +19,28 @@ projectStore.project = undefined
             class="requirements"
         >
             <div>
-                <h1>{{ t('view.project.new.stepper.requirements.heading') }}</h1>
-                <p>{{ t('view.project.new.stepper.requirements.message') }}</p>
+                <h1>{{ t('views.project.new.stepper.requirements.heading') }}</h1>
+                <p>{{ t('views.project.new.stepper.requirements.message') }}</p>
             </div>
             <ul>
-                <li>{{ t('view.project.new.stepper.requirements.list.projectName') }}</li>
-                <li>{{ t('view.project.new.stepper.requirements.list.managerEmails') }}</li>
-                <li>{{ t('view.project.new.stepper.requirements.list.adminEmails') }}</li>
-                <li>{{ t('view.project.new.stepper.requirements.list.controllerEmail') }}</li>
-                <li>{{ t('view.project.new.stepper.requirements.list.libraryNames') }}</li>
-                <li>{{ t('view.project.new.stepper.requirements.list.libraryRCRs') }}</li>
-                <li>{{ t('view.project.new.stepper.requirements.list.libraryInstructorEmails') }}</li>
+                <li>{{ t('views.project.new.stepper.requirements.list.projectName') }}</li>
+                <li>{{ t('views.project.new.stepper.requirements.list.managerEmails', 2) }}</li>
+                <li>{{ t('views.project.new.stepper.requirements.list.adminEmails', 2) }}</li>
+                <li>{{ t('views.project.new.stepper.requirements.list.controllerEmail', 2) }}</li>
+                <li>{{ t('views.project.new.stepper.requirements.list.libraryNames', 2) }}</li>
+                <li>{{ t('views.project.new.stepper.requirements.list.libraryRCRs') }}</li>
+                <li>{{ t('views.project.new.stepper.requirements.list.libraryInstructorEmails', 2) }}</li>
                 <li>
-                    {{ t('view.project.new.stepper.requirements.list.libraryCollections') }}
+                    {{ t('views.project.new.stepper.requirements.list.libraryCollections', 2) }}
                     <ul>
-                        <li>{{ t('view.project.new.stepper.requirements.list.collectionIdentified') }}</li>
-                        <li>{{ t('view.project.new.stepper.requirements.list.additionalInfos') }}</li>
+                        <li>{{ t('views.project.new.stepper.requirements.list.collectionIdentified') }}</li>
+                        <li>{{ t('views.project.new.stepper.requirements.list.additionalInfos') }}</li>
                     </ul>
                 </li>
             </ul>
             <AtomicButton
                 color="primary"
-                :label="t('newProject.buttons.ready')"
+                :label="t('views.project.new.button.ready')"
                 no-border
                 @click="isRequirementValidated = true"
             />

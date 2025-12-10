@@ -52,7 +52,7 @@ const {
                 <QTooltip
                     v-if="areActionDisabled"
                     :delay="1000"
-                    >{{ t('project.anomaly.actionBtnDisabled', 2) }}</QTooltip
+                    >{{ t('views.project.anomaly.actionBtnDisabled', 2) }}</QTooltip
                 >
             </AtomicButton>
             <AtomicButton
@@ -68,7 +68,7 @@ const {
                 <QTooltip
                     v-if="areActionDisabled"
                     :delay="1000"
-                    >{{ t('project.anomaly.actionBtnDisabled', 2) }}</QTooltip
+                    >{{ t('views.project.anomaly.actionBtnDisabled', 2) }}</QTooltip
                 >
             </AtomicButton>
         </div>
@@ -94,7 +94,7 @@ const {
                         <QTooltip
                             v-if="areActionDisabled"
                             :delay="1000"
-                            >{{ t('project.anomaly.actionBtnDisabled', 2) }}</QTooltip
+                            >{{ t('views.project.anomaly.actionBtnDisabled', 2) }}</QTooltip
                         >
                     </QItem>
                     <QItem
@@ -116,7 +116,7 @@ const {
                         <QTooltip
                             v-if="areActionDisabled"
                             :delay="1000"
-                            >{{ t('project.anomaly.actionBtnDisabled', 2) }}</QTooltip
+                            >{{ t('views.project.anomaly.actionBtnDisabled', 2) }}</QTooltip
                         >
                     </QItem>
                     <QItem
@@ -129,12 +129,12 @@ const {
                             <QIcon name="mdi-arrow-left-bottom" />
                         </QItemSection>
                         <QItemSection>
-                            <QItemLabel>{{ t('project.instruction.segment.insertUnder') }}</QItemLabel>
+                            <QItemLabel>{{ t('views.project.instruction.segment.insertUnder') }}</QItemLabel>
                         </QItemSection>
                         <QTooltip
                             v-if="areActionDisabled"
                             :delay="1000"
-                            >{{ t('project.anomaly.actionBtnDisabled', 2) }}</QTooltip
+                            >{{ t('views.project.anomaly.actionBtnDisabled', 2) }}</QTooltip
                         >
                     </QItem>
                     <QItem
@@ -146,7 +146,7 @@ const {
                             <QIcon name="mdi-alert-circle" />
                         </QItemSection>
                         <QItemSection>
-                            <QItemLabel>{{ t('project.instruction.segment.signalAnomaly') }}</QItemLabel>
+                            <QItemLabel>{{ t('views.project.instruction.segment.signalAnomaly') }}</QItemLabel>
                         </QItemSection>
                     </QItem>
                 </QList>

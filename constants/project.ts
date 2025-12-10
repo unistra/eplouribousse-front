@@ -1,3 +1,7 @@
+import i18n from '@/plugins/i18n.ts'
+
+const { t } = i18n.global
+
 export enum ProjectStatus {
     Draft = 10,
     Review = 20,
@@ -16,6 +20,15 @@ export enum Roles {
     Guest = 'guest',
 }
 
+export const RolesLabels = {
+    [Roles.TenantSuperUser]: t('fn.roles.superUser'),
+    [Roles.ProjectCreator]: t('fn.roles.projectCreator'),
+    [Roles.ProjectAdmin]: t('fn.roles.projectAdmin'),
+    [Roles.ProjectManager]: t('fn.roles.projectManager'),
+    [Roles.Instructor]: t('fn.roles.instructor'),
+    [Roles.Controller]: t('fn.roles.controller'),
+    [Roles.Guest]: t('fn.roles.guest'),
+}
 export enum Arbitration {
     NoPosition1 = 0,
     MultiplePosition1 = 1,
@@ -56,6 +69,17 @@ export enum AnomalyType {
     Other = 'other',
 }
 
+export const AnomalyTypeLabels: Record<AnomalyType, string> = {
+    [AnomalyType.PubPeriodPassed]: t('fn.anomaly.type.pubPeriodPassed'),
+    [AnomalyType.Discontinuous]: t('fn.anomaly.type.discontinuousSegment'),
+    [AnomalyType.ExcpImprovable]: t('fn.anomaly.type.excpImprovable'),
+    [AnomalyType.ChronologicalError]: t('fn.anomaly.type.chronologicalError'),
+    [AnomalyType.SegmentOverlap]: t('fn.anomaly.type.segmentOverlap'),
+    [AnomalyType.MisuseOfRemediatedLib]: t('fn.anomaly.type.misuseOfRemediatedLibrary'),
+    [AnomalyType.ConfusingWording]: t('fn.anomaly.type.confusingWording'),
+    [AnomalyType.Other]: t('common.other'),
+}
+
 export enum Tab {
     Positioning = 'positioning',
     InstructionBound = 'instructionBound',
@@ -82,4 +106,15 @@ export enum PositioningFilter {
     Excluded = 15,
     InstructionNotStarted = 20,
     Arbitation = 30,
+}
+
+export const ProjectSettingsAlertsLabel: Record<AlertType, string> = {
+    [AlertType.Positioning]: t('views.project.settings.emailAlert.positioning'),
+    [AlertType.Arbitration]: t('views.project.settings.emailAlert.arbitration'),
+    [AlertType.Instruction]: t('views.project.settings.emailAlert.instruction'),
+    [AlertType.Control]: t('views.project.settings.emailAlert.control'),
+    [AlertType.Edition]: t('views.project.settings.emailAlert.edition'),
+    [AlertType.Preservation]: t('views.project.settings.emailAlert.preservation'),
+    [AlertType.Transfer]: t('views.project.settings.emailAlert.transfer'),
+    [AlertType.Anomaly]: t('fn.anomaly.i'),
 }

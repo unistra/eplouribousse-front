@@ -21,7 +21,7 @@ export const useInviteForm = () => {
 
             notify({
                 type: 'positive',
-                message: `${t('forms.invite.inviteSentTo')} ${email.value}`,
+                message: `${t('successes.inviteSentTo', { email: email.value })}`,
             })
 
             email.value = ''

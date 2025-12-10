@@ -32,24 +32,24 @@ onMounted(() => {
     >
         <PasswordField
             v-model="newPassword"
-            :label="t('forms.password.newPassword')"
+            :label="t('views.auth.password.new')"
             :linear-progress="true"
-            :rules="[() => isPasswordStrongEnough || t('forms.password.validation.passwordRequirements')]"
+            :rules="[() => isPasswordStrongEnough || t('errors.form.password.requirements')]"
         />
 
         <PasswordField
             v-model="confirmPassword"
-            :label="t('forms.password.confirmPassword')"
-            :rules="[() => arePasswordsMatching || t('forms.password.validation.passwordsDoNotMatch')]"
+            :label="t('views.auth.password.confirm.new')"
+            :rules="[() => arePasswordsMatching || t('errors.form.password.doesNotMatch')]"
         />
 
         <div class="infos">
-            <p>{{ t('forms.password.passwordInstructions.1') }}</p>
-            <p>{{ t('forms.password.passwordInstructions.2') }}</p>
-            <p>{{ t('forms.password.passwordInstructions.3') }}</p>
+            <p>{{ t('views.auth.password.instructions.1') }}</p>
+            <p>{{ t('views.auth.password.instructions.2') }}</p>
+            <p>{{ t('views.auth.password.instructions.3') }}</p>
         </div>
         <AtomicButton
-            :label="t('forms.password.reset.submit')"
+            :label="t('views.auth.password.reset')"
             :loading="isLoading"
             type="submit"
         />

@@ -1,5 +1,5 @@
 import { computed, reactive, toRefs } from 'vue'
-import type { CollectionsInResource } from '#/project.ts'
+import type { CollectionsInResource, Resource } from '#/project.ts'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
@@ -13,6 +13,11 @@ export const useProjectEdition = () => {
     const resourceStore = useResourceStore()
     const projectStore = useProjectStore()
     const { t, locale } = useI18n()
+
+    const controlValidationDates: { key: keyof Resource['validations']; label: string }[] = [
+        { key: 'controlBound', label: t('views.project.resources.status.controlBound') },
+        { key: 'controlUnbound', label: t('views.project.resources.status.controlUnbound') },
+    ]
 
     const pdfPreviewURL = (preview: boolean = true) => {
         if (!resourceStore.resource?.id || !state.selectCollectionToShowEdition?.id) return ''
@@ -48,5 +53,6 @@ export const useProjectEdition = () => {
         pdfPreviewURL,
         motherCollectionString,
         storageLocation,
+        controlValidationDates,
     }
 }

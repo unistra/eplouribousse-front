@@ -85,13 +85,13 @@ export const useProjectStepper = () => {
 
     const buttonLabel = computed(() => {
         if (step.value === 1) {
-            if (!projectStore.project || !projectStore.initialProject) return t('newProject.buttons.create')
+            if (!projectStore.project || !projectStore.initialProject) return t('fn.project.create.the')
             if (
                 projectStore.project.id &&
                 (projectStore.project.name !== projectStore.initialProject.name ||
                     projectStore.project.description !== projectStore.initialProject.description)
             )
-                return t('newProject.buttons.modify')
+                return t('fn.project.modify')
         }
         return t('common.continue')
     })

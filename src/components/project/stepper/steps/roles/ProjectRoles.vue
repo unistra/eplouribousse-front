@@ -15,7 +15,7 @@ const { t } = useI18n()
         v-if="projectStore.project"
         class="container"
     >
-        <h1 v-if="!settingMode">{{ t('view.project.new.stepper.steps.roles.title') }}</h1>
+        <h1 v-if="!settingMode">{{ t('views.project.new.stepper.steps.roles.title') }}</h1>
         <div class="roles">
             <template
                 v-for="role in roles"

@@ -65,7 +65,7 @@ export const useProjectLibraryCollection = (libraryId: string = '') => {
         if (!file || !(file.type === 'text/csv' || file.name.endsWith('.csv'))) {
             notify({
                 type: 'negative',
-                message: t('project.libraries.card.csv-import.errors.wrongExtension'),
+                message: t('views.project.libraries.card.csvImport.errors.wrongExtension'),
             })
             return
         }
@@ -107,7 +107,7 @@ export const useProjectLibraryCollection = (libraryId: string = '') => {
             })
             projectStore.collectionsCount = projectStore.collectionsCount.filter((el) => el.libraryId !== libraryId)
             notify({
-                message: t('project.libraries.card.csv-import.delete.success'),
+                message: t('views.project.libraries.card.csvImport.delete.success'),
             })
         } catch (e) {
             useHandleError(e)

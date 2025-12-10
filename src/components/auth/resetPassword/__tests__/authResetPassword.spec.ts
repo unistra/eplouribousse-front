@@ -81,7 +81,7 @@ describe('AuthResetPassword', () => {
         const passwordFields = wrapper.findAllComponents(PasswordField)
         expect(passwordFields).toHaveLength(2)
         expect(passwordFields[0].props('label')).toContain('Nouveau mot de passe')
-        expect(passwordFields[1].props('label')).toContain('Confirmer le mot de passe')
+        expect(passwordFields[1].props('label')).toContain('Confirmer le nouveau mot de passe')
     })
 
     test('validation rules are applied correctly to fields', async () => {

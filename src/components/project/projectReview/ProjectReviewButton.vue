@@ -23,8 +23,8 @@ const {
 
 const waitingMessage = computed(() => {
     if (!projectStore.project) return t('errors.unknown')
-    if (projectStore.project.status === ProjectStatus.Review) return t('project.review.waitingForAdminToReview')
-    if (projectStore.project.status === ProjectStatus.Ready) return t('project.ready.waitingForManagerToStart')
+    if (projectStore.project.status === ProjectStatus.Review) return t('views.project.review.waitingForAdminToReview')
+    if (projectStore.project.status === ProjectStatus.Ready) return t('views.project.ready.waitingForManagerToStart')
     return t('common.waiting')
 })
 </script>
@@ -34,22 +34,22 @@ const waitingMessage = computed(() => {
             v-if="projectStore.project.status === ProjectStatus.Review && userIsAdmin"
             color="primary"
             confirm-button-color="primary"
-            :label="t('project.review.passToReady')"
+            :label="t('views.project.review.passToReady')"
             no-border
             require-confirmation
             @confirm="passProjectToReady"
         >
             <template #confirmation-content>
                 <QCardSection>
-                    <p>{{ t('project.review.confirmPassToReview') }}</p>
-                    <p>{{ t('confirmDialogDefault.irreversible') }}</p>
+                    <p>{{ t('views.project.review.confirmPassToReview') }}</p>
+                    <p>{{ t('views.confirmDialogDefault.irreversible') }}</p>
                 </QCardSection>
             </template>
         </AtomicButton>
         <template v-else-if="projectStore.project.status === ProjectStatus.Ready && userIsManager">
             <AtomicButton
                 color="primary"
-                :label="t('project.ready.startTheProject')"
+                :label="t('views.project.ready.startTheProject')"
                 no-border
                 @click="dateModal = true"
             />
@@ -59,7 +59,7 @@ const waitingMessage = computed(() => {
             >
                 <QCard>
                     <QCardSection>
-                        <p>{{ t('project.ready.defineStartDate') }}</p>
+                        <p>{{ t('views.project.ready.defineStartDate') }}</p>
                         <AtomicInput
                             v-model="date"
                             :min="nowString"
@@ -86,9 +86,9 @@ const waitingMessage = computed(() => {
                             <template #confirmation-content>
                                 <QCardSection>
                                     <p>
-                                        {{ t('project.ready.confirmStart') }} <strong>{{ dateString }}</strong>
+                                        {{ t('views.project.ready.confirmStart') }} <strong>{{ dateString }}</strong>
                                     </p>
-                                    <p>{{ t('confirmDialogDefault.irreversible') }}</p>
+                                    <p>{{ t('views.confirmDialogDefault.irreversible') }}</p>
                                 </QCardSection>
                             </template>
                         </AtomicButton>
@@ -106,6 +106,7 @@ const waitingMessage = computed(() => {
         />
     </template>
 </template>
+
 <style lang="sass" scoped>
 .project-review
     > .q-btn, .align-end

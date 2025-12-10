@@ -10,7 +10,7 @@ const { t } = i18n.global
 const userNeedToBeAuth: NavigationGuardWithThis<void> = (to) => {
     if (!checkManuallyIsUserAuth()) {
         Notify.create({
-            message: t('navigation.error.needAuth'),
+            message: t('errors.navigation.needAuth'),
             color: 'negative',
         })
         return { name: 'login', query: { redirect: to.fullPath } }
@@ -20,7 +20,7 @@ const userNeedToBeAuth: NavigationGuardWithThis<void> = (to) => {
 const userNeedToNotBeAuth: NavigationGuardWithThis<void> = (_, from) => {
     if (checkManuallyIsUserAuth()) {
         Notify.create({
-            message: t('navigation.error.needNotAuth'),
+            message: t('errors.navigation.needNotAuth'),
             color: 'negative',
         })
         return { name: from.name }
@@ -32,7 +32,7 @@ const requireUser = (check: (u: User) => boolean, translatedMsg: string): Naviga
         const userStore = useUserStore()
         if (!userStore.user) {
             Notify.create({
-                message: t('navigation.error.notAccessibleThisWay'),
+                message: t('errors.navigation.notAccessibleThisWay'),
                 color: 'negative',
             })
             return { name: 'home' }
@@ -50,12 +50,12 @@ const requireUser = (check: (u: User) => boolean, translatedMsg: string): Naviga
 
 const userAccountNeedToBeLocal: NavigationGuardWithThis<void> = requireUser(
     (u: User) => u.canAuthenticateLocally,
-    t('navigation.error.needLocal'),
+    t('errors.navigation.needLocal'),
 )
 
 const userNeedToBeSuperUser: NavigationGuardWithThis<void> = requireUser(
     (u: User) => u.isSuperuser,
-    t('navigation.error.unauthorize'),
+    t('errors.navigation.unauthorize'),
 )
 
 const routes: RouteRecordRaw[] = [
@@ -82,7 +82,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/AuthView.vue'),
         beforeEnter: [userNeedToNotBeAuth],
         meta: {
-            title: t('navigation.auth.login'),
+            title: t('common.login'),
         },
     },
     {
@@ -90,7 +90,7 @@ const routes: RouteRecordRaw[] = [
         name: 'logout',
         component: () => import('@/views/AuthView.vue'),
         meta: {
-            title: t('navigation.auth.logout'),
+            title: t('common.logout'),
         },
     },
     {
@@ -139,7 +139,7 @@ const routes: RouteRecordRaw[] = [
                 if (!to.query.t) {
                     Notify.create({
                         color: 'negative',
-                        message: t('auth.createAccount.missingToken'),
+                        message: t('errors.auth.missingToken'),
                     })
                     return { name: 'home' }
                 }
@@ -158,7 +158,7 @@ const routes: RouteRecordRaw[] = [
                 name: 'projects',
                 component: () => import('@/views/ProjectsView.vue'),
                 meta: {
-                    title: t('navigation.project.allProjects'),
+                    title: t('fn.project.all', 2),
                 },
             },
             {
@@ -166,13 +166,13 @@ const routes: RouteRecordRaw[] = [
                 name: 'newProject',
                 component: () => import('@/views/NewProjectView.vue'),
                 meta: {
-                    title: t('navigation.project.new'),
+                    title: t('fn.project.new'),
                 },
                 beforeEnter: async () => {
                     const userStore = useUserStore()
                     if (!userStore.user?.isProjectCreator) {
                         Notify.create({
-                            message: t('navigation.error.unauthorize'),
+                            message: t('errors.navigation.unauthorize'),
                             color: 'negative',
                         })
                         return { name: 'home' }
@@ -187,7 +187,7 @@ const routes: RouteRecordRaw[] = [
                         component: () => import('@/views/ProjectView.vue'),
                         name: 'project',
                         meta: {
-                            title: t('navigation.project.i'),
+                            title: t('fn.project.i'),
                         },
                     },
                     {
@@ -195,7 +195,7 @@ const routes: RouteRecordRaw[] = [
                         name: 'projectAdmin',
                         component: () => import('@/views/ProjectAdministrationView.vue'),
                         meta: {
-                            title: t('navigation.projectAdministration'),
+                            title: t('fn.project.admin'),
                         },
                     },
                     {
@@ -203,7 +203,7 @@ const routes: RouteRecordRaw[] = [
                         name: 'projectDashboard',
                         component: () => import('@/views/ProjectDashboardView.vue'),
                         meta: {
-                            title: t('navigation.project.dashboard'),
+                            title: t('navigation.dashboard'),
                         },
                     },
                 ],
@@ -249,7 +249,7 @@ const routes: RouteRecordRaw[] = [
         name: 'account',
         component: () => import('@/views/AccountView.vue'),
         meta: {
-            title: t('navigation.myAccount'),
+            title: t('common.myAccount'),
         },
     },
 ]

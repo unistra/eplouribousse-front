@@ -11,10 +11,10 @@ export const useProjectRoles = () => {
         title: string
         role: Roles
     }[] = [
-        { title: t('roles.projectAdmin'), role: Roles.ProjectAdmin },
-        { title: t('roles.projectManager'), role: Roles.ProjectManager },
-        { title: t('roles.controller'), role: Roles.Controller },
-        { title: t('roles.guest'), role: Roles.Guest },
+        { title: t('fn.roles.projectAdmin', 2), role: Roles.ProjectAdmin },
+        { title: t('fn.roles.projectManager', 2), role: Roles.ProjectManager },
+        { title: t('fn.roles.controller', 2), role: Roles.Controller },
+        { title: t('fn.roles.guest', 2), role: Roles.Guest },
     ]
 
     const addUserLoadingBasedOnRole = ref<Roles | undefined>()

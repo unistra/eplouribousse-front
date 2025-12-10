@@ -60,7 +60,7 @@ describe('useAuthRequestPasswordReset', () => {
         expect(isLoading.value).toBe(false)
         expect(mock.notify).toHaveBeenCalledWith({
             type: 'positive',
-            message: `forms.password.reset.emailSent`,
+            message: `successes.emailSent`,
         })
     })
 
@@ -77,7 +77,7 @@ describe('useAuthRequestPasswordReset', () => {
         expect(mock.notify).toHaveBeenCalled()
         expect(mock.notify).toHaveBeenCalledWith({
             type: 'negative',
-            message: 'forms.password.reset.emailNotSent',
+            message: 'errors.email.notSent',
         })
     })
 })

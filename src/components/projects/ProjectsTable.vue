@@ -50,14 +50,14 @@ onMounted(async () => {
                         >
                             <QCheckbox
                                 v-model="projectsUserHasARoleIn"
-                                :label="t('view.projects.filters.participant')"
+                                :label="t('views.projects.filters.participant', 2)"
                                 @update:model-value="() => getProjects()"
                             />
                         </QItem>
                         <QItem dense>
                             <QCheckbox
                                 v-model="showArchived"
-                                :label="t('view.projects.filters.archived')"
+                                :label="t('views.projects.filters.archived', 2)"
                                 @update:model-value="() => getProjects()"
                             />
                         </QItem>

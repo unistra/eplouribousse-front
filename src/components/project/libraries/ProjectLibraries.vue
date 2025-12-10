@@ -16,7 +16,7 @@ const { onAddLibrary, addLibraryDialog } = useProjectLibraries()
         v-if="projectStore.project"
         class="container"
     >
-        <h1>{{ t('view.project.new.stepper.steps.libraries.title') }}</h1>
+        <h1>{{ t('views.project.new.stepper.steps.libraries.title', 2) }}</h1>
         <div>
             <template v-if="projectStore.project.libraries.length">
                 <ProjectLibraryCard
@@ -39,10 +39,10 @@ const { onAddLibrary, addLibraryDialog } = useProjectLibraries()
                 <QDialog v-model="addLibraryDialog">
                     <QCard>
                         <QCardSection>
-                            <p>{{ t('libraries.i') }}</p>
+                            <p>{{ t('fn.library.i') }}</p>
                         </QCardSection>
                         <QCardSection>
-                            <p>{{ t('libraries.list') }}</p>
+                            <p>{{ t('fn.library.list') }}</p>
                             <LibraryTable
                                 :libraries-selected="projectStore.project.libraries"
                                 :with-add-btn="true"

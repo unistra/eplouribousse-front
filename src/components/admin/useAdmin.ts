@@ -13,8 +13,8 @@ export function useAdmin() {
     const isAddUserLoading = ref<boolean>(true)
 
     const roles: { title: string; role: Roles.ProjectCreator | Roles.TenantSuperUser }[] = [
-        { title: t('roles.superUser'), role: Roles.TenantSuperUser },
-        { title: t('roles.projectCreator'), role: Roles.ProjectCreator },
+        { title: t('fn.roles.superUser', 2), role: Roles.TenantSuperUser },
+        { title: t('fn.roles.projectCreator', 2), role: Roles.ProjectCreator },
     ]
 
     const users = reactive<Record<Roles.ProjectCreator | Roles.TenantSuperUser, UserSummarized[]>>({

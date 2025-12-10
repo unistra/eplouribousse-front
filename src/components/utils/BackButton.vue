@@ -36,7 +36,7 @@ const handleBack = () => {
 
 <template>
     <AtomicButton
-        :aria-label="t('utils.backNavigation')"
+        :aria-label="t('views.backNavigation')"
         icon="mdi-arrow-left"
         no-border
         @click="handleBack"

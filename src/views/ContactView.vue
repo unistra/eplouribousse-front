@@ -4,7 +4,7 @@ import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
-import { ContactObjects } from '&/other.ts'
+import { ContactObjects, ContactObjectsLabels } from '&/other.ts'
 import { useUserStore } from '@/stores/userStore.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { useUtils } from '@/composables/useUtils.ts'
@@ -43,7 +43,7 @@ const onSubmit = async () => {
 
 <template>
     <QPage padding>
-        <h1>{{ t('view.contact.title') }}</h1>
+        <h1>{{ t('views.contact.title') }}</h1>
         <QForm
             v-if="!messageSent"
             class="auth-form"
@@ -53,21 +53,21 @@ const onSubmit = async () => {
                 v-model="subject"
                 emit-value
                 hide-bottom-space
-                :label="t('view.contact.subjects.i')"
+                :label="t('views.contact.subjects.i')"
                 map-options
-                :option-label="(val) => (val ? t(`view.contact.subjects.${val}`) : '')"
+                :option-label="(val: ContactObjects) => (val ? ContactObjectsLabels[val] : '')"
                 :options="contactObjects"
                 required
-                :rules="[(val) => !!val || t('forms.validation.fieldIsRequired')]"
+                :rules="[(val) => !!val || t('errors.form.fieldIsRequired')]"
             />
             <AtomicInput
                 v-model="message"
                 hide-bottom-space
-                :label="t('view.contact.placeholder')"
+                :label="t('views.contact.placeholder')"
                 :rules="[
                     (val: string) =>
                         val.length <= messageMaxLengthValidation ||
-                        t('forms.validation.maxLength', { length: messageMaxLengthValidation }),
+                        t('errors.form.maxLength', { length: messageMaxLengthValidation }),
                 ]"
                 type="textarea"
             />
@@ -75,16 +75,16 @@ const onSubmit = async () => {
                 <AtomicInput
                     v-model="email"
                     hide-bottom-space
-                    :label="t('common.email')"
-                    :rules="[(val, rules) => rules.email(val) || t('forms.validation.validEmail')]"
+                    :label="t('common.emailAddress')"
+                    :rules="[(val, rules) => rules.email(val) || t('errors.form.validEmail')]"
                     :skeleton="userStore.userLoading"
                     type="email"
                 />
                 <AtomicInput
                     v-model="confirmEmail"
                     hide-bottom-space
-                    :label="t('utils.confirmEmail')"
-                    :rules="[(val: string) => val === email || t('forms.validation.fieldsMustMatch')]"
+                    :label="t('views.contact.confirmEmail')"
+                    :rules="[(val: string) => val === email || t('errors.form.fieldsMustMatch')]"
                     type="email"
                 />
             </template>
@@ -100,7 +100,7 @@ const onSubmit = async () => {
                 name="mdi-check"
                 size="xl"
             />
-            <p>{{ t('view.contact.messageSent') }}</p>
+            <p>{{ t('views.contact.messageSent') }}</p>
         </div>
     </QPage>
 </template>

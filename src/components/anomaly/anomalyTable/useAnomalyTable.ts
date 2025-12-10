@@ -1,6 +1,6 @@
 import type { QTableColumn } from 'quasar'
 import type { Anomaly, Segment } from '#/project.ts'
-import { AnomalyType } from '&/project.ts'
+import { AnomalyType, AnomalyTypeLabels } from '&/project.ts'
 import { computed, ref } from 'vue'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useI18n } from 'vue-i18n'
@@ -24,7 +24,7 @@ export const useAnomalyTable = (props: AnomalyTableProps, emit: AnomalyTableEmit
 
     const anomalyType = ref<AnomalyType>()
     const anomalyOptions = Object.entries(AnomalyType).map(([_key, value]) => ({
-        label: t(`project.anomaly.type.${value.snakeToCamel()}`),
+        label: AnomalyTypeLabels[value],
         value,
     }))
     const anomalyDescription = ref<string>('')
@@ -95,24 +95,21 @@ export const useAnomalyTable = (props: AnomalyTableProps, emit: AnomalyTableEmit
     const columns: QTableColumn[] = [
         {
             name: 'type',
-            label: t('project.anomaly.tableField.type'),
+            label: t('views.project.anomaly.tableField.type'),
             field: 'type',
-            format: (val: string, row: Anomaly) => {
-                return val === AnomalyType.Other
-                    ? `${t(`project.anomaly.type.other`)}: ${row.description}`
-                    : t(`project.anomaly.type.${val.snakeToCamel()}`)
-            },
+            format: (val: AnomalyType, row: Anomaly) =>
+                AnomalyTypeLabels[val] + `${val === AnomalyType.Other ? ':' + row.description : ''}`,
             align: 'left',
         },
         {
             name: 'createdAt',
-            label: t('project.anomaly.tableField.createdAt'),
+            label: t('views.project.anomaly.tableField.createdAt'),
             field: 'createdAt',
             align: 'left',
         },
         {
             name: 'fixed',
-            label: t('project.anomaly.tableField.fixed'),
+            label: t('views.project.anomaly.fixed'),
             field: 'fixed',
             align: 'left',
         },

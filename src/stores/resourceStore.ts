@@ -49,7 +49,9 @@ export const useResourceStore = defineStore('resource', () => {
 
     // ACTIONS
     const formatCollectionToString = (collection: CollectionsInResource | '') => {
-        return collection ? `${t('collection.position.short')} ${collection.position} | ${collection.callNumber}` : ''
+        return collection
+            ? `${t('fn.collection.fields.position.short')} ${collection.position} | ${collection.callNumber}`
+            : ''
     }
 
     const getSegments = async () => {

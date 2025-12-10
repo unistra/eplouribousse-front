@@ -19,11 +19,11 @@ onMounted(() => {
 <template>
     <div class="container">
         <div class="shibboleth">
-            <h2>{{ t('auth.login.authShibboleth') }}</h2>
+            <h2>{{ t('views.auth.login.shibboleth') }}</h2>
             <AtomicButton
                 color="primary"
                 :href="saml2URL"
-                :label="t('auth.login.i')"
+                :label="t('common.login')"
             />
         </div>
 
@@ -34,29 +34,29 @@ onMounted(() => {
         </div>
 
         <QForm @submit.prevent="onLogin">
-            <h2>{{ t('auth.login.authLocal') }}</h2>
+            <h2>{{ t('views.auth.login.local') }}</h2>
             <div class="inputs">
                 <AtomicInput
                     v-model="email"
-                    :label="t('common.email')"
+                    :label="t('common.emailAddress')"
                     reactive-rules
-                    :rules="[(val: string) => !!val || t('forms.validation.fieldIsRequired')]"
+                    :rules="[(val: string) => !!val || t('errors.form.fieldIsRequired')]"
                     type="email"
                 />
                 <div class="password">
                     <PasswordField
                         v-model="password"
                         :label="t('common.password')"
-                        :rules="[(val) => !!val || t('forms.validation.fieldIsRequired')]"
+                        :rules="[(val) => !!val || t('errors.form.fieldIsRequired')]"
                     />
                     <RouterLink :to="{ name: 'requestPasswordReset' }">
-                        {{ t('forms.login.forgottenPassword') }}
+                        {{ t('views.auth.login.forgottenPassword') }}
                     </RouterLink>
                 </div>
             </div>
 
             <AtomicButton
-                :label="t('auth.login.i')"
+                :label="t('common.login')"
                 :loading="isLoading"
                 no-caps
                 type="submit"
