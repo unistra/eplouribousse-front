@@ -15,12 +15,20 @@ vi.mock('@/plugins/axios/axios', () => ({
     },
 }))
 
-vi.mock('@/plugins/i18n', () => ({
-    default: {
-        global: {
+vi.mock('vue-i18n', async () => {
+    const actual = await vi.importActual<typeof import('vue-i18n')>('vue-i18n')
+    return {
+        ...actual,
+        useI18n: () => ({
             t: vi.fn((k) => k),
-        },
-    },
+        }),
+    }
+})
+
+vi.mock('@/composables/useComposableQuasar', () => ({
+    useComposableQuasar: () => ({
+        notify: vi.fn(),
+    }),
 }))
 
 const mockUseHandleError = vi.fn()
