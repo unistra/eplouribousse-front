@@ -1,6 +1,5 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import { useResourceStore } from '@/stores/resourceStore.ts'
 import { AnomalyType, Tab } from '&/project.ts'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
