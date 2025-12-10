@@ -8,14 +8,18 @@ const defineBackendBaseURL = () => {
 
     if (import.meta.env.DEV) {
         // host is supposed to be tenant.epl.localhost:5173
-        hostParts[1] = hostParts[1] + '-api'
+        hostParts[1] = hostParts[1].replace(/^(cobalt)(-.*)?$/, (_, p1, p2) => {
+            return `${p1}-api${p2 || ''}`
+        })
         hostParts[2] = hostParts[2].replace(/\d+/, '8000')
         url.host = hostParts.join('.')
         return url.origin // tenant-api.epl.localhost:8000
     }
 
     // host is supposed to be tenant.eplouribousse.fr OR tenant.pprd.eplouribousse.fr
-    hostParts[0] = hostParts[0] + '-api'
+    hostParts[0] = hostParts[0].replace(/^(cobalt)(-.*)?$/, (_, p1, p2) => {
+        return `${p1}-api${p2 || ''}`
+    })
     url.host = hostParts.join('.')
     return url.origin // tenant-api.eplouribousse.fr OR tenant-api.pprd.eplouribousse.fr
 }
