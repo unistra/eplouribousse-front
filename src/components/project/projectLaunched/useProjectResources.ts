@@ -1,12 +1,14 @@
 import { computed, ref } from 'vue'
 import type { Resource } from '#/project.ts'
-import { PositioningFilter, ResourceStatus, Roles, Tab } from '&/project.ts'
+import { PositioningFilter, ResourceStatus, ResourceStatusToTab, Roles, Tab } from '&/project.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/userStore.ts'
 import type { QTableProps } from 'quasar'
 import { useResourcesStore } from '@/stores/resourcesStore.ts'
 import { storeToRefs } from 'pinia'
+import { useRoute } from 'vue-router'
+import { useResourceStore } from '@/stores/resourceStore.ts'
 
 type useProjectResourceTab = {
     name: string
@@ -21,9 +23,11 @@ export const RESOURCE_QUERY_PARAM = 'resource'
 
 export const useProjectResources = () => {
     const { t } = useI18n()
+    const route = useRoute()
     const projectStore = useProjectStore()
     const userStore = useUserStore()
     const resourcesStore = useResourcesStore()
+    const resourceStore = useResourceStore()
     const { libraryIdSelected, libraryIdComparedSelected } = storeToRefs(useResourcesStore())
 
     // REFS
@@ -246,6 +250,30 @@ export const useProjectResources = () => {
         },
     ]
 
+    const researchFetchedResourcesWhenQueryParam = () => {
+        if (!route.query[RESOURCE_QUERY_PARAM] || !resourceStore.resource) return
+
+        // Change tab to corresponding status
+        projectStore.tab = ResourceStatusToTab[resourceStore.resource.status]
+
+        // If instruction_turns filled, select the right library
+        if (
+            (resourceStore.resource.status === ResourceStatus.InstructionBound ||
+                resourceStore.resource.status === ResourceStatus.InstructionUnbound) &&
+            resourceStore.resource.instructionTurns?.[resourceStore.statusName].turns[0].library
+        ) {
+            libraryIdSelected.value = resourceStore.resource.instructionTurns[resourceStore.statusName].turns[0].library
+        } else {
+            selectDefaultLibrary()
+        }
+
+        // Used to prevent stepper animation to glitch in modal
+        setTimeout(() => {
+            resourcesStore.filter = resourceStore.resource!.code // Set filter in setTimeout to ensure action is triggered
+        }, 100)
+        return
+    }
+
     return {
         tabs,
         columns,
@@ -258,5 +286,6 @@ export const useProjectResources = () => {
         disableLibrarySelectedSelect,
         computeStatusInfos,
         selectFilterOnPositioning,
+        researchFetchedResourcesWhenQueryParam,
     }
 }

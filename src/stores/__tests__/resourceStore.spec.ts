@@ -7,7 +7,8 @@ import { createMockCollectionsInResource } from '~/fixtures/collections.ts'
 import { createMockAnomaly } from '~/fixtures/anomalies.ts'
 import { createMockSegment } from '~/fixtures/segments.ts'
 import { ResourceStatus } from '&/project.ts'
-import type { InstructionTurns, Segment } from '#/project.ts'
+import type { InstructionTurns, ProjectDetails, Segment } from '#/project.ts'
+import { useProjectStore } from '@/stores/projectStore.ts'
 
 vi.mock('@/plugins/axios/axios', () => ({
     axiosI: {
@@ -40,6 +41,7 @@ vi.mock('@/composables/useUtils', () => ({
 
 setActivePinia(createPinia())
 let resourceStore = useResourceStore()
+let projectStore = useProjectStore()
 
 describe('Resource Store', () => {
     beforeEach(() => {
@@ -184,12 +186,41 @@ describe('Resource Store', () => {
 
     test('should handle getSegments error', async () => {
         const error = new Error('Network error')
-        const mockResource = createMockResource()
-        resourceStore.resource = mockResource
+        resourceStore.resource = createMockResource()
 
         vi.mocked(axiosI.get).mockRejectedValue(error)
 
         await resourceStore.getSegments()
+
+        expect(mockUseHandleError).toHaveBeenCalledWith(error)
+    })
+
+    test('getResourceAndRelatedCollections() should retrieve resource and related collections', async () => {
+        projectStore = useProjectStore()
+        const projectId = 'proj-id'
+        projectStore.project = { id: projectId } as ProjectDetails
+        const resourceId = 'res-1'
+        const mockResource = createMockResource()
+        const mockCollections = [createMockCollectionsInResource(), createMockCollectionsInResource()]
+
+        vi.mocked(axiosI.get).mockResolvedValue({ data: { resource: mockResource, collections: mockCollections } })
+
+        await resourceStore.getResourceAndRelatedCollections(resourceId)
+
+        expect(resourceStore.resource).toEqual(mockResource)
+        expect(resourceStore.collections).toEqual(mockCollections)
+        expect(axiosI.get).toHaveBeenCalledWith(`/resources/${resourceId}/collections/`, {
+            params: { project_id: projectId },
+        })
+    })
+
+    test('getResourceAndRelatedCollections() should handle error', async () => {
+        const resourceId = 'res-2'
+        const error = new Error('Request failed')
+
+        vi.mocked(axiosI.get).mockRejectedValue(error)
+
+        await resourceStore.getResourceAndRelatedCollections(resourceId)
 
         expect(mockUseHandleError).toHaveBeenCalledWith(error)
     })
