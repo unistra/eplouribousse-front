@@ -18,31 +18,33 @@ const { checkValidityForLibraryStep } = checkValidityProjectStepper()
         v-if="projectStore.project"
         class="summary"
     >
-        <h1>{{ t('view.project.new.stepper.steps.summary.title') }}</h1>
+        <h1>{{ t('views.project.new.stepper.steps.summary.title') }}</h1>
         <QChip
             v-if="projectStore.project.activeAfter && new Date(projectStore.project.activeAfter) > new Date()"
             class="info"
             icon="mdi-information"
             size="lg"
         >
-            {{ t('view.project.new.stepper.steps.informations.startInFuture') }}
+            {{ t('views.project.new.stepper.steps.informations.startInFuture') }}
             {{ useUtils().useIntlDateTimeFormat(projectStore.project.activeAfter) }}
         </QChip>
 
         <hgroup>
-            <p class="label">{{ t('view.project.new.stepper.steps.informations.name') }}</p>
+            <p class="label">{{ t('views.project.new.stepper.steps.informations.name') }}</p>
             <h2>{{ projectStore.project.name }}</h2>
         </hgroup>
 
         <div class="description">
-            <p class="label">{{ t('view.project.new.stepper.steps.informations.description') }}</p>
+            <p class="label">{{ t('views.project.new.stepper.steps.informations.description') }}</p>
             <p :class="{ 'no-description': !projectStore.project.description }">
-                {{ projectStore.project.description || t('view.project.new.stepper.steps.informations.noDescription') }}
+                {{
+                    projectStore.project.description || t('views.project.new.stepper.steps.informations.noDescription')
+                }}
             </p>
         </div>
         <QSeparator />
         <div class="libraries">
-            <p class="label">{{ t('view.project.new.stepper.steps.libraries.tab') }}</p>
+            <p class="label">{{ t('fn.library.participating') }}</p>
             <div
                 v-if="!checkValidityForLibraryStep"
                 class="errors"
@@ -51,7 +53,7 @@ const { checkValidityForLibraryStep } = checkValidityProjectStepper()
                     name="mdi-alert"
                     size="sm"
                 />
-                <p>{{ t('view.project.new.stepper.steps.summary.errors.libraries') }}</p>
+                <p>{{ t('errors.library.summary', 2) }}</p>
             </div>
             <div class="cards">
                 <ProjectLibraryCard
@@ -63,14 +65,14 @@ const { checkValidityForLibraryStep } = checkValidityProjectStepper()
             </div>
         </div>
         <QSeparator />
-        <p class="label">{{ t('view.project.new.stepper.steps.roles.tab') }}</p>
+        <p class="label">{{ t('views.project.new.stepper.steps.roles.tab') }}</p>
         <div class="roles">
             <SearchUser
                 v-for="role in [
-                    [Roles.ProjectAdmin, t('roles.projectAdmin')],
-                    [Roles.Controller, t('roles.controller')],
-                    [Roles.ProjectManager, t('roles.projectManager')],
-                    [Roles.Guest, t('roles.guest')],
+                    [Roles.ProjectAdmin, t('fn.roles.projectAdmin', 2)],
+                    [Roles.Controller, t('fn.roles.controller', 2)],
+                    [Roles.ProjectManager, t('fn.roles.projectManager', 2)],
+                    [Roles.Guest, t('fn.roles.guest', 2)],
                 ]"
                 :key="role[0]"
                 :invitations-selected="projectStore.project.invitations.filter((el) => el.role === role[0])"

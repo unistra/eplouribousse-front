@@ -46,7 +46,7 @@ export const useProjectResources = () => {
     const computeStatusInfos = (row: Resource): StatusInfo => {
         if (row.arbitration !== 2)
             return {
-                message: t('project.resources.status.toArbitrate') + ` ${row.arbitration}`,
+                message: t('fn.resource.arbitration.i') + ` ${row.arbitration}`,
                 icon: 'mdi-gavel',
                 color: 'negative',
             }
@@ -54,48 +54,48 @@ export const useProjectResources = () => {
         if (row.status === ResourceStatus.Positioning) {
             const infos: StatusInfo = { message: '', icon: 'mdi-podium' }
             if (row.shouldPosition) {
-                infos.message = t('project.resources.status.positioningRequired')
+                infos.message = t('views.project.resources.status.positioningRequired')
                 infos.color = 'primary'
                 return infos
             }
             if (projectStore.isRole(Roles.Instructor, libraryIdSelected.value)) {
-                infos.message = t('project.resources.status.waitingPositioning')
+                infos.message = t('views.project.resources.status.waitingPositioning')
                 return infos
             }
-            infos.message = t('project.resources.status.positioning')
+            infos.message = t('views.project.resources.status.positioning')
             return infos
         }
         if (row.status === ResourceStatus.Excluded)
-            return { message: t('project.resources.status.excluded'), icon: 'mdi-cancel' }
+            return { message: t('views.project.resources.status.excluded'), icon: 'mdi-cancel' }
         if (row.status === ResourceStatus.InstructionBound) {
             if (projectStore.tab === Tab.Positioning)
                 return {
-                    message: t('project.resources.status.instructionBoundButPositioningTab'),
+                    message: t('views.project.resources.status.instructionBoundButPositioningTab'),
                     icon: 'mdi-timer-outline',
                 }
-            return { message: t('project.resources.status.instructionBound'), icon: 'mdi-segment' }
+            return { message: t('views.project.resources.status.instructionBound'), icon: 'mdi-segment' }
         }
         if (row.status === ResourceStatus.ControlBound)
-            return { message: t('project.resources.status.controlBound'), icon: 'mdi-shield-check-outline' }
+            return { message: t('views.project.resources.status.controlBound'), icon: 'mdi-shield-check-outline' }
         if (row.status === ResourceStatus.InstructionUnbound)
-            return { message: t('project.resources.status.instructionUnbound'), icon: 'mdi-segment' }
+            return { message: t('views.project.resources.status.instructionUnbound'), icon: 'mdi-segment' }
         if (row.status === ResourceStatus.ControlUnbound)
-            return { message: t('project.resources.status.controlUnbound'), icon: 'mdi-shield-check-outline' }
+            return { message: t('views.project.resources.status.controlUnbound'), icon: 'mdi-shield-check-outline' }
         if (row.status === ResourceStatus.AnomalyBound)
             return {
-                message: t('project.resources.status.anomaliesBound'),
+                message: t('views.project.resources.status.anomaliesBound'),
                 icon: 'mdi-alert-octagon',
                 color: 'negative',
             }
         if (row.status === ResourceStatus.AnomalyUnbound)
             return {
-                message: t('project.resources.status.anomaliesUnbound'),
+                message: t('views.project.resources.status.anomaliesUnbound'),
                 icon: 'mdi-alert-octagon',
                 color: 'negative',
             }
         if (row.status === ResourceStatus.Edition)
             return {
-                message: t('project.resources.resultant.i'),
+                message: t('views.project.resultant.i'),
                 icon: 'mdi-table-check',
             }
 
@@ -148,49 +148,49 @@ export const useProjectResources = () => {
     // STATICS
     const selectFilterOnPositioning: { label: string; value: PositioningFilter }[] = [
         { label: t('common.all'), value: PositioningFilter.All },
-        { label: t('project.positioning.filter.positioningOnly'), value: PositioningFilter.PositioningOnly },
+        { label: t('views.project.resources.filters.positioningOnly'), value: PositioningFilter.PositioningOnly },
         {
-            label: t('project.positioning.filter.instructionNotStarted'),
+            label: t('views.project.resources.filters.instructionNotStarted'),
             value: PositioningFilter.InstructionNotStarted,
         },
-        { label: t('project.positioning.filter.arbitration'), value: PositioningFilter.Arbitation },
-        { label: t('project.positioning.filter.excluded'), value: PositioningFilter.Excluded },
+        { label: t('fn.resource.arbitration.i'), value: PositioningFilter.Arbitation },
+        { label: t('views.project.resources.filters.excluded'), value: PositioningFilter.Excluded },
     ]
 
     const tabs: useProjectResourceTab[] = [
         {
             name: Tab.Positioning,
-            label: t('project.resources.status.toPosition'),
+            label: t('views.project.resources.status.toPosition'),
             status: ResourceStatus.Positioning,
             icon: 'mdi-podium',
         },
         {
             name: Tab.InstructionBound,
-            label: t('project.resources.status.toInstructBound'),
+            label: t('views.project.resources.status.toInstructBound'),
             status: ResourceStatus.InstructionBound,
             icon: 'mdi-book-open-page-variant',
         },
         {
             name: Tab.InstructionUnbound,
-            label: t('project.resources.status.toInstructUnbound'),
+            label: t('views.project.resources.status.toInstructUnbound'),
             status: ResourceStatus.InstructionUnbound,
             icon: 'mdi-file-multiple',
         },
         {
             name: Tab.Control,
-            label: t('project.resources.status.toControl'),
+            label: t('views.project.resources.status.toControl'),
             status: [ResourceStatus.ControlBound, ResourceStatus.ControlUnbound],
             icon: 'mdi-shield-check',
         },
         {
             name: Tab.Anomalies,
-            label: t('project.resources.status.anomalies', 2),
+            label: t('views.project.resources.status.anomalies', 2),
             status: [ResourceStatus.AnomalyBound, ResourceStatus.AnomalyUnbound],
             icon: 'mdi-alert-circle',
         },
         {
             name: Tab.Edition,
-            label: t('project.resources.resultant.i', 2),
+            label: t('views.project.resultant.i', 2),
             status: ResourceStatus.Edition,
             icon: 'mdi-table-check',
         },
@@ -199,7 +199,7 @@ export const useProjectResources = () => {
     const selects = [
         {
             model: libraryIdSelected,
-            label: t('project.resources.showResources'),
+            label: t('views.project.resources.showResources'),
             options: computed(() => {
                 if (!projectStore.project) return []
                 return [...projectStore.project.libraries, { name: t('common.all'), id: '' }]
@@ -208,7 +208,7 @@ export const useProjectResources = () => {
         },
         {
             model: libraryIdComparedSelected,
-            label: t('project.resources.compareWith'),
+            label: t('views.project.resources.compareWith'),
             options: computed(() => {
                 if (!projectStore.project) return []
                 return [
@@ -224,27 +224,27 @@ export const useProjectResources = () => {
         {
             name: 'title',
             required: true,
-            label: t('project.resources.title'),
+            label: t('fn.resource.fields.title'),
             align: 'left',
             field: 'title',
             sortable: true,
         },
         {
             name: 'code',
-            label: t('project.resources.code'),
+            label: t('fn.resource.fields.code'),
             align: 'left',
             field: 'code',
         },
         {
             name: 'count',
-            label: t('project.resources.count'),
+            label: t('fn.resource.fields.count', 2),
             align: 'left',
             field: 'count',
             sortable: true,
         },
         {
             name: 'status',
-            label: t('project.resources.status.title'),
+            label: t('views.project.resources.status.title'),
             align: 'left',
             field: 'status',
         },

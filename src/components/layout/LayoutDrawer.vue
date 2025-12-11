@@ -46,16 +46,16 @@ const collapsed = ref<boolean>(false)
             <div class="projects">
                 <DrawerItem
                     icon="mdi-folder-move-outline"
-                    :name="!collapsed ? t('project.public.btn') : ''"
+                    :name="!collapsed ? t('fn.project.all', 2) : ''"
                     :to="{ name: 'projects' }"
-                    :tooltip="collapsed ? t('project.public.btn') : undefined"
+                    :tooltip="collapsed ? t('fn.project.all', 2) : undefined"
                 />
                 <div
                     v-if="userStore.isAuth"
                     class="my-projects"
                 >
                     <p v-if="!collapsed">
-                        {{ t('layout.drawer.myProjects') }}
+                        {{ t('fn.project.my', 2) }}
                     </p>
                     <div :class="['scrollable-projects', { 'min-height': projectsStore.userProjects.length > 3 }]">
                         <QItem
@@ -75,7 +75,7 @@ const collapsed = ref<boolean>(false)
                             />
                         </QList>
                         <p v-else>
-                            {{ t('navigation.noProject') }}
+                            {{ t('fn.project.none') }}
                         </p>
                     </div>
                 </div>
@@ -86,7 +86,7 @@ const collapsed = ref<boolean>(false)
                     <AtomicButton
                         v-if="!collapsed"
                         icon="mdi-plus"
-                        :label="t('newProject.buttons.create', { article: t('common.a') })"
+                        :label="t('fn.project.create.a')"
                         :no-border="projectsStore.userProjects.length < 0"
                         :to="{ name: 'newProject' }"
                     />
@@ -94,7 +94,7 @@ const collapsed = ref<boolean>(false)
                         v-else
                         icon="mdi-plus"
                         :to="{ name: 'newProject' }"
-                        :tooltip="t('newProject.buttons.create', { article: t('common.a') })"
+                        :tooltip="t('fn.project.create.a')"
                     />
                 </QItem>
             </div>
@@ -121,13 +121,13 @@ const collapsed = ref<boolean>(false)
                 <DrawerItem
                     v-if="!collapsed"
                     icon="mdi-arrow-collapse-left"
-                    :name="t('navigation.collapse')"
+                    :name="t('common.collapse')"
                     @click="() => (collapsed = true)"
                 />
                 <DrawerItem
                     v-else
                     icon="mdi-arrow-collapse-right"
-                    :tooltip="t('navigation.expand')"
+                    :tooltip="t('common.expand')"
                     @click="() => (collapsed = false)"
                 />
             </div>

@@ -22,7 +22,7 @@ const setProjectVisibility = async () => {
             is_private: projectStore.project?.isPrivate || false,
         })
         notify({
-            message: t('project.settings.changeProjectVisibilitySuccess'),
+            message: t('views.project.settings.changeProjectVisibilitySuccess'),
             type: 'positive',
         })
     } catch (e) {
@@ -41,8 +41,8 @@ const setProjectVisibility = async () => {
             :editable="projectStore.userIsAdmin"
             :label="t('common.name')"
             :rules="[
-                () => projectStore.nameRequired || t('forms.validation.fieldIsRequired'),
-                () => projectStore.nameLengthValid || t('forms.validation.fieldLessThan255'),
+                () => projectStore.nameRequired || t('errors.form.fieldIsRequired'),
+                () => projectStore.nameLengthValid || t('errors.form.fieldLessThan255'),
             ]"
             @save="onSave"
         />
@@ -69,13 +69,13 @@ const setProjectVisibility = async () => {
         <AtomicToggle
             v-if="projectStore.userIsAdmin"
             v-model="projectStore.project.isPrivate"
-            :label="t('project.settings.privateMode')"
+            :label="t('views.project.settings.privateMode')"
             @update:model-value="setProjectVisibility"
         />
         <QChip
             v-else
             class="chip-label-value"
-            >{{ t('project.settings.visibility') }}:
+            >{{ t('views.project.settings.visibility') }}:
             <span>{{ projectStore.project.isPrivate ? t('common.private') : t('common.public') }}</span></QChip
         >
     </div>

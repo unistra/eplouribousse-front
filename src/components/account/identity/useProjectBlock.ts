@@ -4,7 +4,7 @@ import { axiosI } from '@/plugins/axios/axios.ts'
 import { useUserStore } from '@/stores/userStore.ts'
 import { useI18n } from 'vue-i18n'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
-import { Roles } from '&/project.ts'
+import { Roles, RolesLabels } from '&/project.ts'
 import type { LibraryI } from '#/library'
 
 export const useProjectBlock = () => {
@@ -47,6 +47,10 @@ export const useProjectBlock = () => {
         })
     })
 
+    const alertKeys = computed<AlertKey[]>(() =>
+        userSettingsAlertsFormatted.value ? (Object.keys(userSettingsAlertsFormatted.value) as AlertKey[]) : [],
+    )
+
     const patchUserAlerts = async () => {
         if (!selectedProject.value || !isDifferenceBetweenUserSettingsAndInitial.value) return
         try {
@@ -58,7 +62,7 @@ export const useProjectBlock = () => {
             Object.assign(initialUserSettingsAlertsFormatted.value, userSettingsAlertsFormatted.value)
             notify({
                 type: 'positive',
-                message: t('utils.modificationSuccess'),
+                message: t('successes.modifications'),
             })
         } catch {
             notify({
@@ -100,12 +104,10 @@ export const useProjectBlock = () => {
         return selectedProject.value?.roles
             .filter((role: ProjectRole) => role.user.id === userStore.user?.id)
             .map((role: ProjectRole) => {
-                const roleName = role.role.snakeToCamel()
                 const libraryName = selectedProject.value?.libraries.find(
                     (library: LibraryI) => library.id === role.libraryId,
                 )?.name
-                const key = `roles.${roleName}`
-                return `${t(key)} ${roleName === Roles.Instructor ? `${t('account.projects.forLibrary')} ${libraryName}` : ''}`
+                return `${RolesLabels[role.role]} ${role.role === Roles.Instructor ? `${t('views.account.projects.forLibrary')} ${libraryName}` : ''}`
             })
     })
 
@@ -118,5 +120,6 @@ export const useProjectBlock = () => {
         patchUserAlerts,
         onRowClick,
         rolesInProjectSelected,
+        alertKeys,
     }
 }

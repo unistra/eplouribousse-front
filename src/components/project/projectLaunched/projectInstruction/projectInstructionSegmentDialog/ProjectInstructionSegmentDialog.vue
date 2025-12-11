@@ -40,24 +40,24 @@ onMounted(() => {
     >
         <QCard>
             <QCardSection>{{
-                isNew ? t('project.instruction.segment.new') : t('project.instruction.segment.update')
+                isNew ? t('views.project.instruction.segment.new') : t('views.project.instruction.segment.update')
             }}</QCardSection>
             <QCardSection>
                 <QForm @submit.prevent="onSave">
                     <AtomicInput
                         v-model="workSegment.content"
-                        :label="t('project.instruction.tableFields.segment')"
-                        :rules="[(val: string) => !!val || t('forms.validation.fieldIsRequired')]"
+                        :label="t('fn.segment.i')"
+                        :rules="[(val: string) => !!val || t('errors.form.fieldIsRequired')]"
                         type="text"
                     />
                     <AtomicInput
                         v-model="workSegment.improvableElements"
-                        :label="t('project.instruction.tableFields.improvableElements')"
+                        :label="t('views.project.instruction.tableFields.improvableElements')"
                         type="text"
                     />
                     <AtomicInput
                         v-model="workSegment.exception"
-                        :label="t('project.instruction.tableFields.exception')"
+                        :label="t('views.project.instruction.tableFields.exception')"
                         type="text"
                     />
                     <AtomicSelect
@@ -65,7 +65,7 @@ onMounted(() => {
                         v-model="workSegment.improvedSegment"
                         clearable
                         emit-value
-                        :label="t('project.instruction.tableFields.resolve')"
+                        :label="t('fn.segment.fields.resolve')"
                         map-options
                         :option-label="(optionSegment: Segment) => segmentLabel(optionSegment)"
                         option-value="id"

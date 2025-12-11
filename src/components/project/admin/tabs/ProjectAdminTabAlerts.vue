@@ -4,10 +4,11 @@ import { useProjectStore } from '@/stores/projectStore.ts'
 import AtomicToggle from '@/components/atomic/AtomicToggle.vue'
 import { computed, onMounted, ref } from 'vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
-import type { Project, ProjectSettings } from '#/project.ts'
+import type { AlertKey, Project, ProjectSettings } from '#/project.ts'
 import { useUtils } from '@/composables/useUtils.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
+import { type AlertType, ProjectSettingsAlertsLabel } from '&/project.ts'
 
 const { t } = useI18n()
 const { useHandleError } = useUtils()
@@ -60,13 +61,17 @@ const patchProjectAlerts = async () => {
             projectStore.initialProject.settings.alerts = structuredClone(response.data.alerts)
         notify({
             type: 'positive',
-            message: t('project.settings.emailAlert.successAlertUpdated'),
+            message: t('views.project.settings.emailAlert.successAlertUpdated'),
         })
     } catch (e) {
         useHandleError(e)
     }
     saveLoading.value = false
 }
+
+const alertKeys = computed<AlertKey[]>(() =>
+    projectStore.project ? (Object.keys(projectStore.project.settings.alerts) as AlertKey[]) : [],
+)
 </script>
 
 <template>
@@ -75,7 +80,7 @@ const patchProjectAlerts = async () => {
         denses
     >
         <template
-            v-for="key in Object.keys(projectStore.project.settings.alerts)"
+            v-for="key in alertKeys"
             :key="key"
         >
             <QItem
@@ -83,9 +88,9 @@ const patchProjectAlerts = async () => {
                 dense
             >
                 <AtomicToggle
-                    v-model="projectStore.project.settings.alerts[key as keyof Project['settings']['alerts']]"
+                    v-model="projectStore.project.settings.alerts[key]"
                     :disable="!projectStore.userIsAdmin"
-                    :label="t(`project.settings.emailAlert.${key}`)"
+                    :label="ProjectSettingsAlertsLabel[key as AlertType]"
                 />
             </QItem>
         </template>

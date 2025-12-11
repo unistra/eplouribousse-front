@@ -21,21 +21,21 @@ onMounted(() => {
 
 <template>
     <div v-if="projectStore.project">
-        <h1>{{ t('view.project.new.stepper.steps.informations.title') }}</h1>
+        <h1>{{ t('views.project.new.stepper.steps.informations.title') }}</h1>
         <QForm>
             <AtomicInput
                 v-model="projectStore.project.name"
-                :label="t('view.project.new.stepper.steps.informations.name')"
+                :label="t('views.project.new.stepper.steps.informations.name')"
                 required
                 :rules="[
-                    () => projectStore.nameRequired || t('forms.validation.fieldIsRequired'),
-                    () => projectStore.nameLengthValid || t('forms.validation.fieldLessThan255'),
+                    () => projectStore.nameRequired || t('errors.form.fieldIsRequired'),
+                    () => projectStore.nameLengthValid || t('errors.form.fieldLessThan255'),
                 ]"
                 type="text"
             />
             <AtomicInput
                 v-model="projectStore.project.description"
-                :label="t('view.project.new.stepper.steps.informations.description')"
+                :label="t('views.project.new.stepper.steps.informations.description')"
                 type="textarea"
             />
         </QForm>

@@ -23,11 +23,11 @@ export const useProjectAdminTabExclusions = () => {
         name: ProjectAdministrationTab
         label: string
     }[] = [
-        { name: ProjectAdministrationTab.Informations, label: t('project.administration.informations') },
-        { name: ProjectAdministrationTab.Libraries, label: t('project.administration.libraries') },
-        { name: ProjectAdministrationTab.Users, label: t('project.administration.users') },
-        { name: ProjectAdministrationTab.Alerts, label: t('project.administration.alerts') },
-        { name: ProjectAdministrationTab.Exclusions, label: t('project.administration.exclusions') },
+        { name: ProjectAdministrationTab.Informations, label: t('views.project.admin.informations') },
+        { name: ProjectAdministrationTab.Libraries, label: t('views.project.admin.libraries') },
+        { name: ProjectAdministrationTab.Users, label: t('views.project.admin.users') },
+        { name: ProjectAdministrationTab.Alerts, label: t('views.project.admin.alerts') },
+        { name: ProjectAdministrationTab.Exclusions, label: t('views.project.admin.exclusions') },
     ]
     const tab = ref<string>(ProjectAdministrationTab.Informations)
 

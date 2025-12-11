@@ -25,11 +25,11 @@ const { resetInstruction, reassignTurn } = useProjectAnomalies(dialogModal)
             <AtomicButton
                 color="primary"
                 :disable="!!resourceStore.anomaliesUnfixed.length"
-                :label="t('project.anomaly.tab.btnGiveTurn')"
+                :label="t('views.project.anomaly.tab.btnGiveTurn')"
                 :no-border="!resourceStore.anomaliesUnfixed.length"
             >
                 <QTooltip v-if="!!resourceStore.anomaliesUnfixed.length">
-                    {{ t('project.anomaly.tab.btnGiveTurnDisableTooltip', 2) }}
+                    {{ t('views.project.anomaly.tab.btnGiveTurnDisableTooltip', 2) }}
                 </QTooltip>
                 <QMenu auto-close>
                     <QList>
@@ -41,7 +41,7 @@ const { resetInstruction, reassignTurn } = useProjectAnomalies(dialogModal)
                         >
                             <QItemSection>
                                 {{
-                                    `${t('project.resources.position')}: ${collection.position} | ${t('project.resources.callNumber')}: ${collection.callNumber}`
+                                    `${t('fn.collection.fields.position.i')}: ${collection.position} | ${t('fn.collection.fields.callNumber.i')}: ${collection.callNumber}`
                                 }}
                             </QItemSection>
                         </QItem>
@@ -49,7 +49,7 @@ const { resetInstruction, reassignTurn } = useProjectAnomalies(dialogModal)
                             clickable
                             @click="reassignTurn(undefined, true)"
                         >
-                            <QItemSection>{{ t('project.anomaly.giveTurnToAController') }}</QItemSection>
+                            <QItemSection>{{ t('views.project.anomaly.giveTurnToAController') }}</QItemSection>
                         </QItem>
                     </QList>
                 </QMenu>
@@ -57,7 +57,7 @@ const { resetInstruction, reassignTurn } = useProjectAnomalies(dialogModal)
             <AtomicButton
                 color="primary"
                 confirm-button-color="primary"
-                :label="t('project.anomaly.tab.btnReset')"
+                :label="t('views.project.anomaly.tab.btnReset')"
                 no-border
                 require-confirmation
                 @confirm="resetInstruction"

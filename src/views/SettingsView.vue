@@ -9,18 +9,20 @@ const userStore = useUserStore()
 <template>
     <QPage padding>
         <div class="container-center">
-            <h1>{{ t('settings.core') }}</h1>
+            <h1>{{ t('views.settings.core') }}</h1>
         </div>
         <div
             v-if="userStore.isAuth && userStore?.user?.canAuthenticateLocally"
             class="row"
         >
             <div class="col-4">
-                <h4>{{ t('settings.account') }}</h4>
+                <h4>{{ t('views.settings.account') }}</h4>
                 <br />
                 <ul>
                     <li>
-                        <RouterLink :to="{ name: 'changePassword' }">{{ t('settings.changePassword') }} </RouterLink>
+                        <RouterLink :to="{ name: 'changePassword' }"
+                            >{{ t('views.settings.changePassword') }}
+                        </RouterLink>
                     </li>
                 </ul>
             </div>

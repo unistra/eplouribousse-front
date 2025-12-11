@@ -29,7 +29,7 @@ export const useAuthCreateAccount = () => {
         } catch {
             notify({
                 type: 'negative',
-                message: t('auth.createAccount.tokenRejected'),
+                message: t('errors.auth.tokenRejected'),
             })
             await router.push({ name: 'home' })
         } finally {
@@ -59,7 +59,7 @@ export const useAuthCreateAccount = () => {
 
             notify({
                 type: 'positive',
-                message: t('auth.createAccount.accountCreated'),
+                message: t('successes.auth.accountCreated'),
             })
             await router.push({ name: 'login' })
         } catch {

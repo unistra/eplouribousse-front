@@ -11,7 +11,7 @@ const userStore = useUserStore()
     <QHeader bordered>
         <RouterLink :to="{ name: 'home' }">
             <QImg
-                :alt="t('layout.header.logoAlt')"
+                :alt="t('views.layout.header.logoAlt')"
                 no-spinner
                 src="/img/logo-eplouribousse.png"
             />
@@ -19,7 +19,7 @@ const userStore = useUserStore()
         <AtomicButton
             v-if="!userStore.isAuth"
             icon="mdi-login"
-            :label="t('auth.login.i')"
+            :label="t('common.login')"
             :to="{ name: 'login' }"
         />
         <AtomicButton
@@ -41,9 +41,9 @@ const userStore = useUserStore()
                         <QItemSection>
                             <QItemLabel>
                                 {{ userStore.user?.firstName || '' }}
-                                {{ userStore.user?.lastName || t('layout.header.account') }}
+                                {{ userStore.user?.lastName || t('common.myAccount') }}
                             </QItemLabel>
-                            <QItemLabel caption>{{ t('layout.header.manageAccount') }}</QItemLabel>
+                            <QItemLabel caption>{{ t('views.layout.header.manageAccount') }}</QItemLabel>
                         </QItemSection>
                     </QItem>
                     <QItem
@@ -53,7 +53,7 @@ const userStore = useUserStore()
                         <QItemSection avatar>
                             <QIcon name="mdi-logout" />
                         </QItemSection>
-                        <QItemSection>{{ t('auth.logout') }}</QItemSection>
+                        <QItemSection>{{ t('common.logout') }}</QItemSection>
                     </QItem>
                 </QList>
             </QMenu>

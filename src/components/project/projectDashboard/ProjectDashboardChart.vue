@@ -43,7 +43,7 @@ onMounted(async () => {
                 name="mdi-timer-sand"
                 size="1rem"
             />
-            {{ t('view.project.dashboard.computedAt') }}
+            {{ t('views.project.dashboard.computedAt') }}
             {{ utils.useIntlDateTimeFormat(data.computedAt) }}
         </p>
     </div>

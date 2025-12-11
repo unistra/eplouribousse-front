@@ -99,7 +99,7 @@ export const useProjectSegmentTable = () => {
         },
         {
             name: 'library',
-            label: t('libraries.i'),
+            label: t('fn.library.i'),
             field: 'library',
             format(_val: unknown, row: Segment) {
                 if (!projectStore.project) return t('common.error')
@@ -111,7 +111,7 @@ export const useProjectSegmentTable = () => {
         },
         {
             name: 'collection',
-            label: t('collection.i'),
+            label: t('fn.collection.i'),
             field: 'collection',
             format(_val: unknown, row: Segment): string {
                 const collection = resourceStore.collections.find((el) => el.id === row.collection)
@@ -121,36 +121,36 @@ export const useProjectSegmentTable = () => {
         },
         {
             name: 'segmentType',
-            label: t('segment.boundOrUnbound'),
+            label: t('fn.segment.fields.boundOrUnbound'),
             field: 'segmentType',
             align: 'center',
             format(val: 'bound' | 'unbound') {
                 return val === 'bound'
-                    ? t('project.instruction.segment.bound')
-                    : t('project.instruction.segment.unbound')
+                    ? t('views.project.instruction.segment.bound')
+                    : t('views.project.instruction.segment.unbound')
             },
         },
         {
             name: 'content',
-            label: t('segment.i'),
+            label: t('fn.segment.i'),
             field: 'content',
             align: 'center',
         },
         {
             name: 'exception',
-            label: t('segment.exception'),
+            label: t('fn.segment.fields.exception'),
             field: 'exception',
             align: 'center',
         },
         {
             name: 'improvableElements',
-            label: t('segment.improvableElements'),
+            label: t('fn.segment.fields.improvableElements'),
             field: 'improvableElements',
             align: 'center',
         },
         {
             name: 'resolve',
-            label: t('segment.resolve'),
+            label: t('fn.segment.fields.resolve'),
             field: 'resolve',
             format(_val: unknown, row: Segment) {
                 if (!projectStore.project) return t('errors.dataUnreachable')
@@ -166,8 +166,8 @@ export const useProjectSegmentTable = () => {
 
                 const libraryString =
                     projectStore.project.libraries.find((library) => library.id === collection?.library)?.name ||
-                    t('utils.noLibrary')
-                return `${libraryString} | ${t('project.instruction.tableFields.line')}: ${segmentString}`
+                    t('fn.library.none')
+                return `${libraryString} | ${t('views.project.instruction.tableFields.line')}: ${segmentString}`
             },
             align: 'center',
         },
@@ -176,7 +176,7 @@ export const useProjectSegmentTable = () => {
     if (projectStore.tab !== Tab.Edition) {
         columns.push({
             name: 'anomalies',
-            label: t('project.anomaly.i', 2),
+            label: t('fn.anomaly.i', 2),
             field: 'anomalies',
             align: 'center',
         })
@@ -184,7 +184,7 @@ export const useProjectSegmentTable = () => {
     if (displayOptionsColumnBasedOnUserRole()) {
         columns.push({
             name: 'options',
-            label: t('project.instruction.tableFields.options'),
+            label: t('views.project.instruction.tableFields.options'),
             field: 'options',
             align: 'center',
         })

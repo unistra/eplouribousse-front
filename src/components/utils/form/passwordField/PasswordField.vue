@@ -62,7 +62,11 @@ watch(
                     @click="() => (isPasswordVisible = !isPasswordVisible)"
                 >
                     <QTooltip>
-                        {{ t(`forms.password.isVisibleTooltip.${isPasswordVisible.toString()}`) }}
+                        {{
+                            isPasswordVisible
+                                ? t('views.auth.password.isVisibleTooltip.true')
+                                : t('views.auth.password.isVisibleTooltip.false')
+                        }}
                     </QTooltip>
                 </AtomicButton>
             </template>

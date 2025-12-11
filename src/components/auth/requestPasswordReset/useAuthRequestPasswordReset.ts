@@ -17,12 +17,12 @@ export function useAuthRequestPasswordReset() {
             })
             notify({
                 type: 'positive',
-                message: t('forms.password.reset.emailSent', { email: email.value }),
+                message: t('successes.emailSent', { email: email.value }),
             })
         } catch {
             notify({
                 type: 'negative',
-                message: t('forms.password.reset.emailNotSent'),
+                message: t('errors.email.notSent'),
             })
         }
         isLoading.value = false

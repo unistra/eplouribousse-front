@@ -88,7 +88,7 @@ onMounted(async () => {
                 :name="select.name"
                 :option-label="
                     (el) =>
-                        `${el.name}${projectStore.isRole(Roles.Instructor, el.id) ? ' - ' + t('project.resources.youAreInstructor') : ''}`
+                        `${el.name}${projectStore.isRole(Roles.Instructor, el.id) ? ' - ' + t('views.project.resources.youAreInstructor') : ''}`
                 "
                 option-value="id"
                 :options="select.options.value"
@@ -129,7 +129,7 @@ onMounted(async () => {
                     dense
                     :disable="disableLibrarySelectedSelect"
                     emit-value
-                    :label="t('project.positioning.filter.i')"
+                    :label="t('views.project.resources.filters.i')"
                     map-options
                     name="filter-positioning"
                     option-label="label"

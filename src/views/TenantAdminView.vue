@@ -39,11 +39,14 @@ onMounted(async () => {
             </div>
         </div>
         <div class="invite">
-            <h2>{{ t('forms.invite.title') }}</h2>
+            <hgroup>
+                <h2>{{ t('views.tenantAdmin.invite.title') }}</h2>
+                <p>{{ t('views.tenantAdmin.invite.info') }}</p>
+            </hgroup>
             <InviteForm class="max-width-container" />
         </div>
         <div class="roles">
-            <h2>{{ t('view.tenantAdmin.section2') }}</h2>
+            <h2>{{ t('views.tenantAdmin.section2') }}</h2>
             <div
                 v-for="(role, index) in roles"
                 :key="index"

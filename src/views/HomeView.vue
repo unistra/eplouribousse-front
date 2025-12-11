@@ -10,13 +10,13 @@ const { t } = useI18n()
     <QPage padding>
         <hgroup>
             <h1>
-                {{ t('home.title') }}
+                {{ t('views.home.title') }}
                 <template v-if="globalStore.tenant?.name">
                     -
                     <span class="tenant">{{ globalStore.tenant?.name }}</span>
                 </template>
             </h1>
-            <p>{{ t('home.description') }}</p>
+            <p>{{ t('views.home.description') }}</p>
         </hgroup>
         <div class="imgs">
             <div>
@@ -26,7 +26,7 @@ const { t } = useI18n()
                     target="_blank"
                 >
                     <QImg
-                        :alt="t('home.abesAlt')"
+                        :alt="t('views.home.abesAlt')"
                         fit="contain"
                         src="/img/logo-abes.svg"
                     />
@@ -37,7 +37,7 @@ const { t } = useI18n()
                     target="_blank"
                 >
                     <QImg
-                        :alt="t('home.unistraAlt')"
+                        :alt="t('views.home.unistraAlt')"
                         fit="contain"
                         src="/img/logo-unistra.svg"
                     />
@@ -49,7 +49,7 @@ const { t } = useI18n()
                 target="_blank"
             >
                 <QImg
-                    :alt="t('home.collexAlt')"
+                    :alt="t('views.home.collexAlt')"
                     fit="contain"
                     src="/img/logo-collex.png"
                 />

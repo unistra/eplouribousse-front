@@ -38,7 +38,7 @@ onMounted(async () => {
             :done="step > 1"
             icon="mdi-information-slab-circle-outline"
             :name="1"
-            :title="t('view.project.new.stepper.steps.informations.tab')"
+            :title="t('views.project.new.stepper.steps.informations.tab')"
         >
             <ProjectInformations />
         </QStep>
@@ -48,7 +48,7 @@ onMounted(async () => {
             :error="step > 2 && !checkValidityForLibraryStep"
             icon="mdi-bookshelf"
             :name="2"
-            :title="t('view.project.new.stepper.steps.libraries.tab')"
+            :title="t('fn.library.participating')"
         >
             <ProjectLibraries />
         </QStep>
@@ -58,7 +58,7 @@ onMounted(async () => {
             :error="step > 3 && !checkValidityForRolesStep"
             icon="mdi-account"
             :name="3"
-            :title="t('view.project.new.stepper.steps.roles.tab')"
+            :title="t('views.project.new.stepper.steps.roles.tab')"
         >
             <ProjectRoles />
         </QStep>
@@ -67,7 +67,7 @@ onMounted(async () => {
             :done="step > 4"
             icon="mdi-checkbox-multiple-marked"
             :name="4"
-            :title="t('view.project.new.stepper.steps.summary.tab')"
+            :title="t('views.project.new.stepper.steps.summary.tab')"
         >
             <ProjectSummary />
         </QStep>
@@ -76,14 +76,14 @@ onMounted(async () => {
             <QStepperNavigation>
                 <AtomicButton
                     v-if="step > 1"
-                    :label="t('view.project.new.stepper.steps.informations.back')"
+                    :label="t('common.back')"
                     @click="previousStep"
                 />
                 <AtomicButton
                     v-if="step === 4"
                     color="primary"
                     :disable="!checkValidityForRolesStep || !checkValidityForLibraryStep"
-                    :label="t('newProject.buttons.passToReview')"
+                    :label="t('views.project.new.button.passToReview')"
                     :loading="passToReviewLoading"
                     no-border
                     require-confirmation
@@ -91,8 +91,8 @@ onMounted(async () => {
                 >
                     <template #confirmation-content>
                         <QCardSection class="confirmation-p">
-                            <p>{{ t('view.project.new.stepper.steps.summary.whenConfirm') }}</p>
-                            <p>{{ t('confirmDialogDefault.areYouSure') }}</p>
+                            <p>{{ t('views.project.new.stepper.steps.summary.whenConfirm', 2) }}</p>
+                            <p>{{ t('views.confirmDialogDefault.areYouSure') }}</p>
                         </QCardSection>
                     </template>
                 </AtomicButton>

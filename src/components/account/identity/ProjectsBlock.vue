@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { AlertKey } from '#/project.ts'
 import AtomicToggle from '@/components/atomic/AtomicToggle.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useProjectBlock } from '@/components/account/identity/useProjectBlock.ts'
 import { useI18n } from 'vue-i18n'
 import ProjectsTable from '@/components/projects/ProjectsTable.vue'
+import { ProjectSettingsAlertsLabel } from '&/project.ts'
 
 const { t } = useI18n()
 const {
@@ -15,12 +15,13 @@ const {
     selectedProject,
     dialog,
     onRowClick,
+    alertKeys,
 } = useProjectBlock()
 </script>
 
 <template>
     <div class="block-projects">
-        <h2>{{ t('account.projects.myProjects', 2) }}</h2>
+        <h2>{{ t('fn.project.my') }}</h2>
         <ProjectsTable
             user-specific
             @row-click="onRowClick"
@@ -36,7 +37,7 @@ const {
                         <h3>{{ selectedProject.name || '' }}</h3>
                     </QCardSection>
                     <QCardSection>
-                        <p>{{ t('account.projects.rolesInProject') }}:</p>
+                        <p>{{ t('views.account.projects.rolesInProject') }}:</p>
                         <ul class="roles">
                             <li
                                 v-for="(role, index) in rolesInProjectSelected"
@@ -49,22 +50,22 @@ const {
 
                     <QCardSection class="alerts">
                         <p class="alert-title">
-                            {{ t('account.projects.alerts.title') }}
+                            {{ t('views.account.projects.alerts.title') }}
                             <QIcon name="mdi-information-outline" />
-                            <QTooltip size="md">{{ t('account.projects.alerts.info') }}</QTooltip>
+                            <QTooltip size="md">{{ t('views.account.projects.alerts.info') }}</QTooltip>
                         </p>
                         <div
-                            v-if="Object.entries(userSettingsAlertsFormatted).length"
+                            v-if="alertKeys.length"
                             class="alerts-toggles"
                         >
                             <template
-                                v-for="alert in Object.entries(userSettingsAlertsFormatted)"
-                                :key="alert[0]"
+                                v-for="key in alertKeys"
+                                :key="key"
                             >
                                 <AtomicToggle
-                                    v-if="alert[0] !== 'preservation' && alert[0] !== 'transfer'"
-                                    v-model="userSettingsAlertsFormatted[alert[0] as AlertKey]"
-                                    :label="t(`project.settings.emailAlert.${alert[0]}`)"
+                                    v-if="key !== 'preservation' && key !== 'transfer'"
+                                    v-model="userSettingsAlertsFormatted[key]"
+                                    :label="ProjectSettingsAlertsLabel[key]"
                                 />
                             </template>
                         </div>
@@ -72,7 +73,7 @@ const {
                             v-else
                             class="no-alert"
                         >
-                            {{ t('account.projects.alerts.noAlert') }}
+                            {{ t('views.account.projects.alerts.noAlert') }}
                         </div>
                     </QCardSection>
                     <QCardActions

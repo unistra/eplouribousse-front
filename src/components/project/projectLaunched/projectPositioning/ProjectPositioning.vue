@@ -38,15 +38,15 @@ const librariesAssociated = computed<ProjectLibrary[]>(() => {
             flat
         >
             <QCardSection>
-                <p>{{ t('project.positioning.arbitration.i') }}</p>
+                <p>{{ t('fn.resource.arbitration.i') }}</p>
             </QCardSection>
             <QCardSection>
-                <p>{{ t('project.positioning.arbitration.currently') }}</p>
+                <p>{{ t('views.project.positioning.arbitration.currently') }}</p>
                 <p>
                     {{
                         resourceStore.resource?.arbitration == Arbitration.NoPosition1
-                            ? t('project.positioning.arbitration.type0')
-                            : t('project.positioning.arbitration.type1')
+                            ? t('views.project.positioning.arbitration.type0')
+                            : t('views.project.positioning.arbitration.type1')
                     }}
                 </p>
             </QCardSection>

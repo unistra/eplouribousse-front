@@ -88,7 +88,7 @@ onMounted(async () => await getData(props.type))
                     size="1.25rem"
                 />
                 <p>
-                    {{ t('view.project.dashboard.computedAt') }}
+                    {{ t('views.project.dashboard.computedAt') }}
                     {{ useUtils().useIntlDateTimeFormat(data.computedAt) }}
                 </p>
             </div>

@@ -49,7 +49,7 @@ export const useProjectInstructionSegmentDialog = (
     })
 
     const segmentLabel = (segment?: Segment) => {
-        const name = `${t('project.instruction.tableFields.line')}: ${segment?.order} | ${t('project.instruction.tableFields.segment')}: ${segment?.content || t('common.none')} | ${t('project.instruction.tableFields.exception')}: ${segment?.exception || t('common.none')} | ${t('project.instruction.tableFields.improvableElements')}: ${segment?.improvableElements || t('common.none')}`
+        const name = `${t('views.project.instruction.tableFields.line')}: ${segment?.order} | ${t('fn.segment.i')}: ${segment?.content || t('common.none')} | ${t('views.project.instruction.tableFields.exception')}: ${segment?.exception || t('common.none')} | ${t('views.project.instruction.tableFields.improvableElements')}: ${segment?.improvableElements || t('common.none')}`
         return segment ? name : ''
     }
 

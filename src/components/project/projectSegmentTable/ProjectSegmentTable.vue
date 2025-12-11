@@ -49,7 +49,7 @@ onMounted(async () => {
         flat
         hide-pagination
         :loading
-        :no-data-label="t('project.instruction.segment.noSegment')"
+        :no-data-label="t('views.project.instruction.segment.noSegment')"
         :pagination="{ rowsPerPage: 0 }"
         row-key="id"
         :rows="orderedRows"
@@ -107,8 +107,9 @@ onMounted(async () => {
                             @click="props.expand = !props.expand"
                         >
                             <QTooltip>
-                                {{ props.row.anomalies.unfixed }} {{ t('project.anomaly.unfixed').toLowerCase() }} |
-                                {{ props.row.anomalies.fixed }} {{ t('project.anomaly.fixed').toLowerCase() }}
+                                {{ props.row.anomalies.unfixed }}
+                                {{ t('views.project.anomaly.unfixed').toLowerCase() }} | {{ props.row.anomalies.fixed }}
+                                {{ t('views.project.anomaly.fixed').toLowerCase() }}
                             </QTooltip>
                         </AtomicButton>
                     </template>
@@ -142,14 +143,14 @@ onMounted(async () => {
                         (projectStore.tab === Tab.InstructionBound || projectStore.tab === Tab.InstructionUnbound)
                     "
                     icon="mdi-plus"
-                    :label="t('project.instruction.segment.new')"
+                    :label="t('views.project.instruction.segment.new')"
                     no-border
                     @click="openDialogCreateSegment()"
                 >
                     <QTooltip
                         v-if="!!resourceStore.anomalies.length"
                         :delay="1000"
-                        >{{ t('project.anomaly.actionBtnDisabled', 2) }}</QTooltip
+                        >{{ t('views.project.anomaly.actionBtnDisabled', 2) }}</QTooltip
                     >
                 </AtomicButton>
             </QTr>
@@ -168,7 +169,7 @@ onMounted(async () => {
                 <AtomicButton
                     class="btn-segment"
                     icon="mdi-plus"
-                    :label="t('project.instruction.segment.new')"
+                    :label="t('views.project.instruction.segment.new')"
                     no-border
                     @click="openDialogCreateSegment()"
                 />

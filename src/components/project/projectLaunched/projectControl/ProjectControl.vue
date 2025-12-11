@@ -50,14 +50,14 @@ const onValidateControl = async () => {
             <AtomicButton
                 color="primary"
                 :disable="!!resourceStore.anomaliesUnfixed.length"
-                :label="t('project.control.nextPhase')"
+                :label="t('views.project.control.nextPhase')"
                 no-border
                 @click="onValidateControl"
             >
                 <QTooltip
                     v-if="!!resourceStore.anomaliesUnfixed.length"
                     :delay="1000"
-                    >{{ t('project.anomaly.actionBtnDisabled', 2) }}</QTooltip
+                    >{{ t('views.project.anomaly.actionBtnDisabled', 2) }}</QTooltip
                 >
             </AtomicButton>
         </div>

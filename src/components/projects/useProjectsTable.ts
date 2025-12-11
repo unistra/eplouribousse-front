@@ -23,7 +23,7 @@ export const useProjectsTable = (props?: ProjectsTableProps) => {
             name: 'name',
             field: 'name',
             required: true,
-            label: t('common.project'),
+            label: t('fn.project.i'),
             align: 'left',
             sortable: true,
         },
@@ -39,7 +39,7 @@ export const useProjectsTable = (props?: ProjectsTableProps) => {
             field: 'isPrivate',
             required: true,
             align: 'left',
-            label: t('view.projects.projectVisibility'),
+            label: t('views.projects.projectVisibility'),
         },
         {
             name: 'created_at',
@@ -92,32 +92,32 @@ export const useProjectsTable = (props?: ProjectsTableProps) => {
         switch (status) {
             case ProjectStatus.Draft:
                 return {
-                    message: t('project.status.draft'),
+                    message: t('fn.project.status.draft'),
                     icon: 'mdi-pencil-outline',
                     color: 'primary',
                     outline: true,
                 }
             case ProjectStatus.Review:
                 return {
-                    message: t('project.status.review'),
+                    message: t('fn.project.status.review'),
                     icon: 'mdi-eye-outline',
                     color: 'grey-6',
                 }
             case ProjectStatus.Ready:
                 return {
-                    message: t('project.status.ready'),
+                    message: t('fn.project.status.ready'),
                     icon: 'mdi-check-outline',
                     color: 'grey-7',
                 }
             case ProjectStatus.Launched:
                 return {
-                    message: t('project.status.launched'),
+                    message: t('fn.project.status.launched'),
                     icon: 'mdi-rocket-launch-outline',
                     color: 'primary',
                 }
             case ProjectStatus.Archived:
                 return {
-                    message: t('project.status.archived'),
+                    message: t('fn.project.status.archived'),
                     icon: 'mdi-archive-outline',
                     color: 'grey-2',
                 }

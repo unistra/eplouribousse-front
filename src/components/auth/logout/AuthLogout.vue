@@ -13,7 +13,7 @@ const { t } = useI18n()
 userStore.clear()
 removeJWTFromLocalStorage()
 notify({
-    message: t('logout.success'),
+    message: t('successes.auth.logout'),
 })
 
 await router.push({ name: 'login' })

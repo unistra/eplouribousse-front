@@ -73,7 +73,7 @@ const {
             <QTd auto-width>
                 <AtomicButton
                     v-if="!row.fixed && projectStore.userIsAdmin && projectStore.tab === Tab.Anomalies"
-                    :label="t('project.anomaly.fixBtn')"
+                    :label="t('views.project.anomaly.fixBtn')"
                     @click="fixAnomaly(row.id)"
                 />
                 <AtomicButton
@@ -98,12 +98,12 @@ const {
                             v-model="anomalyType"
                             dense
                             emit-value
-                            :label="t('project.anomaly.tableField.type')"
+                            :label="t('views.project.anomaly.tableField.type')"
                             map-options
                             option-label="label"
                             option-value="value"
                             :options="anomalyOptions"
-                            :rules="[(val: string) => !!val || t('forms.validation.fieldIsRequired')]"
+                            :rules="[(val: string) => !!val || t('errors.form.fieldIsRequired')]"
                         />
                         <AtomicInput
                             v-if="anomalyType === AnomalyType.Other"
@@ -112,8 +112,7 @@ const {
                             :label="t('common.description').capitalize()"
                             :rules="[
                                 (val: string) =>
-                                    (anomalyType === AnomalyType.Other && !!val) ||
-                                    t('forms.validation.fieldIsRequired'),
+                                    (anomalyType === AnomalyType.Other && !!val) || t('errors.form.fieldIsRequired'),
                             ]"
                         />
                     </div>

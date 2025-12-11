@@ -27,7 +27,7 @@ export function useAuthResetPassword() {
         if (!isPasswordStrongEnough.value) {
             notify({
                 type: 'negative',
-                message: t('forms.password.validation.passwordRequirements'),
+                message: t('errors.form.password.requirements'),
             })
             return
         }
@@ -35,7 +35,7 @@ export function useAuthResetPassword() {
         if (!arePasswordsMatching.value) {
             notify({
                 type: 'negative',
-                message: t('forms.password.validation.passwordsDoNotMatch'),
+                message: t('errors.form.password.doesNotMatch'),
             })
             return
         }
@@ -52,7 +52,7 @@ export function useAuthResetPassword() {
 
             notify({
                 type: 'positive',
-                message: t('forms.password.reset.success'),
+                message: t('successes.auth.password.reset'),
             })
 
             await router.push({ name: 'home' })
@@ -60,7 +60,7 @@ export function useAuthResetPassword() {
             if (e instanceof AxiosError && e.response?.status === 400) {
                 notify({
                     type: 'negative',
-                    message: t('forms.password.reset.tokenRejected'),
+                    message: t('errors.auth.tokenRejected'),
                 })
             } else {
                 notify({

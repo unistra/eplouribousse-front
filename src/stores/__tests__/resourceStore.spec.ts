@@ -160,7 +160,7 @@ describe('Resource Store', () => {
 
         const result = resourceStore.formatCollectionToString(collection)
 
-        expect(result).toBe('collection.position.short 5 | ABC-123')
+        expect(result).toBe('fn.collection.fields.position.short 5 | ABC-123')
     })
 
     test('formatCollectionToString() should return empty string for empty collection', () => {

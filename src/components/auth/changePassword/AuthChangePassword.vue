@@ -22,35 +22,35 @@ const {
     >
         <PasswordField
             v-model="oldPassword"
-            :label="t('forms.password.oldPassword')"
+            :label="t('views.auth.password.old')"
         />
         <PasswordField
             v-model="newPassword"
-            :label="t('forms.password.newPassword')"
+            :label="t('views.auth.password.new')"
             :linear-progress="true"
-            :rules="[() => isPasswordStrongEnough || t('forms.password.validation.passwordRequirements')]"
+            :rules="[() => isPasswordStrongEnough || t('errors.form.password.requirements')]"
         />
         <PasswordField
             v-model="confirmPassword"
-            :label="t('forms.password.confirmNewPassword')"
-            :rules="[() => arePasswordsMatching || t('forms.password.validation.passwordsDoNotMatch')]"
+            :label="t('views.auth.password.confirm.new')"
+            :rules="[() => arePasswordsMatching || t('errors.form.password.doesNotMatch')]"
         />
 
-        <div>
-            <p>{{ t('forms.password.passwordMustContain') }}:</p>
-            <ul>
-                <li>{{ t('forms.password.minLength') }}</li>
-                <li>{{ t('forms.password.upperCase') }}</li>
-                <li>{{ t('forms.password.lowerCase') }}</li>
-                <li>{{ t('forms.password.digit') }}</li>
-                <li>{{ t('forms.password.specialChar') }}</li>
-            </ul>
+        <div class="infos">
+            <p>{{ t('views.auth.password.instructions.1') }}</p>
+            <p>{{ t('views.auth.password.instructions.2') }}</p>
+            <p>{{ t('views.auth.password.instructions.3') }}</p>
         </div>
 
         <AtomicButton
-            :label="t('forms.password.change.submit')"
+            :label="t('views.auth.password.change')"
             :loading="isLoading"
             type="submit"
         />
     </QForm>
 </template>
+
+<style lang="sass" scoped>
+.infos
+    font-size: var(--font-size-sm)
+</style>

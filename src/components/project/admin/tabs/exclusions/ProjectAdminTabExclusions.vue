@@ -42,7 +42,7 @@ const { t } = useI18n()
         <AtomicInput
             v-else
             v-model="newExclusionReason"
-            :label="t('project.settings.exclusionReason')"
+            :label="t('views.project.settings.exclusionReason')"
             quick-input
             @cancel="onCancelAddExclusionReason"
             @done="postProjectExclusionReason"

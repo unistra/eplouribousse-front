@@ -25,8 +25,8 @@ const closeModal = (event: 'confirm' | 'cancel') => {
         <QCard>
             <slot name="confirmation-content">
                 <QCardSection>
-                    <p>{{ t('confirmDialogDefault.irreversible') }}</p>
-                    <p>{{ t('confirmDialogDefault.areYouSure') }}</p>
+                    <p>{{ t('views.confirmDialogDefault.irreversible') }}</p>
+                    <p>{{ t('views.confirmDialogDefault.areYouSure') }}</p>
                 </QCardSection>
             </slot>
             <QCardActions align="right">
