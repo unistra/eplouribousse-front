@@ -8,9 +8,7 @@ const defineBackendBaseURL = () => {
 
     if (import.meta.env.DEV) {
         // host is supposed to be tenant.epl.localhost:5173
-        hostParts[1] = hostParts[1].replace(/^(cobal)(-.*)?$/, (_, p1, p2) => {
-            return `${p1}-api${p2 || ''}`
-        })
+        hostParts[1] = hostParts[1] + '-api'
         hostParts[2] = hostParts[2].replace(/\d+/, '8000')
         url.host = hostParts.join('.')
         return url.origin // tenant-api.epl.localhost:8000
