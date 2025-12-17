@@ -304,7 +304,6 @@ Make elements with the HTML hidden attribute stay hidden by default.
     display: none;
 }
 
-
 .computed-at {
     display: flex;
     align-items: center;
@@ -317,4 +316,3 @@ Make elements with the HTML hidden attribute stay hidden by default.
 .computed-at i {
     font-size: 0.75rem;
 }
-
