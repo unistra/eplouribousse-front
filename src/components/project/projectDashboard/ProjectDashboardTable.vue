@@ -83,10 +83,7 @@ onMounted(async () => await getData(props.type))
                 v-if="data.computedAt"
                 class="computed-at"
             >
-                <QIcon
-                    name="mdi-timer-sand"
-                    size="1.25rem"
-                />
+                <QIcon name="mdi-timer-sand" />
                 <p>
                     {{ t('views.project.dashboard.computedAt') }}
                     {{ useUtils().useIntlDateTimeFormat(data.computedAt) }}
@@ -115,18 +112,6 @@ thead tr
     th
         border-right: none
         border-left: none
-
-.computed-at
-    display: flex
-    align-items: center
-    gap: 0.25rem
-    font-size: var(--font-size-xs)
-    color: var(--color-neutral-400)
-    font-style: italic
-    align-self: end
-
-    .q-skeleton
-        width: 8rem
 
 .q-card
     width: fit-content

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import GenericChart from '@/components/project/projectDashboard/GenericChart.vue'
 import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useUtils } from '@/composables/useUtils.ts'
@@ -8,6 +7,7 @@ import {
     useProjectDashboardChart,
 } from '@/components/project/projectDashboard/useProjectDashboardChart.ts'
 import ProjectDashboardErrorCard from '@/components/project/projectDashboard/ProjectDashboardErrorCard.vue'
+import AccessibleChart from '@/components/project/projectDashboard/AccessibleChart.vue'
 
 const props = defineProps<ProjectDashboardChartProps>()
 
@@ -27,11 +27,11 @@ onMounted(async () => {
             v-if="loading"
             type="rect"
         />
-        <GenericChart
+        <AccessibleChart
             v-else
             :chart-data="chartDataFormatted"
             :chart-options="chartOptions"
-            class="chart"
+            :title="data?.title ?? 'Chart'"
             :type="props.chartType"
         />
 
@@ -39,10 +39,7 @@ onMounted(async () => {
             v-if="data?.computedAt"
             class="computed-at"
         >
-            <QIcon
-                name="mdi-timer-sand"
-                size="1rem"
-            />
+            <QIcon name="mdi-timer-sand" />
             {{ t('views.project.dashboard.computedAt') }}
             {{ utils.useIntlDateTimeFormat(data.computedAt) }}
         </p>
@@ -58,10 +55,4 @@ onMounted(async () => {
 .chart-container
   min-height: 300px
   max-height: 500px
-.computed-at
-  font-size: 0.75rem
-  color: grey
-  font-style: italic
-  margin-top: 0.5rem
-  text-align: right
 </style>
