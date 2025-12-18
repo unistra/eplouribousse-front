@@ -1,6 +1,12 @@
 {
     "name": "front",
     "version": "1.0.0",
+    "license": "CECILL-2.1",
+    "author": {
+      "name": "DIP, Direction du numérique, Université de Strasbourg",
+      "email": "dnum-dip@unistra.fr"
+    },
+    "description": "Web application to facilitate the deduplication of periodicals within a group of libraries",
     "private": true,
     "type": "module",
     "scripts": {
