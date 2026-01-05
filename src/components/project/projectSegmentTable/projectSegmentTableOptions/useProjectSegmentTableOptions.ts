@@ -100,9 +100,17 @@ export const useProjectSegmentTableOptions = () => {
         )
     }
 
+    const opacifyReorderButtonUp = (row: Segment) =>
+        row.order === 1 || row.content === NULL_SEGMENT || isPreviousSegmentANullSegment(row)
+    const opacifyReorderButtonDown = (row: Segment) =>
+        row.order === resourceStore.segments.length ||
+        resourceStore.segments.length === 1 ||
+        row.content === NULL_SEGMENT
+
     const displayUpdateButton = (row: Segment) => {
         return (
             checkACL(row, ['partialUpdate']) &&
+            row.content !== NULL_SEGMENT &&
             ((isUserInstructorForSegment(row) &&
                 isUserInAnInstructionTab.value &&
                 doesSegmentBelongToSelectedLibrary(row)) ||
@@ -113,6 +121,7 @@ export const useProjectSegmentTableOptions = () => {
     const displayDeleteButton = (row: Segment) => {
         return (
             checkACL(row, ['destroy']) &&
+            row.content !== NULL_SEGMENT &&
             ((isUserInstructorForSegment(row) &&
                 isUserInAnInstructionTab.value &&
                 doesSegmentBelongToSelectedLibrary(row)) ||
@@ -120,12 +129,14 @@ export const useProjectSegmentTableOptions = () => {
         )
     }
 
-    const displayInsertUnderButton = computed(() => {
+    const displayInsertUnderButton = (row: Segment) => {
         return (
-            (projectStore.userIsInstructorForLibrarySelected && isUserInAnInstructionTab.value) ||
+            (projectStore.userIsInstructorForLibrarySelected &&
+                isUserInAnInstructionTab.value &&
+                row.content !== NULL_SEGMENT) ||
             isUserAdminOnAnomaliesTab.value
         )
-    })
+    }
 
     const displayAddAnomalyButton = (row: Segment) => {
         return (
@@ -173,6 +184,8 @@ export const useProjectSegmentTableOptions = () => {
 
     return {
         displayReorderButtons,
+        opacifyReorderButtonUp,
+        opacifyReorderButtonDown,
         displayUpdateButton,
         displayDeleteButton,
         displayInsertUnderButton,
