@@ -109,7 +109,7 @@ onMounted(() => {
                         :label="t('views.project.resultant.selectCollection')"
                         map-options
                         name="filter-positioning"
-                        :option-label="(el: CollectionsInResource) => resourceStore.formatCollectionToString(el)"
+                        :option-label="(el: CollectionsInResource) => resourceStore.formatCollectionToString(el, true)"
                         :option-value="(el: CollectionsInResource) => el"
                         :options="
                             resourceStore.collectionsSortedByOrderInInstructionTurns.filter((el) =>

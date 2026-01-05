@@ -55,10 +55,14 @@ export const useResourceStore = defineStore('resource', () => {
     })
 
     // ACTIONS
-    const formatCollectionToString = (collection: CollectionsInResource | '') => {
-        return collection
-            ? `${t('fn.collection.fields.position.short')} ${collection.position} | ${collection.callNumber}`
-            : ''
+    const formatCollectionToString = (collection: CollectionsInResource | '', withLibrary: boolean = false) => {
+        if (!collection) return ''
+
+        const libraryAlias = projectStore.project
+            ? projectStore.project.libraries.find((el) => el.id === collection.library)?.alias
+            : undefined
+
+        return `${withLibrary && libraryAlias ? libraryAlias + ' | ' : ''}${t('fn.collection.fields.position.short')} ${collection.position} | ${collection.callNumber}`
     }
 
     const getResourceAndRelatedCollections = async (resourceIdSelected: string) => {
