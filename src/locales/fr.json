@@ -388,6 +388,7 @@
                 "youAreInstructor": "Vous êtes instructeur pour cette bibliothèque",
                 "filters": {
                     "i": "Filtrer par statut: ",
+                    "all": "Tous les status",
                     "positioningOnly": "Tous les types de positionnement",
                     "instructionNotStarted": "Instruction non démarrée",
                     "excluded": "Resources exclues"
