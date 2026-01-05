@@ -14,11 +14,14 @@ import { useI18n } from 'vue-i18n'
 import { useUtils } from '@/composables/useUtils.ts'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import { useResourcesStore } from '@/stores/resourcesStore.ts'
+import { isAxiosError } from 'axios'
+import { useRouter } from 'vue-router'
 
 export const useProjectStore = defineStore('project', () => {
     const { t } = useI18n()
     const { useHandleError } = useUtils()
     const { notify } = useComposableQuasar()
+    const router = useRouter()
     const userStore = useUserStore()
     const resourcesStore = useResourcesStore()
 
@@ -65,6 +68,9 @@ export const useProjectStore = defineStore('project', () => {
             tab.value = Tab.Positioning // TODO: to move
             collectionsCount.value = [] // TODO: to move
         } catch (e) {
+            if (isAxiosError(e) && e.status === 403) {
+                await router.push({ name: 'login' })
+            }
             useHandleError(e)
         } finally {
             projectLoading.value = false

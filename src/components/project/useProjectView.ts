@@ -15,10 +15,8 @@ export const useProjectView = () => {
                 const id = route.params.id as string
                 if (projectStore.project && projectStore.project.id === id) return
 
-                projectStore.projectLoading = true
                 await projectStore.getProject(id)
                 document.title = `${t('fn.project.i')} | ${projectStore.project?.name}`
-                projectStore.projectLoading = false
             },
             { immediate: true },
         )
