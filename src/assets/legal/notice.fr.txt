@@ -1,0 +1,57 @@
+Editeur de la plate-forme
+Madame Frédérique BERROD
+Présidente de l’Université de Strasbourg
+4 rue Blaise Pascal
+CS 90032
+F-67081 Strasbourg cedex
+
+Direction de la publication
+Madame Frédérique BERROD
+Présidente de l’Université de Strasbourg
+4 rue Blaise Pascal
+CS 90032
+F-67081 Strasbourg cedex
+
+Propriété
+Ce site est la propriété de l’Université de Strasbourg.
+
+Hébergement et conception du site
+Direction du numérique
+Université de Strasbourg
+14 Rue RENE DESCARTES
+67084 STRASBOURG CEDEX
+03 68 85 06 00
+
+Fonctionnement du site
+L’application Web Eplouribousse est une plateforme de dédoublonnage des périodiques destinée aux professionnels des bibliothèques. Elle est développée  grâce à un financement du Ministère de l’Enseignement Supérieur, de la Recherche et de l’Espace, via le dispositif CollEx-Persée et l’Agence Bibliographique de l’Enseignement Supérieur (ABES).
+
+
+Droits de propriété intellectuelle
+
+Les textes, images, logos et autres éléments de ce site constituent une œuvre protégée par le code de la propriété intellectuelle.
+L’internaute doit respecter les droits de propriété intellectuelle sur les contenus mis en ligne. Ainsi, sauf exceptions du Code de la Propriété Intellectuelle (et notamment exception de courte citation), il ne peut reproduire ou représenter, totalement ou partiellement, le contenu mis en ligne sans le consentement préalable et écrit de l’auteur. Toute ou partie de copie est susceptible de poursuites.
+Responsabilités
+L’Université de Strasbourg met en œuvre tous les moyens à sa disposition pour assurer un accès de qualité à la plateforme et pour offrir le service aux utilisateurs.
+L’Université de Strasbourg s’efforcera de corriger les erreurs identifiées et qui seront signalées via le formulaire de contact par la communauté des utilisateurs de la plateforme.
+L’Université de Strasbourg ne saurait garantir l’exactitude, la complétude, l’actualité des informations diffusées sur son site. En dépit du soin apporté au recueil des informations ainsi qu'à la réalisation de la plateforme au moyen des techniques les plus récentes, des erreurs, omissions, inexactitudes, coupures ou additions indépendantes de notre volonté peuvent demeurer ou s'insérer sur ce site. En outre, de même que pour toute publication, après un certain temps, des informations ou éléments contenus dans ce site, peuvent devenir obsolètes.
+Les informations fournies par l’Université de Strasbourg sont non contractuelles.
+Elles sont fournies à titre indicatif et ne sauraient dispenser l’utilisateur d’une analyse complémentaire et personnalisée. Celui-ci reconnaît utiliser les informations et contenus de la présente plateforme sous sa responsabilité exclusive.
+En conséquence, la direction du numérique de l’Université de Strasbourg ne saurait voir sa responsabilité engagée à raison de tout préjudice, direct ou indirect, de quelque nature que ce soit, résultant pour tout ou partie de l'utilisation des informations de l’application Web Eplouribousse.
+En outre, l’Université de Strasbourg ne saurait voir sa responsabilité engagée à raison de la nature ou du contenu des sites référencés sur les pages de la plateforme et notamment ceux pour lesquels il existe un lien direct aux ressources constituées par les sites tiers sélectionnés.
+L'accès aux services de la plateforme peut à tout moment faire l'objet d'une interruption, d'une suspension, d'une modification sans préavis pour une maintenance ou pour tout autre cas. Tout événement dû à un cas de force majeure ayant pour conséquence un dysfonctionnement du réseau ou du serveur n'engage pas la responsabilité de l’Université de Strasbourg.
+L’Université de Strasbourg s'engage à mettre en œuvre tous les moyens nécessaires afin de garantir au mieux la sécurité et la confidentialité des données. La responsabilité de l’Université de Strasbourg ne peut être engagée en cas de force majeure ou du fait imprévisible et insurmontable d'un tiers.
+
+Responsabilité des utilisateurs
+
+Toute personne qui publie sur l’application Web Eplouribousse est un utilisateur identifié. L’utilisateur est pleinement responsable des contenus qu’il publie sur la plateforme.
+L’utilisateur s'engage à ne pas mettre en ligne de contenus pouvant porter atteinte aux intérêts de tierces personnes.
+Données personnelles
+Les informations recueillies sur le formulaire d’inscription sont indispensables pour la création du compte personnel de l’utilisateur.
+Conformément au règlement européen (UE) 2016/679 du 27 avril 2016 relatif à la protection des personnes physiques à l’égard du traitement des données à caractère personnel, et à la loi “Informatique, fichiers et libertés” n° 78-17 du 6 janvier 1978 modifiée, elles sont enregistrées dans un fichier informatisé de l’Université de Strasbourg pour la gestion des comptes au sein de l’Université et sont conservées pendant la durée nécessaire à la gestion d’un projet de l’utilisateur.
+Elles le sont sur la base de la mission d’intérêt public des personnes devant disposer d’un compte utilisateur.
+Vous disposez de plusieurs droits reconnus par la réglementation (accès, rectification, opposition, limitation) que vous pouvez exercer en vous adressant à : dpo@unistra.fr
+
+Après avoir pris contact avec le DPO, et si vous estimez que vos droits sur vos données ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL.
+
+Cookies
+Pas de cookies gérés par le site.

@@ -164,7 +164,8 @@
         "dashboard": "Tableau de bord",
         "userGuide": "Documentation",
         "contactAdmin": "Contact",
-        "tenantAdmin": "Administration du tenant"
+        "tenantAdmin": "Administration du tenant",
+        "legalNotice": "Mentions légales"
     },
     "views": {
         "home": {
@@ -180,7 +181,6 @@
                 "manageAccount": "Gérer votre profil"
             },
             "footer": {
-                "legalNotice": "Mentions légales",
                 "contact": "Contact",
                 "about": "À propos"
             }
