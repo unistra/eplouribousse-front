@@ -1,5 +1,5 @@
 {
-    "name": "front",
+    "name": "eplfront",
     "version": "1.0.0",
     "license": "CECILL-2.1",
     "author": {
@@ -9,6 +9,7 @@
     "description": "Web application to facilitate the deduplication of periodicals within a group of libraries",
     "private": true,
     "type": "module",
+    "packageManager": "pnpm@10.25.0",
     "scripts": {
         "dev": "vite",
         "build": "run-p type-check \"build-only {@}\" --",
@@ -77,6 +78,5 @@
         "onlyBuiltDependencies": [
             "esbuild"
         ]
-    },
-    "packageManager": "pnpm@10.24.0+sha512.01ff8ae71b4419903b65c60fb2dc9d34cf8bb6e06d03bde112ef38f7a34d6904c424ba66bea5cdcf12890230bf39f9580473140ed9c946fef328b6e5238a345a"
+    }
 }
