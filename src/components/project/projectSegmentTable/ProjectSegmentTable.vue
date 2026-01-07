@@ -72,15 +72,9 @@ onMounted(async () => {
                 >
                     <template v-if="col.name === 'options' && displayOptionsColumnBasedOnUserRole(props.row)">
                         <ProjectSegmentTableOptions
-                            v-if="props.row.content !== NULL_SEGMENT"
                             :open-dialog-create-segment
                             :row="props.row"
                             @add-anomaly="anomalyStore.onActionOnAnomaly(props, 'addAnomalySelection')"
-                        />
-                        <QIcon
-                            v-else
-                            name="mdi-lock-outline"
-                            size="1.2rem"
                         />
                     </template>
                     <template v-else-if="col.name === 'resolve'">
@@ -97,7 +91,7 @@ onMounted(async () => {
                             :disable="props.row.anomalies.unfixed === 0"
                             :icon="
                                 props.row.anomalies.unfixed === 0
-                                    ? ''
+                                    ? undefined
                                     : props.expand
                                       ? 'mdi-chevron-up'
                                       : 'mdi-chevron-down'

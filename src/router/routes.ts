@@ -252,6 +252,14 @@ const routes: RouteRecordRaw[] = [
             title: t('common.myAccount'),
         },
     },
+    {
+        path: '/legal-notice',
+        name: 'legalNotice',
+        component: () => import('@/views/LegalNoticeView.vue'),
+        meta: {
+            title: t('navigation.legalNotice'),
+        },
+    },
 ]
 
 export default routes

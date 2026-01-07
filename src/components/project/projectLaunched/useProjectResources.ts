@@ -147,7 +147,7 @@ export const useProjectResources = () => {
 
     // STATICS
     const selectFilterOnPositioning: { label: string; value: PositioningFilter }[] = [
-        { label: t('common.all'), value: PositioningFilter.All },
+        { label: t('views.project.resources.filters.all'), value: PositioningFilter.All },
         { label: t('views.project.resources.filters.positioningOnly'), value: PositioningFilter.PositioningOnly },
         {
             label: t('views.project.resources.filters.instructionNotStarted'),

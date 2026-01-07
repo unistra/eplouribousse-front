@@ -50,7 +50,7 @@
             "my": "Mon @.lower:fn.project.i | Mes @.lower:fn.project.i",
             "all": "Tous les @.lower:fn.project.i",
             "new": "Nouveau @.lower:fn.project.i | Nouveaux @.lower:fn.project.i",
-            "admin": "Administration du @.lower:fn.project.i | Administration des @.lower:fn.project.i",
+            "admin": "Réglages courants du @.lower:fn.project.i | Réglages courants des @.lower:fn.project.i",
             "none": "Aucun @.lower:fn.project.i",
             "create": {
                 "the": "Créer le @.lower:fn.project.i | Créer les @.lower:fn.project.i",
@@ -164,7 +164,8 @@
         "dashboard": "Tableau de bord",
         "userGuide": "Documentation",
         "contactAdmin": "Contact",
-        "tenantAdmin": "Administration du tenant"
+        "tenantAdmin": "Administration du tenant",
+        "legalNotice": "Mentions légales"
     },
     "views": {
         "home": {
@@ -180,7 +181,6 @@
                 "manageAccount": "Gérer votre profil"
             },
             "footer": {
-                "legalNotice": "Mentions légales",
                 "contact": "Contact",
                 "about": "À propos"
             }
@@ -388,6 +388,7 @@
                 "youAreInstructor": "Vous êtes instructeur pour cette bibliothèque",
                 "filters": {
                     "i": "Filtrer par statut: ",
+                    "all": "Tous les status",
                     "positioningOnly": "Tous les types de positionnement",
                     "instructionNotStarted": "Instruction non démarrée",
                     "excluded": "Resources exclues"

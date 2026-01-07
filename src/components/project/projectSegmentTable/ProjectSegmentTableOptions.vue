@@ -3,7 +3,6 @@ import ProjectInstructionSegmentDialog from '@/components/project/projectLaunche
 import AtomicConfirmationDialog from '@/components/atomic/AtomicConfirmationDialog.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useProjectSegmentTableOptions } from '@/components/project/projectSegmentTable/projectSegmentTableOptions/useProjectSegmentTableOptions.ts'
-import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useI18n } from 'vue-i18n'
 import type { Segment } from '#/project.ts'
 
@@ -15,13 +14,14 @@ const emit = defineEmits<{
     (e: 'addAnomaly'): void
 }>()
 
-const resourceStore = useResourceStore()
 const { t } = useI18n()
 
 const {
     orderSegment,
     displayUpdateButton,
     displayReorderButtons,
+    opacifyReorderButtonUp,
+    opacifyReorderButtonDown,
     displayDeleteButton,
     displayInsertUnderButton,
     displayAddAnomalyButton,
@@ -29,7 +29,6 @@ const {
     dialogDeleteSegment,
     areActionDisabled,
     deleteSegment,
-    isPreviousSegmentANullSegment,
 } = useProjectSegmentTableOptions()
 </script>
 
@@ -40,9 +39,7 @@ const {
             class="order"
         >
             <AtomicButton
-                :class="{
-                    opacity: row.order === 1 || isPreviousSegmentANullSegment(row),
-                }"
+                :class="{ opacity: opacifyReorderButtonUp }"
                 :disable="areActionDisabled"
                 icon="mdi-chevron-up"
                 no-border
@@ -56,9 +53,7 @@ const {
                 >
             </AtomicButton>
             <AtomicButton
-                :class="{
-                    opacity: row.order === resourceStore.segments.length || resourceStore.segments.length === 1,
-                }"
+                :class="{ opacity: opacifyReorderButtonDown }"
                 :disable="areActionDisabled"
                 icon="mdi-chevron-down"
                 no-border
@@ -120,7 +115,7 @@ const {
                         >
                     </QItem>
                     <QItem
-                        v-if="displayInsertUnderButton"
+                        v-if="displayInsertUnderButton(row)"
                         clickable
                         :disable="areActionDisabled"
                         @click="openDialogCreateSegment(row.id)"

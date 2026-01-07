@@ -4,6 +4,7 @@ import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import { useProjectAdminTabExclusions } from '@/components/project/admin/tabs/exclusions/useProjectAdminTabExclusions.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
+import { ProjectStatus } from '&/project.ts'
 
 const projectStore = useProjectStore()
 const {
@@ -26,7 +27,7 @@ const { t } = useI18n()
             :key="exclusionReason"
             icon-remove="mdi-close"
             :label="exclusionReason"
-            :removable="projectStore.userIsAdmin"
+            :removable="projectStore.userIsAdmin && projectStore.project.status < ProjectStatus.Launched"
             size="1rem"
             @remove="deleteProjectExclusionReason(exclusionReason)"
         />
