@@ -303,3 +303,16 @@ Make elements with the HTML hidden attribute stay hidden by default.
 [hidden] {
     display: none;
 }
+
+.computed-at {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: var(--font-size-xs);
+    color: var(--color-neutral-500);
+    font-style: italic;
+    justify-content: flex-end;
+}
+.computed-at i {
+    font-size: 0.75rem;
+}
