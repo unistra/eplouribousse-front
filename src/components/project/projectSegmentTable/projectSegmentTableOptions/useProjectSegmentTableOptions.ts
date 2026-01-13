@@ -8,19 +8,58 @@ import {
     NULL_SEGMENT,
     useProjectSegmentTable,
 } from '@/components/project/projectSegmentTable/useProjectSegmentTable.ts'
+import { useResourcesStore } from '@/stores/resourcesStore.ts'
+import { axiosI } from '@/plugins/axios/axios.ts'
+import { useUtils } from '@/composables/useUtils.ts'
 
 export const useProjectSegmentTableOptions = () => {
+    const { useHandleError } = useUtils()
+    const { loading } = useProjectSegmentTable()
     const resourceStore = useResourceStore()
+    const resourcesStore = useResourcesStore()
     const projectStore = useProjectStore()
     const userStore = useUserStore()
+
     const dialogUpdateSegment = ref<boolean>(false)
     const dialogDeleteSegment = ref<boolean>(false)
-    const { loading } = useProjectSegmentTable()
 
-    const orderSegment = async (row: Segment, direction: 'up' | 'down') => {
+    const orderSegment = async (segment: Segment, direction: 'up' | 'down') => {
+        if (direction == 'up' && segment.order === 1) return
+        if (direction == 'down' && segment.order === resourceStore.segments.length) return
+
         loading.value = true
-        await resourceStore.orderSegment(row, direction)
-        loading.value = false
+        try {
+            const response = await axiosI.patch<{
+                currentSegment: {
+                    id: string
+                    order: number
+                }
+                previousSegment: {
+                    id: string
+                    order: number
+                }
+                nextSegment: {
+                    id: string
+                    order: number
+                }
+            }>(`/segments/${segment.id}/${direction}/`)
+
+            const currentSegment = resourceStore.segments.find((el) => el.id === segment.id)
+            const targetSegment = resourceStore.segments.find(
+                (el) =>
+                    el.id === (direction === 'up' ? response.data.previousSegment.id : response.data.nextSegment.id),
+            )
+
+            if (currentSegment && targetSegment) {
+                currentSegment.order = response.data.currentSegment.order
+                targetSegment.order =
+                    direction === 'up' ? response.data.previousSegment.order : response.data.nextSegment.order
+            }
+        } catch (e) {
+            useHandleError(e)
+        } finally {
+            loading.value = false
+        }
     }
 
     const checkACL = (row: Segment, keys: string[]) => {
@@ -35,14 +74,15 @@ export const useProjectSegmentTableOptions = () => {
 
     const doesSegmentBelongToSelectedLibrary = (row: Segment) => {
         return (
-            resourceStore.libraryIdSelected ===
+            resourcesStore.libraryIdSelected ===
             resourceStore.collections.find((el) => el.id === row.collection)?.library
         )
     }
 
     const isUserInstructorForSegment = (row: Segment): boolean => {
+        if (!projectStore.project) return false
         const segmentCollectionLibraryId = resourceStore.collections.find((el) => el.id === row.collection)?.library
-        return !!projectStore.roles.find(
+        return !!projectStore.project.roles.find(
             (el) =>
                 el.role === Roles.Instructor &&
                 el.user.id === userStore.user?.id &&
@@ -60,9 +100,17 @@ export const useProjectSegmentTableOptions = () => {
         )
     }
 
+    const opacifyReorderButtonUp = (row: Segment) =>
+        row.order === 1 || row.content === NULL_SEGMENT || isPreviousSegmentANullSegment(row)
+    const opacifyReorderButtonDown = (row: Segment) =>
+        row.order === resourceStore.segments.length ||
+        resourceStore.segments.length === 1 ||
+        row.content === NULL_SEGMENT
+
     const displayUpdateButton = (row: Segment) => {
         return (
             checkACL(row, ['partialUpdate']) &&
+            row.content !== NULL_SEGMENT &&
             ((isUserInstructorForSegment(row) &&
                 isUserInAnInstructionTab.value &&
                 doesSegmentBelongToSelectedLibrary(row)) ||
@@ -73,6 +121,7 @@ export const useProjectSegmentTableOptions = () => {
     const displayDeleteButton = (row: Segment) => {
         return (
             checkACL(row, ['destroy']) &&
+            row.content !== NULL_SEGMENT &&
             ((isUserInstructorForSegment(row) &&
                 isUserInAnInstructionTab.value &&
                 doesSegmentBelongToSelectedLibrary(row)) ||
@@ -80,12 +129,14 @@ export const useProjectSegmentTableOptions = () => {
         )
     }
 
-    const displayInsertUnderButton = computed(() => {
+    const displayInsertUnderButton = (row: Segment) => {
         return (
-            (projectStore.userIsInstructorForLibrarySelected && isUserInAnInstructionTab.value) ||
+            (projectStore.userIsInstructorForLibrarySelected &&
+                isUserInAnInstructionTab.value &&
+                row.content !== NULL_SEGMENT) ||
             isUserAdminOnAnomaliesTab.value
         )
-    })
+    }
 
     const displayAddAnomalyButton = (row: Segment) => {
         return (
@@ -108,7 +159,7 @@ export const useProjectSegmentTableOptions = () => {
                 )
             })
 
-            return collectionThatIsAssociatedWithAnomaly?.library === resourceStore.libraryIdSelected && !anomaly.fixed
+            return collectionThatIsAssociatedWithAnomaly?.library === resourcesStore.libraryIdSelected && !anomaly.fixed
         })
 
         return !(
@@ -122,8 +173,19 @@ export const useProjectSegmentTableOptions = () => {
         return resourceStore.segments.find((el) => el.order === segment.order - 1)?.content === NULL_SEGMENT
     }
 
+    const deleteSegment = async (segmentId: string) => {
+        try {
+            await axiosI.delete(`/segments/${segmentId}/`)
+            await resourceStore.getSegments()
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
+
     return {
         displayReorderButtons,
+        opacifyReorderButtonUp,
+        opacifyReorderButtonDown,
         displayUpdateButton,
         displayDeleteButton,
         displayInsertUnderButton,
@@ -138,5 +200,6 @@ export const useProjectSegmentTableOptions = () => {
         areActionDisabled,
         checkACL,
         isPreviousSegmentANullSegment,
+        deleteSegment,
     }
 }

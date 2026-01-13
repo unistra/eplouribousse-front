@@ -2,10 +2,12 @@ import { computed, reactive, ref, toRefs } from 'vue'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import type { QTableColumn } from 'quasar'
 import { useI18n } from 'vue-i18n'
-import type { Segment } from '#/project.ts'
+import type { Anomaly, Segment } from '#/project.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { Tab } from '&/project.ts'
 import { useProjectEdition } from '@/components/project/projectLaunched/projectEdition/useProjectEdition.ts'
+import { axiosI } from '@/plugins/axios/axios.ts'
+import { useUtils } from '@/composables/useUtils.ts'
 
 interface UseProjectSegmentTableState {
     loading: boolean
@@ -18,10 +20,55 @@ const state = reactive<UseProjectSegmentTableState>({
 export const NULL_SEGMENT = '~~Nihil~~'
 
 export const useProjectSegmentTable = () => {
+    const { t } = useI18n()
+    const { useHandleError } = useUtils()
     const resourceStore = useResourceStore()
     const projectStore = useProjectStore()
-    const { t } = useI18n()
+    const { selectCollectionToShowEdition } = useProjectEdition()
+
+    // REFS ===================
     const improvedSegmentIdHovered = ref<string | null>(null)
+    const dialogCreateSegment = ref<boolean>(false)
+    const insertAfter = ref<string>()
+
+    // COMPUTED ===================
+    const orderedRows = computed<Segment[]>(() => [...resourceStore.segments].sort((a, b) => a.order - b.order))
+
+    const displayNewSegmentButton = computed(
+        () =>
+            (resourceStore.resource?.shouldInstruct &&
+                projectStore.userIsInstructorForLibrarySelected &&
+                (projectStore.tab === Tab.InstructionBound || projectStore.tab === Tab.InstructionUnbound)) ||
+            (projectStore.userIsAdmin && projectStore.tab === Tab.Anomalies),
+    )
+
+    // FUNCTIONS ===================
+    const getAnomalies = async () => {
+        try {
+            const response = await axiosI.get<Anomaly[]>(`/anomalies/`, {
+                params: {
+                    resource: resourceStore.resource?.id,
+                },
+            })
+
+            resourceStore.anomalies = response.data
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
+
+    // UTILS ===================
+    const isHighlightedRow = (collectionId: string) => {
+        if (!selectCollectionToShowEdition.value) return false
+        return collectionId === selectCollectionToShowEdition.value?.id
+    }
+
+    const isSemiHighlightedRow = (improvedSegmentId: string) => {
+        if (!selectCollectionToShowEdition.value) return false
+
+        const segment = resourceStore.segments.find((segment) => segment.id === improvedSegmentId)
+        return segment?.collection === selectCollectionToShowEdition.value.id
+    }
 
     const isSegmentTypeSameAsInstructionTab = (segment: Segment) => {
         return (
@@ -42,17 +89,7 @@ export const useProjectSegmentTable = () => {
         )
     }
 
-    const displayNewSegmentButton = computed(
-        () =>
-            (resourceStore.shouldInstruct &&
-                projectStore.userIsInstructorForLibrarySelected &&
-                (projectStore.tab === Tab.InstructionBound || projectStore.tab === Tab.InstructionUnbound)) ||
-            (projectStore.userIsAdmin && projectStore.tab === Tab.Anomalies),
-    )
-
-    const dialogCreateSegment = ref<boolean>(false)
-    const insertAfter = ref<string>()
-
+    // TABLE RELATED ===================
     const columns: QTableColumn[] = [
         {
             name: 'order',
@@ -62,18 +99,19 @@ export const useProjectSegmentTable = () => {
         },
         {
             name: 'library',
-            label: t('libraries.i'),
+            label: t('fn.library.i'),
             field: 'library',
             format(_val: unknown, row: Segment) {
+                if (!projectStore.project) return t('common.error')
                 const libraryId = resourceStore.collections.find((el) => el.id === row.collection)?.library || null
-                const library = projectStore.libraries.find((el) => el.id === libraryId) || null
+                const library = projectStore.project.libraries.find((el) => el.id === libraryId) || null
                 return library?.name || t('common.error')
             },
             align: 'center',
         },
         {
             name: 'collection',
-            label: t('collection.i'),
+            label: t('fn.collection.i'),
             field: 'collection',
             format(_val: unknown, row: Segment): string {
                 const collection = resourceStore.collections.find((el) => el.id === row.collection)
@@ -83,38 +121,40 @@ export const useProjectSegmentTable = () => {
         },
         {
             name: 'segmentType',
-            label: t('segment.boundOrUnbound'),
+            label: t('fn.segment.fields.boundOrUnbound'),
             field: 'segmentType',
             align: 'center',
             format(val: 'bound' | 'unbound') {
                 return val === 'bound'
-                    ? t('project.instruction.segment.bound')
-                    : t('project.instruction.segment.unbound')
+                    ? t('views.project.instruction.segment.bound')
+                    : t('views.project.instruction.segment.unbound')
             },
         },
         {
             name: 'content',
-            label: t('segment.i'),
+            label: t('fn.segment.i'),
             field: 'content',
             align: 'center',
         },
         {
             name: 'exception',
-            label: t('segment.exception'),
+            label: t('fn.segment.fields.exception'),
             field: 'exception',
             align: 'center',
         },
         {
             name: 'improvableElements',
-            label: t('segment.improvableElements'),
+            label: t('fn.segment.fields.improvableElements'),
             field: 'improvableElements',
             align: 'center',
         },
         {
             name: 'resolve',
-            label: t('segment.resolve'),
+            label: t('fn.segment.fields.resolve'),
             field: 'resolve',
             format(_val: unknown, row: Segment) {
+                if (!projectStore.project) return t('errors.dataUnreachable')
+
                 const segmentImproved = resourceStore.segments.find((el) => el.id === row.improvedSegment)
                 if (!segmentImproved) return '-'
 
@@ -125,9 +165,9 @@ export const useProjectSegmentTable = () => {
                 )
 
                 const libraryString =
-                    projectStore.libraries.find((library) => library.id === collection?.library)?.name ||
-                    t('utils.noLibrary')
-                return `${libraryString} | ${t('project.instruction.tableFields.line')}: ${segmentString}`
+                    projectStore.project.libraries.find((library) => library.id === collection?.library)?.name ||
+                    t('fn.library.none')
+                return `${libraryString} | ${t('views.project.instruction.tableFields.line')}: ${segmentString}`
             },
             align: 'center',
         },
@@ -136,7 +176,7 @@ export const useProjectSegmentTable = () => {
     if (projectStore.tab !== Tab.Edition) {
         columns.push({
             name: 'anomalies',
-            label: t('project.anomaly.i', 2),
+            label: t('fn.anomaly.i', 2),
             field: 'anomalies',
             align: 'center',
         })
@@ -144,30 +184,15 @@ export const useProjectSegmentTable = () => {
     if (displayOptionsColumnBasedOnUserRole()) {
         columns.push({
             name: 'options',
-            label: t('project.instruction.tableFields.options'),
+            label: t('views.project.instruction.tableFields.options'),
             field: 'options',
             align: 'center',
         })
     }
 
-    const orderedRows = computed<Segment[]>(() => [...resourceStore.segments].sort((a, b) => a.order - b.order))
-
     const openDialogCreateSegment = (insertAfterId: string | undefined = undefined) => {
         dialogCreateSegment.value = true
         insertAfter.value = insertAfterId
-    }
-
-    const { selectCollectionToShowEdition } = useProjectEdition()
-
-    const isHighlightedRow = (collectionId: string) => {
-        if (!selectCollectionToShowEdition.value) return false
-        return collectionId === selectCollectionToShowEdition.value?.id
-    }
-    const isSemiHighlightedRow = (improvedSegmentId: string) => {
-        if (!selectCollectionToShowEdition.value) return false
-
-        const segment = resourceStore.segments.find((segment) => segment.id === improvedSegmentId)
-        return segment?.collection === selectCollectionToShowEdition.value.id
     }
 
     return {
@@ -182,5 +207,6 @@ export const useProjectSegmentTable = () => {
         displayNewSegmentButton,
         isHighlightedRow,
         isSemiHighlightedRow,
+        getAnomalies,
     }
 }

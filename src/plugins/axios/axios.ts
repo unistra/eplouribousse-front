@@ -29,7 +29,7 @@ axiosI.interceptors.request.use(
         const { t } = useI18n()
         if (error.response?.status === 403) {
             notify({
-                message: t('navigation.error.unauthorize'),
+                message: t('errors.navigation.unauthorize'),
                 color: 'negative',
             })
             await router.push({ name: 'home' })

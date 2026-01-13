@@ -30,11 +30,4 @@ describe('usePasswordField', () => {
         passwordFieldComposable.isPasswordVisible.value = false
         expect(passwordFieldComposable.icon.value).toBe('mdi-eye-outline')
     })
-
-    test('passwordVisibilityLabel returns correct label based on visibility state', () => {
-        expect(passwordFieldComposable.passwordVisibilityLabel.value).toBe('forms.password.isVisibleTooltip.false')
-
-        passwordFieldComposable.isPasswordVisible.value = true
-        expect(passwordFieldComposable.passwordVisibilityLabel.value).toBe('forms.password.isVisibleTooltip.true')
-    })
 })

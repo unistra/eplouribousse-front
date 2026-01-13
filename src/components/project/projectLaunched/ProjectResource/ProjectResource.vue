@@ -4,39 +4,40 @@ import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import ProjectPositioning from '@/components/project/projectLaunched/projectPositioning/ProjectPositioning.vue'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useI18n } from 'vue-i18n'
-import { provide, ref } from 'vue'
 import ProjectControl from '@/components/project/projectLaunched/projectControl/ProjectControl.vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import ProjectAnomalies from '@/components/project/projectLaunched/projectAnomalies/ProjectAnomalies.vue'
 import { Tab } from '&/project.ts'
 import ProjectEdition from '@/components/project/projectLaunched/projectEdition/ProjectEdition.vue'
+import { useResourcesStore } from '@/stores/resourcesStore.ts'
+import {
+    type ProjectResourceProps,
+    useProjectResource,
+} from '@/components/project/projectLaunched/ProjectResource/useProjectResource.ts'
+import { provide } from 'vue'
+
+const props = defineProps<ProjectResourceProps>()
 
 const { t } = useI18n()
 const resourceStore = useResourceStore()
+const resourcesStore = useResourcesStore()
 const projectStore = useProjectStore()
 
 const dialogModal = defineModel<boolean>()
 provide('dialogModal', dialogModal)
-const dialogLoading = ref<boolean>(false)
 
-const onBeforeShow = async () => {
-    dialogLoading.value = true
-    if (resourceStore.resourceSelectedId) {
-        resourceStore.collections = []
-        resourceStore.segments = []
-        await resourceStore.fetchResourceAndCollections(resourceStore.resourceSelectedId)
-    }
-    dialogLoading.value = false
-}
+const { dialogLoading, onBeforeShow, onModalClose } = useProjectResource(props)
 </script>
 
 <template>
     <QDialog
+        v-if="projectStore.project"
         v-model="dialogModal"
         class="dialog"
         full-height
         full-width
         @before-show="onBeforeShow"
+        @hide="onModalClose"
     >
         <QCard>
             <QCardActions>
@@ -53,7 +54,7 @@ const onBeforeShow = async () => {
                 <QSpinner size="2rem" />
             </QCardSection>
             <QCardSection
-                v-else-if="!resourceStore.resourceSelectedId"
+                v-else-if="resourceIdSelected === ''"
                 class="centered"
             >
                 <p>{{ t('errors.unknownRetry') }}</p>
@@ -63,26 +64,27 @@ const onBeforeShow = async () => {
                     <template v-if="projectStore.tab === Tab.Edition">
                         <h2>
                             {{
-                                projectStore.libraries.find((el) => el.id === resourceStore.libraryIdSelected)
-                                    ? projectStore.libraries.find((el) => el.id === resourceStore.libraryIdSelected)
-                                          ?.name + ':'
+                                projectStore.project.libraries.find((el) => el.id === resourcesStore.libraryIdSelected)
+                                    ? projectStore.project.libraries.find(
+                                          (el) => el.id === resourcesStore.libraryIdSelected,
+                                      )?.name + ':'
                                     : ''
                             }}
-                            {{ t('project.resources.resultant.title') }}
+                            {{ t('views.project.resultant.title') }}
                         </h2>
-                        <h3>{{ resourceStore.title }}</h3>
+                        <h3>{{ resourceStore.resource?.title }}</h3>
                     </template>
-                    <h2 v-else>{{ resourceStore.title }}</h2>
+                    <h2 v-else>{{ resourceStore.resource?.title }}</h2>
 
                     <QChip class="chip-label-value">
-                        {{ t('project.resources.code') }}: <span>{{ resourceStore.code || '-' }}</span>
+                        {{ t('fn.resource.fields.code') }}: <span>{{ resourceStore.resource?.code || '-' }}</span>
                     </QChip>
                     <QChip class="chip-label-value">
-                        ISSN: <span>{{ resourceStore.issn || '-' }}</span>
+                        ISSN: <span>{{ resourceStore.resource?.issn || '-' }}</span>
                     </QChip>
                     <QChip class="chip-label-value">
-                        {{ t('project.resources.publicationHistory') }}:
-                        <span>{{ resourceStore.publicationHistory || '-' }}</span>
+                        {{ t('fn.resource.fields.publicationHistory') }}:
+                        <span>{{ resourceStore.resource?.publicationHistory || '-' }}</span>
                     </QChip>
                 </QCardSection>
                 <QCardSection class="content">

@@ -20,7 +20,7 @@ const userStore = useUserStore()
 const { t } = useI18n()
 const projectStore = useProjectStore()
 const hasAlwaysOneUserSelectedAfterProjectIsDraft = computed(() => {
-    if (projectStore.status === ProjectStatus.Draft) return true // Project is draft so we allow deletion
+    if (projectStore.project?.status === ProjectStatus.Draft) return true // Project is draft so we allow deletion
 
     return props.usersSelected.length > 1
 })
@@ -54,7 +54,7 @@ const hasAlwaysOneUserSelectedAfterProjectIsDraft = computed(() => {
                 @remove="sendAction && sendAction('removeUser', { user: user })"
             />
         </template>
-        <QChip v-else>{{ t('utils.noUser') }}</QChip>
+        <QChip v-else>{{ t('views.project.libraries.card.noUser') }}</QChip>
     </div>
 </template>
 

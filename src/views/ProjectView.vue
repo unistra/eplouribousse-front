@@ -15,13 +15,18 @@ watchRouteIdAndFetchProject()
 
 <template>
     <QPage padding>
-        <template v-if="!projectStore.isLoading">
-            <ProjectStepper v-if="projectStore.status < ProjectStatus.Review" />
+        <template v-if="!projectStore.projectLoading && projectStore.project">
+            <ProjectStepper v-if="projectStore.project.status < ProjectStatus.Review" />
             <ProjectReview
-                v-else-if="projectStore.status < ProjectStatus.Ready || projectStore.status < ProjectStatus.Launched"
+                v-else-if="
+                    projectStore.project.status < ProjectStatus.Ready ||
+                    projectStore.project.status < ProjectStatus.Launched
+                "
             />
-            <ProjectSummary v-else-if="projectStore.status < ProjectStatus.Archived && !projectStore.isActive" />
-            <ProjectResources v-else-if="projectStore.status < ProjectStatus.Archived" />
+            <ProjectSummary
+                v-else-if="projectStore.project.status < ProjectStatus.Archived && !projectStore.project.isActive"
+            />
+            <ProjectResources v-else-if="projectStore.project.status < ProjectStatus.Archived" />
         </template>
         <QSpinner
             v-else

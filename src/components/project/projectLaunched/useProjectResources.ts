@@ -1,13 +1,14 @@
-import { computed, ref, useTemplateRef } from 'vue'
+import { computed, ref } from 'vue'
 import type { Resource } from '#/project.ts'
-import { PositioningFilter, ResourceStatus, Roles, Tab } from '&/project.ts'
+import { PositioningFilter, ResourceStatus, ResourceStatusToTab, Roles, Tab } from '&/project.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/userStore.ts'
-import type { QTable, QTableProps } from 'quasar'
-import { useResourceStore } from '@/stores/resourceStore.ts'
-import type { TableProjectResources } from '#/table.ts'
+import type { QTableProps } from 'quasar'
+import { useResourcesStore } from '@/stores/resourcesStore.ts'
 import { storeToRefs } from 'pinia'
+import { useRoute } from 'vue-router'
+import { useResourceStore } from '@/stores/resourceStore.ts'
 
 type useProjectResourceTab = {
     name: string
@@ -18,84 +19,34 @@ type useProjectResourceTab = {
 
 type StatusInfo = { message: string; icon: string; color?: string }
 
+export const RESOURCE_QUERY_PARAM = 'resource'
+
 export const useProjectResources = () => {
-    const projectStore = useProjectStore()
-    const resourceStore = useResourceStore()
-    const userStore = useUserStore()
     const { t } = useI18n()
-    const { libraryIdSelected, libraryIdComparedSelected } = storeToRefs(useResourceStore())
+    const route = useRoute()
+    const projectStore = useProjectStore()
+    const userStore = useUserStore()
+    const resourcesStore = useResourcesStore()
+    const resourceStore = useResourceStore()
+    const { libraryIdSelected, libraryIdComparedSelected } = storeToRefs(useResourcesStore())
+
+    // REFS
     const disableLibrarySelectedSelect = ref<boolean>(false)
 
-    const selectFilterOnPositioning: { label: string; value: PositioningFilter }[] = [
-        { label: t('common.all'), value: PositioningFilter.All },
-        { label: t('project.positioning.filter.positioningOnly'), value: PositioningFilter.PositioningOnly },
-        {
-            label: t('project.positioning.filter.instructionNotStarted'),
-            value: PositioningFilter.InstructionNotStarted,
-        },
-        { label: t('project.positioning.filter.arbitration'), value: PositioningFilter.Arbitation },
-        { label: t('project.positioning.filter.excluded'), value: PositioningFilter.Excluded },
-    ]
-    const positioningFilter = ref<PositioningFilter>(PositioningFilter.All)
+    const resourceIdSelected = ref<string>('')
+    const resourceDialog = ref<boolean>(false)
 
-    const tabs: useProjectResourceTab[] = [
-        {
-            name: Tab.Positioning,
-            label: t('project.resources.status.toPosition'),
-            status: ResourceStatus.Positioning,
-            icon: 'mdi-podium',
-        },
-        {
-            name: Tab.InstructionBound,
-            label: t('project.resources.status.toInstructBound'),
-            status: ResourceStatus.InstructionBound,
-            icon: 'mdi-book-open-page-variant',
-        },
-        {
-            name: Tab.InstructionUnbound,
-            label: t('project.resources.status.toInstructUnbound'),
-            status: ResourceStatus.InstructionUnbound,
-            icon: 'mdi-file-multiple',
-        },
-        {
-            name: Tab.Control,
-            label: t('project.resources.status.toControl'),
-            status: [ResourceStatus.ControlBound, ResourceStatus.ControlUnbound],
-            icon: 'mdi-shield-check',
-        },
-        {
-            name: Tab.Anomalies,
-            label: t('project.resources.status.anomalies', 2),
-            status: [ResourceStatus.AnomalyBound, ResourceStatus.AnomalyUnbound],
-            icon: 'mdi-alert-circle',
-        },
-        {
-            name: Tab.Edition,
-            label: t('project.resources.resultant.i', 2),
-            status: ResourceStatus.Edition,
-            icon: 'mdi-table-check',
-        },
-    ]
+    // COMPUTED
     const tabStatus = computed(() => {
         const tab = tabs.find((el) => el.name === projectStore.tab)
         return tab ? tab.status : ResourceStatus.Positioning
     })
 
-    const librariesOptions = computed(() => {
-        return [...projectStore.libraries, { name: t('common.all'), id: '' }]
-    })
-
-    const librariesComparedOptions = computed(() => {
-        return [
-            { name: t('common.all'), id: '' },
-            ...projectStore.libraries.filter((lib) => lib.id !== resourceStore.libraryIdSelected),
-        ]
-    })
-
+    // FUNCTIONS
     const computeStatusInfos = (row: Resource): StatusInfo => {
         if (row.arbitration !== 2)
             return {
-                message: t('project.resources.status.toArbitrate') + ` ${row.arbitration}`,
+                message: t('fn.resource.arbitration.i') + ` ${row.arbitration}`,
                 icon: 'mdi-gavel',
                 color: 'negative',
             }
@@ -103,175 +54,238 @@ export const useProjectResources = () => {
         if (row.status === ResourceStatus.Positioning) {
             const infos: StatusInfo = { message: '', icon: 'mdi-podium' }
             if (row.shouldPosition) {
-                infos.message = t('project.resources.status.positioningRequired')
+                infos.message = t('views.project.resources.status.positioningRequired')
                 infos.color = 'primary'
                 return infos
             }
-            if (projectStore.isRole(Roles.Instructor, resourceStore.libraryIdSelected)) {
-                infos.message = t('project.resources.status.waitingPositioning')
+            if (projectStore.isRole(Roles.Instructor, libraryIdSelected.value)) {
+                infos.message = t('views.project.resources.status.waitingPositioning')
                 return infos
             }
-            infos.message = t('project.resources.status.positioning')
+            infos.message = t('views.project.resources.status.positioning')
             return infos
         }
         if (row.status === ResourceStatus.Excluded)
-            return { message: t('project.resources.status.excluded'), icon: 'mdi-cancel' }
+            return { message: t('views.project.resources.status.excluded'), icon: 'mdi-cancel' }
         if (row.status === ResourceStatus.InstructionBound) {
             if (projectStore.tab === Tab.Positioning)
                 return {
-                    message: t('project.resources.status.instructionBoundButPositioningTab'),
+                    message: t('views.project.resources.status.instructionBoundButPositioningTab'),
                     icon: 'mdi-timer-outline',
                 }
-            return { message: t('project.resources.status.instructionBound'), icon: 'mdi-segment' }
+            return { message: t('views.project.resources.status.instructionBound'), icon: 'mdi-segment' }
         }
         if (row.status === ResourceStatus.ControlBound)
-            return { message: t('project.resources.status.controlBound'), icon: 'mdi-shield-check-outline' }
+            return { message: t('views.project.resources.status.controlBound'), icon: 'mdi-shield-check-outline' }
         if (row.status === ResourceStatus.InstructionUnbound)
-            return { message: t('project.resources.status.instructionUnbound'), icon: 'mdi-segment' }
+            return { message: t('views.project.resources.status.instructionUnbound'), icon: 'mdi-segment' }
         if (row.status === ResourceStatus.ControlUnbound)
-            return { message: t('project.resources.status.controlUnbound'), icon: 'mdi-shield-check-outline' }
+            return { message: t('views.project.resources.status.controlUnbound'), icon: 'mdi-shield-check-outline' }
         if (row.status === ResourceStatus.AnomalyBound)
             return {
-                message: t('project.resources.status.anomaliesBound'),
+                message: t('views.project.resources.status.anomaliesBound'),
                 icon: 'mdi-alert-octagon',
                 color: 'negative',
             }
         if (row.status === ResourceStatus.AnomalyUnbound)
             return {
-                message: t('project.resources.status.anomaliesUnbound'),
+                message: t('views.project.resources.status.anomaliesUnbound'),
                 icon: 'mdi-alert-octagon',
                 color: 'negative',
             }
         if (row.status === ResourceStatus.Edition)
             return {
-                message: t('project.resources.resultant.i'),
+                message: t('views.project.resultant.i'),
                 icon: 'mdi-table-check',
             }
 
         return { message: t('common.error'), icon: 'mdi-alert-outline' }
     }
 
-    const table: TableProjectResources = {
-        ref: useTemplateRef<QTable>('qTable'),
-        rows: ref<Resource[]>([]),
-        filter: ref<string>(''),
-        loading: ref(false),
-        columns: [
-            {
-                name: 'title',
-                required: true,
-                label: t('project.resources.title'),
-                align: 'left',
-                field: 'title',
-                sortable: true,
-            },
-            {
-                name: 'code',
-                label: t('project.resources.code'),
-                align: 'left',
-                field: 'code',
-            },
-            {
-                name: 'count',
-                label: t('project.resources.count'),
-                align: 'left',
-                field: 'count',
-                sortable: true,
-            },
-            {
-                name: 'status',
-                label: t('project.resources.status.title'),
-                align: 'left',
-                field: 'status',
-            },
-        ],
-        pagination: ref({
-            sortBy: 'name',
-            descending: false,
-            page: 1,
-            rowsPerPage: 10,
-            rowsNumber: 0,
-        }),
-    }
-
     const selectDefaultLibrary = () => {
         if (!userStore.user?.id) {
-            resourceStore.libraryIdSelected = ''
+            libraryIdSelected.value = ''
+            libraryIdComparedSelected.value = ''
             return
         }
 
-        const librariesIdWhereUserIsInstructor = projectStore.roles
-            .filter((el) => el.user.id === userStore.user?.id && el.role === Roles.Instructor)
-            .map((el) => el.libraryId)
+        const librariesIdWhereUserIsInstructor =
+            projectStore.project?.roles
+                .filter((el) => el.user.id === userStore.user?.id && el.role === Roles.Instructor)
+                .map((el) => el.libraryId) || []
 
-        resourceStore.libraryIdSelected = librariesIdWhereUserIsInstructor[0] || ''
+        libraryIdSelected.value = librariesIdWhereUserIsInstructor[0] || ''
     }
 
-    const resourceDialog = ref<boolean>(false)
-
-    const onRowClick = async (_: Event, row: Resource) => {
-        resourceStore.resourceSelectedId = row.id
+    const openResourceDialog = (resourceId: string) => {
+        resourceIdSelected.value = resourceId
         resourceDialog.value = true
     }
 
-    const fetchResources = async (
-        props?: Parameters<NonNullable<QTableProps['onRequest']>>[0],
-        switchTab: boolean = false,
-    ) => {
-        table.loading.value = true
+    const fetchResources = async (options?: Parameters<NonNullable<QTableProps['onRequest']>>[0]) => {
+        if (!options) resourcesStore.pagination.page = 1
 
-        if (switchTab && !props) {
-            table.pagination.value.page = 1
-
-            if (projectStore.tab === Tab.Anomalies) {
-                libraryIdSelected.value = ''
-                libraryIdComparedSelected.value = ''
-                disableLibrarySelectedSelect.value = true
-            } else {
-                disableLibrarySelectedSelect.value = false
-            }
+        if (projectStore.tab === Tab.Anomalies) {
+            libraryIdSelected.value = ''
+            libraryIdComparedSelected.value = ''
+            disableLibrarySelectedSelect.value = true
+        } else {
+            disableLibrarySelectedSelect.value = false
         }
 
-        const options = {
-            pagination: props?.pagination ? props?.pagination : table.pagination.value,
-            filter: props?.filter ? props?.filter : table.filter,
+        const params: Parameters<typeof resourcesStore.getResources>[0] = {
+            ...(options && {
+                ordering: `${options.pagination.descending ? '-' : ''}${options.pagination.sortBy}`,
+                page: options?.pagination.page,
+                page_size: options?.pagination.rowsPerPage,
+            }),
+
+            status: [tabStatus.value].flat(),
         }
-        await resourceStore.fetchResources(tabStatus.value, {
-            table,
-            props: options,
-            ...(projectStore.tab === Tab.Positioning && { positioningFilter: positioningFilter.value }),
-        })
-        table.loading.value = false
+        await resourcesStore.getResources(params)
     }
+
+    // STATICS
+    const selectFilterOnPositioning: { label: string; value: PositioningFilter }[] = [
+        { label: t('views.project.resources.filters.all'), value: PositioningFilter.All },
+        { label: t('views.project.resources.filters.positioningOnly'), value: PositioningFilter.PositioningOnly },
+        {
+            label: t('views.project.resources.filters.instructionNotStarted'),
+            value: PositioningFilter.InstructionNotStarted,
+        },
+        { label: t('fn.resource.arbitration.i'), value: PositioningFilter.Arbitation },
+        { label: t('views.project.resources.filters.excluded'), value: PositioningFilter.Excluded },
+    ]
+
+    const tabs: useProjectResourceTab[] = [
+        {
+            name: Tab.Positioning,
+            label: t('views.project.resources.status.toPosition'),
+            status: ResourceStatus.Positioning,
+            icon: 'mdi-podium',
+        },
+        {
+            name: Tab.InstructionBound,
+            label: t('views.project.resources.status.toInstructBound'),
+            status: ResourceStatus.InstructionBound,
+            icon: 'mdi-book-open-page-variant',
+        },
+        {
+            name: Tab.InstructionUnbound,
+            label: t('views.project.resources.status.toInstructUnbound'),
+            status: ResourceStatus.InstructionUnbound,
+            icon: 'mdi-file-multiple',
+        },
+        {
+            name: Tab.Control,
+            label: t('views.project.resources.status.toControl'),
+            status: [ResourceStatus.ControlBound, ResourceStatus.ControlUnbound],
+            icon: 'mdi-shield-check',
+        },
+        {
+            name: Tab.Anomalies,
+            label: t('views.project.resources.status.anomalies', 2),
+            status: [ResourceStatus.AnomalyBound, ResourceStatus.AnomalyUnbound],
+            icon: 'mdi-alert-circle',
+        },
+        {
+            name: Tab.Edition,
+            label: t('views.project.resultant.i', 2),
+            status: ResourceStatus.Edition,
+            icon: 'mdi-table-check',
+        },
+    ]
 
     const selects = [
         {
             model: libraryIdSelected,
-            label: t('project.resources.showResources'),
-            options: librariesOptions.value,
-            callback: fetchResources,
+            label: t('views.project.resources.showResources'),
+            options: computed(() => {
+                if (!projectStore.project) return []
+                return [...projectStore.project.libraries, { name: t('common.all'), id: '' }]
+            }),
             name: 'librariesSelection',
         },
         {
             model: libraryIdComparedSelected,
-            label: t('project.resources.compareWith'),
-            options: librariesComparedOptions.value,
-            callback: fetchResources,
+            label: t('views.project.resources.compareWith'),
+            options: computed(() => {
+                if (!projectStore.project) return []
+                return [
+                    { name: t('common.all'), id: '' },
+                    ...projectStore.project.libraries.filter((lib) => lib.id !== libraryIdSelected.value),
+                ]
+            }),
             name: 'librariesComparison',
         },
     ]
 
+    const columns: QTableProps['columns'] = [
+        {
+            name: 'title',
+            required: true,
+            label: t('fn.resource.fields.title'),
+            align: 'left',
+            field: 'title',
+            sortable: true,
+        },
+        {
+            name: 'code',
+            label: t('fn.resource.fields.code'),
+            align: 'left',
+            field: 'code',
+        },
+        {
+            name: 'count',
+            label: t('fn.resource.fields.count', 2),
+            align: 'left',
+            field: 'count',
+            sortable: true,
+        },
+        {
+            name: 'status',
+            label: t('views.project.resources.status.title'),
+            align: 'left',
+            field: 'status',
+        },
+    ]
+
+    const researchFetchedResourcesWhenQueryParam = () => {
+        if (!route.query[RESOURCE_QUERY_PARAM] || !resourceStore.resource) return
+
+        // Change tab to corresponding status
+        projectStore.tab = ResourceStatusToTab[resourceStore.resource.status]
+
+        // If instruction_turns filled, select the right library
+        if (
+            (resourceStore.resource.status === ResourceStatus.InstructionBound ||
+                resourceStore.resource.status === ResourceStatus.InstructionUnbound) &&
+            resourceStore.resource.instructionTurns?.[resourceStore.statusName].turns[0].library
+        ) {
+            libraryIdSelected.value = resourceStore.resource.instructionTurns[resourceStore.statusName].turns[0].library
+        } else {
+            selectDefaultLibrary()
+        }
+
+        // Used to prevent stepper animation to glitch in modal
+        setTimeout(() => {
+            resourcesStore.filter = resourceStore.resource!.code // Set filter in setTimeout to ensure action is triggered
+        }, 100)
+        return
+    }
+
     return {
         tabs,
-        table,
+        columns,
+        resourceIdSelected,
         resourceDialog,
+        openResourceDialog,
         selectDefaultLibrary,
-        onRowClick,
         selects,
         fetchResources,
         disableLibrarySelectedSelect,
         computeStatusInfos,
         selectFilterOnPositioning,
-        positioningFilter,
+        researchFetchedResourcesWhenQueryParam,
     }
 }

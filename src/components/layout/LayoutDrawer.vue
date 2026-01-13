@@ -1,31 +1,21 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores/globalStore.ts'
 import DrawerItem from '../utils/drawerItem/DrawerItem.vue'
 import AtomicButton from '../atomic/AtomicButton.vue'
-import { Roles } from '&/project'
+import { useProjectsStore } from '@/stores/projectsStore.ts'
 
 const { t } = useI18n()
 const userStore = useUserStore()
 const globalStore = useGlobalStore()
+const projectsStore = useProjectsStore()
 const { user } = storeToRefs(userStore)
 
 const drawer = ref<boolean>(true)
 const collapsed = ref<boolean>(false)
-
-watch(
-    () => user.value,
-    async () => {
-        await userStore.getProjects()
-    },
-)
-
-onMounted(async () => {
-    await userStore.fetchUser()
-})
 </script>
 
 <template>
@@ -56,27 +46,27 @@ onMounted(async () => {
             <div class="projects">
                 <DrawerItem
                     icon="mdi-folder-move-outline"
-                    :name="!collapsed ? t('project.public.btn') : ''"
+                    :name="!collapsed ? t('fn.project.all', 2) : ''"
                     :to="{ name: 'projects' }"
-                    :tooltip="collapsed ? t('project.public.btn') : undefined"
+                    :tooltip="collapsed ? t('fn.project.all', 2) : undefined"
                 />
                 <div
                     v-if="userStore.isAuth"
                     class="my-projects"
                 >
                     <p v-if="!collapsed">
-                        {{ t('layout.drawer.myProjects') }}
+                        {{ t('fn.project.my', 2) }}
                     </p>
-                    <div :class="['scrollable-projects', { 'min-height': userStore.projects.length > 3 }]">
+                    <div :class="['scrollable-projects', { 'min-height': projectsStore.userProjects.length > 3 }]">
                         <QItem
-                            v-if="userStore.userLoading"
+                            v-if="projectsStore.userProjectsLoading"
                             class="q-spinner-container"
                         >
                             <QSpinner />
                         </QItem>
-                        <QList v-else-if="!userStore.userLoading && user">
+                        <QList v-else-if="projectsStore.userProjects.length">
                             <DrawerItem
-                                v-for="project in user.projects"
+                                v-for="project in projectsStore.userProjects"
                                 :key="project.id"
                                 icon="mdi-book-multiple"
                                 :name="!collapsed ? project.name : ''"
@@ -84,8 +74,8 @@ onMounted(async () => {
                                 :tooltip="collapsed ? project.name : undefined"
                             />
                         </QList>
-                        <p v-else-if="!collapsed && !userStore.projects.length">
-                            {{ t('navigation.noProject') }}
+                        <p v-else>
+                            {{ t('fn.project.none') }}
                         </p>
                     </div>
                 </div>
@@ -96,15 +86,15 @@ onMounted(async () => {
                     <AtomicButton
                         v-if="!collapsed"
                         icon="mdi-plus"
-                        :label="t('newProject.buttons.create', { article: t('common.a') })"
-                        :no-border="userStore.projects.length < 0"
+                        :label="t('fn.project.create.a')"
+                        :no-border="projectsStore.userProjects.length < 0"
                         :to="{ name: 'newProject' }"
                     />
                     <DrawerItem
                         v-else
                         icon="mdi-plus"
                         :to="{ name: 'newProject' }"
-                        :tooltip="t('newProject.buttons.create', { article: t('common.a') })"
+                        :tooltip="t('fn.project.create.a')"
                     />
                 </QItem>
             </div>
@@ -131,13 +121,13 @@ onMounted(async () => {
                 <DrawerItem
                     v-if="!collapsed"
                     icon="mdi-arrow-collapse-left"
-                    :name="t('navigation.collapse')"
+                    :name="t('common.collapse')"
                     @click="() => (collapsed = true)"
                 />
                 <DrawerItem
                     v-else
                     icon="mdi-arrow-collapse-right"
-                    :tooltip="t('navigation.expand')"
+                    :tooltip="t('common.expand')"
                     @click="() => (collapsed = false)"
                 />
             </div>

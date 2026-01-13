@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import SearchUser from '@/components/utils/searchUser/SearchUser.vue'
-import { useProjectStore } from '@/stores/projectStore.ts'
 import { useAdmin } from '@/components/admin/useAdmin.ts'
 import { onMounted } from 'vue'
 import { Roles } from '&/project.ts'
@@ -11,7 +10,6 @@ import { useUtils } from '@/composables/useUtils.ts'
 import InviteForm from '@/components/forms/invite/InviteForm.vue'
 
 const route = useRoute()
-const projectStore = useProjectStore()
 const { roles, isAddUserLoading, onAddRole, onRemoveRole, getUsersWithRole, users } = useAdmin()
 const globalStore = useGlobalStore()
 const { t } = useI18n()
@@ -41,11 +39,14 @@ onMounted(async () => {
             </div>
         </div>
         <div class="invite">
-            <h2>{{ t('forms.invite.title') }}</h2>
+            <hgroup>
+                <h2>{{ t('views.tenantAdmin.invite.title') }}</h2>
+                <p>{{ t('views.tenantAdmin.invite.info') }}</p>
+            </hgroup>
             <InviteForm class="max-width-container" />
         </div>
         <div class="roles">
-            <h2>{{ t('view.tenantAdmin.section2') }}</h2>
+            <h2>{{ t('views.tenantAdmin.section2') }}</h2>
             <div
                 v-for="(role, index) in roles"
                 :key="index"
@@ -54,7 +55,7 @@ onMounted(async () => {
                 <h3>{{ role.title }}</h3>
                 <SearchUser
                     disable-invitations
-                    :invitations-selected="projectStore.invitations.filter((el) => el.role === role.role)"
+                    :invitations-selected="[]"
                     :is-add-user-loading="isAddUserLoading"
                     :prevent-delete-current-user="role.role === Roles.TenantSuperUser"
                     :users-selected="users[role.role]"

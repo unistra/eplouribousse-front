@@ -7,8 +7,8 @@ import { useProjectStore } from '@/stores/projectStore.ts'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import { useProjectPositioningCollectionCard } from '@/components/project/projectLaunched/projectPositioning/projectPositioningCollectionCard/useProjectPositioningCollectionCard.ts'
 import { CollectionPosition } from '&/project.ts'
-import { useResourceStore } from '@/stores/resourceStore.ts'
 import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
+import { useResourcesStore } from '@/stores/resourcesStore.ts'
 const props = defineProps<{
     libraryId: string
     collection: CollectionsInResource
@@ -16,7 +16,7 @@ const props = defineProps<{
 
 const { t } = useI18n()
 const projectStore = useProjectStore()
-const resourceStore = useResourceStore()
+const resourcesStore = useResourcesStore()
 
 const { collection, exclude, comment, exclusionReason, newPosition, onSave, showSaveBtn, saveBtnLoading } =
     useProjectPositioningCollectionCard(props.collection.id)
@@ -34,22 +34,22 @@ onMounted(() => {
 </script>
 
 <template>
-    <QCard v-if="collection">
+    <QCard v-if="collection && projectStore.project">
         <QCardSection
             class="q-card-section-horizontal"
             horizontal
         >
             <QCardSection>
                 <p>
-                    {{ t('project.resources.callNumber') }}:
-                    {{ collection.callNumber || t('project.resources.noCallNumber') }}
+                    {{ t('fn.collection.fields.callNumber.i') }}:
+                    {{ collection.callNumber || t('fn.collection.fields.callNumber.none') }}
                 </p>
                 <p>
-                    {{ t('project.resources.holdStatement') }}:
-                    {{ collection.holdStatement || t('project.resources.noHoldStatement') }}
+                    {{ t('fn.collection.fields.holdStatement.i') }}:
+                    {{ collection.holdStatement || t('fn.collection.fields.holdStatement.none') }}
                 </p>
             </QCardSection>
-            <QCardSection v-if="collection.acl.position && resourceStore.libraryIdSelected === libraryId">
+            <QCardSection v-if="collection.acl.position && resourcesStore.libraryIdSelected === libraryId">
                 <QForm @submit.prevent>
                     <div class="button-section">
                         <QRadio
@@ -71,35 +71,35 @@ onMounted(() => {
                     </div>
                     <QCheckbox
                         v-model="exclude"
-                        :label="t('project.resources.exclusion.exclude')"
+                        :label="t('views.project.positioning.exclusion.exclude')"
                     />
                     <AtomicSelect
                         v-if="exclude"
                         v-model="exclusionReason"
-                        :label="t('project.resources.exclusion.exclusionReason')"
-                        :options="projectStore.settings.exclusionReasons"
+                        :label="t('views.project.positioning.exclusion.exclusionReason')"
+                        :options="projectStore.project.settings.exclusionReasons"
                     />
                     <AtomicInput
                         v-model="comment"
-                        :label="t('project.resources.comment')"
+                        :label="t('views.project.positioning.comment')"
                     />
                 </QForm>
             </QCardSection>
             <QCardSection v-else>
                 <p v-if="!collection.exclusionReason">
-                    {{ t('project.resources.position') }}:
+                    {{ t('fn.collection.fields.position.i') }}:
                     <span :class="['position', { italic: !collection.position }]">{{
                         collection.position || t('common.undefined')
                     }}</span>
                 </p>
                 <p v-else>
-                    {{ t('project.resources.exclusion.excluded') }}:
+                    {{ t('views.project.positioning.exclusion.excluded') }}:
                     <span :class="['position', { italic: !collection.position }]">{{
                         collection.exclusionReason
                     }}</span>
                 </p>
                 <p v-if="collection.commentPositioning && collection.commentPositioning.content">
-                    {{ t('project.resources.comment') }}:
+                    {{ t('views.project.positioning.comment') }}:
                     {{ collection.commentPositioning.content }}
                 </p>
             </QCardSection>

@@ -24,10 +24,18 @@ export type ProjectDashboardChartComponentType = 'bar' | 'doughnut'
 
 type ProjectDashboardType = ProjectDashboardTableType | ProjectDashboardChartType
 
+export type Computation = {
+    key: string
+    label: string
+    value: string | number
+    unit?: string
+    ratio?: number
+}
+
 export type DashboardTableData = {
     title: string
-    computedAt: string
-    [key: string]: string | number
+    computations: Computation[]
+    computedAt?: string
 }
 
 type ChartDataset = {
@@ -57,7 +65,7 @@ export type ChartToDisplay = ChartToDisplayObject[]
 export const useProjectDashboard = <T extends DashboardTableData | DashboardChartData>() => {
     const route = useRoute()
     const loading = ref<boolean>(false)
-    const data = ref<T | undefined>()
+    const data = ref<T | null>(null)
     const { useHandleError } = useUtils()
 
     const tableToDisplay: ProjectDashboardTableType[] = [
@@ -102,6 +110,7 @@ export const useProjectDashboard = <T extends DashboardTableData | DashboardChar
             })
             data.value = response.data
         } catch (e) {
+            data.value = null
             useHandleError(e)
         } finally {
             loading.value = false

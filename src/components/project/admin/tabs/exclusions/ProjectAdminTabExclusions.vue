@@ -4,22 +4,32 @@ import AtomicInput from '@/components/atomic/AtomicInput.vue'
 import { useProjectAdminTabExclusions } from '@/components/project/admin/tabs/exclusions/useProjectAdminTabExclusions.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
+import { ProjectStatus } from '&/project.ts'
 
 const projectStore = useProjectStore()
-const { addingExclusionReason, newExclusionReason, onAddExclusionReason, onCancelAddExclusionReason } =
-    useProjectAdminTabExclusions()
+const {
+    addingExclusionReason,
+    newExclusionReason,
+    postProjectExclusionReason,
+    deleteProjectExclusionReason,
+    onCancelAddExclusionReason,
+} = useProjectAdminTabExclusions()
 const { t } = useI18n()
 </script>
 
 <template>
-    <div class="tabs">
+    <div
+        v-if="projectStore.project"
+        class="tabs"
+    >
         <QChip
-            v-for="exclusionReason in projectStore.settings.exclusionReasons"
+            v-for="exclusionReason in projectStore.project.settings.exclusionReasons"
             :key="exclusionReason"
             icon-remove="mdi-close"
             :label="exclusionReason"
-            :removable="projectStore.userIsAdmin"
+            :removable="projectStore.userIsAdmin && projectStore.project.status < ProjectStatus.Launched"
             size="1rem"
+            @remove="deleteProjectExclusionReason(exclusionReason)"
         />
     </div>
     <template v-if="projectStore.userIsAdmin">
@@ -33,10 +43,10 @@ const { t } = useI18n()
         <AtomicInput
             v-else
             v-model="newExclusionReason"
-            :label="t('project.settings.exclusionReason')"
+            :label="t('views.project.settings.exclusionReason')"
             quick-input
             @cancel="onCancelAddExclusionReason"
-            @done="onAddExclusionReason"
+            @done="postProjectExclusionReason"
         />
     </template>
 </template>

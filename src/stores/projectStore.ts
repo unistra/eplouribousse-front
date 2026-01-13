@@ -1,392 +1,255 @@
 import { defineStore } from 'pinia'
-import type { LibraryI } from '#/library'
 import {
+    type CollectionsCountOfALibrary,
     type Project,
     type ProjectDetails,
     type ProjectInvitation,
-    type ProjectLibrary,
     type ProjectRole,
-    type ProjectSettings,
-    type ProjectStoreState,
 } from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
-import { Notify } from 'quasar'
-import i18n from '@/plugins/i18n'
 import { useUserStore } from '@/stores/userStore.ts'
-import { ProjectStatus, Roles, Tab } from '&/project.ts'
-import { useResourceStore } from '@/stores/resourceStore.ts'
+import { Roles, Tab } from '&/project.ts'
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useUtils } from '@/composables/useUtils.ts'
+import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
+import { useResourcesStore } from '@/stores/resourcesStore.ts'
+import { isAxiosError } from 'axios'
+import { useRouter } from 'vue-router'
 
-const { t } = i18n.global
+export const useProjectStore = defineStore('project', () => {
+    const { t } = useI18n()
+    const { useHandleError } = useUtils()
+    const { notify } = useComposableQuasar()
+    const router = useRouter()
+    const userStore = useUserStore()
+    const resourcesStore = useResourcesStore()
 
-const initialState: ProjectDetails = {
-    id: '',
-    name: '',
-    description: '',
-    isPrivate: false,
-    activeAfter: '',
-    isActive: false,
-    status: ProjectStatus.Draft,
-    createdBy: {
-        id: '',
-        email: '',
-        firstName: '',
-        lastName: '',
-        displayName: '',
-    },
-    settings: {
-        exclusionReasons: [],
-        alerts: {
-            positioning: false,
-            arbitration: false,
-            instruction: false,
-            control: false,
-            edition: false,
-            preservation: false,
-            transfer: false,
-        },
-        projectCreator: '',
-    },
-    invitations: [],
-    roles: [],
-    libraries: [],
-    createdAt: '',
-    updatedAt: '',
-    acl: {
-        destroy: false,
-        update: false,
-        partialUpdate: false,
-        retrieve: false,
-        addLibrary: false,
-        updateStatus: false,
-        exclusionReason: false,
-        removeExclusionReason: false,
-        status: false,
-    },
-}
+    // STATE ========================
+    const project = ref<ProjectDetails>()
+    const initialProject = ref<ProjectDetails>()
+    const projectLoading = ref<boolean>(false)
 
-export const useProjectStore = defineStore('project', {
-    state: (): ProjectStoreState => ({
-        ...structuredClone(initialState),
-        initialState: structuredClone(initialState),
-        isLoading: false,
-        tab: Tab.Positioning,
-        collectionsCount: [],
-    }),
-    getters: {
-        nameRequired: (state) => state.name.length > 0,
-        nameLengthValid: (state) => state.name.length <= 255,
-        userIsAdmin: (state) => {
-            const userStore = useUserStore()
-            return !!state.roles.find((el) => el.role === Roles.ProjectAdmin && el.user.id === userStore.user?.id)
-        },
-        userIsController: (state) => {
-            const userStore = useUserStore()
-            return !!state.roles.find((el) => el.role === Roles.Controller && el.user.id === userStore.user?.id)
-        },
-        userIsInstructorForLibrarySelected(state) {
-            const userStore = useUserStore()
-            const resourceStore = useResourceStore()
-            return !!state.roles.find(
-                (el) =>
-                    el.user.id === userStore.user?.id &&
-                    el.role === Roles.Instructor &&
-                    el.libraryId === resourceStore.libraryIdSelected,
-            )
-        },
-    },
-    actions: {
-        // UTILS
-        async fetchProjectById(id: string) {
-            try {
-                const response = await axiosI.get<ProjectDetails>(`/projects/${id}/`)
+    const tab = ref<Tab>(Tab.Positioning)
 
-                this.$state = {
-                    ...structuredClone(response.data),
-                    initialState: structuredClone(response.data),
-                    isLoading: false,
-                    tab: Tab.Positioning,
-                    collectionsCount: [],
-                }
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknownRetry'),
-                })
+    const collectionsCount = ref<CollectionsCountOfALibrary[]>([])
+
+    // GETTERS ========================
+    const nameRequired = computed(() => project.value && project.value.name.length > 0)
+    const nameLengthValid = computed(() => project.value && project.value.name.length <= 255)
+
+    const userIsAdmin = computed(() => {
+        return !!project.value?.roles.find((el) => el.role === Roles.ProjectAdmin && el.user.id === userStore.user?.id)
+    }) // TODO: delete and replace by isRole
+
+    const userIsController = computed(() => {
+        return !!project.value?.roles.find((el) => el.role === Roles.Controller && el.user.id === userStore.user?.id)
+    }) // TODO: delete and replace by isRole
+
+    const userIsInstructorForLibrarySelected = computed((): boolean => {
+        return !!project.value?.roles.find(
+            (el) =>
+                el.user.id === userStore.user?.id &&
+                el.role === Roles.Instructor &&
+                el.libraryId === resourcesStore.libraryIdSelected,
+        )
+    })
+
+    // ACTIONS ========================
+
+    // API
+    const getProject = async (id: string) => {
+        projectLoading.value = true
+        try {
+            const response = await axiosI.get<ProjectDetails>(`/projects/${id}/`)
+
+            project.value = structuredClone(response.data)
+            initialProject.value = structuredClone(response.data)
+            tab.value = Tab.Positioning // TODO: to move
+            collectionsCount.value = [] // TODO: to move
+        } catch (e) {
+            if (isAxiosError(e) && e.status === 403) {
+                await router.push({ name: 'login' })
             }
-        },
+            useHandleError(e)
+        } finally {
+            projectLoading.value = false
+        }
+    }
 
-        // TITLE & DESCRIPTION
-        async _postNewProject() {
-            this.isLoading = true
-            try {
-                const response = await axiosI.post<Project>('/projects/', {
-                    name: this.name,
-                    description: this.description,
-                })
+    const postProject = async (): Promise<string | undefined> => {
+        projectLoading.value = true
+        try {
+            const response = await axiosI.post<Project>('/projects/', {
+                name: project.value?.name || '',
+                description: project.value?.description || '',
+            })
 
-                this.id = response.data.id
-                this.initialState.id = response.data.id
-                this.initialState.name = this.name
-                this.initialState.description = this.description
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            } finally {
-                this.isLoading = false
+            return response.data.id
+        } catch (e) {
+            useHandleError(e)
+        } finally {
+            projectLoading.value = false
+        }
+    }
+
+    const patchProjectTitleAndDescription = async () => {
+        projectLoading.value = true
+        try {
+            const response = await axiosI.patch<Project>(`/projects/${project.value?.id}/`, {
+                name: project.value?.name || '',
+                description: project.value?.description || '',
+            })
+
+            if (initialProject.value) {
+                initialProject.value.name = response.data.name
+                initialProject.value.description = response.data.description
             }
-        },
-        async _patchTitleAndDescription() {
-            try {
-                await axiosI.patch(`/projects/${this.id}/`, {
-                    name: this.name,
-                    description: this.description,
-                })
+        } catch (e) {
+            useHandleError(e)
+        } finally {
+            projectLoading.value = false
+        }
+    }
 
-                this.initialState.name = this.name
-                this.initialState.description = this.description
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        async validateAndProceedTitleAndDescription(): Promise<boolean> {
-            if (!this.nameRequired || !this.nameLengthValid) return false
+    const postProjectUserRole = async (userId: string, role: Roles, libraryId?: string) => {
+        try {
+            const response = await axiosI.post<ProjectRole>(`/projects/${project.value?.id}/roles/`, {
+                user_id: userId,
+                role,
+                ...(libraryId && { library_id: libraryId }),
+            })
+            project.value?.roles.push(response.data)
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
 
-            if (!this.id) {
-                await this._postNewProject()
-            } else if (this.name !== this.initialState.name || this.description !== this.initialState.description) {
-                await this._patchTitleAndDescription()
-            }
+    const deleteProjectUserRole = async (userId: string, role: Roles, libraryId: string | null = null) => {
+        try {
+            await axiosI.delete(`/projects/${project.value?.id}/roles/`, {
+                params: {
+                    user_id: userId,
+                    role,
+                    ...(libraryId && { library_id: libraryId }),
+                },
+            })
 
-            return true
-        },
-        async removeLibrary(library: LibraryI) {
-            if (!this.libraries.some((lib) => lib.id === library.id)) return
-            try {
-                await axiosI.delete<ProjectDetails>(`/projects/${this.id}/libraries/`, {
-                    params: {
-                        library_id: library.id,
-                    },
-                })
-
-                this.libraries = this.libraries.filter((lib) => lib.id !== library.id)
-                this.roles = this.roles.filter((role) => role.libraryId !== library.id)
-                this.invitations = this.invitations.filter((inv) => inv.libraryId !== library.id)
-                this.collectionsCount = this.collectionsCount.filter((col) => col.libraryId === library.id)
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('view.project.new.stepper.steps.libraries.errors.whileDeleting'),
+            if (!project.value) {
+                notify({
+                    message: t('errors.dataUnreachable'),
+                    color: 'negative',
                 })
                 return
             }
-        },
-        async addRole(userId: string, role: Roles, libraryId?: string) {
-            const data: {
-                user_id: string
-                role: Roles
-                library_id?: string
-            } = {
-                user_id: userId,
+
+            project.value.roles = project.value.roles.filter(
+                (el) => !(el.role === role && el.libraryId === libraryId && el.user.id === userId),
+            )
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
+
+    const postProjectInvitation = async (email: string, role: Roles, libraryId?: string) => {
+        try {
+            const response = await axiosI.post<ProjectInvitation>(`/projects/${project.value?.id}/invitations/`, {
+                email,
                 role,
                 ...(libraryId && { library_id: libraryId }),
-            }
-            try {
-                const response = await axiosI.post<ProjectRole>(`/projects/${this.id}/roles/`, data)
-                this.roles.push(response.data)
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
+            })
+
+            if (!project.value) {
+                notify({
+                    message: t('errors.dataUnreachable'),
+                    color: 'negative',
                 })
+                return
             }
-        },
-        async removeRole(userId: string, role: Roles, libraryId?: string) {
-            const data: {
-                user_id: string
-                role: Roles
-                library_id?: string
-            } = {
-                user_id: userId,
-                role,
-                ...(libraryId && { library_id: libraryId }),
-            }
-            try {
-                await axiosI.delete(`/projects/${this.id}/roles/`, {
-                    params: data,
-                })
-                this.roles = this.roles.filter(
-                    (el) => !(el.role === role && el.libraryId === (libraryId || null) && el.user.id === userId),
-                )
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        async addInvitation(email: string, role: Roles, libraryId?: string) {
-            try {
-                const response = await axiosI.post<ProjectInvitation>(`/projects/${this.id}/invitations/`, {
+
+            project.value.invitations.push(response.data)
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
+
+    const deleteProjectInvitation = async (email: string, role: Roles, libraryId: string | null = null) => {
+        try {
+            await axiosI.delete(`/projects/${project.value?.id}/invitations/`, {
+                params: {
                     email,
                     role,
                     ...(libraryId && { library_id: libraryId }),
-                })
-                this.invitations.push(response.data)
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        async removeInvitation(email: string, role: Roles, libraryId: string | null = null) {
-            try {
-                await axiosI.delete(`/projects/${this.id}/invitations/`, {
-                    params: {
-                        email,
-                        role,
-                        ...(libraryId && { library_id: libraryId }),
-                    },
-                })
-                this.invitations = this.invitations.filter(
-                    (el) => !(el.role === role && el.libraryId === libraryId && el.email === email),
-                )
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        async passToReview() {
-            try {
-                const response = await axiosI.patch(`/projects/${this.id}/status/`, {
-                    status: ProjectStatus.Review,
-                })
-                this.status = response.data.status
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        async addExclusionReason(exclusionReason: string) {
-            try {
-                await axiosI.post(`/projects/${this.id}/exclusion_reason/`, {
-                    exclusion_reason: exclusionReason,
-                })
+                },
+            })
 
-                this.settings.exclusionReasons.push(exclusionReason)
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
+            if (!project.value) {
+                notify({
+                    message: t('errors.dataUnreachable'),
+                    color: 'negative',
                 })
+                return
             }
-        },
-        async removeExclusionReason(exclusionReason: string) {
-            try {
-                await axiosI.delete(`/projects/${this.id}/exclusion_reason/`, {
-                    params: {
-                        exclusion_reason: exclusionReason,
-                    },
-                })
 
-                this.settings.exclusionReasons =
-                    this.settings.exclusionReasons?.filter((reason) => reason !== exclusionReason) || []
-            } catch (e) {
-                console.log(e)
-            }
-        },
+            project.value.invitations = project.value.invitations.filter(
+                (el) => !(el.role === role && el.libraryId === libraryId && el.email === email),
+            )
+        } catch (e) {
+            useHandleError(e)
+        }
+    }
 
-        async toggleIsAlternativeStorageSite(library: ProjectLibrary) {
-            try {
-                await axiosI.patch(`/projects/${this.id}/libraries/${library.id}/`, {
-                    is_alternative_storage_site: !library.isAlternativeStorageSite,
-                })
-                const libraryToUpdate = this.libraries.find((el) => el.id === library.id)
-                if (libraryToUpdate) libraryToUpdate.isAlternativeStorageSite = !library.isAlternativeStorageSite
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        async passToReady() {
-            try {
-                const response = await axiosI.patch(`/projects/${this.id}/status/`, {
-                    status: ProjectStatus.Ready,
-                })
-                this.status = response.data.status
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        async startTheProject(active_after: string) {
-            try {
-                await axiosI.patch<{ activeAfter: string }>(`/projects/${this.id}/launch/`, {
-                    active_after,
-                })
-                await this.fetchProjectById(this.id)
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        isRole(role: Roles, libraryId?: string) {
-            const userStore = useUserStore()
-            return this.roles.some(
+    // const toggleIsAlternativeStorageSite = async (library: ProjectLibrary) => {
+    //     try {
+    //         await axiosI.patch(`/projects/${project.value?.id}/libraries/${library.id}/`, {
+    //             is_alternative_storage_site: !library.isAlternativeStorageSite,
+    //         })
+    //         const libraryToUpdate = project.value?.libraries.find((el) => el.id === library.id)
+    //         if (libraryToUpdate) libraryToUpdate.isAlternativeStorageSite = !library.isAlternativeStorageSite
+    //     } catch {
+    //         Notify.create({
+    //             type: 'negative',
+    //             message: t('errors.unknown'),
+    //         })
+    //     }
+    // }
+
+    // Utils
+    const isRole = (role: Roles, libraryId?: string) => {
+        const userStore = useUserStore()
+        return (
+            project.value?.roles.some(
                 (el) =>
                     el.role === role &&
                     userStore.user?.id === el.user.id &&
                     ((!libraryId && role !== Roles.Instructor) || el.libraryId === libraryId),
-            )
-        },
-        findUsersByRole(role: Roles) {
-            return this.roles.filter((projectUser) => projectUser.role === role)
-        },
-        async fetchAlerts() {
-            try {
-                const response = await axiosI.get<{ alerts: ProjectSettings['alerts'] }>(`/projects/${this.id}/alerts/`)
-                this.settings.alerts = structuredClone(response.data.alerts)
-                this.initialState.settings.alerts = structuredClone(response.data.alerts)
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-        async patchAlerts() {
-            try {
-                const response = await axiosI.patch<{ alerts: ProjectSettings['alerts'] }>(
-                    `/projects/${this.id}/alerts/`,
-                    { alerts: { ...this.settings.alerts } },
-                )
-                this.settings.alerts = structuredClone(response.data.alerts)
-                this.initialState.settings.alerts = structuredClone(response.data.alerts)
-                Notify.create({
-                    type: 'positive',
-                    message: t('project.settings.emailAlert.successAlertUpdated'),
-                })
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            }
-        },
-    },
+            ) || false
+        )
+    }
+
+    return {
+        // State
+        project,
+        initialProject,
+        projectLoading,
+        tab,
+        collectionsCount,
+        // Getters
+        nameRequired,
+        nameLengthValid,
+        userIsAdmin,
+        userIsController,
+        userIsInstructorForLibrarySelected,
+        // Actions
+        //// API
+        getProject,
+        postProject,
+        patchProjectTitleAndDescription,
+        postProjectUserRole,
+        deleteProjectUserRole,
+        postProjectInvitation,
+        deleteProjectInvitation,
+        //// Utils
+        isRole,
+    }
 })

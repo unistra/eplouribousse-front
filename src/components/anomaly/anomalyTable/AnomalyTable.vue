@@ -1,6 +1,5 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import { useResourceStore } from '@/stores/resourceStore.ts'
 import { AnomalyType, Tab } from '&/project.ts'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
@@ -16,15 +15,22 @@ import { useAnomalyStore } from '@/stores/anomalyStore.ts'
 import { useUtils } from '@/composables/useUtils.ts'
 
 const { t } = useI18n()
-const resourceStore = useResourceStore()
 const projectStore = useProjectStore()
 const anomalyStore = useAnomalyStore()
 const userStore = useUserStore()
 const props = defineProps<AnomalyTableProps>()
 const emit = defineEmits<AnomalyTableEmits>()
 
-const { columns, anomalyDescription, anomalyOptions, onDeleteAnomaly, segmentAnomalies, onPostAnomaly, anomalyType } =
-    useAnomalyTable(props, emit)
+const {
+    columns,
+    anomalyDescription,
+    anomalyOptions,
+    onDeleteAnomaly,
+    segmentAnomalies,
+    onPostAnomaly,
+    anomalyType,
+    fixAnomaly,
+} = useAnomalyTable(props, emit)
 </script>
 
 <template>
@@ -67,8 +73,8 @@ const { columns, anomalyDescription, anomalyOptions, onDeleteAnomaly, segmentAno
             <QTd auto-width>
                 <AtomicButton
                     v-if="!row.fixed && projectStore.userIsAdmin && projectStore.tab === Tab.Anomalies"
-                    :label="t('project.anomaly.fixBtn')"
-                    @click="resourceStore.fixAnomaly(row.id)"
+                    :label="t('views.project.anomaly.fixBtn')"
+                    @click="fixAnomaly(row.id)"
                 />
                 <AtomicButton
                     v-else-if="row.createdBy.id === userStore.user?.id && projectStore.tab !== Tab.Anomalies"
@@ -92,12 +98,12 @@ const { columns, anomalyDescription, anomalyOptions, onDeleteAnomaly, segmentAno
                             v-model="anomalyType"
                             dense
                             emit-value
-                            :label="t('project.anomaly.tableField.type')"
+                            :label="t('views.project.anomaly.tableField.type')"
                             map-options
                             option-label="label"
                             option-value="value"
                             :options="anomalyOptions"
-                            :rules="[(val: string) => !!val || t('forms.validation.fieldIsRequired')]"
+                            :rules="[(val: string) => !!val || t('errors.form.fieldIsRequired')]"
                         />
                         <AtomicInput
                             v-if="anomalyType === AnomalyType.Other"
@@ -106,8 +112,7 @@ const { columns, anomalyDescription, anomalyOptions, onDeleteAnomaly, segmentAno
                             :label="t('common.description').capitalize()"
                             :rules="[
                                 (val: string) =>
-                                    (anomalyType === AnomalyType.Other && !!val) ||
-                                    t('forms.validation.fieldIsRequired'),
+                                    (anomalyType === AnomalyType.Other && !!val) || t('errors.form.fieldIsRequired'),
                             ]"
                         />
                     </div>
@@ -117,7 +122,7 @@ const { columns, anomalyDescription, anomalyOptions, onDeleteAnomaly, segmentAno
                             @click="emit('cancelAddAnomaly')"
                         />
                         <AtomicButton
-                            :color="!!anomalyType ? 'primary' : ''"
+                            :color="!!anomalyType ? 'primary' : undefined"
                             :label="t('common.save')"
                             :no-border="!!anomalyType"
                             type="submit"

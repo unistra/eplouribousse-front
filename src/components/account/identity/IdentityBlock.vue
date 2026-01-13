@@ -9,8 +9,8 @@ const userStore = useUserStore()
 
 const tenantRole = computed(() => {
     const roles: string[] = [
-        userStore.user?.isSuperuser ? t('roles.superUser') : undefined,
-        userStore.user?.isProjectCreator ? t('roles.projectCreator') : undefined,
+        userStore.user?.isSuperuser ? t('fn.roles.superUser') : undefined,
+        userStore.user?.isProjectCreator ? t('fn.roles.projectCreator') : undefined,
     ].filter((el) => el !== undefined)
 
     return roles.length
@@ -18,7 +18,7 @@ const tenantRole = computed(() => {
               style: 'long',
               type: 'conjunction',
           }).format(roles)
-        : t('utils.noRole')
+        : t('fn.roles.none')
 })
 
 const firstName = ref('')
@@ -34,7 +34,7 @@ onMounted(() => {
 const saveFirstName = async (value: string) => {
     if (value === userStore.user?.firstName) return
     try {
-        await userStore.updateProfile({ firstName: value })
+        await userStore.patchUser({ firstName: value })
     } catch (err) {
         console.error('Error updating first name:', err)
     }
@@ -43,7 +43,7 @@ const saveFirstName = async (value: string) => {
 const saveLastName = async (value: string) => {
     if (value === userStore.user?.lastName) return
     try {
-        await userStore.updateProfile({ lastName: value })
+        await userStore.patchUser({ lastName: value })
     } catch (err) {
         console.error('Error updating last name:', err)
     }
@@ -60,13 +60,17 @@ const saveLastName = async (value: string) => {
             >
                 <template #control>
                     <p>
-                        {{ userStore.user?.canAuthenticateLocally ? t('account.local') : t('account.federation') }}
+                        {{
+                            userStore.user?.canAuthenticateLocally
+                                ? t('views.account.local')
+                                : t('views.account.federation')
+                        }}
                     </p>
                 </template>
             </QField>
 
             <QField
-                :label="t('common.email')"
+                :label="t('common.emailAddress')"
                 stack-label
                 standard
             >
@@ -75,7 +79,7 @@ const saveLastName = async (value: string) => {
                 </template>
             </QField>
             <QField
-                :label="t('account.tenantRole')"
+                :label="t('views.account.tenantRole')"
                 stack-label
                 standard
             >

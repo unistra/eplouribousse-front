@@ -1,5 +1,5 @@
 import { computed, reactive, toRefs } from 'vue'
-import type { CollectionsInResource } from '#/project.ts'
+import type { CollectionsInResource, Resource } from '#/project.ts'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
@@ -14,10 +14,15 @@ export const useProjectEdition = () => {
     const projectStore = useProjectStore()
     const { t, locale } = useI18n()
 
-    const pdfPreviewURL = (preview: boolean = true) => {
-        if (!resourceStore.id || !state.selectCollectionToShowEdition?.id) return ''
+    const controlValidationDates: { key: keyof Resource['validations']; label: string }[] = [
+        { key: 'controlBound', label: t('views.project.resources.status.controlBound') },
+        { key: 'controlUnbound', label: t('views.project.resources.status.controlUnbound') },
+    ]
 
-        const url = new URL(`${backendBaseURL}/api/resources/${resourceStore.id}/resultant-report/`)
+    const pdfPreviewURL = (preview: boolean = true) => {
+        if (!resourceStore.resource?.id || !state.selectCollectionToShowEdition?.id) return ''
+
+        const url = new URL(`${backendBaseURL}/api/resources/${resourceStore.resource.id}/resultant-report/`)
         url.search = new URLSearchParams({
             collection: state.selectCollectionToShowEdition?.id,
             preview: preview.toString(),
@@ -31,10 +36,12 @@ export const useProjectEdition = () => {
     })
 
     const storageLocation = computed(() => {
-        const alternativeStorageSite = projectStore.libraries.find((library) => library.isAlternativeStorageSite)
+        const alternativeStorageSite = projectStore.project?.libraries.find(
+            (library) => library.isAlternativeStorageSite,
+        )
         return (
             alternativeStorageSite?.name ||
-            projectStore.libraries.find(
+            projectStore.project?.libraries.find(
                 (library) => library.id === resourceStore.collectionsSortedByOrderInInstructionTurns[0].library,
             )?.name ||
             t('common.none')
@@ -46,5 +53,6 @@ export const useProjectEdition = () => {
         pdfPreviewURL,
         motherCollectionString,
         storageLocation,
+        controlValidationDates,
     }
 }

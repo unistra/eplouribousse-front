@@ -9,14 +9,14 @@ String.prototype.capitalize = function () {
 }
 
 export const formatErrorMessage = (data: unknown): string => {
-    if (typeof data === 'string') return data
+    if (typeof data === 'string') return data.capitalize()
     if (typeof data === 'number' || typeof data === 'boolean') return String(data)
 
     if (Array.isArray(data)) return data.map((item) => formatErrorMessage(item)).join(', ')
 
     if (typeof data === 'object' && data !== null) {
         return Object.entries(data)
-            .map(([key, value]) => `${key}: ${formatErrorMessage(value)}`)
+            .map(([key, value]) => `${key.capitalize()}: ${formatErrorMessage(value)}`)
             .join(' | ')
     }
 

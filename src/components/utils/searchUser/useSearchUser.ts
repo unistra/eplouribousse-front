@@ -113,7 +113,7 @@ export const useSearchUser = (props: SearchUserProps, emit: SearchUserEmitAction
                     nextPage.value = response.data.next // Store nextPage to reuse it if the user press on moreUserOption
                 }
             } else {
-                if (emailRegex.test(input.value)) {
+                if (emailRegex.test(input.value) && !props.disableInvitations) {
                     inviteOption.string = input.value
                     options.value.add(inviteOption)
                 }

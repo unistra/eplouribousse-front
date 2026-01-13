@@ -80,7 +80,7 @@ export const useLibraryCreateAndEditBtn = (isToEdit: boolean, emit: (evt: 'submi
         const notifyNotFound = () => {
             notify({
                 type: 'negative',
-                message: t('libraries.errors.notFound'),
+                message: t('errors.library.notFound'),
             })
         }
         if (!('id' in library)) {

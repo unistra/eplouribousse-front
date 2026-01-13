@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import type { AlertKey } from '#/project.ts'
-import type { QTableColumn } from 'quasar'
 import AtomicToggle from '@/components/atomic/AtomicToggle.vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useProjectBlock } from '@/components/account/identity/useProjectBlock.ts'
 import { useI18n } from 'vue-i18n'
+import ProjectsTable from '@/components/projects/ProjectsTable.vue'
+import { ProjectSettingsAlertsLabel } from '&/project.ts'
 
 const { t } = useI18n()
 const {
@@ -14,44 +13,19 @@ const {
     patchUserAlerts,
     rolesInProjectSelected,
     selectedProject,
-    table,
     dialog,
+    onRowClick,
+    alertKeys,
 } = useProjectBlock()
-
-onMounted(async () => {
-    await table.onRequest()
-})
 </script>
 
 <template>
     <div class="block-projects">
-        <h2>{{ t('account.projects.myProjects', 2) }}</h2>
-        <QTable
-            v-model:pagination="table.pagination.value"
-            binary-state-sort
-            :columns="table.columns as QTableColumn[]"
-            :filter="table.filter"
-            flat
-            :loading="table.loading.value"
-            row-key="id"
-            :rows="table.rows.value"
-            :rows-per-page-options="table.rowsPerPage"
-            @request="table.onRequest"
-            @row-click="table.onRowClick"
-        >
-            <template #top-right>
-                <QInput
-                    v-model="table.filter.value"
-                    debounce="1000"
-                    dense
-                    :placeholder="t('common.search')"
-                >
-                    <template v-slot:append>
-                        <QIcon name="mdi-magnify" />
-                    </template>
-                </QInput>
-            </template>
-        </QTable>
+        <h2>{{ t('fn.project.my') }}</h2>
+        <ProjectsTable
+            user-specific
+            @row-click="onRowClick"
+        />
         <QDialog v-model="dialog.isOpen">
             <QCard>
                 <QSpinner
@@ -63,7 +37,7 @@ onMounted(async () => {
                         <h3>{{ selectedProject.name || '' }}</h3>
                     </QCardSection>
                     <QCardSection>
-                        <p>{{ t('account.projects.rolesInProject') }}:</p>
+                        <p>{{ t('views.account.projects.rolesInProject') }}:</p>
                         <ul class="roles">
                             <li
                                 v-for="(role, index) in rolesInProjectSelected"
@@ -74,23 +48,32 @@ onMounted(async () => {
                         </ul>
                     </QCardSection>
 
-                    <QCardSection>
+                    <QCardSection class="alerts">
                         <p class="alert-title">
-                            {{ t('account.projects.alerts.title') }}
+                            {{ t('views.account.projects.alerts.title') }}
                             <QIcon name="mdi-information-outline" />
-                            <QTooltip size="md">{{ t('account.projects.alerts.info') }}</QTooltip>
+                            <QTooltip size="md">{{ t('views.account.projects.alerts.info') }}</QTooltip>
                         </p>
-                        <div class="alerts-toggles">
+                        <div
+                            v-if="alertKeys.length"
+                            class="alerts-toggles"
+                        >
                             <template
-                                v-for="alert in Object.entries(userSettingsAlertsFormatted)"
-                                :key="alert[0]"
+                                v-for="key in alertKeys"
+                                :key="key"
                             >
                                 <AtomicToggle
-                                    v-if="alert[0] !== 'preservation' && alert[0] !== 'transfer'"
-                                    v-model="userSettingsAlertsFormatted[alert[0] as AlertKey]"
-                                    :label="t(`project.settings.emailAlert.${alert[0]}`)"
+                                    v-if="key !== 'preservation' && key !== 'transfer'"
+                                    v-model="userSettingsAlertsFormatted[key]"
+                                    :label="ProjectSettingsAlertsLabel[key]"
                                 />
                             </template>
+                        </div>
+                        <div
+                            v-else
+                            class="no-alert"
+                        >
+                            {{ t('views.account.projects.alerts.noAlert') }}
                         </div>
                     </QCardSection>
                     <QCardActions
@@ -109,10 +92,6 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="sass">
-.alerts-toggles
-    display: flex
-    flex-direction: column
-
 .q-card
     min-width: 200px
     min-height: 400px
@@ -124,4 +103,17 @@ onMounted(async () => {
 
     .alert-title
         width: fit-content
+
+    .alerts
+        display: flex
+        flex-direction: column
+        gap: 1rem
+        .alerts-toggles
+            display: flex
+            flex-direction: column
+        .no-alert
+            color: var(--color-neutral-500)
+            display: flex
+            justify-content: center
+            font-style: italic
 </style>

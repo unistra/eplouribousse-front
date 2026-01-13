@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import type { Segment } from '#/project.ts'
 import { useResourceStore } from '@/stores/resourceStore.ts'
 
-export const useAnomalyStore = defineStore('anomalyStore', () => {
+export const useAnomalyStore = defineStore('anomaly', () => {
     const resourceStore = useResourceStore()
     const anomalyAddForSegment = ref<string[]>([])
 

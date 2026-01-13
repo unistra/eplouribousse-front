@@ -31,7 +31,7 @@ onMounted(async () => await getCollection())
 </script>
 
 <template>
-    <p>{{ t('collection.i') }}</p>
+    <p>{{ t('fn.collection.i') }}</p>
     <QCard
         :class="['csv-card', { present: !!collectionCount, error: !!importCSVError }]"
         flat
@@ -56,7 +56,7 @@ onMounted(async () => await getCollection())
                     name="mdi-file-upload-outline"
                     size="1.5rem"
                 />
-                <span>{{ t('project.libraries.card.csv-import.dragAndDrop') }}</span>
+                <span>{{ t('views.project.libraries.card.csvImport.dragAndDrop') }}</span>
             </QCardSection>
 
             <template v-else>
@@ -67,11 +67,11 @@ onMounted(async () => await getCollection())
                         size="sm"
                     />
                     <p>
-                        {{ t('project.libraries.card.csv-import.present', { count: collectionCount }) }}
+                        {{ t('views.project.libraries.card.csvImport.present', { count: collectionCount }) }}
                     </p>
                 </QCardSection>
                 <QCardActions
-                    v-if="projectStore.status === ProjectStatus.Draft && !summaryMode"
+                    v-if="projectStore.project?.status === ProjectStatus.Draft && !summaryMode"
                     align="right"
                 >
                     <AtomicButton
@@ -96,15 +96,15 @@ onMounted(async () => await getCollection())
                                 color="positive"
                                 name="mdi-check-circle-outline"
                             />
-                            {{ t('project.libraries.card.csv-import.importSuccess') }}
+                            {{ t('views.project.libraries.card.csvImport.importSuccess') }}
                         </p>
-                        <p>{{ t('project.libraries.card.csv-import.weFound') }}:</p>
+                        <p>{{ t('views.project.libraries.card.csvImport.weFound') }}:</p>
                         <ul>
                             <li
                                 v-for="(count, key) in importCSVResponse"
                                 :key="key"
                             >
-                                {{ t('project.libraries.card.csv-import.elementPresent', { count, times: key }) }}
+                                {{ t('views.project.libraries.card.csvImport.elementPresent', { count, times: key }) }}
                             </li>
                         </ul>
                     </QCardSection>
@@ -125,7 +125,7 @@ onMounted(async () => await getCollection())
             >
                 <QCard>
                     <QCardSection>
-                        <p>{{ t('project.libraries.card.csv-import.errors.dialogTitle') }}:</p>
+                        <p>{{ t('views.project.libraries.card.csvImport.errors.dialogTitle') }}:</p>
                         <div>
                             <ul v-if="typeof importCSVError?.[0] === 'string' && !('row' in importCSVError)">
                                 <li
@@ -173,7 +173,7 @@ onMounted(async () => await getCollection())
                     size="sm"
                 />
                 <p>
-                    {{ t('project.libraries.card.csv-import.present', { count: collectionCount }) }}
+                    {{ t('views.project.libraries.card.csvImport.present', { count: collectionCount }) }}
                 </p>
             </QCardSection>
 
@@ -186,7 +186,7 @@ onMounted(async () => await getCollection())
                     size="sm"
                 />
                 <p>
-                    {{ t('project.libraries.card.csv-import.missing') }}
+                    {{ t('views.project.libraries.card.csvImport.missing') }}
                 </p>
             </QCardSection>
         </template>

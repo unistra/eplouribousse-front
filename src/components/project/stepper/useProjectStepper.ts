@@ -4,22 +4,28 @@ import { useProjectStore } from '@/stores/projectStore.ts'
 import { useI18n } from 'vue-i18n'
 import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 import router from '@/router'
-import { useUserStore } from '@/stores/userStore.ts'
-import { Roles } from '&/project.ts'
+import { ProjectStatus, Roles } from '&/project.ts'
 import { useProjectLibraryCollection } from '@/components/project/libraries/card/collectionField/useProjectLibraryCollection.ts'
 import { useRoute } from 'vue-router'
+import { useProjectsStore } from '@/stores/projectsStore.ts'
+import { axiosI } from '@/plugins/axios/axios.ts'
+import { useUtils } from '@/composables/useUtils.ts'
 
 export const checkValidityProjectStepper = () => {
     const projectStore = useProjectStore()
     const { csvImportLoading } = useProjectLibraryCollection()
     const checkValidityForLibraryStep = computed<boolean | 'pending'>(() => {
-        if (!(projectStore.libraries.length >= 2)) return false
+        if (!projectStore.project) return false
+        if (!(projectStore.project.libraries.length >= 2)) return false
         if (csvImportLoading.value.length) return 'pending'
 
-        return projectStore.libraries.every((library) => {
+        return projectStore.project.libraries.every((library) => {
+            if (!projectStore.project) return false
             const hasInstructorOrInstructorInvite =
-                projectStore.roles.some((role) => role.libraryId === library.id && role.role === Roles.Instructor) ||
-                projectStore.invitations.some(
+                projectStore.project.roles.some(
+                    (role) => role.libraryId === library.id && role.role === Roles.Instructor,
+                ) ||
+                projectStore.project.invitations.some(
                     (invitation) => invitation.role === Roles.Instructor && invitation.libraryId === library.id,
                 )
             const hasCollection = projectStore.collectionsCount.some((el) => el.libraryId === library.id)
@@ -31,11 +37,13 @@ export const checkValidityProjectStepper = () => {
 
     const checkValidityForRolesStep = computed(() => {
         const requiredRoles = [Roles.ProjectManager, Roles.ProjectAdmin, Roles.Controller]
-        return requiredRoles.every(
-            (required) =>
-                projectStore.roles.some((role) => role.role === required) ||
-                projectStore.invitations.some((invitation) => invitation.role === required),
-        )
+        return requiredRoles.every((required) => {
+            if (!projectStore.project) return false
+            return (
+                projectStore.project.roles.some((role) => role.role === required) ||
+                projectStore.project.invitations.some((invitation) => invitation.role === required)
+            )
+        })
     })
 
     return {
@@ -48,45 +56,85 @@ export const useProjectStepper = () => {
     const projectStore = useProjectStore()
     const { notify } = useComposableQuasar()
     const route = useRoute()
+    const { useHandleError } = useUtils()
 
     const step = ref(1)
     const stepper = useTemplateRef<QStepper>('stepper')
     const passToReviewLoading = ref<boolean>(false)
     const passToReview = async () => {
         passToReviewLoading.value = true
-        await projectStore.passToReview()
-        passToReviewLoading.value = false
+        try {
+            const response = await axiosI.patch(`/projects/${projectStore.project?.id}/status/`, {
+                status: ProjectStatus.Review,
+            })
+            if (!projectStore.project) {
+                notify({
+                    message: t('errors.dataUnreachable'),
+                    color: 'negative',
+                })
+                return
+            }
+
+            projectStore.project.status = response.data.status
+        } catch (e) {
+            useHandleError(e)
+        } finally {
+            passToReviewLoading.value = false
+        }
     }
 
     const buttonLabel = computed(() => {
         if (step.value === 1) {
-            if (!projectStore.id) return t('newProject.buttons.create')
+            if (!projectStore.project || !projectStore.initialProject) return t('fn.project.create.the')
             if (
-                projectStore.id &&
-                (projectStore.name !== projectStore.initialState.name ||
-                    projectStore.description !== projectStore.initialState.description)
+                projectStore.project.id &&
+                (projectStore.project.name !== projectStore.initialProject.name ||
+                    projectStore.project.description !== projectStore.initialProject.description)
             )
-                return t('newProject.buttons.modify')
+                return t('fn.project.modify')
         }
         return t('common.continue')
     })
 
     const nextStep = async () => {
-        if (!stepper.value) throw new Error()
+        if (!stepper.value) {
+            notify({
+                message: t('errors.unknownRetry'),
+                color: 'negative',
+            })
+            return
+        }
 
         if (step.value === 1) {
-            if (!(await projectStore.validateAndProceedTitleAndDescription())) {
-                notify({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-                return
+            if (!projectStore.nameRequired || !projectStore.nameLengthValid) return
+            let newProjectId: string | undefined
+
+            if (!projectStore.project?.id) {
+                newProjectId = await projectStore.postProject()
+            } else if (
+                projectStore.project.name !== projectStore.initialProject?.name ||
+                projectStore.project.description !== projectStore.initialProject.description
+            ) {
+                await projectStore.patchProjectTitleAndDescription()
             }
+
             if (route.name === 'newProject') {
-                const userStore = useUserStore()
-                await userStore.getProjects()
-                await projectStore.fetchProjectById(projectStore.id)
-                await router.push({ name: 'project', params: { id: projectStore.id }, query: { page: 2 } })
+                if (!newProjectId) {
+                    notify({
+                        message: t('errors.dataUnreachable'),
+                        color: 'negative',
+                    })
+
+                    return
+                }
+
+                const projectsStore = useProjectsStore()
+                await projectsStore.getUserProjects()
+                await router.push({
+                    name: 'project',
+                    params: { id: newProjectId },
+                    query: { page: 2 },
+                })
                 return
             }
         }

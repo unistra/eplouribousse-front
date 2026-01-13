@@ -8,35 +8,41 @@ import { useProjectEdition } from '@/components/project/projectLaunched/projectE
 import { onMounted } from 'vue'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useUtils } from '@/composables/useUtils.ts'
+import { useResourcesStore } from '@/stores/resourcesStore.ts'
 
 const resourceStore = useResourceStore()
+const resourcesStore = useResourcesStore()
 const { t } = useI18n()
 
-const { selectCollectionToShowEdition, motherCollectionString, pdfPreviewURL, storageLocation } = useProjectEdition()
+const { selectCollectionToShowEdition, motherCollectionString, pdfPreviewURL, controlValidationDates } =
+    useProjectEdition()
 
 onMounted(() => {
     selectCollectionToShowEdition.value = resourceStore.collectionsSortedByOrderInInstructionTurns.filter((el) =>
-        resourceStore.libraryIdSelected ? el.library === resourceStore.libraryIdSelected : true,
+        resourcesStore.libraryIdSelected ? el.library === resourcesStore.libraryIdSelected : true,
     )[0]
 })
 </script>
 
 <template>
-    <div class="edition">
+    <div
+        v-if="resourceStore.resource"
+        class="edition"
+    >
         <div class="generic-info">
             <h3>{{ t('common.info', 2) }}</h3>
             <div class="other-infos">
-                <!-- Storage location not supported yet
-                <QChip class="chip-label-value">
-                    {{ t('project.storageLocation') }}: <span>{{ storageLocation }}</span>
-                </QChip>-->
                 <QChip
-                    v-for="ctrl in ['controlBound', 'controlUnbound'] as Array<keyof Resource['validations']>"
-                    :key="ctrl"
+                    v-for="ctrl in controlValidationDates"
+                    :key="ctrl.key"
                     class="chip-label-value"
                 >
-                    {{ t(`project.resources.status.${ctrl}`) }}:
-                    <span>{{ useUtils().useIntlDateTimeFormat(resourceStore.validations[ctrl]) || '-' }}</span>
+                    {{ ctrl.label }}:
+                    <span>{{
+                        resourceStore.resource.validations[ctrl.key]
+                            ? useUtils().useIntlDateTimeFormat(resourceStore.resource.validations[ctrl.key])
+                            : '-'
+                    }}</span>
                 </QChip>
             </div>
             <QList class="collection-lists">
@@ -46,7 +52,7 @@ onMounted(() => {
                     dense
                     dense-toggle
                     header-class="expansion-item"
-                    :label="t('project.resources.resultant.motherCollection')"
+                    :label="t('views.project.resultant.motherCollection')"
                 >
                     <QCard>
                         <QIcon name="mdi-arrow-right-bottom" />
@@ -60,7 +66,7 @@ onMounted(() => {
                     dense
                     dense-toggle
                     header-class="expansion-item"
-                    :label="t('project.resources.resultant.participatingCollections')"
+                    :label="t('views.project.resultant.participatingCollections')"
                 >
                     <QCard>
                         <QIcon name="mdi-arrow-right-bottom" />
@@ -78,7 +84,7 @@ onMounted(() => {
                     dense
                     dense-toggle
                     header-class="expansion-item"
-                    :label="t('project.resources.resultant.excludeCollections')"
+                    :label="t('views.project.resultant.excludeCollections')"
                 >
                     <QCard>
                         <QIcon name="mdi-arrow-right-bottom" />
@@ -93,30 +99,32 @@ onMounted(() => {
             </QList>
         </div>
         <div class="collection-container">
-            <h3>{{ t('collection.i') }}</h3>
+            <h3>{{ t('fn.collection.i') }}</h3>
             <div class="select-and-pdf-container">
                 <div class="collection-select-and-infos">
                     <AtomicSelect
                         v-model="selectCollectionToShowEdition"
                         dense
                         emit-value
-                        :label="t('project.resources.resultant.selectCollection')"
+                        :label="t('views.project.resultant.selectCollection')"
                         map-options
                         name="filter-positioning"
-                        :option-label="(el: CollectionsInResource) => resourceStore.formatCollectionToString(el)"
+                        :option-label="(el: CollectionsInResource) => resourceStore.formatCollectionToString(el, true)"
                         :option-value="(el: CollectionsInResource) => el"
                         :options="
                             resourceStore.collectionsSortedByOrderInInstructionTurns.filter((el) =>
-                                resourceStore.libraryIdSelected ? el.library === resourceStore.libraryIdSelected : true,
+                                resourcesStore.libraryIdSelected
+                                    ? el.library === resourcesStore.libraryIdSelected
+                                    : true,
                             )
                         "
                     />
                     <QChip class="chip-label-value">
-                        {{ t('project.resources.callNumber') }}:
+                        {{ t('fn.collection.fields.callNumber.i') }}:
                         <span>{{ selectCollectionToShowEdition?.callNumber || '-' }}</span>
                     </QChip>
                     <QChip class="chip-label-value">
-                        {{ t('project.resources.holdStatement') }}:
+                        {{ t('fn.collection.fields.holdStatement.i') }}:
                         <span>{{ selectCollectionToShowEdition?.holdStatement || '-' }}</span>
                     </QChip>
                 </div>
@@ -129,7 +137,7 @@ onMounted(() => {
                     <AtomicButton
                         :href="pdfPreviewURL(false)"
                         icon="mdi-download"
-                        :label="t('utils.downloadPDF')"
+                        :label="t('views.project.resultant.downloadPDF')"
                     />
                 </div>
             </div>
@@ -137,7 +145,7 @@ onMounted(() => {
         <QChip
             class="info"
             icon="mdi-information"
-            >{{ t('project.resources.resultant.infos') }}</QChip
+            >{{ t('views.project.resultant.infos') }}</QChip
         >
         <ProjectSegmentTable />
     </div>

@@ -6,15 +6,32 @@ import { useResourceStore } from '@/stores/resourceStore.ts'
 import AnomalyDeclarationBtn from '@/components/anomaly/AnomalyDeclarationBtn.vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
 import { inject, type Ref } from 'vue'
-
-const { t } = useI18n()
-const resourceStore = useResourceStore()
-const projectStore = useProjectStore()
+import { useResourcesStore } from '@/stores/resourcesStore.ts'
+import { axiosI } from '@/plugins/axios/axios.ts'
+import { ResourceStatus } from '&/project.ts'
+import { useUtils } from '@/composables/useUtils.ts'
 
 const dialogModal = inject<Ref<boolean>>('dialogModal')
 
+const { t } = useI18n()
+const { useHandleError } = useUtils()
+const resourceStore = useResourceStore()
+const projectStore = useProjectStore()
+
+const validateControl = async () => {
+    const resourcesStore = useResourcesStore()
+    try {
+        await axiosI.post(`/resources/${resourceStore.resource?.id}/control/`, {
+            validation: true,
+        })
+        await resourcesStore.getResources({ status: [resourceStore.resource?.status || ResourceStatus.Positioning] })
+    } catch (e) {
+        useHandleError(e)
+    }
+}
+
 const onValidateControl = async () => {
-    await resourceStore.validateControl()
+    await validateControl()
     if (dialogModal) dialogModal.value = false
 }
 </script>
@@ -33,14 +50,14 @@ const onValidateControl = async () => {
             <AtomicButton
                 color="primary"
                 :disable="!!resourceStore.anomaliesUnfixed.length"
-                :label="t('project.control.nextPhase')"
+                :label="t('views.project.control.nextPhase')"
                 no-border
                 @click="onValidateControl"
             >
                 <QTooltip
                     v-if="!!resourceStore.anomaliesUnfixed.length"
                     :delay="1000"
-                    >{{ t('project.anomaly.actionBtnDisabled', 2) }}</QTooltip
+                    >{{ t('views.project.anomaly.actionBtnDisabled', 2) }}</QTooltip
                 >
             </AtomicButton>
         </div>

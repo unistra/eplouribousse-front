@@ -26,10 +26,10 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading,
         <QCardSection>
             <p class="library-name">{{ library.name }}</p>
             <QChip class="chip-label-value">
-                {{ t('libraries.form.fields.alias') }}: <span>{{ library.alias }} </span>
+                {{ t('fn.library.form.fields.alias') }}: <span>{{ library.alias }} </span>
             </QChip>
             <QChip class="chip-label-value">
-                {{ t('libraries.form.fields.code') }}: <span>{{ library.code }}</span>
+                {{ t('fn.library.form.fields.code') }}: <span>{{ library.code }}</span>
             </QChip>
         </QCardSection>
 
@@ -38,14 +38,16 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading,
                 v-if="!summaryMode"
                 :invitations-selected
                 :is-add-user-loading="isAddUserLoading"
-                :label="t('view.project.new.stepper.steps.libraries.instructors')"
+                :label="t('fn.roles.instructor', 2)"
                 :users-selected
                 @add-invitation="onAddInvitation"
                 @add-user="(user) => onAddRole(user.id)"
                 @remove-invitation="
-                    async ({ email, role }) => await projectStore.removeInvitation(email, role, library.id)
+                    async ({ email, role }) => await projectStore.deleteProjectInvitation(email, role, library.id)
                 "
-                @remove-user="async (user) => await projectStore.removeRole(user.id, Roles.Instructor, library.id)"
+                @remove-user="
+                    async (user) => await projectStore.deleteProjectUserRole(user.id, Roles.Instructor, library.id)
+                "
             />
 
             <ProjectLibraryCardUserList
@@ -65,7 +67,7 @@ const { onDelete, isLoadingDelete, onAddInvitation, onAddRole, isAddUserLoading,
         </QCardSection>
 
         <QCardActions
-            v-if="!summaryMode && projectStore.status === ProjectStatus.Draft"
+            v-if="!summaryMode && projectStore.project?.status === ProjectStatus.Draft"
             align="right"
         >
             <AtomicButton

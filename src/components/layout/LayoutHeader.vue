@@ -2,30 +2,16 @@
 import { useI18n } from 'vue-i18n'
 import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useUserStore } from '@/stores/userStore.ts'
-import { useAuth } from '@/composables/useAuth.ts'
-import { useRouter } from 'vue-router'
-import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
 
 const { t } = useI18n()
 const userStore = useUserStore()
-const router = useRouter()
-const { notify } = useComposableQuasar()
-const { logout } = useAuth()
-
-const onLogout = async () => {
-    await logout()
-    notify({
-        message: t('logout.success'),
-    })
-    await router.push({ name: 'login' })
-}
 </script>
 
 <template>
     <QHeader bordered>
         <RouterLink :to="{ name: 'home' }">
             <QImg
-                :alt="t('layout.header.logoAlt')"
+                :alt="t('views.layout.header.logoAlt')"
                 no-spinner
                 src="/img/logo-eplouribousse.png"
             />
@@ -33,7 +19,7 @@ const onLogout = async () => {
         <AtomicButton
             v-if="!userStore.isAuth"
             icon="mdi-login"
-            :label="t('auth.login.i')"
+            :label="t('common.login')"
             :to="{ name: 'login' }"
         />
         <AtomicButton
@@ -55,19 +41,19 @@ const onLogout = async () => {
                         <QItemSection>
                             <QItemLabel>
                                 {{ userStore.user?.firstName || '' }}
-                                {{ userStore.user?.lastName || t('layout.header.account') }}
+                                {{ userStore.user?.lastName || t('common.myAccount') }}
                             </QItemLabel>
-                            <QItemLabel caption>{{ t('layout.header.manageAccount') }}</QItemLabel>
+                            <QItemLabel caption>{{ t('views.layout.header.manageAccount') }}</QItemLabel>
                         </QItemSection>
                     </QItem>
                     <QItem
                         clickable
-                        @click="onLogout"
+                        :to="{ name: 'logout' }"
                     >
                         <QItemSection avatar>
                             <QIcon name="mdi-logout" />
                         </QItemSection>
-                        <QItemSection>{{ t('auth.logout') }}</QItemSection>
+                        <QItemSection>{{ t('common.logout') }}</QItemSection>
                     </QItem>
                 </QList>
             </QMenu>

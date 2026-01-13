@@ -76,7 +76,7 @@ describe('useAuthChangePassword', () => {
         expect(mock.passwordValidators.passwordStrengthValidator).toHaveBeenCalledWith('weak')
         expect(mock.notify).toHaveBeenCalledWith({
             type: 'negative',
-            message: 'forms.password.validation.passwordRequirements',
+            message: 'errors.form.password.requirements',
         })
         expect(mock.axiosPatch).not.toHaveBeenCalled()
     })
@@ -96,7 +96,7 @@ describe('useAuthChangePassword', () => {
         )
         expect(mock.notify).toHaveBeenCalledWith({
             type: 'negative',
-            message: 'forms.password.validation.passwordsDoNotMatch',
+            message: 'errors.form.password.doesNotMatch',
         })
         expect(mock.axiosPatch).not.toHaveBeenCalled()
     })
@@ -123,7 +123,7 @@ describe('useAuthChangePassword', () => {
 
         expect(mock.notify).toHaveBeenCalledWith({
             type: 'positive',
-            message: 'forms.password.change.success',
+            message: 'successes.auth.password.changed',
         })
 
         expect(mock.routerPush).toHaveBeenCalledWith({ path: '/' })
@@ -158,7 +158,7 @@ describe('useAuthChangePassword', () => {
 
         expect(mock.notify).toHaveBeenCalledWith({
             type: 'negative',
-            message: 'forms.password.oldPasswordIncorrect',
+            message: 'errors.form.password.oldIncorrect',
         })
 
         expect(oldPassword.value).toBe('')

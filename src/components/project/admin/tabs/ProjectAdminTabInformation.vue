@@ -11,18 +11,18 @@ const projectStore = useProjectStore()
 const { t } = useI18n()
 
 const onSave = async () => {
-    await projectStore._patchTitleAndDescription()
+    await projectStore.patchProjectTitleAndDescription()
 }
 const { useHandleError } = useUtils()
 const { notify } = useComposableQuasar()
 
 const setProjectVisibility = async () => {
     try {
-        await axiosI.patch(`/projects/${projectStore.id}/`, {
-            is_private: projectStore.isPrivate,
+        await axiosI.patch(`/projects/${projectStore.project?.id || ''}/`, {
+            is_private: projectStore.project?.isPrivate || false,
         })
         notify({
-            message: t('project.settings.changeProjectVisibilitySuccess'),
+            message: t('views.project.settings.changeProjectVisibilitySuccess'),
             type: 'positive',
         })
     } catch (e) {
@@ -32,32 +32,35 @@ const setProjectVisibility = async () => {
 </script>
 
 <template>
-    <div class="infos">
+    <div
+        v-if="projectStore.project"
+        class="infos"
+    >
         <AtomicEditableField
-            v-model="projectStore.name"
+            v-model="projectStore.project.name"
             :editable="projectStore.userIsAdmin"
             :label="t('common.name')"
             :rules="[
-                () => projectStore.nameRequired || t('forms.validation.fieldIsRequired'),
-                () => projectStore.nameLengthValid || t('forms.validation.fieldLessThan255'),
+                () => projectStore.nameRequired || t('errors.form.fieldIsRequired'),
+                () => projectStore.nameLengthValid || t('errors.form.fieldLessThan255'),
             ]"
             @save="onSave"
         />
         <AtomicEditableField
-            v-model="projectStore.description"
+            v-model="projectStore.project.description"
             :editable="projectStore.userIsAdmin"
             :label="t('common.description')"
             type="textarea"
             @save="onSave"
         />
         <QChip
-            v-if="!projectStore.isLoading"
+            v-if="!projectStore.projectLoading"
             class="chip-label-value"
         >
             {{ t('common.createdAt') }}
-            <span>{{ useUtils().useIntlDateTimeFormat(projectStore.createdAt) }}</span>
+            <span>{{ useUtils().useIntlDateTimeFormat(projectStore.project.createdAt) }}</span>
             {{ t('common.by') }}
-            <span>{{ projectStore.createdBy?.displayName || t('common.unknown') }}</span>
+            <span>{{ projectStore.project.createdBy?.displayName || t('common.unknown') }}</span>
         </QChip>
         <QSkeleton
             v-else
@@ -65,15 +68,15 @@ const setProjectVisibility = async () => {
         />
         <AtomicToggle
             v-if="projectStore.userIsAdmin"
-            v-model="projectStore.isPrivate"
-            :label="t('project.settings.privateMode')"
+            v-model="projectStore.project.isPrivate"
+            :label="t('views.project.settings.privateMode')"
             @update:model-value="setProjectVisibility"
         />
         <QChip
             v-else
             class="chip-label-value"
-            >{{ t('project.settings.visibility') }}:
-            <span>{{ projectStore.isPrivate ? t('common.private') : t('common.public') }}</span></QChip
+            >{{ t('views.project.settings.visibility') }}:
+            <span>{{ projectStore.project.isPrivate ? t('common.private') : t('common.public') }}</span></QChip
         >
     </div>
 </template>

@@ -12,19 +12,22 @@ const { onAddLibrary, addLibraryDialog } = useProjectLibraries()
 </script>
 
 <template>
-    <div class="container">
-        <h1>{{ t('view.project.new.stepper.steps.libraries.title') }}</h1>
+    <div
+        v-if="projectStore.project"
+        class="container"
+    >
+        <h1>{{ t('views.project.new.stepper.steps.libraries.title', 2) }}</h1>
         <div>
-            <template v-if="projectStore.libraries.length">
+            <template v-if="projectStore.project.libraries.length">
                 <ProjectLibraryCard
-                    v-for="library in projectStore.libraries"
+                    v-for="library in projectStore.project.libraries"
                     :key="library.id"
                     :library="library"
                 />
             </template>
 
             <QCard
-                v-if="projectStore.acl.addLibrary"
+                v-if="projectStore.project.acl.addLibrary"
                 class="library-card-add"
                 flat
                 @click="addLibraryDialog = true"
@@ -36,12 +39,12 @@ const { onAddLibrary, addLibraryDialog } = useProjectLibraries()
                 <QDialog v-model="addLibraryDialog">
                     <QCard>
                         <QCardSection>
-                            <p>{{ t('libraries.i') }}</p>
+                            <p>{{ t('fn.library.i') }}</p>
                         </QCardSection>
                         <QCardSection>
-                            <p>{{ t('libraries.list') }}</p>
+                            <p>{{ t('fn.library.list') }}</p>
                             <LibraryTable
-                                :libraries-selected="projectStore.libraries"
+                                :libraries-selected="projectStore.project.libraries"
                                 :with-add-btn="true"
                                 @selected="onAddLibrary"
                             />

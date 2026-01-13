@@ -36,7 +36,7 @@ onMounted(() => {
     >
         <AtomicButton
             :icon="buttonIcon || 'mdi-plus'"
-            :label="buttonLabel || t('libraries.form.add')"
+            :label="buttonLabel || t('fn.library.form.add')"
             @click="dialog.open"
         />
     </slot>
@@ -47,8 +47,7 @@ onMounted(() => {
         <QCard>
             <QCardSection>
                 <div class="text-h6">
-                    {{ isToEdit ? t('libraries.form.edit') : t('libraries.form.add') }}
-                    {{ t('libraries.form.aLibrary') }}
+                    {{ isToEdit ? t('fn.library.form.edit') : t('fn.library.form.add') }}
                 </div>
             </QCardSection>
 
@@ -59,22 +58,22 @@ onMounted(() => {
                         autofocus
                         :error="!!errors.name"
                         :error-message="errors.name"
-                        :label="t('libraries.form.fields.name')"
-                        :rules="[(val) => !!val || t('forms.validation.fieldIsRequired')]"
+                        :label="t('common.name')"
+                        :rules="[(val) => !!val || t('errors.form.fieldIsRequired')]"
                     />
                     <QInput
                         v-model="library.alias"
                         :error="!!errors.alias"
                         :error-message="errors.alias"
-                        :label="t('libraries.form.fields.alias')"
-                        :rules="[(val) => !!val || t('forms.validation.fieldIsRequired')]"
+                        :label="t('fn.library.form.fields.alias')"
+                        :rules="[(val) => !!val || t('errors.form.fieldIsRequired')]"
                     />
                     <QInput
                         v-model="library.code"
                         :error="!!errors.code"
                         :error-message="errors.code"
-                        :label="t('libraries.form.fields.code')"
-                        :rules="[(val) => !!val || t('forms.validation.fieldIsRequired')]"
+                        :label="t('fn.library.form.fields.code')"
+                        :rules="[(val) => !!val || t('errors.form.fieldIsRequired')]"
                     />
                 </QCardSection>
 
@@ -85,11 +84,11 @@ onMounted(() => {
                     <QBtn
                         v-close-popup
                         flat
-                        :label="t('libraries.form.cancel')"
+                        :label="t('common.cancel')"
                     />
                     <QBtn
                         flat
-                        :label="isToEdit ? t('libraries.form.edit') : t('libraries.form.add')"
+                        :label="isToEdit ? t('fn.library.form.edit') : t('fn.library.form.add')"
                         type="submit"
                     />
                 </QCardActions>

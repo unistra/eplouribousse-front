@@ -10,6 +10,8 @@ import i18n from './plugins/i18n'
 
 // @ts-ignore: No types for this package
 import VueMatomo from 'vue-matomo'
+import type { MatomoConfigType } from '../env'
+import MatomoConfigJson from '../matomo.config.json'
 
 import * as Sentry from '@sentry/vue'
 
@@ -23,16 +25,16 @@ import '@quasar/extras/mdi-v7/mdi-v7.css'
 
 const app = createApp(App)
 
-if (
-    import.meta.env.VITE_MATOMO_SERVER &&
-    import.meta.env.VITE_MATOMO_SITE_ID &&
-    (import.meta.env.VITE_ENV === 'prod' || import.meta.env.VITE_ENV === 'pprd')
-) {
+// MATOMO =============
+const MatomoConfig = MatomoConfigJson as unknown as MatomoConfigType
+const tenantSubdomain = location.hostname.match(/^([^.]+)\.eplouribousse\.fr$/)?.[1]
+
+if (tenantSubdomain && MatomoConfig[tenantSubdomain]) {
     app.use(VueMatomo, {
         router,
-        host: import.meta.env.VITE_MATOMO_SERVER,
-        siteId: import.meta.env.VITE_MATOMO_SITE_ID,
-        debug: import.meta.env.VITE_MATOMO_DEBUG || false,
+        host: MatomoConfig[tenantSubdomain].server,
+        siteId: MatomoConfig[tenantSubdomain].id,
+        debug: MatomoConfig[tenantSubdomain].debug || false,
     })
 }
 

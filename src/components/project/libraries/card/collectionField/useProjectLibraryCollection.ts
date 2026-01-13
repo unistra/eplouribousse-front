@@ -48,7 +48,7 @@ export const useProjectLibraryCollection = (libraryId: string = '') => {
             const response = await axiosI.get<Pagination<Collection>>('/collections/', {
                 params: {
                     library: libraryId,
-                    project: projectStore.id,
+                    project: projectStore.project?.id || '',
                 },
             })
 
@@ -65,7 +65,7 @@ export const useProjectLibraryCollection = (libraryId: string = '') => {
         if (!file || !(file.type === 'text/csv' || file.name.endsWith('.csv'))) {
             notify({
                 type: 'negative',
-                message: t('project.libraries.card.csv-import.errors.wrongExtension'),
+                message: t('views.project.libraries.card.csvImport.errors.wrongExtension'),
             })
             return
         }
@@ -75,7 +75,7 @@ export const useProjectLibraryCollection = (libraryId: string = '') => {
             const formData = new FormData()
             formData.append('csv_file', file)
             formData.append('library', libraryId)
-            formData.append('project', projectStore.id)
+            formData.append('project', projectStore.project?.id || '')
 
             const response = await axiosI.post<ImportCSVResponse>('/collections/import-csv/', formData, {
                 headers: {
@@ -102,12 +102,12 @@ export const useProjectLibraryCollection = (libraryId: string = '') => {
             await axiosI.delete('/collections/bulk-delete/', {
                 params: {
                     library_id: libraryId,
-                    project_id: projectStore.id,
+                    project_id: projectStore.project?.id || '',
                 },
             })
             projectStore.collectionsCount = projectStore.collectionsCount.filter((el) => el.libraryId !== libraryId)
             notify({
-                message: t('project.libraries.card.csv-import.delete.success'),
+                message: t('views.project.libraries.card.csvImport.delete.success'),
             })
         } catch (e) {
             useHandleError(e)

@@ -25,7 +25,7 @@ const { model, input, options, sendAction, userListLoading, selectFilterFn, clea
                 hide-dropdown-icon
                 hide-selected
                 :input-debounce="500"
-                :label="t('utils.searchUser.inputPlaceholder')"
+                :label="t('views.searchUser.inputPlaceholder')"
                 :loading="userListLoading"
                 multiple
                 :options="Array.from(options.values())"
@@ -36,14 +36,14 @@ const { model, input, options, sendAction, userListLoading, selectFilterFn, clea
                 @filter="selectFilterFn"
                 @input-value="(val) => (input = val)"
             >
-                <QTooltip :delay="1000">{{ t('utils.searchUser.inputPlaceholder') }}</QTooltip>
+                <QTooltip :delay="1000">{{ t('views.searchUser.inputPlaceholder') }}</QTooltip>
                 <template #prepend>
                     <QIcon name="mdi-magnify" />
                 </template>
                 <template #append>
                     <button
                         v-if="input.length"
-                        :aria-label="t('utils.clearField')"
+                        :aria-label="t('views.searchUser.clearField')"
                         class="clear-icon"
                         @click="clear"
                     >
@@ -54,7 +54,7 @@ const { model, input, options, sendAction, userListLoading, selectFilterFn, clea
                     <QItem
                         v-if="scope.opt.displayName"
                         v-bind="scope.itemProps"
-                        :aria-label="t('utils.addUser', { user: scope.opt.displayName })"
+                        :aria-label="t('views.searchUser.user.add', { user: scope.opt.displayName })"
                     >
                         <QItemSection avatar>
                             <QIcon name="mdi-account" />
@@ -68,7 +68,7 @@ const { model, input, options, sendAction, userListLoading, selectFilterFn, clea
                         v-bind="scope.itemProps"
                     >
                         <QItemSection>
-                            {{ t('utils.searchUser.moreUsers') }}
+                            {{ t('views.searchUser.user.more') }}
                         </QItemSection>
                         <QItemSection avatar>
                             <QIcon name="mdi-plus" />
@@ -82,7 +82,7 @@ const { model, input, options, sendAction, userListLoading, selectFilterFn, clea
                             <QIcon name="mdi-email-fast-outline" />
                         </QItemSection>
                         <QItemSection
-                            >{{ t('utils.searchUser.sendInvite') }}: <span>{{ scope.opt.string }}</span>
+                            >{{ t('views.searchUser.sendInvite') }}: <span>{{ scope.opt.string }}</span>
                         </QItemSection>
                     </QItem>
                 </template>
@@ -94,11 +94,11 @@ const { model, input, options, sendAction, userListLoading, selectFilterFn, clea
                             </QItemSection>
                         </QItemSection>
                         <QItemSection v-else>
-                            <QItemLabel>{{ t('utils.searchUser.noUserFound') }}</QItemLabel>
+                            <QItemLabel>{{ t('views.searchUser.user.notFound') }}</QItemLabel>
                             <QItemLabel
                                 v-if="!disableInvitations"
                                 caption
-                                >{{ t('utils.searchUser.insertEmailForInvite') }}</QItemLabel
+                                >{{ t('views.searchUser.insertEmailForInvite') }}</QItemLabel
                             >
                         </QItemSection>
                     </QItem>

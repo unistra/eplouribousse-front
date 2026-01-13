@@ -188,7 +188,7 @@ describe('useLibraryCreateAndEditBtn', () => {
 
         expect(mock.notify).toHaveBeenCalledWith({
             type: 'negative',
-            message: 'libraries.errors.notFound',
+            message: 'errors.library.notFound',
         })
         expect(mock.axiosPatch).not.toHaveBeenCalled()
     })

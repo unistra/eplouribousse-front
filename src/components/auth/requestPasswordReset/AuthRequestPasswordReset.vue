@@ -15,13 +15,13 @@ const { email, isLoading, sendEmail } = useAuthRequestPasswordReset()
         <QInput
             v-model="email"
             autofocus
-            :label="t('common.email')"
+            :label="t('common.emailAddress')"
             reactive-rules
-            :rules="[(val) => !!val || t('forms.validation.fieldIsRequired')]"
+            :rules="[(val) => !!val || t('errors.form.fieldIsRequired')]"
             type="email"
         />
         <AtomicButton
-            :label="t('forms.password.reset.sendEmail')"
+            :label="t('views.auth.sendEmail')"
             :loading="isLoading"
             type="submit"
         />

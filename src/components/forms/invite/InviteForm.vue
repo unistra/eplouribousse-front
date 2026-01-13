@@ -15,14 +15,15 @@ const { email, sendInvitation } = useInviteForm()
         @submit.prevent="sendInvitation"
     >
         <AtomicInput
+            ref="input"
             v-model="email"
             hide-bottom-space
-            :label="t('forms.invite.email')"
-            :rules="[(val, rules) => rules.email(val) || t('errors.emailValid')]"
+            :label="t('common.emailAddress')"
+            :rules="[(val, rules) => rules.email(val) || t('errors.email.valid')]"
             type="email"
         />
         <AtomicButton
-            :label="t('forms.invite.send')"
+            :label="t('views.tenantAdmin.invite.send')"
             no-caps
             type="submit"
         />

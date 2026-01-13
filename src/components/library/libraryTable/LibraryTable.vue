@@ -55,7 +55,7 @@ onMounted(async () => {
                 v-model="filter"
                 debounce="3000"
                 dense
-                :placeholder="t('libraries.table.search')"
+                :placeholder="t('fn.library.table.search')"
             >
                 <template v-slot:append>
                     <QIcon name="mdi-magnify" />
@@ -84,7 +84,7 @@ onMounted(async () => {
                                             <QIcon name="mdi-pencil" />
                                         </QItemSection>
                                         <QItemSection>
-                                            {{ t('libraries.form.edit') }}
+                                            {{ t('fn.library.form.edit') }}
                                         </QItemSection>
                                     </QItem>
                                 </template>
@@ -102,7 +102,7 @@ onMounted(async () => {
                                             <QIcon name="mdi-delete" />
                                         </QItemSection>
                                         <QItemSection>
-                                            {{ t('libraries.form.delete.i') }}
+                                            {{ t('fn.library.form.delete.i') }}
                                         </QItemSection>
                                     </QItem>
                                 </template>

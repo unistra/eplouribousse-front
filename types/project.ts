@@ -1,6 +1,6 @@
 import type { LibraryI } from './library'
 import { type ProjectPermissions } from '#/permissions'
-import { AnomalyType, CollectionPosition, ProjectStatus, ResourceStatus, Roles, Tab } from '&/project.ts'
+import { AnomalyType, CollectionPosition, ProjectStatus, ResourceStatus, Roles } from '&/project.ts'
 import type { UserSummarized } from '#/user.ts'
 
 export interface Project {
@@ -24,30 +24,32 @@ export interface ProjectDetails extends Project {
     libraries: ProjectLibrary[]
 }
 
-export interface ProjectStoreState extends ProjectDetails {
-    initialState: ProjectDetails
-    isLoading: boolean
-    tab: Tab
-    collectionsCount: CollectionsCountOfALibrary[]
-}
-
-export interface ProjectSummarized {
-    id: Project['id']
-    name: Project['name']
-    roles: Roles[]
-}
-
 export interface ProjectRole {
     user: UserSummarized
     role: Roles
-    libraryId?: LibraryI['id']
+    libraryId: LibraryI['id'] | null
 }
 
 export interface ProjectInvitation {
     email: string
     role: Roles
-    libraryId?: LibraryI['id']
+    libraryId: LibraryI['id'] | null
 }
+
+export type GetProjects = (
+    params: {
+        ordering?: string
+        page?: number
+        page_size?: number
+        library?: LibraryI['id']
+        participant?: boolean
+        search?: string
+        show_archived?: boolean
+        status?: ProjectStatus
+        user_id?: UserSummarized['id']
+    },
+    toUserProjects?: boolean,
+) => Promise<{ count: number } | undefined>
 
 export type ImportCSVResponse = Record<string, number>
 export type ImportCSVErrorObject = {

@@ -31,7 +31,7 @@ onMounted(() => {
     >
         <QBtn
             :icon="'mdi-delete'"
-            :label="t('libraries.form.delete')"
+            :label="t('common.delete')"
             @click="dialog.open"
         />
     </slot>
@@ -39,35 +39,34 @@ onMounted(() => {
         <QCard>
             <QCardSection>
                 <div class="text-h6">
-                    {{ t('libraries.form.delete.i') }}
-                    {{ t('libraries.form.theLibrary') }}
+                    {{ t('fn.library.form.delete.i') }}
                 </div>
             </QCardSection>
             <QCardSection>
-                <p>{{ t('libraries.form.delete.youAreAboutToDelete') }} {{ t('libraries.form.theLibrary') }}:</p>
+                <p>{{ t('fn.library.form.delete.youAreAboutToDelete') }}:</p>
                 <p class="library-to-delete">
                     <span
-                        >{{ t('libraries.form.fields.name') }}: <strong>{{ props.libraryToDelete.name }}</strong></span
+                        >{{ t('common.name') }}: <strong>{{ props.libraryToDelete.name }}</strong></span
                     >
                     <span
-                        >{{ t('libraries.form.fields.alias') }}:
+                        >{{ t('fn.library.form.fields.alias') }}:
                         <strong>{{ props.libraryToDelete.alias }}</strong></span
                     >
                     <span
-                        >{{ t('libraries.form.fields.code') }}: <strong>{{ props.libraryToDelete.code }}</strong></span
+                        >{{ t('fn.library.form.fields.code') }}: <strong>{{ props.libraryToDelete.code }}</strong></span
                     >
                 </p>
-                <p>{{ t('libraries.form.delete.thisActionCannotBeUndone') }}</p>
+                <p>{{ t('fn.library.form.delete.thisActionCannotBeUndone') }}</p>
             </QCardSection>
             <QCardActions align="right">
                 <QBtn @click="dialog.close">
-                    {{ t('libraries.form.cancel') }}
+                    {{ t('common.cancel') }}
                 </QBtn>
                 <QBtn
                     color="negative"
                     @click="onDeleteLibrary"
                 >
-                    {{ t('libraries.form.delete.i') }}
+                    {{ t('fn.library.form.delete.i') }}
                 </QBtn>
             </QCardActions>
         </QCard>

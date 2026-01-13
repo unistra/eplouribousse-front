@@ -11,7 +11,7 @@ const props = defineProps<{
 }>()
 
 const { t } = useI18n()
-const { data, loading, getData, filteredTableDataKeys } = useProjectDashboardTable()
+const { data, loading, getData } = useProjectDashboardTable()
 
 onMounted(async () => await getData(props.type))
 </script>
@@ -50,7 +50,7 @@ onMounted(async () => await getData(props.type))
                 </tr>
             </tbody>
         </QMarkupTable>
-        <template v-else>
+        <template v-else-if="data">
             <QMarkupTable
                 bordered
                 flat
@@ -58,7 +58,7 @@ onMounted(async () => await getData(props.type))
             >
                 <thead>
                     <tr>
-                        <th scope="col">{{ data?.title }}</th>
+                        <th scope="col">{{ data.title }}</th>
                         <th
                             class="grey-cell"
                             scope="col"
@@ -67,40 +67,25 @@ onMounted(async () => await getData(props.type))
                 </thead>
                 <tbody>
                     <tr
-                        v-for="key in filteredTableDataKeys"
-                        :key="key"
+                        v-for="computation in data.computations"
+                        :key="computation.key"
                     >
+                        <td>{{ computation.label }}</td>
                         <td>
-                            <QSkeleton
-                                v-if="loading"
-                                type="text"
-                            />
-                            <template v-else> {{ key }} </template>
-                        </td>
-                        <td>
-                            <QSkeleton
-                                v-if="loading"
-                                type="text"
-                            />
-                            {{ data?.[key] }}
+                            {{ computation.value }}
+                            <span v-if="computation.unit">{{ computation.unit }}</span>
+                            <span v-if="computation.ratio != null"> ({{ computation.ratio }}%)</span>
                         </td>
                     </tr>
                 </tbody>
             </QMarkupTable>
             <div
-                v-if="loading || data"
+                v-if="data.computedAt"
                 class="computed-at"
             >
-                <QIcon
-                    name="mdi-cached"
-                    size="1.25rem"
-                />
-                <QSkeleton
-                    v-if="loading"
-                    type="text"
-                />
-                <p v-else-if="data">
-                    {{ t('view.project.dashboard.computedAt') }}
+                <QIcon name="mdi-timer-sand" />
+                <p>
+                    {{ t('views.project.dashboard.computedAt') }}
                     {{ useUtils().useIntlDateTimeFormat(data.computedAt) }}
                 </p>
             </div>
@@ -127,18 +112,6 @@ thead tr
     th
         border-right: none
         border-left: none
-
-.computed-at
-    display: flex
-    align-items: center
-    gap: 0.25rem
-    font-size: var(--font-size-xs)
-    color: var(--color-neutral-400)
-    font-style: italic
-    align-self: end
-
-    .q-skeleton
-        width: 8rem
 
 .q-card
     width: fit-content

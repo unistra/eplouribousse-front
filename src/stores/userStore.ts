@@ -1,100 +1,55 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { Project } from '#/project.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
-import type { Pagination } from '#/pagination.ts'
 import { type User } from '#/user'
-import { getJWT, isExpired } from '@/utils/jwt.ts'
-import { useComposableQuasar } from '@/composables/useComposableQuasar.ts'
-import { Notify } from 'quasar'
-import { useI18n } from 'vue-i18n'
+import { useUtils } from '@/composables/useUtils.ts'
+import { useProjectsStore } from '@/stores/projectsStore.ts'
 
 export const useUserStore = defineStore('user', () => {
-    const user = ref<User | undefined>()
-    const isAuth = ref<boolean>(false)
-    const projects = ref<Project[]>([])
-    const projectsLoading = ref<boolean>(false)
+    const projectsStore = useProjectsStore()
+    const { useHandleError } = useUtils()
+
+    const user = ref<User>()
     const userLoading = ref<boolean>(false)
-    const { t } = useI18n()
+    const isAuth = computed(() => !!user.value?.id)
 
-    const fetchUser = async () => {
-        const { access } = getJWT()
-
-        if (!!access && !isExpired(access)) {
-            try {
-                userLoading.value = true
-                const response = await axiosI.get<User>('/users/profile/')
-                isAuth.value = true
-                user.value = response.data
-                user.value.projects = user.value.projects.reverse()
-            } catch {
-                Notify.create({
-                    type: 'negative',
-                    message: t('errors.unknown'),
-                })
-            } finally {
-                userLoading.value = false
-            }
-        }
-        if (user.value?.settings.theme === 'dark') {
-            const { dark } = useComposableQuasar()
-            dark.set(true)
-        }
+    const clear = () => {
+        user.value = undefined
+        projectsStore.clearUserProjects()
     }
 
-    const getProjects = async () => {
-        if (user.value !== undefined) {
-            try {
-                projectsLoading.value = true
-                const response = await axiosI.get<Pagination<Project>>('/projects/', {
-                    params: {
-                        page_size: 20,
-                        participant: true,
-                        ordering: 'created_at',
-                        user_id: user.value?.id ? user.value.id : '',
-                    },
-                })
-                projects.value = response.data.results.sort(
-                    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(), // More recent to less recent
-                )
-            } catch {
-                projects.value = []
-            } finally {
-                projectsLoading.value = false
-            }
-        }
-    }
-
-    const updateProfile = async (payload: { firstName?: string; lastName?: string }) => {
+    const getUser = async () => {
+        userLoading.value = true
         try {
-            userLoading.value = true
-            const response = await axiosI.patch<User>('/users/profile/', payload)
+            const response = await axiosI.get<User>('/users/profile/')
             user.value = response.data
-        } catch {
-            Notify.create({
-                type: 'negative',
-                message: t('errors.unknown'),
-            })
+            await projectsStore.getUserProjects()
+        } catch (e) {
+            useHandleError(e)
+            clear()
         } finally {
             userLoading.value = false
         }
     }
 
-    function clean() {
-        isAuth.value = false
-        user.value = undefined
-        projects.value = []
+    const patchUser = async (payload: { firstName?: string; lastName?: string }) => {
+        userLoading.value = true
+        try {
+            const response = await axiosI.patch<User>('/users/profile/', payload)
+            user.value = response.data
+        } catch (e) {
+            useHandleError(e)
+        } finally {
+            userLoading.value = false
+        }
     }
 
     return {
         user,
         isAuth,
-        projects,
-        projectsLoading,
         userLoading,
-        fetchUser,
-        getProjects,
-        clean,
-        updateProfile,
+        getUser,
+        clear,
+        patchUser,
     }
 })

@@ -36,7 +36,7 @@ export const useLibraryTable = (librariesSelected: ProjectLibrary[]) => {
         {
             name: 'name',
             required: true,
-            label: t('libraries.form.fields.name'),
+            label: t('common.name'),
             align: 'left',
             field: (row: LibraryI) => row.name,
             sortable: true,
@@ -44,7 +44,7 @@ export const useLibraryTable = (librariesSelected: ProjectLibrary[]) => {
         {
             name: 'alias',
             required: true,
-            label: t('libraries.form.fields.alias'),
+            label: t('fn.library.form.fields.alias'),
             align: 'left',
             field: (row: LibraryI) => row.alias,
             sortable: true,
@@ -52,7 +52,7 @@ export const useLibraryTable = (librariesSelected: ProjectLibrary[]) => {
         {
             name: 'code',
             required: true,
-            label: t('libraries.form.fields.code'),
+            label: t('fn.library.form.fields.code'),
             align: 'left',
             field: (row: LibraryI) => row.code,
         },

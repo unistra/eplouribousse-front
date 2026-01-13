@@ -19,16 +19,18 @@ export const useProjectLibraries = () => {
     }
 
     const addLibrary = async (library: LibraryI) => {
-        if (projectStore.libraries.some((lib) => lib.id === library.id)) return
+        if (!projectStore.project) throw new Error('No project selected')
+
+        if (projectStore.project.libraries.some((lib) => lib.id === library.id)) return
         try {
-            await axiosI.post(`/projects/${projectStore.id}/libraries/`, { library_id: library.id })
+            await axiosI.post(`/projects/${projectStore.project.id}/libraries/`, { library_id: library.id })
 
             const newLibrary: ProjectLibrary = { ...library, isAlternativeStorageSite: false }
-            projectStore.libraries.push(newLibrary)
+            projectStore.project.libraries.push(newLibrary)
         } catch {
             notify({
                 type: 'negative',
-                message: t('view.project.new.stepper.steps.libraries.errors.whileAdding'),
+                message: t('errors.library.whileAdding'),
             })
             return
         }

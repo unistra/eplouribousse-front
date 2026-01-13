@@ -1,125 +1,22 @@
-import type { User } from '#/user'
+import type { User, UserSummarized } from '#/user.ts'
+import { faker } from '@faker-js/faker'
 
-export const mockSingleUser: User = {
-    id: '1',
-    username: 'meriadeg',
-    firstname: 'meriadeg',
-    lastname: 'guichard',
-    email: 'm@unistra.fr',
-    role: 'admin',
+export const createMockUserSummarized = (): UserSummarized => ({
+    id: faker.string.uuid(),
+    firstName: faker.person.firstName(),
+    lastName: faker.person.lastName(),
+    email: faker.internet.email(),
+    displayName: faker.person.fullName(),
+})
+
+export const createMockUser = (): User => ({
+    ...createMockUserSummarized(),
+    username: faker.internet.username(),
     canAuthenticateLocally: true,
-}
-
-export const mockDuplicateUsers: User[] = [
-    {
-        id: '2',
-        username: 'meriadeg',
-        firstname: 'meriadeg',
-        lastname: 'guichard',
-        email: 'm@unistra.fr',
-        role: 'admin',
-        canAuthenticateLocally: true,
+    isProjectCreator: false,
+    isSuperuser: false,
+    settings: {
+        theme: '',
+        locale: 'fr-FR',
     },
-    {
-        id: '2',
-        username: 'meriadeg',
-        firstname: 'meriadeg',
-        lastname: 'guichard',
-        email: 'm@unistra.fr',
-        role: 'admin',
-        canAuthenticateLocally: true,
-    },
-]
-
-export const mockUsers: User[] = [
-    {
-        id: '3',
-        username: 'meriadeg',
-        firstname: 'meriadeg',
-        lastname: 'guichard',
-        email: 'm@unistra.fr',
-        role: 'admin',
-        canAuthenticateLocally: true,
-    },
-    {
-        id: '4',
-        username: 'aeriadeg',
-        firstname: 'meriadeg',
-        lastname: 'guichard',
-        email: 'a@unistra.fr',
-        role: 'admin',
-        canAuthenticateLocally: true,
-    },
-    {
-        id: '5',
-        username: 'beriadeg',
-        firstname: 'meriadeg',
-        lastname: 'guichard',
-        email: 'b@unistra.fr',
-        role: 'admin',
-        canAuthenticateLocally: true,
-    },
-    {
-        id: '6',
-        username: 'ceriadeg',
-        firstname: 'meriadeg',
-        lastname: 'guichard',
-        email: 'c@unistra.fr',
-        role: 'admin',
-        canAuthenticateLocally: true,
-    },
-    {
-        id: '7',
-        username: 'deriadeg',
-        firstname: 'meriadeg',
-        lastname: 'guichard',
-        email: 'd@unistra.fr',
-        role: 'admin',
-        canAuthenticateLocally: true,
-    },
-    {
-        id: '8',
-        username: 'eeriadeg',
-        firstname: 'meriadeg',
-        lastname: 'guichard',
-        email: 'e@unistra.fr',
-        role: 'admin',
-        canAuthenticateLocally: true,
-    },
-    {
-        id: '9',
-        username: 'feriadeg',
-        firstname: 'meriadeg',
-        lastname: 'guichard',
-        email: 'f@unistra.fr',
-        role: 'admin',
-        canAuthenticateLocally: true,
-    },
-    {
-        id: '10',
-        username: 'geriadeg',
-        firstname: 'meriadeg',
-        lastname: 'guichard',
-        email: 'g@unistra.fr',
-        role: 'admin',
-        canAuthenticateLocally: true,
-    },
-    {
-        id: '11',
-        username: 'heriadeg',
-        firstname: 'meriadeg',
-        lastname: 'guichard',
-        email: 'h@unistra.fr',
-        role: 'admin',
-        canAuthenticateLocally: true,
-    },
-    {
-        id: '12',
-        username: 'ieriadeg',
-        firstname: 'meriadeg',
-        lastname: 'guichard',
-        email: 'i@unistra.fr',
-        role: 'admin',
-        canAuthenticateLocally: true,
-    },
-]
+})

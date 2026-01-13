@@ -31,12 +31,13 @@ const {
     displayNewSegmentButton,
     isHighlightedRow,
     isSemiHighlightedRow,
+    getAnomalies,
 } = useProjectSegmentTable()
 
 onMounted(async () => {
     loading.value = true
-    await resourceStore.fetchSegments()
-    await resourceStore.fetchAnomalies()
+    await resourceStore.getSegments()
+    await getAnomalies()
     loading.value = false
 })
 </script>
@@ -48,7 +49,7 @@ onMounted(async () => {
         flat
         hide-pagination
         :loading
-        :no-data-label="t('project.instruction.segment.noSegment')"
+        :no-data-label="t('views.project.instruction.segment.noSegment')"
         :pagination="{ rowsPerPage: 0 }"
         row-key="id"
         :rows="orderedRows"
@@ -71,15 +72,9 @@ onMounted(async () => {
                 >
                     <template v-if="col.name === 'options' && displayOptionsColumnBasedOnUserRole(props.row)">
                         <ProjectSegmentTableOptions
-                            v-if="props.row.content !== NULL_SEGMENT"
                             :open-dialog-create-segment
                             :row="props.row"
                             @add-anomaly="anomalyStore.onActionOnAnomaly(props, 'addAnomalySelection')"
-                        />
-                        <QIcon
-                            v-else
-                            name="mdi-lock-outline"
-                            size="1.2rem"
                         />
                     </template>
                     <template v-else-if="col.name === 'resolve'">
@@ -96,7 +91,7 @@ onMounted(async () => {
                             :disable="props.row.anomalies.unfixed === 0"
                             :icon="
                                 props.row.anomalies.unfixed === 0
-                                    ? ''
+                                    ? undefined
                                     : props.expand
                                       ? 'mdi-chevron-up'
                                       : 'mdi-chevron-down'
@@ -106,8 +101,9 @@ onMounted(async () => {
                             @click="props.expand = !props.expand"
                         >
                             <QTooltip>
-                                {{ props.row.anomalies.unfixed }} {{ t('project.anomaly.unfixed').toLowerCase() }} |
-                                {{ props.row.anomalies.fixed }} {{ t('project.anomaly.fixed').toLowerCase() }}
+                                {{ props.row.anomalies.unfixed }}
+                                {{ t('views.project.anomaly.unfixed').toLowerCase() }} | {{ props.row.anomalies.fixed }}
+                                {{ t('views.project.anomaly.fixed').toLowerCase() }}
                             </QTooltip>
                         </AtomicButton>
                     </template>
@@ -141,20 +137,20 @@ onMounted(async () => {
                         (projectStore.tab === Tab.InstructionBound || projectStore.tab === Tab.InstructionUnbound)
                     "
                     icon="mdi-plus"
-                    :label="t('project.instruction.segment.new')"
+                    :label="t('views.project.instruction.segment.new')"
                     no-border
                     @click="openDialogCreateSegment()"
                 >
                     <QTooltip
                         v-if="!!resourceStore.anomalies.length"
                         :delay="1000"
-                        >{{ t('project.anomaly.actionBtnDisabled', 2) }}</QTooltip
+                        >{{ t('views.project.anomaly.actionBtnDisabled', 2) }}</QTooltip
                     >
                 </AtomicButton>
             </QTr>
         </template>
         <template
-            v-if="resourceStore.shouldInstruct && projectStore.userIsInstructorForLibrarySelected"
+            v-if="resourceStore.resource?.shouldInstruct && projectStore.userIsInstructorForLibrarySelected"
             #no-data="{ message }"
         >
             <div class="no-data">
@@ -167,7 +163,7 @@ onMounted(async () => {
                 <AtomicButton
                     class="btn-segment"
                     icon="mdi-plus"
-                    :label="t('project.instruction.segment.new')"
+                    :label="t('views.project.instruction.segment.new')"
                     no-border
                     @click="openDialogCreateSegment()"
                 />

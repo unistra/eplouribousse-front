@@ -6,13 +6,17 @@ const { t } = useI18n()
 
 <template>
     <QFooter bordered>
-        <p>{{ new Date().getFullYear() }} - {{ t('utils.universityOfStrasbourg') }}</p>
+        <p>{{ new Date().getFullYear() }} - {{ t('common.unistra') }}</p>
         <div class="links">
-            <RouterLink to="/">{{ t('layout.footer.legalNotice') }}</RouterLink>
+            <RouterLink :to="{ name: 'legalNotice' }">{{ t('navigation.legalNotice') }}</RouterLink>
             -
-            <RouterLink to="/">{{ t('layout.footer.contact') }}</RouterLink>
+            <RouterLink :to="{ name: 'contactAdmin' }">{{ t('views.layout.footer.contact') }}</RouterLink>
             -
-            <RouterLink to="/">{{ t('layout.footer.about') }}</RouterLink>
+            <a
+                href="https://eplouribousse.fr"
+                target="_blank"
+                >{{ t('views.layout.footer.about') }}</a
+            >
         </div>
     </QFooter>
 </template>

@@ -76,7 +76,7 @@ describe('useAuthResetPassword', () => {
         expect(mock.passwordValidators.passwordStrengthValidator).toHaveBeenCalledWith('weak')
         expect(mock.notify).toHaveBeenCalledWith({
             type: 'negative',
-            message: 'forms.password.validation.passwordRequirements',
+            message: 'errors.form.password.requirements',
         })
         expect(mock.axiosPatch).not.toHaveBeenCalled()
     })
@@ -96,7 +96,7 @@ describe('useAuthResetPassword', () => {
         )
         expect(mock.notify).toHaveBeenCalledWith({
             type: 'negative',
-            message: 'forms.password.validation.passwordsDoNotMatch',
+            message: 'errors.form.password.doesNotMatch',
         })
         expect(mock.axiosPatch).not.toHaveBeenCalled()
     })
@@ -151,7 +151,7 @@ describe('useAuthResetPassword', () => {
 
         expect(mock.notify).toHaveBeenCalledWith({
             type: 'negative',
-            message: 'forms.password.reset.tokenRejected',
+            message: 'errors.auth.tokenRejected',
         })
     })
 
