@@ -1,32 +1,32 @@
-Editeur de la plate-forme
+## Editeur de la plate-forme
 Madame Frédérique BERROD
 Présidente de l’Université de Strasbourg
 4 rue Blaise Pascal
 CS 90032
 F-67081 Strasbourg cedex
 
-Direction de la publication
+## Direction de la publication
 Madame Frédérique BERROD
 Présidente de l’Université de Strasbourg
 4 rue Blaise Pascal
 CS 90032
 F-67081 Strasbourg cedex
 
-Propriété
+## Propriété
 Ce site est la propriété de l’Université de Strasbourg.
 
-Hébergement et conception du site
+## Hébergement et conception du site
 Direction du numérique
 Université de Strasbourg
 14 Rue RENE DESCARTES
 67084 STRASBOURG CEDEX
 03 68 85 06 00
 
-Fonctionnement du site
+## Fonctionnement du site
 L’application Web Eplouribousse est une plateforme de dédoublonnage des périodiques destinée aux professionnels des bibliothèques. Elle est développée  grâce à un financement du Ministère de l’Enseignement Supérieur, de la Recherche et de l’Espace, via le dispositif CollEx-Persée et l’Agence Bibliographique de l’Enseignement Supérieur (ABES).
 
 
-Droits de propriété intellectuelle
+## Droits de propriété intellectuelle
 
 Les textes, images, logos et autres éléments de ce site constituent une œuvre protégée par le code de la propriété intellectuelle.
 L’internaute doit respecter les droits de propriété intellectuelle sur les contenus mis en ligne. Ainsi, sauf exceptions du Code de la Propriété Intellectuelle (et notamment exception de courte citation), il ne peut reproduire ou représenter, totalement ou partiellement, le contenu mis en ligne sans le consentement préalable et écrit de l’auteur. Toute ou partie de copie est susceptible de poursuites.
@@ -41,7 +41,7 @@ En outre, l’Université de Strasbourg ne saurait voir sa responsabilité engag
 L'accès aux services de la plateforme peut à tout moment faire l'objet d'une interruption, d'une suspension, d'une modification sans préavis pour une maintenance ou pour tout autre cas. Tout événement dû à un cas de force majeure ayant pour conséquence un dysfonctionnement du réseau ou du serveur n'engage pas la responsabilité de l’Université de Strasbourg.
 L’Université de Strasbourg s'engage à mettre en œuvre tous les moyens nécessaires afin de garantir au mieux la sécurité et la confidentialité des données. La responsabilité de l’Université de Strasbourg ne peut être engagée en cas de force majeure ou du fait imprévisible et insurmontable d'un tiers.
 
-Responsabilité des utilisateurs
+## Responsabilité des utilisateurs
 
 Toute personne qui publie sur l’application Web Eplouribousse est un utilisateur identifié. L’utilisateur est pleinement responsable des contenus qu’il publie sur la plateforme.
 L’utilisateur s'engage à ne pas mettre en ligne de contenus pouvant porter atteinte aux intérêts de tierces personnes.
@@ -53,5 +53,5 @@ Vous disposez de plusieurs droits reconnus par la réglementation (accès, recti
 
 Après avoir pris contact avec le DPO, et si vous estimez que vos droits sur vos données ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL.
 
-Cookies
+## Cookies
 Pas de cookies gérés par le site.
