@@ -32,7 +32,7 @@ export const useProjectEdition = () => {
     }
 
     const motherCollectionString = computed(() => {
-        return resourceStore.formatCollectionToString(resourceStore.collectionsSortedByOrderInInstructionTurns[0])
+        return resourceStore.formatCollectionToString(resourceStore.collectionsSortedByOrderInInstructionTurns[0], true)
     })
 
     const storageLocation = computed(() => {
