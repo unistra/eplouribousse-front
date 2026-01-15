@@ -40,7 +40,7 @@ export const useProjectLibraryCard = (library: ProjectLibrary) => {
             projectStore.project.invitations = projectStore.project.invitations.filter(
                 (inv) => inv.libraryId !== library.id,
             )
-            projectStore.collectionsCount = projectStore.collectionsCount.filter((col) => col.libraryId === library.id)
+            projectStore.collectionsCount = projectStore.collectionsCount.filter((col) => col.libraryId !== library.id)
         } catch (e) {
             useHandleError(e)
         } finally {
