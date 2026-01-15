@@ -3,7 +3,7 @@ import AtomicButton from '@/components/atomic/AtomicButton.vue'
 import { useI18n } from 'vue-i18n'
 import type { Segment } from '#/project.ts'
 import AtomicInput from '@/components/atomic/AtomicInput.vue'
-import { onMounted } from 'vue'
+import { watch } from 'vue'
 import AtomicSelect from '@/components/atomic/AtomicSelect.vue'
 import { useProjectInstructionSegmentDialog } from '@/components/project/projectLaunched/projectInstruction/projectInstructionSegmentDialog/useProjectInstructionSegmentDialog.ts'
 
@@ -23,14 +23,20 @@ const props = withDefaults(
 const { workSegment, segmentLabel, onHide, onSave, segmentsToDisplayInTheImprovedSegmentSelect } =
     useProjectInstructionSegmentDialog(props, model)
 
-onMounted(() => {
-    if (props.segment) {
-        workSegment.content = props.segment.content
-        workSegment.improvableElements = props.segment.improvableElements
-        workSegment.exception = props.segment.exception
-        workSegment.improvedSegment = props.segment.improvedSegment
-    }
-})
+watch(
+    model,
+    () => {
+        if (model.value && props.segment) {
+            workSegment.content = props.segment.content
+            workSegment.improvableElements = props.segment.improvableElements
+            workSegment.exception = props.segment.exception
+            workSegment.improvedSegment = props.segment.improvedSegment
+        }
+    },
+    {
+        immediate: true,
+    },
+)
 </script>
 
 <template>
