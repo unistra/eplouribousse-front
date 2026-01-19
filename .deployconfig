@@ -1,0 +1,24 @@
+# --- Variables globales ---
+PROJECT="eplfront"
+SENTRY_PROJECT_NAME="eplouribousse-front"
+DISTANT_REPO="https://git.unistra.fr/di/eplouribousse/eplfront.git"
+DEST_PATH="/var/www/static/eplfront/" # Où les fichiers seront copiés
+
+# --- TEST ---
+TEST_HOSTS=("root@django-test2.di.unistra.fr")
+TEST_NGINX_CONF="eplouribousse-test.app.unistra.fr"
+
+# --- PREPROD ---
+PREPROD_HOSTS=("root@rp-dip-pprd-public.di.unistra.fr")
+PREPROD_NGINX_CONF="eplouribousse-pprd.app.unistra.fr"
+
+# --- PROD ---
+# Tu peux mettre plusieurs serveurs (array)
+PROD_HOSTS=("root@rp-dip-public-m.di.unistra.fr" "root@rp-dip-public-s.di.unistra.fr")
+PROD_NGINX_CONF="eplouribousse.unistra.fr"
+
+# --- OPENSTACK (Optionnel, variables _OS) ---
+# Utilisé si le flag -o est passé
+TEST_HOSTS_OS=("user@os-test.tld")
+TEST_NGINX_CONF_OS="os-test.domaine.tld"
+# ... idem pour Preprod et Prod avec suffixe _OS
