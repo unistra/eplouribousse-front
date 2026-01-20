@@ -2,6 +2,7 @@
 import { ref, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
+import { marked } from 'marked'
 
 const route = useRoute()
 const { locale } = useI18n()
@@ -16,7 +17,7 @@ const loadNotice = async () => {
     const path = `/src/assets/legal/notice.${locale.value}.txt`
     const noticeLoaderFn = notices[path] || notices[`/src/assets/legal/notice.fr.txt`] // fallback if unavailable
 
-    legalNotice.value = await noticeLoaderFn()
+    legalNotice.value = await marked(await noticeLoaderFn())
 }
 
 onMounted(loadNotice)
@@ -26,9 +27,10 @@ watch(locale, loadNotice)
 <template>
     <QPage padding>
         <h1>{{ route.meta.title }}</h1>
-        <div class="legal-notice">
-            {{ legalNotice }}
-        </div>
+        <article
+            class="legal-notice"
+            v-html="legalNotice"
+        />
     </QPage>
 </template>
 
@@ -37,6 +39,23 @@ watch(locale, loadNotice)
     display: flex
     flex-direction: column
     gap: 1rem
-.legal-notice
-    white-space: pre-wrap
+
+    .legal-notice
+        white-space: pre-wrap
+        border: 1px solid var(--color-neutral-300)
+        padding: 1rem
+        border-radius: var(--border-radius)
+        flex-grow: 1
+        height: 0
+        overflow-y: scroll
+        display: flex
+        flex-direction: column
+
+        :deep(h2)
+            font-size: var(--font-size-lg)
+            font-weight: bold
+            padding-bottom: 0.5rem
+
+        :deep(p)
+            padding-bottom: 1.5rem
 </style>

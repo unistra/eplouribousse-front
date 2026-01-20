@@ -74,7 +74,7 @@ onMounted(() => {
                             v-for="collection in resourceStore.collectionsSortedByOrderInInstructionTurns"
                             :key="collection.id"
                         >
-                            {{ resourceStore.formatCollectionToString(collection) }}
+                            {{ resourceStore.formatCollectionToString(collection, true) }}
                         </QChip>
                     </QCard>
                 </QExpansionItem>
