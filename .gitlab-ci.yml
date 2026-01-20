@@ -1,24 +1,35 @@
-image:
-  name: sonarsource/sonar-scanner-cli:11
-  entrypoint: [ "" ]
-
-variables:
-  SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
-  GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
-  CONTAINER_BASE_IMAGE_NAME: $CI_REGISTRY/dnum/eplouribousse-frontend
-  CONTAINER_TEST_IMAGE: $CONTAINER_BASE_IMAGE_NAME:$CI_COMMIT_REF_NAME
-  CONTAINER_RELEASE_IMAGE: $CONTAINER_BASE_IMAGE_NAME:$CI_COMMIT_TAG
-  EXTRA_ARGS: ""
-
 stages:
   - sonarqube-check
   - sonarqube-vulnerability-report
   - build
   - release
+  - sentry
+
+variables:
+  SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
+  GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+  GIT_STRATEGY: fetch  # Tells git to fetch changes
+  CONTAINER_BASE_IMAGE_NAME: $CI_REGISTRY/dnum/eplouribousse-frontend
+  CONTAINER_TEST_IMAGE: $CONTAINER_BASE_IMAGE_NAME:$CI_COMMIT_REF_NAME
+  CONTAINER_RELEASE_IMAGE: $CONTAINER_BASE_IMAGE_NAME:$CI_COMMIT_TAG
+  SENTRY_URL: "https://sentry.app.unistra.fr"
+  SENTRY_ORG: "sentry"
+  SENTRY_PROJECT: "eplouribousse-front"
+  SENTRY_REPO: "di / eplouribousse / eplfront"
+
+before_script:
+  - if [ -z "$CI_COMMIT_TAG" ]; then
+    export DOCKER_IMAGE_TAG="$CI_COMMIT_SHORT_SHA";
+    else
+    export DOCKER_IMAGE_TAG="$CI_COMMIT_TAG";
+    fi
+  - export DESTINATION="${CONTAINER_BASE_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
 
 sonarqube-check:
   stage: sonarqube-check
-
+  image:
+    name: ${CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX}/sonarsource/sonar-scanner-cli:11
+    entrypoint: [ "" ]
   script:
     - sonar-scanner -Dsonar.host.url="${SONAR_HOST_URL}"
   allow_failure: true
@@ -41,6 +52,22 @@ sonarqube-vulnerability-report:
     reports:
       sast: gl-sast-sonar-report.json
 
+sentry-release:
+  stage: sentry
+  image: getsentry/sentry-cli:latest
+  variables:
+    SENTRY_AUTH_TOKEN: $SENTRY_AUTH_TOKEN
+  script:
+    - export SENTRY_RELEASE="epl-front@$DOCKER_IMAGE_TAG"
+    - sentry-cli releases new -p "$SENTRY_PROJECT" "$SENTRY_RELEASE"
+    - sentry-cli releases set-commits --ignore-missing --commit "$SENTRY_REPO@$CI_COMMIT_SHA" "$SENTRY_RELEASE"
+    - sentry-cli releases finalize "$SENTRY_RELEASE"
+  rules:
+    - if: '$CI_COMMIT_TAG'
+      when: always
+  needs:
+    - job: r:docker
+
 .build-image:
   image:
     # gcr.io/kaniko-project/executor:v1.7.0-debug
@@ -48,6 +75,12 @@ sonarqube-vulnerability-report:
     entrypoint: [""]
   script:
     - mkdir -p /kaniko/.docker
+    - if [ ${CI_COMMIT_TAG} ]; then
+      echo "SENTRY_RELEASE_VERSION=epl-front@${DOCKER_IMAGE_TAG}" > "${CI_PROJECT_DIR}/docker/app/sentry-release.env";
+      else
+      touch "${CI_PROJECT_DIR}/docker/app/sentry-release.env";
+      fi
+    - chmod 0644 "${CI_PROJECT_DIR}/docker/app/sentry-release.env"
     - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
     - echo "${CI_PROJECT_DIR} ${CI_PROJECT_DIR_PATH} ${CI_REGISTRY} ${CI_REGISTRY_USER} ${LATEST_DESTINATION} ${DESTINATION} ${EXTRA_ARGS}"
     - >-
