@@ -67,8 +67,8 @@
         },
         "library": {
             "i": "Bibliothèque | Bibliothèques",
-            "list": "Liste des @.lower:fn.library.i",
-            "participating": "@:fn.library.i participantes",
+            "list": "Liste des bibliothèques",
+            "participating": "Bibliothèques participantes",
             "none": "Aucune @.lower:fn.library.i",
             "form": {
                 "fields": {
@@ -270,7 +270,7 @@
                         "summary": {
                             "tab": "Récapitulatif",
                             "title": "Récapitulatif de la création de projet",
-                            "whenConfirm": "En confirmant, les invitations seront envoyés aux adresse e-mail renseignés, ainsi que les notifications aux utilisateurs participants au projet"
+                            "whenConfirm": "En confirmant, les invitations seront envoyées aux emails renseignés, ainsi que les notifications aux utilisateurs participant au projet"
                         }
                     }
                 }
@@ -308,13 +308,13 @@
             "review": {
                 "title": "Vérification du @.lower:fn.project.i",
                 "passToReady": "Marquer comme prêt",
-                "confirmPassToReview": "En confirmant, le projet sera démareable par un pilote de projet.",
+                "confirmPassToReview": "En confirmant, le projet pourra être démarré par un pilote de projet",
                 "waitingForAdminToReview": "En attente de validation par les administrateurs"
             },
             "ready": {
-                "startTheProject": "Plannifier le démarrage du projet",
+                "startTheProject": "Planifier le démarrage du projet",
                 "defineStartDate": "Définir une date de démarrage",
-                "confirmStart": "En confirmant, le projet commencera le:",
+                "confirmStart": "En confirmant, le projet commencera le",
                 "waitingForManagerToStart": "En attente de démarrage par les pilotes de projet"
             },
             "resultant": {
@@ -460,7 +460,7 @@
                 "forLibrary": "pour la @.lower:fn.library.i",
                 "rolesInProject": "Vos rôles dans le projet",
                 "alerts": {
-                    "info": "Si les alertes sont désactivées au niveau du projet, alors elle ne seront pas visible ici",
+                    "info": "Si les alertes sont désactivées au niveau du projet, alors elle ne seront pas visibles ici",
                     "title": "Alertes associées au projet",
                     "noAlert": "Aucune alertes n'est activée"
                 }
