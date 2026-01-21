@@ -41,8 +41,13 @@ export const useAnomalyStore = defineStore('anomaly', () => {
         }
     }
 
+    const deleteAnomaliesForSegmentId = (segmentId: Segment['id']) => {
+        resourceStore.anomalies = resourceStore.anomalies.filter((anomaly) => anomaly.segment.id !== segmentId)
+    }
+
     return {
         anomalyAddForSegment,
         onActionOnAnomaly,
+        deleteAnomaliesForSegmentId,
     }
 })

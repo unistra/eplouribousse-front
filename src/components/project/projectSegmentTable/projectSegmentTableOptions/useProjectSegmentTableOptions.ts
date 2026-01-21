@@ -11,6 +11,7 @@ import {
 import { useResourcesStore } from '@/stores/resourcesStore.ts'
 import { axiosI } from '@/plugins/axios/axios.ts'
 import { useUtils } from '@/composables/useUtils.ts'
+import { useAnomalyStore } from '@/stores/anomalyStore.ts'
 
 export const useProjectSegmentTableOptions = () => {
     const { useHandleError } = useUtils()
@@ -19,6 +20,7 @@ export const useProjectSegmentTableOptions = () => {
     const resourcesStore = useResourcesStore()
     const projectStore = useProjectStore()
     const userStore = useUserStore()
+    const anomalyStore = useAnomalyStore()
 
     const dialogUpdateSegment = ref<boolean>(false)
     const dialogDeleteSegment = ref<boolean>(false)
@@ -177,6 +179,7 @@ export const useProjectSegmentTableOptions = () => {
         try {
             await axiosI.delete(`/segments/${segmentId}/`)
             await resourceStore.getSegments()
+            anomalyStore.deleteAnomaliesForSegmentId(segmentId)
         } catch (e) {
             useHandleError(e)
         }
