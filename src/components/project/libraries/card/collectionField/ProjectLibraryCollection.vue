@@ -98,7 +98,7 @@ onMounted(async () => await getCollection())
                             />
                             {{ t('views.project.libraries.card.csvImport.importSuccess') }}
                         </p>
-                        <p>{{ t('views.project.libraries.card.csvImport.weFound') }}:</p>
+                        <p>{{ t('views.project.libraries.card.csvImport.weFound') }} :</p>
                         <ul>
                             <li
                                 v-for="(count, key) in importCSVResponse"

@@ -38,7 +38,9 @@ onMounted(async () => {
         @row-click="(_, row: Project) => emit('rowClick', row)"
     >
         <template #top-left>
+            <!-- Due to removal of archived filter, we remove filter button when on profil page. See di/eplouribousse/eplouribousse#186 -->
             <AtomicButton
+                v-if="!userSpecific"
                 icon="mdi-filter-outline"
                 :label="`${t('common.filter')} (${[projectsUserHasARoleIn, showArchived].filter((el, index) => (index === 0 && userSpecific ? false : el)).length})`"
             >
@@ -54,13 +56,15 @@ onMounted(async () => {
                                 @update:model-value="() => getProjects()"
                             />
                         </QItem>
-                        <QItem dense>
-                            <QCheckbox
-                                v-model="showArchived"
-                                :label="t('views.projects.filters.archived', 2)"
-                                @update:model-value="() => getProjects()"
-                            />
-                        </QItem>
+                        <!-- Hide "Show Archived" filter for v1. See di/eplouribousse/eplouribousse#186
+                            <QItem dense>
+                                <QCheckbox
+                                    v-model="showArchived"
+                                    :label="t('views.projects.filters.archived', 2)"
+                                    @update:model-value="() => getProjects()"
+                                />
+                            </QItem>
+                        -->
                     </QList>
                 </QMenu>
             </AtomicButton>

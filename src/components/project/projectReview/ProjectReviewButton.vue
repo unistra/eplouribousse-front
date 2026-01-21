@@ -41,7 +41,7 @@ const waitingMessage = computed(() => {
         >
             <template #confirmation-content>
                 <QCardSection>
-                    <p>{{ t('views.project.review.confirmPassToReview') }}</p>
+                    <p>{{ t('views.project.review.confirmPassToReview') }}.</p>
                     <p>{{ t('views.confirmDialogDefault.irreversible') }}</p>
                 </QCardSection>
             </template>
@@ -86,7 +86,8 @@ const waitingMessage = computed(() => {
                             <template #confirmation-content>
                                 <QCardSection>
                                     <p>
-                                        {{ t('views.project.ready.confirmStart') }} <strong>{{ dateString }}</strong>
+                                        {{ t('views.project.ready.confirmStart') }} : <strong>{{ dateString }}</strong
+                                        >.
                                     </p>
                                     <p>{{ t('views.confirmDialogDefault.irreversible') }}</p>
                                 </QCardSection>
