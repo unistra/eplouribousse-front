@@ -39,7 +39,7 @@ const {
             class="order"
         >
             <AtomicButton
-                :class="{ opacity: opacifyReorderButtonUp }"
+                :class="{ opacity: opacifyReorderButtonUp(row) }"
                 :disable="areActionDisabled"
                 icon="mdi-chevron-up"
                 no-border
@@ -53,7 +53,7 @@ const {
                 >
             </AtomicButton>
             <AtomicButton
-                :class="{ opacity: opacifyReorderButtonDown }"
+                :class="{ opacity: opacifyReorderButtonDown(row) }"
                 :disable="areActionDisabled"
                 icon="mdi-chevron-down"
                 no-border

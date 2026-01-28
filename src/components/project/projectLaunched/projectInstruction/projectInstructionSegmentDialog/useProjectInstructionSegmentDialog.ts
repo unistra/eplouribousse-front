@@ -31,7 +31,7 @@ export const useProjectInstructionSegmentDialog = (
 
         const isSegmentCollectionSameAsTheInstructedCollection = (segmentToCompare: Segment) => {
             const instructedCollectionId =
-                resourceStore.resource?.instructionTurns?.[resourceStore.statusName].turns[0].collection
+                resourceStore.resource?.instructionTurns?.[resourceStore.statusName].turns[0]?.collection
             return segmentToCompare.collection === instructedCollectionId
         }
 

@@ -2,6 +2,11 @@
 
 ## Next release
 
+## 1.0.5 - 28-01-2026
+
+- 🐛 Prevent undefined state for improved segments select on segment update dialog, fixing the empty dialog
+- 🐛 Fix the visibility of reordering buttons on segment table, in instruction 
+
 ## 1.0.4 - 21-01-2026
 
 - 🩹 Remove unavailable archived projects filter (keep it for v2)
