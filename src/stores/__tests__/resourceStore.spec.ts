@@ -132,9 +132,9 @@ describe('Resource Store', () => {
         const sorted = resourceStore.collectionsSortedByOrderInInstructionTurns
 
         expect(sorted).toHaveLength(3)
-        expect(sorted[0].id).toBe('col-2')
-        expect(sorted[1].id).toBe('col-1')
-        expect(sorted[2].id).toBe('col-3')
+        expect(sorted[0]?.id).toBe('col-2')
+        expect(sorted[1]?.id).toBe('col-1')
+        expect(sorted[2]?.id).toBe('col-3')
     })
 
     test('collectionsSortedByOrderInInstructionTurns should return empty array when resource is undefined', () => {

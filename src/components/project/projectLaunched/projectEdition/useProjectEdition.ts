@@ -32,6 +32,7 @@ export const useProjectEdition = () => {
     }
 
     const motherCollectionString = computed(() => {
+        if (!resourceStore.collectionsSortedByOrderInInstructionTurns[0]) return ''
         return resourceStore.formatCollectionToString(resourceStore.collectionsSortedByOrderInInstructionTurns[0], true)
     })
 
@@ -42,7 +43,7 @@ export const useProjectEdition = () => {
         return (
             alternativeStorageSite?.name ||
             projectStore.project?.libraries.find(
-                (library) => library.id === resourceStore.collectionsSortedByOrderInInstructionTurns[0].library,
+                (library) => library.id === resourceStore.collectionsSortedByOrderInInstructionTurns[0]?.library,
             )?.name ||
             t('common.none')
         )

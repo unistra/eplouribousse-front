@@ -80,8 +80,8 @@ describe('AuthResetPassword', () => {
 
         const passwordFields = wrapper.findAllComponents(PasswordField)
         expect(passwordFields).toHaveLength(2)
-        expect(passwordFields[0].props('label')).toContain('Nouveau mot de passe')
-        expect(passwordFields[1].props('label')).toContain('Confirmer le nouveau mot de passe')
+        expect(passwordFields[0]?.props('label')).toContain('Nouveau mot de passe')
+        expect(passwordFields[1]?.props('label')).toContain('Confirmer le nouveau mot de passe')
     })
 
     test('validation rules are applied correctly to fields', async () => {
@@ -92,8 +92,8 @@ describe('AuthResetPassword', () => {
         })
 
         const passwordFields = wrapper.findAllComponents(PasswordField)
-        expect(passwordFields[0].props('rules')).toBeTruthy() // new password
-        expect(passwordFields[1].props('rules')).toBeTruthy() // confirm password
+        expect(passwordFields[0]?.props('rules')).toBeTruthy() // new password
+        expect(passwordFields[1]?.props('rules')).toBeTruthy() // confirm password
     })
 
     test('shows validation error when password is not strong enough', async () => {

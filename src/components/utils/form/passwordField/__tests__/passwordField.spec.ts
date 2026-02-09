@@ -79,7 +79,7 @@ describe('PasswordField', () => {
         await input.setValue('newTestPassword')
 
         expect(wrapper.emitted('update:modelValue')).toBeTruthy()
-        expect(wrapper.emitted('update:modelValue')![0][0]).toBe('newTestPassword')
+        expect(wrapper.emitted('update:modelValue')![0]?.[0]).toBe('newTestPassword')
     })
 
     test('calls getPasswordStrength when password changes', async () => {
@@ -110,11 +110,11 @@ describe('PasswordField', () => {
         await wrapper.setProps({ modelValue: 'weak' })
 
         expect(wrapper.emitted('passwordStrengthChange')).toBeTruthy()
-        expect(wrapper.emitted('passwordStrengthChange')![0][0]).toBe(2) // Based on our mock implementation
+        expect(wrapper.emitted('passwordStrengthChange')![0]?.[0]).toBe(2) // Based on our mock implementation
 
         await wrapper.setProps({ modelValue: 'StrongPassword123!' })
 
-        expect(wrapper.emitted('passwordStrengthChange')![1][0]).toBe(4) // Based on our mock implementation
+        expect(wrapper.emitted('passwordStrengthChange')![1]?.[0]).toBe(4) // Based on our mock implementation
     })
 
     test('shows linear progress when not focused but has value', async () => {

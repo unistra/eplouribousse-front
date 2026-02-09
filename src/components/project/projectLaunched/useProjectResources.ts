@@ -260,9 +260,11 @@ export const useProjectResources = () => {
         if (
             (resourceStore.resource.status === ResourceStatus.InstructionBound ||
                 resourceStore.resource.status === ResourceStatus.InstructionUnbound) &&
-            resourceStore.resource.instructionTurns?.[resourceStore.statusName].turns[0].library
+            resourceStore.resource.instructionTurns?.[resourceStore.statusName].turns[0]?.library
         ) {
-            libraryIdSelected.value = resourceStore.resource.instructionTurns[resourceStore.statusName].turns[0].library
+            if (!resourceStore.resource.instructionTurns[resourceStore.statusName].turns[0]) selectDefaultLibrary()
+            libraryIdSelected.value =
+                resourceStore.resource.instructionTurns[resourceStore.statusName].turns[0]!.library
         } else {
             selectDefaultLibrary()
         }

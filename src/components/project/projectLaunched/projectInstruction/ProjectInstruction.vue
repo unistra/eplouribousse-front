@@ -40,7 +40,7 @@ const {
                             bold:
                                 turn.collectiondId ===
                                 resourceStore.resource?.instructionTurns?.[`${resourceStore.statusName}`].turns[0]
-                                    .collection,
+                                    ?.collection,
                         }"
                     >
                         {{ turn.library }}

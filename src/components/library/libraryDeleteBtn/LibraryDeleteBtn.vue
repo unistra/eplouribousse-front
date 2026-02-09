@@ -2,7 +2,7 @@
 import { useI18n } from 'vue-i18n'
 import { useLibraryDeleteBtn } from '@/components/library/libraryDeleteBtn/useLibraryDeleteBtn.ts'
 import type { LibraryI } from '#/library.d.ts'
-import { defineEmits, onMounted } from 'vue'
+import { onMounted } from 'vue'
 
 const props = defineProps<{
     libraryToDelete: LibraryI

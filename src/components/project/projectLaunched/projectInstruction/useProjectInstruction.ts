@@ -44,14 +44,15 @@ export const useProjectInstruction = (dialogModal: Ref<boolean> | undefined) => 
         const statusString = resourceStore.statusName === 'boundCopies' ? 'bound' : 'unbound'
         return !resourceStore.segments.find((el) => {
             const collectionIdInFirstPositionInInstructionTurns =
-                resourceStore.resource?.instructionTurns?.[`${resourceStore.statusName}`].turns[0].collection
+                resourceStore.resource?.instructionTurns?.[`${resourceStore.statusName}`].turns[0]?.collection
             return el.collection === collectionIdInFirstPositionInInstructionTurns && el.segmentType === statusString
         })
     })
     const collectionToBeInstructed = computed<CollectionsInResource | undefined>(() => {
         return resourceStore.collections.find(
             (el) =>
-                el.id === resourceStore.resource?.instructionTurns?.[`${resourceStore.statusName}`].turns[0].collection,
+                el.id ===
+                resourceStore.resource?.instructionTurns?.[`${resourceStore.statusName}`].turns[0]?.collection,
         )
     })
 
@@ -62,7 +63,7 @@ export const useProjectInstruction = (dialogModal: Ref<boolean> | undefined) => 
                 throw new Error('Instruction is not allowed')
             const collectionId =
                 resourceStore.resource && resourceStore.resource.instructionTurns
-                    ? resourceStore.resource.instructionTurns[resourceStore.statusName].turns[0].collection
+                    ? resourceStore.resource.instructionTurns[resourceStore.statusName].turns[0]?.collection
                     : undefined
 
             await axiosI.post<Segment>(`/collections/${collectionId}/finish_turn/`)
