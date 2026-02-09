@@ -124,6 +124,7 @@ export const useProjectResources = () => {
 
     const fetchResources = async (options?: Parameters<NonNullable<QTableProps['onRequest']>>[0]) => {
         if (!options) resourcesStore.pagination.page = 1
+        else resourcesStore.updatePagination(options)
 
         if (projectStore.tab === Tab.Anomalies) {
             libraryIdSelected.value = ''

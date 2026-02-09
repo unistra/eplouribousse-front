@@ -56,6 +56,13 @@ export const useResourcesStore = defineStore('resources', () => {
         }
     }
 
+    const updatePagination = (options: Parameters<NonNullable<QTableProps['onRequest']>>[0]) => {
+        pagination.value.page = options.pagination.page
+        pagination.value.rowsPerPage = options.pagination.rowsPerPage
+        pagination.value.sortBy = options.pagination.sortBy
+        pagination.value.descending = options.pagination.descending
+    }
+
     return {
         // State
         resources,
@@ -67,5 +74,6 @@ export const useResourcesStore = defineStore('resources', () => {
         pagination,
         // Actions
         getResources,
+        updatePagination,
     }
 })
