@@ -236,10 +236,10 @@
                 },
                 "stepper": {
                     "requirements": {
-                        "heading": "Liste péparatoire au @.lower:fn.project.i",
-                        "message": "Pour monter un nouveau @.lower:fn.project.i, assurez-vous que vous disposez des éléments suivants :",
+                        "heading": "Liste préparatoire au projet",
+                        "message": "Pour monter un nouveau projet, assurez-vous que vous disposez des éléments suivants :",
                         "list": {
-                            "projectName": "Intitulé du @.lower:fn.project.i",
+                            "projectName": "Intitulé du projet",
                             "managerEmails": "Adresses e-mails du ou des @.lower:fn.roles.projectManager",
                             "adminEmails": "Adresses e-mails du ou des @.lower:fn.roles.projectAdmin",
                             "controllerEmail": "Adresses e-mails du ou des @.lower:fn.roles.controller",
