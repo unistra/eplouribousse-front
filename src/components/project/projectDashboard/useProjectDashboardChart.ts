@@ -85,7 +85,8 @@ const formatDefaultDatasets = (rawDatasets: Record<string, unknown>[]) => {
 }
 
 const getColorsByIndex = (count: number, palette: readonly string[]): string[] => {
-    return Array.from({ length: count }, (_, idx) => palette[idx % palette.length])
+    if (palette.length === 0) return Array.from({ length: count }, () => '')
+    return Array.from({ length: count }, (_, idx) => palette[idx % palette.length] ?? '')
 }
 
 const generateStackedBarLegendLabels = (chart: Chart) => {

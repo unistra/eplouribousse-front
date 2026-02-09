@@ -15,7 +15,8 @@ const emit = defineEmits<{
 }>()
 
 const closeModal = (event: 'confirm' | 'cancel') => {
-    event === 'confirm' ? emit('confirm') : emit('cancel') // Ternary operation for typescript 🙃
+    const fn = event === 'confirm' ? () => emit('confirm') : () => emit('cancel') // For typescript 🙃
+    fn()
     modal.value = false
 }
 </script>

@@ -69,7 +69,7 @@ export const useProjectInstructionSegmentDialog = (
                 ...(segment.improvedSegment && { improved_segment: segment.improvedSegment }),
                 collection:
                     resourceStore.resource && resourceStore.resource.instructionTurns
-                        ? resourceStore.resource.instructionTurns[resourceStore.statusName].turns[0].collection
+                        ? resourceStore.resource.instructionTurns[resourceStore.statusName].turns[0]?.collection
                         : undefined,
                 ...(afterSegment && { after_segment: afterSegment }),
             })

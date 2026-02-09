@@ -86,9 +86,9 @@ describe('AuthChangePassword', () => {
 
         const passwordFields = wrapper.findAllComponents(PasswordField)
         expect(passwordFields).toHaveLength(3)
-        expect(passwordFields[0].props('label')).toContain('Ancien mot de passe')
-        expect(passwordFields[1].props('label')).toContain('Nouveau mot de passe')
-        expect(passwordFields[2].props('label')).toContain('Confirmer le nouveau mot de passe')
+        expect(passwordFields[0]?.props('label')).toContain('Ancien mot de passe')
+        expect(passwordFields[1]?.props('label')).toContain('Nouveau mot de passe')
+        expect(passwordFields[2]?.props('label')).toContain('Confirmer le nouveau mot de passe')
     })
 
     test('validation rules are applied correctly to fields', async () => {
@@ -100,8 +100,8 @@ describe('AuthChangePassword', () => {
 
         const passwordFields = wrapper.findAllComponents(PasswordField)
 
-        expect(passwordFields[0].props('rules')).toBeFalsy() // old password
-        expect(passwordFields[1].props('rules')).toBeTruthy() // new password
-        expect(passwordFields[2].props('rules')).toBeTruthy() // confirm password
+        expect(passwordFields[0]?.props('rules')).toBeFalsy() // old password
+        expect(passwordFields[1]?.props('rules')).toBeTruthy() // new password
+        expect(passwordFields[2]?.props('rules')).toBeTruthy() // confirm password
     })
 })

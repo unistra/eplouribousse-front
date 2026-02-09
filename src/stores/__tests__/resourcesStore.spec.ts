@@ -135,4 +135,45 @@ describe('Resources Store', () => {
         expect(resourcesStore.resourcesLoading).toBe(false)
         expect(mockUseHandleError).toHaveBeenCalledWith(error)
     })
+
+    test('updatePagination() should update pagination values from options', () => {
+        const options = {
+            pagination: {
+                page: 3,
+                rowsPerPage: 25,
+                sortBy: 'code',
+                descending: true,
+            },
+            filter: '',
+            getCellValue: vi.fn(),
+        }
+
+        resourcesStore.updatePagination(options)
+
+        expect(resourcesStore.pagination.page).toBe(3)
+        expect(resourcesStore.pagination.rowsPerPage).toBe(25)
+        expect(resourcesStore.pagination.sortBy).toBe('code')
+        expect(resourcesStore.pagination.descending).toBe(true)
+    })
+
+    test('updatePagination() should preserve rowsNumber when updating other pagination values', () => {
+        resourcesStore.pagination.rowsNumber = 150
+
+        const options = {
+            pagination: {
+                page: 2,
+                rowsPerPage: 50,
+                sortBy: 'title',
+                descending: false,
+            },
+            filter: '',
+            getCellValue: vi.fn(),
+        }
+
+        resourcesStore.updatePagination(options)
+
+        expect(resourcesStore.pagination.rowsNumber).toBe(150)
+        expect(resourcesStore.pagination.page).toBe(2)
+        expect(resourcesStore.pagination.rowsPerPage).toBe(50)
+    })
 })

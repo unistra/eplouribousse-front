@@ -8,8 +8,6 @@ export type MatomoConfigType = Record<
     }
 >
 
-export {}
-
 declare global {
     interface String {
         snakeToCamel(): string

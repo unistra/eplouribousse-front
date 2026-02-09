@@ -99,9 +99,9 @@ describe('LibraryCreateAndEditBtn.vue', () => {
             expect(input.props('rules')).toBeTruthy()
         })
 
-        expect(inputs[0].props('label')).toContain('Nom')
-        expect(inputs[1].props('label')).toContain('Alias')
-        expect(inputs[2].props('label')).toContain('Code')
+        expect(inputs[0]?.props('label')).toContain('Nom')
+        expect(inputs[1]?.props('label')).toContain('Alias')
+        expect(inputs[2]?.props('label')).toContain('Code')
     })
 
     test('pre-fills form when libraryToEdit is provided', async () => {

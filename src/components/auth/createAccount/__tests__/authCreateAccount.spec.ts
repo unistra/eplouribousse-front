@@ -103,8 +103,8 @@ describe('AuthCreateAccount', () => {
 
         const passwordFields = wrapper.findAllComponents(PasswordField)
         expect(passwordFields).toHaveLength(2)
-        expect(passwordFields[0].props('label')).toContain('Mot de passe')
-        expect(passwordFields[1].props('label')).toContain('Confirmer le mot de passe')
+        expect(passwordFields[0]?.props('label')).toContain('Mot de passe')
+        expect(passwordFields[1]?.props('label')).toContain('Confirmer le mot de passe')
     })
 
     test('email input should be disabled', () => {
@@ -126,7 +126,7 @@ describe('AuthCreateAccount', () => {
         })
 
         const passwordFields = wrapper.findAllComponents(PasswordField)
-        expect(passwordFields[0].props('rules')).toBeTruthy()
-        expect(passwordFields[1].props('rules')).toBeTruthy()
+        expect(passwordFields[0]?.props('rules')).toBeTruthy()
+        expect(passwordFields[1]?.props('rules')).toBeTruthy()
     })
 })

@@ -124,7 +124,8 @@ export const useLibraryCreateAndEditBtn = (isToEdit: boolean, emit: (evt: 'submi
     }
 
     const onSubmit = async () => {
-        isToEdit ? await updateLibrary() : await createLibrary()
+        const fn = isToEdit ? updateLibrary : createLibrary
+        await fn()
         emit('submitted')
     }
 

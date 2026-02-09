@@ -124,6 +124,7 @@ export const useProjectResources = () => {
 
     const fetchResources = async (options?: Parameters<NonNullable<QTableProps['onRequest']>>[0]) => {
         if (!options) resourcesStore.pagination.page = 1
+        else resourcesStore.updatePagination(options)
 
         if (projectStore.tab === Tab.Anomalies) {
             libraryIdSelected.value = ''
@@ -260,9 +261,11 @@ export const useProjectResources = () => {
         if (
             (resourceStore.resource.status === ResourceStatus.InstructionBound ||
                 resourceStore.resource.status === ResourceStatus.InstructionUnbound) &&
-            resourceStore.resource.instructionTurns?.[resourceStore.statusName].turns[0].library
+            resourceStore.resource.instructionTurns?.[resourceStore.statusName].turns[0]?.library
         ) {
-            libraryIdSelected.value = resourceStore.resource.instructionTurns[resourceStore.statusName].turns[0].library
+            if (!resourceStore.resource.instructionTurns[resourceStore.statusName].turns[0]) selectDefaultLibrary()
+            libraryIdSelected.value =
+                resourceStore.resource.instructionTurns[resourceStore.statusName].turns[0]!.library
         } else {
             selectDefaultLibrary()
         }

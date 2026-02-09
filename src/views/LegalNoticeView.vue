@@ -15,9 +15,15 @@ const notices = import.meta.glob<string>('@/assets/legal/notice.*.txt', {
 
 const loadNotice = async () => {
     const path = `/src/assets/legal/notice.${locale.value}.txt`
-    const noticeLoaderFn = notices[path] || notices[`/src/assets/legal/notice.fr.txt`] // fallback if unavailable
+    const noticeLoaderFn = notices[path] ?? notices['/src/assets/legal/notice.fr.txt']
 
-    legalNotice.value = await marked(await noticeLoaderFn())
+    if (!noticeLoaderFn) {
+        legalNotice.value = ''
+        return
+    }
+
+    const raw = await noticeLoaderFn()
+    legalNotice.value = await marked(raw)
 }
 
 onMounted(loadNotice)
