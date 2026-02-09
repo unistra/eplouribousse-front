@@ -2,6 +2,13 @@
 
 ## Next release
 
+## 1.0.6 - 09-02-2026
+
+- 💬 Fix various typos and text issues
+- 🚑️ Fix broken pagination on resources page + add related tests
+- 🚨 Fix tsc & linters errors
+- ⬆️ Upgrade dependencies to latest
+
 ## 1.0.5 - 28-01-2026
 
 - 🐛 Prevent undefined state for improved segments select on segment update dialog, fixing the empty dialog
