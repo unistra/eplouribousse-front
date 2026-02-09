@@ -32,6 +32,7 @@ describe('Projects Store', () => {
     })
 
     afterEach(() => {
+        vi.clearAllMocks()
         vi.restoreAllMocks()
     })
 
