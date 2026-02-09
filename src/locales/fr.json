@@ -474,7 +474,7 @@
             "user": {
                 "add": "Ajouter cet utilisateur: {user}",
                 "more": "Afficher plus d'utilisateurs",
-                "notFound": "Aucun utilisateur trouvé"
+                "notFound": "Aucun utilisateur trouvé (ou l'utilisateur est déjà renseigné)"
             }
         },
         "backNavigation": "Retour à la page précédente"
