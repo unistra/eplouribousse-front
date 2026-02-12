@@ -124,7 +124,7 @@ onMounted(() => {
                         <span>{{ selectCollectionToShowEdition?.callNumber || '-' }}</span>
                     </QChip>
                     <QChip class="chip-label-value">
-                        {{ t('fn.collection.fields.holdStatement.i') }}:
+                        {{ t('fn.collection.fields.holdStatement.i') }} :
                         <span>{{ selectCollectionToShowEdition?.holdStatement || '-' }}</span>
                     </QChip>
                 </div>

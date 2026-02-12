@@ -30,7 +30,7 @@ const {
     <div class="instruction">
         <div>
             <div class="turns">
-                <p>{{ t('views.project.instruction.turns') }}:</p>
+                <p>{{ t('views.project.instruction.turns') }} :</p>
                 <p
                     v-for="(turn, index) in turnsWithNames"
                     :key="index"
@@ -56,13 +56,13 @@ const {
                 v-if="collectionToBeInstructed"
                 class="collection-infos"
             >
-                <p>{{ t('fn.collection.toBeInstructed.info') }}:</p>
+                <p>{{ t('fn.collection.toBeInstructed.info') }} :</p>
                 <QChip class="chip-label-value">
-                    {{ t('fn.collection.fields.callNumber.i') }}:
+                    {{ t('fn.collection.fields.callNumber.i') }} :
                     <span>{{ collectionToBeInstructed.callNumber || '-' }}</span>
                 </QChip>
                 <QChip class="chip-label-value">
-                    {{ t('fn.collection.fields.holdStatement.i') }}:
+                    {{ t('fn.collection.fields.holdStatement.i') }} :
                     <span>{{ collectionToBeInstructed.holdStatement || '-' }}</span>
                 </QChip>
             </div>

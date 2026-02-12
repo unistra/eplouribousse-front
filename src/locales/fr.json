@@ -91,7 +91,7 @@
             "superUser": "Super utilisateur du tenant | Super utilisateurs du tenant",
             "projectCreator": "Monteur de @.lower:fn.project.i | Monteurs de @.lower:fn.project.i",
             "projectAdmin": "Administrateur | Administrateurs",
-            "projectManager": "Pilote de @.lower:fn.project.i | Pilotes de @.lower:fn.project.i",
+            "projectManager": "Pilote de projet | Pilotes de projet",
             "controller": "Contrôleur | Contrôleurs",
             "instructor": "Instructeur | Instructeurs",
             "guest": "Invité | Invités",
@@ -383,15 +383,15 @@
                     "anomaliesBound": "@:fn.anomaly.i en phase reliés",
                     "anomaliesUnbound": "@:fn.anomaly.i en phase non reliés"
                 },
-                "showResources": "Voir les ressources de:",
-                "compareWith": "Comparer les ressources avec:",
+                "showResources": "Voir les ressources de :",
+                "compareWith": "Comparer les ressources avec :",
                 "youAreInstructor": "Vous êtes instructeur pour cette bibliothèque",
                 "filters": {
-                    "i": "Filtrer par statut: ",
+                    "i": "Filtrer par statut :",
                     "all": "Tous les status",
                     "positioningOnly": "Tous les types de positionnement",
                     "instructionNotStarted": "Instruction non démarrée",
-                    "excluded": "Resources exclues"
+                    "excluded": "Ressources exclues"
                 }
             },
             "settings": {
