@@ -2,6 +2,10 @@
 
 ## Next release
 
+## 1.0.7 - 12-02-2026
+
+- 💬 Fix typos
+
 ## 1.0.6 - 09-02-2026
 
 - 💬 Fix various typos and text issues
