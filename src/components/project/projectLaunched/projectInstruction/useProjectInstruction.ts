@@ -26,7 +26,7 @@ export const useProjectInstruction = (dialogModal: Ref<boolean> | undefined) => 
 
         const retrieveCollectionName = (el: InstructionTurn): string => {
             const collection = resourceStore.collections.find((collection) => collection.id === el.collection)
-            return `${t('fn.collection.fields.callNumber.i')}: ${collection?.callNumber} - ${t('fn.collection.fields.holdStatement.i')}: ${collection?.holdStatement} - ${t('fn.collection.fields.position.i')}: ${collection?.position}`
+            return `${t('fn.collection.fields.callNumber.i')} : ${collection?.callNumber} - ${t('fn.collection.fields.holdStatement.i')} : ${collection?.holdStatement} - ${t('fn.collection.fields.position.i')} : ${collection?.position}`
         }
 
         return (

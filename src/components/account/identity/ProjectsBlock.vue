@@ -37,7 +37,7 @@ const {
                         <h3>{{ selectedProject.name || '' }}</h3>
                     </QCardSection>
                     <QCardSection>
-                        <p>{{ t('views.account.projects.rolesInProject') }}:</p>
+                        <p>{{ t('views.account.projects.rolesInProject') }} :</p>
                         <ul class="roles">
                             <li
                                 v-for="(role, index) in rolesInProjectSelected"

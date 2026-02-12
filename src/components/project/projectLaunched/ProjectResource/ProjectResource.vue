@@ -77,13 +77,13 @@ const { dialogLoading, onBeforeShow, onModalClose } = useProjectResource(props)
                     <h2 v-else>{{ resourceStore.resource?.title }}</h2>
 
                     <QChip class="chip-label-value">
-                        {{ t('fn.resource.fields.code') }}: <span>{{ resourceStore.resource?.code || '-' }}</span>
+                        {{ t('fn.resource.fields.code') }} : <span>{{ resourceStore.resource?.code || '-' }}</span>
                     </QChip>
                     <QChip class="chip-label-value">
-                        ISSN: <span>{{ resourceStore.resource?.issn || '-' }}</span>
+                        ISSN : <span>{{ resourceStore.resource?.issn || '-' }}</span>
                     </QChip>
                     <QChip class="chip-label-value">
-                        {{ t('fn.resource.fields.publicationHistory') }}:
+                        {{ t('fn.resource.fields.publicationHistory') }} :
                         <span>{{ resourceStore.resource?.publicationHistory || '-' }}</span>
                     </QChip>
                 </QCardSection>

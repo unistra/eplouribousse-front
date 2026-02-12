@@ -45,7 +45,7 @@ onMounted(() => {
                     {{ collection.callNumber || t('fn.collection.fields.callNumber.none') }}
                 </p>
                 <p>
-                    {{ t('fn.collection.fields.holdStatement.i') }}:
+                    {{ t('fn.collection.fields.holdStatement.i') }} :
                     {{ collection.holdStatement || t('fn.collection.fields.holdStatement.none') }}
                 </p>
             </QCardSection>
