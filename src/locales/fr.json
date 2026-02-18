@@ -270,7 +270,7 @@
                         "summary": {
                             "tab": "Récapitulatif",
                             "title": "Récapitulatif de la création de projet",
-                            "whenConfirm": "En confirmant, les invitations seront envoyées aux emails renseignés, ainsi que les notifications aux utilisateurs participant au projet"
+                            "whenConfirm": "En confirmant, les invitations seront envoyées aux adresses emails renseignées."
                         }
                     }
                 }
