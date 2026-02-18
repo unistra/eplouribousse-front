@@ -2,6 +2,10 @@
 
 ## Next release
 
+## 1.0.8 - 18-02-2026
+
+- 💬 Update text in warning dialog when creating a project
+
 ## 1.0.7 - 12-02-2026
 
 - 💬 Fix typos
