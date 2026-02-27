@@ -6,7 +6,7 @@ import { useUserStore } from '@/stores/userStore.ts'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import { useProjectStore } from '@/stores/projectStore.ts'
-import { ProjectStatus } from '&/project.ts'
+import { ProjectStatus, Roles } from '&/project.ts'
 
 const props = defineProps<{
     usersSelected: UserSummarized[]
@@ -14,6 +14,7 @@ const props = defineProps<{
     summaryMode?: boolean
     preventDeleteCurrentUser?: boolean
     sendAction?: SearchUserSendAction
+    role?: Roles
 }>()
 
 const userStore = useUserStore()
@@ -48,7 +49,7 @@ const hasAlwaysOneUserSelectedAfterProjectIsDraft = computed(() => {
                 :removable="
                     !(preventDeleteCurrentUser && user.id === userStore.user?.id) &&
                     !summaryMode &&
-                    hasAlwaysOneUserSelectedAfterProjectIsDraft
+                    (props.role === Roles.Guest || hasAlwaysOneUserSelectedAfterProjectIsDraft)
                 "
                 size="1rem"
                 @remove="sendAction && sendAction('removeUser', { user: user })"
