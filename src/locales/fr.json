@@ -135,7 +135,7 @@
             "type": {
                 "pubPeriodPassed": "Période de publication dépassée",
                 "discontinuousSegment": "Segment discontinu",
-                "excpImprovable": "Exception améliorable",
+                "excpImprovable": "Exception ou améliorable hors segment",
                 "chronologicalError": "Erreur chronologique",
                 "segmentOverlap": "Chevauchement de segment",
                 "misuseOfRemediatedLibrary": "Mauvaise utilisation de la bibliothèque remédiée",

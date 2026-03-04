@@ -42,8 +42,11 @@ export const useResourcesStore = defineStore('resources', () => {
 
             if (!params.ordering)
                 params.ordering = `${pagination.value.descending ? '-' : ''}${pagination.value.sortBy}`
-            if (positioningFilter.value === PositioningFilter.Arbitation) params.arbitration = 'all'
-            if (params.status[0] === ResourceStatus.Positioning) params.positioning_filter = positioningFilter.value
+
+            if (params.status[0] === ResourceStatus.Positioning) {
+                params.positioning_filter = positioningFilter.value
+                if (positioningFilter.value === PositioningFilter.Arbitation) params.arbitration = 'all'
+            }
 
             const response = await axiosI.get<Pagination<Resource>>('/resources/', { params })
             resources.value = response.data.results

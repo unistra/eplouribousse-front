@@ -113,6 +113,7 @@ const { model, input, options, sendAction, userListLoading, selectFilterFn, clea
         <ProjectLibraryCardUserList
             :invitations-selected
             :prevent-delete-current-user
+            :role="props.role"
             :send-action="sendAction"
             :summary-mode
             :users-selected
