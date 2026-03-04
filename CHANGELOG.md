@@ -2,6 +2,13 @@
 
 ## Next release
 
+## 1.0.9 - 04-03-2026
+
+- 🩹 Add library name for excluded collection in resultant
+- 🐛 Fix positioning filters being applied in other tabs than positioning
+- 🩹 Allow deletion of a guest from a project even if he's the only one
+- 💬 Change an anomaly label
+
 ## 1.0.8 - 18-02-2026
 
 - 💬 Update text in warning dialog when creating a project
