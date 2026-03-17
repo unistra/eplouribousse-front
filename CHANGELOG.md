@@ -2,6 +2,10 @@
 
 ## Next release
 
+## 1.0.10 - 17-03-2026
+
+- 🐛 Fix library step validation in ProjectStepper
+
 ## 1.0.9 - 04-03-2026
 
 - 🩹 Add library name for excluded collection in resultant
