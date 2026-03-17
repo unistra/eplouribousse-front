@@ -20,18 +20,16 @@ export const checkValidityProjectStepper = () => {
         if (csvImportLoading.value.length) return 'pending'
 
         return projectStore.project.libraries.every((library) => {
-            if (!projectStore.project) return false
             const hasInstructorOrInstructorInvite =
-                projectStore.project.roles.some(
+                projectStore.project!.roles.some(
                     (role) => role.libraryId === library.id && role.role === Roles.Instructor,
                 ) ||
-                projectStore.project.invitations.some(
+                projectStore.project!.invitations.some(
                     (invitation) => invitation.role === Roles.Instructor && invitation.libraryId === library.id,
                 )
             const hasCollection = projectStore.collectionsCount.some((el) => el.libraryId === library.id)
 
-            if (!hasCollection) return csvImportLoading.value
-            return hasInstructorOrInstructorInvite
+            return hasInstructorOrInstructorInvite && hasCollection
         })
     })
 
