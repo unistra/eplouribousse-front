@@ -33,7 +33,7 @@ export const useProjectBlock = () => {
     const formatUserSettingsAlerts = (userSettingsFromDB: Partial<Record<AlertKey, boolean>>) => {
         userSettingsAlertsFormatted.value = {}
         const projectAlertsFilteredByTrue = Object.fromEntries(
-            Object.entries(selectedProjectSettingsAlerts.value).filter(([_, val]) => val),
+            Object.entries(selectedProjectSettingsAlerts.value).filter(([, val]) => val),
         )
         Object.keys(projectAlertsFilteredByTrue).forEach((key) => {
             userSettingsAlertsFormatted.value[key as AlertKey] = userSettingsFromDB[key as AlertKey] ?? true
