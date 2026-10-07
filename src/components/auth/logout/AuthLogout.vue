@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { useUserStore } from '@/stores/userStore.ts'
 import { removeJWTFromLocalStorage } from '@/utils/jwt.ts'
 import { useRouter } from 'vue-router'
@@ -10,11 +11,13 @@ const router = useRouter()
 const { notify } = useComposableQuasar()
 const { t } = useI18n()
 
-userStore.clear()
-removeJWTFromLocalStorage()
-notify({
-    message: t('successes.auth.logout'),
-})
+onMounted(() => {
+    userStore.clear()
+    removeJWTFromLocalStorage()
+    notify({
+        message: t('successes.auth.logout'),
+    })
 
-await router.push({ name: 'login' })
+    router.push({ name: 'login' })
+})
 </script>
