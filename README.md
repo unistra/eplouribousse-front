@@ -36,3 +36,9 @@ pnpm dev
 eplfront est bien démarré 🎉
 
 Si vous avez suivi le setup de eplback, vous devriez pouvoir accéder à l'application via le lien `http://sxb.epl.localhost:5173`
+
+___
+
+# DEV
+
+- Mise à jour des dépendances : voir [docs/dependency-updates.md](docs/dependency-updates.md)
