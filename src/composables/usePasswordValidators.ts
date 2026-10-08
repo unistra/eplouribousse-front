@@ -1,5 +1,7 @@
-import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
+import { ZxcvbnFactory } from '@zxcvbn-ts/core'
 import { dictionary } from '@zxcvbn-ts/language-common'
+
+const zxcvbn = new ZxcvbnFactory({ dictionary })
 
 export const usePasswordValidators = () => {
     const MINIMUM_PASSWORD_STRENGTH = 3
@@ -9,14 +11,7 @@ export const usePasswordValidators = () => {
         return newPassword === confirmPassword
     }
 
-    const getPasswordStrength = (password: string) => {
-        zxcvbnOptions.setOptions({
-            dictionary: {
-                ...dictionary,
-            },
-        })
-        return zxcvbn(password).score as number
-    }
+    const getPasswordStrength = (password: string) => zxcvbn.check(password).score
 
     const passwordStrengthValidator = (password: string) => getPasswordStrength(password) >= MINIMUM_PASSWORD_STRENGTH
 

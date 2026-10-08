@@ -16,9 +16,7 @@ export type ProjectDashboardTableType =
     | 'achievements-information'
 
 export type ProjectDashboardChartType =
-    | 'realized-positioning-per-library'
-    | 'resources-to-instruct-per-library'
-    | 'collection-occurrences-per-library'
+    'realized-positioning-per-library' | 'resources-to-instruct-per-library' | 'collection-occurrences-per-library'
 
 export type ProjectDashboardChartComponentType = 'bar' | 'doughnut'
 
