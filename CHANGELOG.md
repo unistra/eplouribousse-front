@@ -2,6 +2,10 @@
 
 ## Next release
 
+## 1.1.0 - 08-10-2026
+
+- ⬆️ Update dependencies
+
 ## 1.0.10 - 17-03-2026
 
 - 🐛 Fix library step validation in ProjectStepper
